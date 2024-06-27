@@ -47,9 +47,11 @@ ISR_DIR    = $(CALIPTRA_SS_INT)/src/integration/test_suites/libs/caliptra_isr
 PRINTF_DIR = $(CALIPTRA_SS_INT)/src/integration/test_suites/libs/printf
 CALIPTRA_DIR = $(CALIPTRA_ROOT)/src/integration/rtl
 RV_ROOT = $(CALIPTRA_SS_INT)/third_party/Cores-VeeR-EL2
+I3C_ROOT = $(CALIPTRA_SS_INT)/third_party/microsoft-i3c-core-rtl
 DUT ?= caliptra_mcu_top_tb
 
 export RV_ROOT
+export I3C_ROOT
 
 # Determine test directory
 #ifneq (,$(wildcard $(TBDIR)/tests/$(TEST)))
@@ -57,19 +59,21 @@ export RV_ROOT
 #endif
 
 # Libraries providing functionality for each peripheral component in Caliptra
-# COMP_LIB_NAMES := aes \
-# 		  doe \
-# 		  ecc \
-# 		  hmac \
-# 		  keyvault \
-# 		  datavault \
-# 		  sha256 \
-# 		  sha512 \
-# 		  soc_ifc \
-# 		  clk_gate \
-# 		  wdt
-# COMP_LIBS := $(foreach name, $(COMP_LIB_NAMES), $(CALIPTRA_SS_INT)/src/integration/test_suites/libs/$(name))
+COMP_LIB_NAMES := aes \
+		  doe \
+		  ecc \
+		  hmac \
+		  keyvault \
+		  datavault \
+		  sha256 \
+		  sha512 \
+		  soc_ifc \
+		  clk_gate \
+		  wdt
+COMP_LIBS := $(foreach name, $(COMP_LIB_NAMES), $(CALIPTRA_ROOT)/src/integration/test_suites/libs/$(name))
 HEADER_FILES := $(CALIPTRA_DIR)/caliptra_reg.h \
+		$(INCLUDES_DIR)/caliptra_defines.h \
+		$(INCLUDES_DIR)/defines.h \
 		$(RISCV_HW_IF_DIR)/riscv_hw_if.h \
 		$(wildcard $(TEST_DIR)/*.h) \
 		$(PRINTF_DIR)/printf.h \
@@ -356,6 +360,18 @@ mcu_program.hex: $(OFILE_CRT) $(OFILES) $(LINK)
 # 	$(GCC_PREFIX)-as $(ABI) -o $@ $<
 
 endif
+
+############ I3C Core helpers ######################################
+I3C_DIR = $(CALIPTRA_SS_ROOT)/third_party/microsoft-i3c-core-rtl
+I3C_SW_DIR = $(I3C_DIR)/sw
+
+i3c-config:
+	$(MAKE) -f $(I3C_DIR)/Makefile config
+
+i3c-test:
+	TESTNAME=smoke_test_i3c \
+	TEST_DIR=$(CALIPTRA_SS_ROOT)/src/mcu/test_suites/smoke_test_i3c \
+	$(MAKE) -f ${CALIPTRA_SS_ROOT}/tools/scripts/Makefile ms-sw-test
 
 ############ Microsoft Custom Target ###############################
 # Run software test with:
