@@ -74,6 +74,7 @@ COMP_LIBS := $(foreach name, $(COMP_LIB_NAMES), $(CALIPTRA_ROOT)/src/integration
 HEADER_FILES := $(CALIPTRA_DIR)/caliptra_reg.h \
 		$(INCLUDES_DIR)/caliptra_defines.h \
 		$(INCLUDES_DIR)/defines.h \
+		$(I3C_ROOT)/sw/I3CCSR.h \
 		$(RISCV_HW_IF_DIR)/riscv_hw_if.h \
 		$(wildcard $(TEST_DIR)/*.h) \
 		$(PRINTF_DIR)/printf.h \
@@ -365,10 +366,10 @@ endif
 I3C_DIR = $(CALIPTRA_SS_ROOT)/third_party/microsoft-i3c-core-rtl
 I3C_SW_DIR = $(I3C_DIR)/sw
 
-i3c-config:
+$(I3C_ROOT)/sw/I3CCSR.h:
 	$(MAKE) -f $(I3C_DIR)/Makefile config
 
-i3c-test:
+i3c-test: $(I3C_ROOT)/sw/I3CCSR.h
 	TESTNAME=smoke_test_i3c \
 	TEST_DIR=$(CALIPTRA_SS_ROOT)/src/mcu/test_suites/smoke_test_i3c \
 	$(MAKE) -f ${CALIPTRA_SS_ROOT}/tools/scripts/Makefile ms-sw-test
@@ -395,7 +396,7 @@ ms-sw-test: ms-gen-config
 
 help:
 	@echo Make sure the environment variable RV_ROOT is set.
-	@echo Possible targets: verilator vcs irun vlog riviera help clean all verilator-build irun-build vcs-build riviera-build program.hex ms-gen-config ms-sw-test
+	@echo Possible targets: verilator vcs irun vlog riviera help clean all verilator-build irun-build vcs-build riviera-build program.hex ms-gen-config ms-sw-test i3c-test
 
 .PHONY: help clean clean_fw verilator vcs irun vlog riviera
 
