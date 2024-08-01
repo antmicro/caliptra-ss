@@ -47,7 +47,7 @@ ISR_DIR    = $(CALIPTRA_SS_INT)/src/integration/test_suites/libs/caliptra_isr
 PRINTF_DIR = $(CALIPTRA_SS_INT)/src/integration/test_suites/libs/printf
 CALIPTRA_DIR = $(CALIPTRA_ROOT)/src/integration/rtl
 RV_ROOT = $(CALIPTRA_SS_INT)/third_party/Cores-VeeR-EL2
-I3C_ROOT = $(CALIPTRA_SS_INT)/third_party/microsoft-i3c-core-rtl
+I3C_ROOT = $(CALIPTRA_SS_INT)/third_party/i3c-core
 DUT ?= caliptra_mcu_top_tb
 
 export RV_ROOT
@@ -363,11 +363,10 @@ mcu_program.hex: $(OFILE_CRT) $(OFILES) $(LINK)
 endif
 
 ############ I3C Core helpers ######################################
-I3C_DIR = $(CALIPTRA_SS_ROOT)/third_party/microsoft-i3c-core-rtl
-I3C_SW_DIR = $(I3C_DIR)/sw
+I3C_SW_DIR = $(I3C_ROOT)/sw
 
 $(I3C_ROOT)/sw/I3CCSR.h:
-	$(MAKE) -f $(I3C_DIR)/Makefile config
+	$(MAKE) -f $(I3C_ROOT)/Makefile config
 
 i3c-test: $(I3C_ROOT)/sw/I3CCSR.h
 	TESTNAME=smoke_test_i3c \
