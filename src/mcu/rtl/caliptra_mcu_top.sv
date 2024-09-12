@@ -1002,8 +1002,8 @@ uart #(
 `endif
 
 i3c_wrapper #(
-    .AHB_DATA_WIDTH(`CALIPTRA_AHB_HDATA_SIZE),
-    .AHB_ADDR_WIDTH(`CALIPTRA_SLAVE_ADDR_WIDTH(`CALIPTRA_SLAVE_SEL_I3C))
+    .AhbDataWidth(`CALIPTRA_AHB_HDATA_SIZE),
+    .AhbAddrWidth(`CALIPTRA_SLAVE_ADDR_WIDTH(`CALIPTRA_SLAVE_SEL_I3C))
 ) i3c (
     .clk_i       (clk_cg),
     .rst_ni      (cptra_noncore_rst_b),
