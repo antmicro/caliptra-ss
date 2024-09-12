@@ -142,15 +142,24 @@ add_files [ glob $fpgaDir/../src/mcu/rtl/*.svh]
 # Add Caliptra Subsystem files
 add_files [ glob $fpgaDir/../src/mcu/rtl/*.sv]
 
-# Remove spi_host files that aren't used yet and are flagged as having syntax errors
-# TODO: Re-include these files when spi_host is used.
-remove_files [ glob $clptraDir/src/spi_host/rtl/*.sv ]
-
 # Remove Caliptra files that need to be replaced by FPGA specific versions
 # Replace RAM with FPGA block ram
 remove_files $clptraDir/src/ecc/rtl/ecc_ram_tdp_file.sv
 # Key Vault is very large. Replacing KV with a version with the minimum number of entries.
 remove_files $clptraDir/src/keyvault/rtl/kv_reg.sv
+
+# Add I3C sources
+add_files [ glob $i3cDir/src/libs/*/*.sv]
+add_files [ glob $i3cDir/src/libs/*.sv]
+add_files $i3cDir/src/csr/I3CCSR_pkg.sv
+add_files $i3cDir/src/csr/I3CCSR.sv
+add_files [ glob $i3cDir/src/hci/*.sv]
+add_files [ glob $i3cDir/src/hci/*/*.sv]
+add_files [ glob $i3cDir/src/phy/*.sv]
+add_files [ glob $i3cDir/src/ctrl/*.sv]
+
+add_files [ glob $i3cDir/src/*.sv]
+add_files [ glob $i3cDir/src/*.svh]
 
 # Add FPGA specific sources
 add_files [ glob $fpgaDir/src/*.sv]
@@ -165,6 +174,29 @@ set_property file_type Verilog [get_files  $fpgaDir/src/caliptra_package_top.v]
 # Add include paths
 set_property include_dirs $clptraDir/src/integration/rtl [current_fileset]
 set_property include_dirs $clptraDir/src/keyvault/rtl [current_fileset]
+
+add_files $clptraDir/src/keyvault/rtl/kv_macros.svh
+
+# Set global defines
+set file "kv_macros.svh"
+puts "FILE: $file"
+set file_obj [get_files -of_objects [current_fileset] [list "*$file"]]
+set_property -name "is_global_include" -value "1" -objects $file_obj
+
+set file "config_defines_mcu.svh"
+puts "FILE: $file"
+set file_obj [get_files -of_objects [current_fileset] [list "*$file"]]
+set_property -name "is_global_include" -value "1" -objects $file_obj
+
+set file "config_defines.svh"
+puts "FILE: $file"
+set file_obj [get_files -of_objects [current_fileset] [list "*$file"]]
+set_property -name "is_global_include" -value "1" -objects $file_obj
+
+set file "caliptra_sva.svh"
+puts "FILE: $file"
+set file_obj [get_files -of_objects [current_fileset] [list "*$file"]]
+set_property -name "is_global_include" -value "1" -objects $file_obj
 
 # Set caliptra_package_top as top in case next steps fail so that the top is something useful.
 set_property top caliptra_package_top [current_fileset]
