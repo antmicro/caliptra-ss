@@ -40,6 +40,7 @@ module caliptra_mcu_top
     input logic                        jtag_tdi,    // JTAG tdi
     input logic                        jtag_trst_n, // JTAG Reset
     output logic                       jtag_tdo,    // JTAG TDO
+    output logic                       jtag_tdoEn,  // JTAG TDO enable
 
     //APB Interface
     input  logic [`CALIPTRA_APB_ADDR_WIDTH-1:0] PADDR,
@@ -480,6 +481,7 @@ el2_veer_wrapper rvtop (
     .jtag_tdi               ( jtag_tdi  ),
     .jtag_trst_n            ( jtag_trst_n  ),
     .jtag_tdo               ( jtag_tdo ),
+    .jtag_tdoEn             ( jtag_tdoEn ),
 
     //caliptra uncore jtag ports
    .cptra_uncore_dmi_reg_en      ( cptra_uncore_dmi_reg_en ),
@@ -1031,7 +1033,9 @@ i3c_wrapper #(
     .i3c_sda_en_o(),
 
     .i3c_fsm_en_i(1'b1),
-    .i3c_fsm_idle_o()
+    .i3c_fsm_idle_o(),
+    .i3c_scl_io(),
+    .i3c_sda_io()
 );
 
 soc_ifc_top #(

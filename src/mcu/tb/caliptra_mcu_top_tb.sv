@@ -1079,7 +1079,8 @@ caliptra_mcu_top caliptra_mcu_top_dut (
     .jtag_tms(jtag_tms),
     .jtag_trst_n(jtag_trst_n),
     .jtag_tdo(jtag_tdo),
-    
+    .jtag_tdoEn(),
+
     .PADDR(PADDR),
     .PPROT(PPROT),
     .PAUSER(PAUSER),
