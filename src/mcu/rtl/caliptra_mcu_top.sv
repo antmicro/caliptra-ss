@@ -68,6 +68,9 @@ module caliptra_mcu_top
     input  logic                                uart_rx,
 `endif
 
+    inout logic i3c_scl_io,
+    inout logic i3c_sda_io,
+
     // Caliptra Memory Export Interface
     el2_mem_if.veer_sram_src           el2_mem_export,
 
@@ -1024,18 +1027,18 @@ i3c_wrapper #(
     .hreadyout_o (responder_inst[`CALIPTRA_SLAVE_SEL_I3C].hreadyout),
     .hrdata_o    (responder_inst[`CALIPTRA_SLAVE_SEL_I3C].hrdata),
 
-    .i3c_scl_i(),
+    .i3c_scl_i('0),
     .i3c_scl_o(),
     .i3c_scl_en_o(),
 
-    .i3c_sda_i(),
+    .i3c_sda_i('0),
     .i3c_sda_o(),
     .i3c_sda_en_o(),
 
     .i3c_fsm_en_i(1'b1),
     .i3c_fsm_idle_o(),
-    .i3c_scl_io(),
-    .i3c_sda_io()
+    .i3c_scl_io(i3c_scl_io),
+    .i3c_sda_io(i3c_sda_io)
 );
 
 soc_ifc_top #(

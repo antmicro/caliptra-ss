@@ -1103,6 +1103,9 @@ caliptra_mcu_top caliptra_mcu_top_dut (
     .uart_rx(uart_loopback),
 `endif
 
+    .i3c_scl_io(),
+    .i3c_sda_io(),
+
     .el2_mem_export(el2_mem_export.veer_sram_src),
 
     .ready_for_fuses(ready_for_fuses),
