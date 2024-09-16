@@ -343,9 +343,9 @@ set_property STEPS.WRITE_BITSTREAM.ARGS.BIN_FILE true [get_runs impl_1]
 
 # Start build
 if {$BUILD} {
-  launch_runs synth_1 -jobs 10
+  launch_runs synth_1 -jobs 2
   wait_on_runs synth_1
-  launch_runs impl_1 -jobs 10
+  launch_runs impl_1 -jobs 2
   wait_on_runs impl_1
   open_run impl_1
   report_utilization -file $outputDir/utilization.txt
