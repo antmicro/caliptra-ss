@@ -316,6 +316,15 @@ if {$JTAG} {
   connect_bd_net [get_bd_pins xlconstant_0/dout] [get_bd_pins caliptra_package_top_0/jtag_trst_n]
 }
 
+# Create IO ports for I3C
+create_bd_port -dir IO i3c_scl_io
+connect_bd_net [get_bd_pins /caliptra_package_top_0/i3c_scl_io] [get_bd_ports i3c_scl_io]
+create_bd_port -dir IO i3c_sda_io
+connect_bd_net [get_bd_pins /caliptra_package_top_0/i3c_sda_io] [get_bd_ports i3c_sda_io]
+
+# Add I3C constrains with IO placement & standard
+add_files -fileset constrs_1 $fpgaDir/src/i3c_constraints.xdc
+
 save_bd_design
 set_property verilog_define $VERILOG_OPTIONS [current_fileset]
 

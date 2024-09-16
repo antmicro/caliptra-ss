@@ -52,6 +52,9 @@ module caliptra_package_top (
     input wire [4:0]                  jtag_in,     // JTAG input signals concatenated
     output wire [4:0]                 jtag_out,    // JTAG tdo
 
+    inout wire i3c_scl_io,
+    inout wire i3c_sda_io,
+
     // FPGA Realtime register AXI Interface
     input	wire                      S_AXI_ARESETN,
     input	wire                      S_AXI_AWVALID,
@@ -104,6 +107,8 @@ caliptra_wrapper_top cptra_wrapper (
     .jtag_trst_n(jtag_in[3]),
     .jtag_tdo(jtag_out[4]),
 
+    .i3c_scl_io(i3c_scl_io),
+    .i3c_sda_io(i3c_sda_io),
     // FPGA Realtime register AXI Interface
     .S_AXI_ARESETN(S_AXI_ARESETN),
     .S_AXI_AWVALID(S_AXI_AWVALID),

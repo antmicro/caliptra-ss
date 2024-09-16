@@ -51,6 +51,10 @@ module caliptra_wrapper_top (
     input logic                       jtag_trst_n, // JTAG reset
     output logic                      jtag_tdo,    // JTAG tdo
 
+    // I3C Interface
+    inout logic i3c_scl_io,
+    inout logic i3c_sda_io,
+
     // FPGA Realtime register AXI Interface
     input	wire                      S_AXI_ARESETN,
     input	wire                      S_AXI_AWVALID,
@@ -138,6 +142,9 @@ caliptra_mcu_top caliptra_top_dut (
     .qspi_d_i   (),
     .qspi_d_o   (),
     .qspi_d_en_o(),
+
+    .i3c_scl_io(i3c_scl_io),
+    .i3c_sda_io(i3c_sda_io),
 
     .el2_mem_export(el2_mem_export.veer_sram_src),
 
