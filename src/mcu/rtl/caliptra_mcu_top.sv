@@ -1027,6 +1027,7 @@ i3c_wrapper #(
     .hreadyout_o (responder_inst[`CALIPTRA_SLAVE_SEL_I3C].hreadyout),
     .hrdata_o    (responder_inst[`CALIPTRA_SLAVE_SEL_I3C].hrdata),
 
+// TODO: Remove once #5770 MR: !97 is merged
     .i3c_scl_i('0),
     .i3c_scl_o(),
     .i3c_scl_en_o(),
@@ -1037,6 +1038,8 @@ i3c_wrapper #(
 
     .i3c_fsm_en_i(1'b1),
     .i3c_fsm_idle_o(),
+// END
+
     .i3c_scl_io(i3c_scl_io),
     .i3c_sda_io(i3c_sda_io)
 );
