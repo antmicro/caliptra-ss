@@ -5,7 +5,7 @@
 //
 // Create Date: 03/21/2023 11:49:47 AM
 // Design Name:
-// Module Name: caliptra_package_top
+// Module Name: caliptra_ss_package_top
 // Project Name:
 // Target Devices:
 // Tool Versions:
@@ -24,7 +24,7 @@
 `define CALIPTRA_APB_ADDR_WIDTH      32 // bit-width APB address
 `define CALIPTRA_APB_DATA_WIDTH      32 // bit-width APB data
 
-module caliptra_package_top (
+module caliptra_mcu_package_top (
     input wire core_clk,
 
     // Caliptra APB Interface
@@ -76,9 +76,9 @@ module caliptra_package_top (
     input	wire                      S_AXI_RREADY,
     output	wire [31:0]               S_AXI_RDATA,
     output	wire [1:0]                S_AXI_RRESP
-    );
+);
 
-caliptra_wrapper_top cptra_wrapper (
+caliptra_mcu_wrapper_top cptra_mcu_wrapper (
     .core_clk(core_clk),
 
     .PADDR(s_apb_paddr[`CALIPTRA_APB_ADDR_WIDTH-1:0]),
@@ -131,5 +131,4 @@ caliptra_wrapper_top cptra_wrapper (
     .S_AXI_RDATA(S_AXI_RDATA),
     .S_AXI_RRESP(S_AXI_RRESP)
 );
-
 endmodule

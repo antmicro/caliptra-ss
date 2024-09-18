@@ -21,8 +21,9 @@
 
 import caliptra_fpga_realtime_regs_pkg::*;
 
-module caliptra_wrapper_top (
+module caliptra_mcu_wrapper_top (
     input bit core_clk,
+    
     // Caliptra APB Interface
     input  wire [`CALIPTRA_APB_ADDR_WIDTH-1:0] PADDR,
     input  wire                       PENABLE,
@@ -49,6 +50,10 @@ module caliptra_wrapper_top (
     input logic                       jtag_tdi,    // JTAG tdi
     input logic                       jtag_trst_n, // JTAG reset
     output logic                      jtag_tdo,    // JTAG tdo
+
+    // I3C Interface
+    inout logic i3c_scl_io,
+    inout logic i3c_sda_io,
 
     // FPGA Realtime register AXI Interface
     input	wire                      S_AXI_ARESETN,
@@ -101,7 +106,7 @@ module caliptra_wrapper_top (
 //=========================================================================-
 // DUT instance
 //=========================================================================-
-caliptra_top caliptra_top_dut (
+caliptra_mcu_top caliptra_top_dut (
     .cptra_pwrgood              (hwif_out.interface_regs.control.cptra_pwrgood.value),
     .cptra_rst_b                (hwif_out.interface_regs.control.cptra_rst_b.value),
     .clk                        (core_clk),
@@ -137,6 +142,9 @@ caliptra_top caliptra_top_dut (
     .qspi_d_i   (),
     .qspi_d_o   (),
     .qspi_d_en_o(),
+
+    .i3c_scl_io(i3c_scl_io),
+    .i3c_sda_io(i3c_sda_io),
 
     .el2_mem_export(el2_mem_export.veer_sram_src),
 

@@ -22,7 +22,6 @@ foreach arg $argv {
     set $option "$value"
 }
 # If VERSION was not set by tclargs, set it from the commit ID.
-# This assumes it is run from within caliptra-sw. If building from outside caliptra-sw call with "VERSION=[hex number]"
 if {[info exists VERSION] == 0} {
   set VERSION [exec git rev-parse --short HEAD]
 }
@@ -168,8 +167,8 @@ add_files [ glob $fpgaDir/src/*.v]
 # Mark all Verilog sources as SystemVerilog because some of them have SystemVerilog syntax.
 set_property file_type SystemVerilog [get_files *.v]
 
-# Exception: caliptra_package_top.v needs to be Verilog to be included in a Block Diagram.
-set_property file_type Verilog [get_files  $fpgaDir/src/caliptra_package_top.v]
+# Exception: caliptra_mcu_package_top.v needs to be Verilog to be included in a Block Diagram.
+set_property file_type Verilog [get_files  $fpgaDir/src/caliptra_mcu_package_top.v]
 
 # Add include paths
 set_property include_dirs $clptraDir/src/integration/rtl [current_fileset]
@@ -198,14 +197,14 @@ puts "FILE: $file"
 set file_obj [get_files -of_objects [current_fileset] [list "*$file"]]
 set_property -name "is_global_include" -value "1" -objects $file_obj
 
-# Set caliptra_package_top as top in case next steps fail so that the top is something useful.
-set_property top caliptra_package_top [current_fileset]
+# Set caliptra_mcu_package_top as top in case next steps fail so that the top is something useful.
+set_property top caliptra_mcu_package_top [current_fileset]
 
-# Create block diagram that includes an instance of caliptra_package_top
-create_bd_design "caliptra_package_bd"
-create_bd_cell -type module -reference caliptra_package_top caliptra_package_top_0
+# Create block diagram that includes an instance of caliptra_mcu_package_top
+create_bd_design "caliptra_mcu_package_bd"
+create_bd_cell -type module -reference caliptra_mcu_package_top caliptra_mcu_package_top_0
 save_bd_design
-close_bd_design [get_bd_designs caliptra_package_bd]
+close_bd_design [get_bd_designs caliptra_mcu_package_bd]
 
 # Package IP
 ipx::package_project -root_dir $packageDir -vendor design -library user -taxonomy /UserIP -import_files -set_current false
@@ -239,7 +238,7 @@ update_ip_catalog
 create_bd_design "caliptra_fpga_project_bd"
 
 # Add Caliptra package
-create_bd_cell -type ip -vlnv design:user:caliptra_package_top:1.0 caliptra_package_top_0
+create_bd_cell -type ip -vlnv design:user:caliptra_mcu_package_top:1.0 caliptra_mcu_package_top_0
 
 # Add Zynq PS
 create_bd_cell -type ip -vlnv xilinx.com:ip:zynq_ultra_ps_e zynq_ultra_ps_e_0
@@ -274,53 +273,47 @@ set_property location {2 696 373} [get_bd_cells axi_interconnect_0]
 set_property location {2 707 654} [get_bd_cells proc_sys_reset_0]
 set_property location {3 1041 439} [get_bd_cells axi_apb_bridge_0]
 set_property location {3 1151 617} [get_bd_cells axi_bram_ctrl_0]
-set_property location {4 1335 456} [get_bd_cells caliptra_package_top_0]
+set_property location {4 1335 456} [get_bd_cells caliptra_mcu_package_top_0]
 
 # Create interface connections
-connect_bd_intf_net -intf_net axi_apb_bridge_0_APB_M [get_bd_intf_pins axi_apb_bridge_0/APB_M] [get_bd_intf_pins caliptra_package_top_0/s_apb]
+connect_bd_intf_net -intf_net axi_apb_bridge_0_APB_M [get_bd_intf_pins axi_apb_bridge_0/APB_M] [get_bd_intf_pins caliptra_mcu_package_top_0/s_apb]
+connect_bd_intf_net -intf_net axi_bram_ctrl_0_BRAM_PORTA [get_bd_intf_pins axi_bram_ctrl_0/BRAM_PORTA] [get_bd_intf_pins caliptra_mcu_package_top_0/axi_bram]
+connect_bd_intf_net -intf_net axi_interconnect_0_M00_AXI [get_bd_intf_pins caliptra_mcu_package_top_0/S_AXI] -boundary_type upper [get_bd_intf_pins axi_interconnect_0/M00_AXI]
 connect_bd_intf_net -intf_net axi_interconnect_0_M01_AXI [get_bd_intf_pins axi_apb_bridge_0/AXI4_LITE] [get_bd_intf_pins axi_interconnect_0/M01_AXI]
+connect_bd_intf_net -intf_net axi_interconnect_0_M02_AXI [get_bd_intf_pins axi_bram_ctrl_0/S_AXI] -boundary_type upper [get_bd_intf_pins axi_interconnect_0/M02_AXI]
 connect_bd_intf_net -intf_net zynq_ultra_ps_e_0_M_AXI_HPM0_LPD [get_bd_intf_pins axi_interconnect_0/S00_AXI] [get_bd_intf_pins zynq_ultra_ps_e_0/M_AXI_HPM0_LPD]
-connect_bd_intf_net [get_bd_intf_pins axi_bram_ctrl_0/S_AXI] -boundary_type upper [get_bd_intf_pins axi_interconnect_0/M02_AXI]
-connect_bd_intf_net [get_bd_intf_pins caliptra_package_top_0/axi_bram] [get_bd_intf_pins axi_bram_ctrl_0/BRAM_PORTA]
 
 # Create port connections
-connect_bd_net -net proc_sys_reset_0_peripheral_aresetn [get_bd_pins axi_apb_bridge_0/s_axi_aresetn] [get_bd_pins caliptra_package_top_0/S_AXI_ARESETN] [get_bd_pins axi_interconnect_0/ARESETN] [get_bd_pins axi_interconnect_0/M00_ARESETN] [get_bd_pins axi_interconnect_0/M01_ARESETN] [get_bd_pins axi_interconnect_0/S00_ARESETN] [get_bd_pins proc_sys_reset_0/peripheral_aresetn]
-connect_bd_net -net zynq_ultra_ps_e_0_pl_clk0 [get_bd_pins axi_apb_bridge_0/s_axi_aclk] [get_bd_pins axi_interconnect_0/ACLK] [get_bd_pins axi_interconnect_0/M00_ACLK] [get_bd_pins axi_interconnect_0/M01_ACLK] [get_bd_pins axi_interconnect_0/S00_ACLK] [get_bd_pins caliptra_package_top_0/core_clk] [get_bd_pins proc_sys_reset_0/slowest_sync_clk] [get_bd_pins zynq_ultra_ps_e_0/maxihpm0_lpd_aclk] [get_bd_pins zynq_ultra_ps_e_0/pl_clk0]
-# Caliptra SOC adapter connections
-connect_bd_intf_net -boundary_type upper [get_bd_intf_pins axi_interconnect_0/M00_AXI] [get_bd_intf_pins caliptra_package_top_0/S_AXI]
-
-connect_bd_net -net zynq_ultra_ps_e_0_pl_resetn0 [get_bd_pins proc_sys_reset_0/ext_reset_in] [get_bd_pins zynq_ultra_ps_e_0/pl_resetn0]
-connect_bd_net [get_bd_pins axi_bram_ctrl_0/s_axi_aclk] [get_bd_pins zynq_ultra_ps_e_0/pl_clk0]
-connect_bd_net [get_bd_pins axi_bram_ctrl_0/s_axi_aresetn] [get_bd_pins proc_sys_reset_0/peripheral_aresetn]
-connect_bd_net [get_bd_pins axi_interconnect_0/M02_ACLK] [get_bd_pins zynq_ultra_ps_e_0/pl_clk0]
-connect_bd_net [get_bd_pins axi_interconnect_0/M02_ARESETN] [get_bd_pins proc_sys_reset_0/peripheral_aresetn]
+connect_bd_net -net proc_sys_reset_0_peripheral_aresetn [get_bd_pins proc_sys_reset_0/peripheral_aresetn] [get_bd_pins axi_apb_bridge_0/s_axi_aresetn] [get_bd_pins axi_interconnect_0/M02_ARESETN] [get_bd_pins axi_bram_ctrl_0/s_axi_aresetn] [get_bd_pins axi_interconnect_0/ARESETN] [get_bd_pins axi_interconnect_0/M00_ARESETN] [get_bd_pins axi_interconnect_0/M01_ARESETN] [get_bd_pins axi_interconnect_0/S00_ARESETN] [get_bd_pins caliptra_mcu_package_top_0/S_AXI_ARESETN]
+connect_bd_net -net zynq_ultra_ps_e_0_pl_clk0 [get_bd_pins zynq_ultra_ps_e_0/pl_clk0] [get_bd_pins axi_apb_bridge_0/s_axi_aclk] [get_bd_pins axi_interconnect_0/M02_ACLK] [get_bd_pins proc_sys_reset_0/slowest_sync_clk] [get_bd_pins axi_bram_ctrl_0/s_axi_aclk] [get_bd_pins axi_interconnect_0/ACLK] [get_bd_pins axi_interconnect_0/M00_ACLK] [get_bd_pins axi_interconnect_0/M01_ACLK] [get_bd_pins axi_interconnect_0/S00_ACLK] [get_bd_pins zynq_ultra_ps_e_0/maxihpm0_lpd_aclk] [get_bd_pins caliptra_mcu_package_top_0/core_clk]
+connect_bd_net -net zynq_ultra_ps_e_0_pl_resetn0 [get_bd_pins zynq_ultra_ps_e_0/pl_resetn0] [get_bd_pins proc_sys_reset_0/ext_reset_in]
 
 # Create address segments
-assign_bd_address -offset 0x80000000 -range 0x00002000 -target_address_space [get_bd_addr_spaces zynq_ultra_ps_e_0/Data] [get_bd_addr_segs caliptra_package_top_0/S_AXI/reg0] -force
+assign_bd_address -offset 0x80000000 -range 0x00002000 -target_address_space [get_bd_addr_spaces zynq_ultra_ps_e_0/Data] [get_bd_addr_segs caliptra_mcu_package_top_0/S_AXI/reg0] -force
 assign_bd_address -offset 0x82000000 -range 0x00010000 -target_address_space [get_bd_addr_spaces zynq_ultra_ps_e_0/Data] [get_bd_addr_segs axi_bram_ctrl_0/S_AXI/Mem0] -force
-assign_bd_address -offset 0x90000000 -range 0x00100000 -target_address_space [get_bd_addr_spaces zynq_ultra_ps_e_0/Data] [get_bd_addr_segs caliptra_package_top_0/s_apb/Reg] -force
+assign_bd_address -offset 0x90000000 -range 0x00100000 -target_address_space [get_bd_addr_spaces zynq_ultra_ps_e_0/Data] [get_bd_addr_segs caliptra_mcu_package_top_0/s_apb/Reg] -force
 
 if {$JTAG} {
   # Connect JTAG signals to PS GPIO pins
-  connect_bd_net [get_bd_pins caliptra_package_top_0/jtag_out] [get_bd_pins zynq_ultra_ps_e_0/emio_gpio_i]
-  connect_bd_net [get_bd_pins caliptra_package_top_0/jtag_in]  [get_bd_pins zynq_ultra_ps_e_0/emio_gpio_o]
+  connect_bd_net [get_bd_pins caliptra_mcu_package_top_0/jtag_out] [get_bd_pins zynq_ultra_ps_e_0/emio_gpio_i]
+  connect_bd_net [get_bd_pins caliptra_mcu_package_top_0/jtag_in]  [get_bd_pins zynq_ultra_ps_e_0/emio_gpio_o]
 
   # Add constraints for JTAG signals
   add_files -fileset constrs_1 $fpgaDir/src/jtag_constraints.xdc
 } else {
   # Tie off JTAG inputs
   create_bd_cell -type ip -vlnv xilinx.com:ip:xlconstant:1.1 xlconstant_0
-  connect_bd_net [get_bd_pins xlconstant_0/dout] [get_bd_pins caliptra_package_top_0/jtag_tck]
-  connect_bd_net [get_bd_pins xlconstant_0/dout] [get_bd_pins caliptra_package_top_0/jtag_tms]
-  connect_bd_net [get_bd_pins xlconstant_0/dout] [get_bd_pins caliptra_package_top_0/jtag_tdi]
-  connect_bd_net [get_bd_pins xlconstant_0/dout] [get_bd_pins caliptra_package_top_0/jtag_trst_n]
+  connect_bd_net [get_bd_pins xlconstant_0/dout] [get_bd_pins caliptra_mcu_package_top_0/jtag_tck]
+  connect_bd_net [get_bd_pins xlconstant_0/dout] [get_bd_pins caliptra_mcu_package_top_0/jtag_tms]
+  connect_bd_net [get_bd_pins xlconstant_0/dout] [get_bd_pins caliptra_mcu_package_top_0/jtag_tdi]
+  connect_bd_net [get_bd_pins xlconstant_0/dout] [get_bd_pins caliptra_mcu_package_top_0/jtag_trst_n]
 }
 
 # Create IO ports for I3C
 create_bd_port -dir IO i3c_scl_io
-connect_bd_net [get_bd_pins /caliptra_package_top_0/i3c_scl_io] [get_bd_ports i3c_scl_io]
+connect_bd_net [get_bd_pins /caliptra_mcu_package_top_0/i3c_scl_io] [get_bd_ports i3c_scl_io]
 create_bd_port -dir IO i3c_sda_io
-connect_bd_net [get_bd_pins /caliptra_package_top_0/i3c_sda_io] [get_bd_ports i3c_sda_io]
+connect_bd_net [get_bd_pins /caliptra_mcu_package_top_0/i3c_sda_io] [get_bd_ports i3c_sda_io]
 
 # Add I3C constrains with IO placement & standard
 add_files -fileset constrs_1 $fpgaDir/src/i3c_constraints.xdc
@@ -334,22 +327,22 @@ add_files -norecurse $outputDir/caliptra_fpga_project.gen/sources_1/bd/caliptra_
 
 update_compile_order -fileset sources_1
 
-# Assign the gated clock conversion setting in the caliptra_package_top out of context run.
+# Assign the gated clock conversion setting in the caliptra_mcu_package_top out of context run.
 create_ip_run [get_files *.bd]
-set_property STEPS.SYNTH_DESIGN.ARGS.GATED_CLOCK_CONVERSION $GATED_CLOCK_CONVERSION [get_runs caliptra_fpga_project_bd_caliptra_package_top_0_0_synth_1]
+set_property STEPS.SYNTH_DESIGN.ARGS.GATED_CLOCK_CONVERSION $GATED_CLOCK_CONVERSION [get_runs caliptra_fpga_project_bd_caliptra_mcu_package_top_0_0_synth_1]
 
 # The FPGA loading methods currently in use require the bin file to be generated.
 set_property STEPS.WRITE_BITSTREAM.ARGS.BIN_FILE true [get_runs impl_1]
 
 # Start build
 if {$BUILD} {
-  launch_runs synth_1 -jobs 2
+  launch_runs synth_1 -jobs 4
   wait_on_runs synth_1
-  launch_runs impl_1 -jobs 2
+  launch_runs impl_1 -jobs 4
   wait_on_runs impl_1
   open_run impl_1
   report_utilization -file $outputDir/utilization.txt
   # Embed git hash in USR_ACCESS register for bitstream identification.
   set_property BITSTREAM.CONFIG.USR_ACCESS 0x$VERSION [current_design]
-  write_bitstream -bin_file $outputDir/caliptra_fpga
+  write_bitstream -bin_file $outputDir/caliptra_mcu_fpga
 }
