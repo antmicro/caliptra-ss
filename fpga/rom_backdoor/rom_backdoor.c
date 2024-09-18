@@ -1,5 +1,7 @@
 // Licensed under the Apache-2.0 license
 
+// TODO: Revisit with Caliptra Subsystem setup (e.g. ensure the addresses are correct)
+
 #include <linux/module.h>
 #include <linux/slab.h>
 #include <linux/cdev.h>
