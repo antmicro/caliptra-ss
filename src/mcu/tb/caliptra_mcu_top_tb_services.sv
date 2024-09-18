@@ -28,7 +28,7 @@
 
 `default_nettype none
 
-`include "mcu_common_defines.sv"
+`include "mcu_common_defines.vh"
 `include "config_defines_mcu.svh"
 `include "caliptra_reg_defines.svh"
 

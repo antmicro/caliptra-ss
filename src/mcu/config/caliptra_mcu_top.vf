@@ -21,6 +21,7 @@
 +incdir+${CALIPTRA_ROOT}/src/caliptra_prim_generic/rtl
 +incdir+${CALIPTRA_ROOT}/src/edn/rtl
 +incdir+${CALIPTRA_ROOT}/src/aes/rtl
++incdir+${CALIPTRA_SS_ROOT}/src/riscv_core/veer_el2/rtl/rev1p0
 ${CALIPTRA_SS_ROOT}/src/mcu/rtl/config_defines_mcu.svh
 ${CALIPTRA_SS_ROOT}/src/mcu/rtl/caliptra_reg_defines.svh
 ${CALIPTRA_ROOT}/src/integration/rtl/config_defines.svh
@@ -39,7 +40,6 @@ ${CALIPTRA_ROOT}/src/soc_ifc/rtl/soc_ifc_pkg.sv
 ${CALIPTRA_ROOT}/src/soc_ifc/rtl/soc_ifc_reg_pkg.sv
 ${CALIPTRA_ROOT}/src/riscv_core/veer_el2/rtl/el2_pdef.vh
 ${CALIPTRA_ROOT}/src/riscv_core/veer_el2/rtl/include/el2_def.sv
-${CALIPTRA_ROOT}/src/riscv_core/veer_el2/rtl/mcu_common_defines.sv
 ${CALIPTRA_ROOT}/src/keyvault/rtl/kv_defines_pkg.sv
 ${CALIPTRA_ROOT}/src/keyvault/rtl/kv_macros.svh
 ${CALIPTRA_ROOT}/src/pcrvault/rtl/pv_defines_pkg.sv
