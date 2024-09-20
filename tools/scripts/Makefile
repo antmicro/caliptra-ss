@@ -38,7 +38,7 @@ endif
 
 # Define test name
 TESTNAME ?= iccm_lock
-TEST_DIR = $(CALIPTRA_SS_ROOT)/src/mcu/test_suites/$(TESTNAME)
+TEST_DIR = $(CALIPTRA_SS_ROOT)/src/integration/test_suites/$(TESTNAME)
 HEX_DIR = $(CALIPTRA_SS_INT)/src/integration/test_suites/hex
 INCLUDES_DIR = $(CALIPTRA_SS_INT)/src/integration/test_suites/includes
 TBDIR = $(CALIPTRA_SS_ROOT)/src/mcu/tb
@@ -370,7 +370,7 @@ $(I3C_ROOT)/sw/I3CCSR.h:
 
 i3c-test: $(I3C_ROOT)/sw/I3CCSR.h
 	TESTNAME=smoke_test_i3c \
-	TEST_DIR=$(CALIPTRA_SS_ROOT)/src/mcu/test_suites/smoke_test_i3c \
+	TEST_DIR=$(CALIPTRA_SS_ROOT)/src/integration/test_suites/smoke_test_i3c \
 	$(MAKE) -f ${CALIPTRA_SS_ROOT}/tools/scripts/Makefile ms-sw-test
 
 ############ Microsoft Custom Target ###############################
