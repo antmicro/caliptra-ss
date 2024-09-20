@@ -10,7 +10,6 @@
 +incdir+${I3C_ROOT}/src
 +incdir+${I3C_ROOT}/src/libs/axi
 +incdir+${CALIPTRA_ROOT}/src/soc_ifc/rtl
-+incdir+${CALIPTRA_SS_ROOT}/snapshots/ms_custom_conf
 +incdir+${CALIPTRA_ROOT}/src/pcrvault/rtl
 +incdir+${CALIPTRA_ROOT}/src/entropy_src/rtl
 +incdir+${CALIPTRA_ROOT}/src/entropy_src/tb

@@ -222,7 +222,7 @@ CFLAGS += $(TB_DPI_INCS)
 all: clean verilator
 
 clean:
-	rm -rf *.log *.s *.hex *.dis *.size *.tbl irun* vcs* simv* .map *.map snapshots \
+	rm -rf *.log *.s *.hex *.dis *.size *.tbl irun* vcs* simv* .map *.map \
 	verilator* *.exe obj* *.o ucli.key vc_hdrs.h csrc *.csv work \
 	dataset.asdb  library.cfg vsimsa.cfg  riviera-build wave.asdb sim.vcd \
 	*.h
@@ -373,29 +373,14 @@ i3c-test: $(I3C_ROOT)/sw/I3CCSR.h
 	TEST_DIR=$(CALIPTRA_SS_ROOT)/src/integration/test_suites/smoke_test_i3c \
 	$(MAKE) -f ${CALIPTRA_SS_ROOT}/tools/scripts/Makefile ms-sw-test
 
-############ Microsoft Custom Target ###############################
-# Run software test with:
-# 	make -f $RV_ROOT/tools/Makefile clean ms-sw-test
-
-MS_SNAPSHOT_NAME = ms_custom_conf
-MS_SNAPSHOT_DIR = snapshots/$(MS_SNAPSHOT_NAME)
-
-$(MS_SNAPSHOT_DIR):
-	cd ${CALIPTRA_SS_ROOT} && veer_config/veer_build_command.sh $(MS_SNAPSHOT_NAME) && cd -
-	mv ${CALIPTRA_SS_ROOT}/$(MS_SNAPSHOT_DIR)/common_defines.vh ${CALIPTRA_SS_ROOT}/$(MS_SNAPSHOT_DIR)/common_defines.sv
-	sed -i 's|`define RV_TOP|// `define RV_TOP|' ${CALIPTRA_SS_ROOT}/$(MS_SNAPSHOT_DIR)/common_defines.sv
-	sed -i 's|`define RV_ROOT.*|`define RV_ROOT ""|' ${CALIPTRA_SS_ROOT}/$(MS_SNAPSHOT_DIR)/common_defines.sv
-
-ms-gen-config: $(MS_SNAPSHOT_DIR)
-
-ms-sw-test: ms-gen-config
+ms-sw-test:
 	TESTNAME=$(TESTNAME) $(MAKE) -f ${CALIPTRA_SS_ROOT}/tools/scripts/Makefile verilator
 
 # $(GCC_PREFIX)-cpp $(includes) -I$(TEST_DIR)  $<  > $*.cpp.s
 
 help:
 	@echo Make sure the environment variable RV_ROOT is set.
-	@echo Possible targets: verilator vcs irun vlog riviera help clean all verilator-build irun-build vcs-build riviera-build program.hex ms-gen-config ms-sw-test i3c-test
+	@echo Possible targets: verilator vcs irun vlog riviera help clean all verilator-build irun-build vcs-build riviera-build program.hex ms-sw-test i3c-test
 
 .PHONY: help clean clean_fw verilator vcs irun vlog riviera
 
