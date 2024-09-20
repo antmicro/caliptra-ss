@@ -13,9 +13,9 @@
 // limitations under the License.
 //
 
-import el2_pkg::*;
+import mcu_el2_pkg::*;
 module caliptra_veer_sram_export import caliptra_mcu_top_tb_pkg::*; #(
-    `include "el2_param.vh"
+    `include "mcu_el2_param.vh"
 ) (
     // Decode:
     //  [0] - Single bit, ICCM Error Injection
@@ -23,7 +23,7 @@ module caliptra_veer_sram_export import caliptra_mcu_top_tb_pkg::*; #(
     //  [2] - Single bit, DCCM Error Injection
     //  [3] - Double bit, DCCM Error Injection
     input veer_sram_error_injection_mode_t sram_error_injection_mode,
-    el2_mem_if.veer_sram_sink el2_mem_export
+    mcu_el2_mem_if.veer_sram_sink el2_mem_export
 );
 
 //////////////////////////////////////////////////////
@@ -107,7 +107,7 @@ localparam DCCM_INDEX_DEPTH = ((pt.DCCM_SIZE)*1024)/((pt.DCCM_BYTE_WIDTH)*(pt.DC
 for (genvar i=0; i<pt.DCCM_NUM_BANKS; i++) begin: dccm_loop
 `ifdef VERILATOR
 
-        el2_ram #(DCCM_INDEX_DEPTH,39)  ram (
+        mcu_el2_ram #(DCCM_INDEX_DEPTH,39)  ram (
                                   // Primary ports
                                   .ME  (el2_mem_export.dccm_clken[i]                                  ),
                                   .CLK (el2_mem_export.clk                                            ),
@@ -284,7 +284,7 @@ if (pt.ICCM_ENABLE) begin : Gen_iccm_enable
 for (genvar i=0; i<pt.ICCM_NUM_BANKS; i++) begin: iccm_loop
  `ifdef VERILATOR
 
-    el2_ram #(.depth(1<<pt.ICCM_INDEX_BITS), .width(39)) iccm_bank (
+    mcu_el2_ram #(.depth(1<<pt.ICCM_INDEX_BITS), .width(39)) iccm_bank (
                                      // Primary ports
                                      .ME  (el2_mem_export.iccm_clken[i]             ),
                                      .CLK (el2_mem_export.clk                       ),
