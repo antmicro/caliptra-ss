@@ -6,7 +6,7 @@
 `ifndef MCU_RV_COMMON_DEFINES
 `define MCU_RV_COMMON_DEFINES
 
-`define MCU_RV_ROOT "/home/pure_scratch/caliptra/users/users/pateln/veer_mcu_el2_core_ws2"
+`define MCU_RV_ROOT ""
 `define MCU_RV_BHT_ADDR_HI 9
 `define MCU_RV_BHT_ADDR_LO 2
 `define MCU_RV_BHT_ARRAY_DEPTH 256
