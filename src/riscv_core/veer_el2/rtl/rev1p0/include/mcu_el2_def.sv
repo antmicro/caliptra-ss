@@ -1,6 +1,7 @@
 // performance monitor stuff
-//`ifndef mcu_el2_DEF_SV
-//`define mcu_el2_DEF_SV
+`ifndef mcu_el2_DEF_SV
+`define mcu_el2_DEF_SV
+
 package mcu_el2_pkg;
 
 `include "mcu_el2_pdef.vh"
@@ -437,6 +438,6 @@ typedef struct packed {
     logic MML;
   } mcu_el2_mseccfg_pkt_t;
 
-//`endif
-
 endpackage // mcu_el2_pkg
+
+`endif

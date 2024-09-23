@@ -48,6 +48,7 @@ PRINTF_DIR = $(CALIPTRA_SS_INT)/src/integration/test_suites/libs/printf
 CALIPTRA_DIR = $(CALIPTRA_ROOT)/src/integration/rtl
 RV_ROOT = $(CALIPTRA_SS_ROOT)/third_party/Cores-VeeR-EL2
 I3C_ROOT = $(CALIPTRA_SS_ROOT)/third_party/i3c-core
+RISCV_CORE = $(CALIPTRA_SS_ROOT)/riscv_core/veer_el2/rtl/rev1p0
 DUT ?= caliptra_mcu_top_tb
 
 export RV_ROOT
@@ -83,9 +84,6 @@ HEADER_FILES := $(CALIPTRA_DIR)/caliptra_reg.h \
 		$(ISR_DIR)/veer-csr.h
 
 #$(foreach comp_lib, $(COMP_LIBS), $(wildcard $(comp_lib)/*.h))
-#$(CALIPTRA_SS_INT)/src/integration/rtl/caliptra_reg.h
-#$(INCLUDES_DIR)/caliptra_defines.h \
-#$(INCLUDES_DIR)/defines.h \
 
 TEST_GEN_FILES := $(CALIPTRA_SS_INT)/src/ecc/tb/ecdsa_secp384r1.exe \
 	          $(CALIPTRA_SS_INT)/src/doe/tb/doe_test_gen.py
@@ -136,9 +134,10 @@ VPATH = $(TEST_DIR) $(BUILD_DIR) $(TBDIR) $(RISCV_HW_IF_DIR) $(ISR_DIR) $(PRINTF
 # Use eval to expand env variables in the .vf file
 # $(eval TBFILES = $(shell cat $(TBDIR)/../config/$(DUT).vf | grep -v '+incdir+'))
 
-#defines  = $(BUILD_DIR)/common_defines.vh
-#defines += $(RV_ROOT)/design/include/el2_def.sv
-#defines += $(BUILD_DIR)/el2_pdef.vh
+# defines  = mcu_common_defines.vh
+# defines += mcu_el2_def.sv
+# defines += mcu_el2_pdef.vh
+# defines += mcu_el2_mem_if.sv
 includes = -I$(BUILD_DIR)
 #
 #         .--------------------------------------------------------------------------------.
@@ -180,7 +179,7 @@ suppress = -Wno-WIDTH -Wno-UNOPTFLAT -Wno-LITENDIAN -Wno-CMPCONST -Wno-MULTIDRIV
 
 # CFLAGS for verilator generated Makefiles. Without -std=c++17 it
 # complains for `auto` variables
-CFLAGS += -std=c++14
+CFLAGS += -std=c++17
 #CFLAGS += -std=c11
 
 # Optimization for better performance; alternative is nothing for

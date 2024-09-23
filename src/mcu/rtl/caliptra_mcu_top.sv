@@ -68,7 +68,7 @@ module caliptra_mcu_top
 `endif
 
     // Caliptra Memory Export Interface
-    el2_mem_if.veer_sram_src           el2_mem_export,
+    mcu_el2_mem_if.veer_sram_src           el2_mem_export,
 
     //SRAM interface for mbox
     output logic mbox_sram_cs,
