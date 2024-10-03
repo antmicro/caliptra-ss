@@ -12,8 +12,8 @@
 // Helpers for Recovery Flow CSRs
 #define I3C_DEVICE_ID_LOW 0x0
 #define I3C_DEVICE_ID_MASK 0x1
-#define I3C_DEVICE_STATUS_LOW 0x4
-#define I3C_DEVICE_STATUS_MASK 0x10
+#define I3C_DEVICE_STATUS_LOW 0x0
+#define I3C_DEVICE_STATUS_MASK 0x3
 #define I3C_LOCAL_C_IMAGE_SUPPORT_LOW 0x6
 #define I3C_LOCAL_C_IMAGE_SUPPORT_MASK 0x40
 #define I3C_PUSH_C_IMAGE_SUPPORT_LOW 0x7
@@ -80,6 +80,7 @@ int report_recovery_status(uint32_t value) {
   return 0;
 }
 
+// Caliptra MCU bringup from src/integration/test_suites/mcu_cptra_bringup/mcu_cptra_bringup.c
 #define BOOT_IDLE 0
 #define BOOT_FUSE 1
 #define BOOT_FW_RST 2
@@ -211,41 +212,17 @@ void main() {
   bringup();
 
   printf("---------------------------\n");
-  printf(" I3C CSR Smoke Test \n");
+  printf("     I3C Recovery Test     \n");
   printf("---------------------------\n");
 
-
-  // Run test for I3C Base registers ------------------------------------------
-  printf("==Step 0: Verify I3C HCI Version\n");
-
-  // Read RO register
-  data = read_i3c_reg(I3C_REG_I3CBASE_HCI_VERSION);
-  printf("Check I3C HCI Version: ");
-  error += check_and_report_value(data, HCI_VERSION);
-
-  // Secondary Controller Mode (Target)
-  // Configure the I3C core
-  // Set the following bits in `PROT_CAP`:
-  // * bit 0 - `DEVICE_ID`
-  write_i3c_reg_field(CLP_I3C_REG_I3C_EC_SECFWRECOVERYIF_PROT_CAP_0, I3C_DEVICE_ID_LOW, I3C_DEVICE_ID_MASK, 0x1);
-  // * bit 4 - `DEVICE_STATUS`
-  write_i3c_reg_field(CLP_I3C_REG_I3C_EC_SECFWRECOVERYIF_PROT_CAP_0, I3C_DEVICE_STATUS_LOW, I3C_DEVICE_STATUS_MASK, 0x1);
-  // * bit 6 `Local C-image support` OR bit 7 `Push C-image support`
-#ifdef I3C_RECOVERY_LOCAL_IMAGE
-  write_i3c_reg_field(CLP_I3C_REG_I3C_EC_SECFWRECOVERYIF_PROT_CAP_0, I3C_LOCAL_C_IMAGE_SUPPORT_LOW, I3C_LOCAL_C_IMAGE_SUPPORT_MASK, 0x1);
-#else
-  write_i3c_reg_field(CLP_I3C_REG_I3C_EC_SECFWRECOVERYIF_PROT_CAP_0, I3C_PUSH_C_IMAGE_SUPPORT_LOW, I3C_PUSH_C_IMAGE_SUPPORT_MASK, 0x1);
-  // * (if bit 7 is set) bit 5 `INDIRECT_CTRL`
-  write_i3c_reg_field(CLP_I3C_REG_I3C_EC_SECFWRECOVERYIF_PROT_CAP_0, I3C_INDIRECT_CONTROL_LOW, I3C_INDIRECT_CONTROL_MASK, 0x1);
-#endif
   // Enter recovery mode
   // Write `0x3` to `DEVICE_STATUS`
   write_i3c_reg_field(I3C_REG_I3C_EC_SECFWRECOVERYIF_DEVICE_STATUS_0, I3C_DEVICE_STATUS_LOW, I3C_DEVICE_STATUS_MASK, 0x3);
 
   // Ensure the recovery handler changed mode and is awaiting recovery image
   // Read `RECOVERY_STATUS` - should be `1`
-
   data = read_i3c_reg_field(I3C_REG_I3C_EC_SECFWRECOVERYIF_RECOVERY_STATUS, I3C_RECOVERY_STATUS_LOW, I3C_RECOVERY_STATUS_MASK);
+  // TODO: Add timeout
   while (!data) {
     data = read_i3c_reg_field(I3C_REG_I3C_EC_SECFWRECOVERYIF_RECOVERY_STATUS, I3C_RECOVERY_STATUS_LOW, I3C_RECOVERY_STATUS_MASK);
   }
