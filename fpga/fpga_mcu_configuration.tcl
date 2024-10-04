@@ -156,6 +156,7 @@ add_files [ glob $i3cDir/src/hci/*.sv]
 add_files [ glob $i3cDir/src/hci/*/*.sv]
 add_files [ glob $i3cDir/src/phy/*.sv]
 add_files [ glob $i3cDir/src/ctrl/*.sv]
+add_files [ glob $i3cDir/src/recovery/*.sv]
 
 add_files [ glob $i3cDir/src/*.sv]
 add_files [ glob $i3cDir/src/*.svh]
