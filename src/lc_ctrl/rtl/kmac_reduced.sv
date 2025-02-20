@@ -196,7 +196,7 @@ module kmac_reduced
   /////////////////
   // SHA3 engine //
   /////////////////
-  sha3 #(
+  caliptra_ss_sha3 #(
     .EnMasking(EnMasking)
   ) u_sha3 (
     .clk_i,

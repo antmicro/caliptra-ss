@@ -732,28 +732,28 @@ module caliptra_ss_top_tb
         lc_axi_wr_is_upper_dw_latched <= 0;
     else if (cptra_ss_lc_axi_wr_req_i.awvalid && cptra_ss_lc_axi_wr_rsp_o.awready)
         lc_axi_wr_is_upper_dw_latched <= cptra_ss_lc_axi_wr_req_i.awaddr[2] && (cptra_ss_lc_axi_wr_req_i.awsize < 3);
-    `CALIPTRA_ASSERT(CPTRA_AXI_WR_32BIT, (cptra_ss_lc_axi_wr_req_i.awvalid && cptra_ss_lc_axi_wr_rsp_o.awready) -> (cptra_ss_lc_axi_wr_req_i.awsize < 3), core_clk, !rst_l)
+    `CALIPTRA_ASSERT(CPTRA_AXI_WR_32BIT_LC, (cptra_ss_lc_axi_wr_req_i.awvalid && cptra_ss_lc_axi_wr_rsp_o.awready) -> (cptra_ss_lc_axi_wr_req_i.awsize < 3), core_clk, !rst_l)
     // FIXME this is a gross hack for data width conversion
     always@(posedge core_clk or negedge rst_l)
         if (!rst_l)
             lc_axi_rd_is_upper_dw_latched <= 0;
         else if (cptra_ss_lc_axi_rd_req_i.arvalid && cptra_ss_lc_axi_rd_rsp_o.arready)
             lc_axi_rd_is_upper_dw_latched <= cptra_ss_lc_axi_rd_req_i.araddr[2] && (cptra_ss_lc_axi_rd_req_i.arsize < 3);
-    `CALIPTRA_ASSERT(CPTRA_AXI_RD_32BIT, (cptra_ss_lc_axi_rd_req_i.arvalid && cptra_ss_lc_axi_rd_rsp_o.arready) -> (cptra_ss_lc_axi_rd_req_i.arsize < 3), core_clk, !rst_l)
+    `CALIPTRA_ASSERT(CPTRA_AXI_RD_32BIT_LC, (cptra_ss_lc_axi_rd_req_i.arvalid && cptra_ss_lc_axi_rd_rsp_o.arready) -> (cptra_ss_lc_axi_rd_req_i.arsize < 3), core_clk, !rst_l)
     // FIXME this is a gross hack for data width conversion
     always@(posedge core_clk or negedge rst_l)
         if (!rst_l)
             fuse_core_axi_wr_is_upper_dw_latched <= 0;
         else if (cptra_ss_otp_core_axi_wr_req_i.awvalid && cptra_ss_otp_core_axi_wr_rsp_o.awready)
             fuse_core_axi_wr_is_upper_dw_latched <= cptra_ss_otp_core_axi_wr_req_i.awaddr[2] && (cptra_ss_otp_core_axi_wr_req_i.awsize < 3);
-    `CALIPTRA_ASSERT(CPTRA_AXI_WR_32BIT, (cptra_ss_otp_core_axi_wr_req_i.awvalid && cptra_ss_otp_core_axi_wr_rsp_o.awready) -> (cptra_ss_otp_core_axi_wr_req_i.awsize < 3), core_clk, !rst_l)
+    `CALIPTRA_ASSERT(CPTRA_AXI_WR_32BIT_OTP, (cptra_ss_otp_core_axi_wr_req_i.awvalid && cptra_ss_otp_core_axi_wr_rsp_o.awready) -> (cptra_ss_otp_core_axi_wr_req_i.awsize < 3), core_clk, !rst_l)
     // FIXME this is a gross hack for data width conversion
     always@(posedge core_clk or negedge rst_l)
         if (!rst_l)
             fuse_core_axi_rd_is_upper_dw_latched <= 0;
         else if (cptra_ss_otp_core_axi_rd_req_i.arvalid && cptra_ss_otp_core_axi_rd_rsp_o.arready)
             fuse_core_axi_rd_is_upper_dw_latched <= cptra_ss_otp_core_axi_rd_req_i.araddr[2] && (cptra_ss_otp_core_axi_rd_req_i.arsize < 3);
-    `CALIPTRA_ASSERT(CPTRA_AXI_RD_32BIT, (cptra_ss_otp_core_axi_rd_req_i.arvalid && cptra_ss_otp_core_axi_rd_rsp_o.arready) -> (cptra_ss_otp_core_axi_rd_req_i.arsize < 3), core_clk, !rst_l)
+    `CALIPTRA_ASSERT(CPTRA_AXI_RD_32BIT_OTP, (cptra_ss_otp_core_axi_rd_req_i.arvalid && cptra_ss_otp_core_axi_rd_rsp_o.arready) -> (cptra_ss_otp_core_axi_rd_req_i.arsize < 3), core_clk, !rst_l)
 
     // AXI Interconnect connections
     always_comb begin

@@ -740,7 +740,7 @@ module caliptra_ss_top
     assign sb_axi_rresp = '0;
     assign sb_axi_rlast = '0;
     
-    mcu_top rvtop_wrapper (
+    caliptra_mcu_top rvtop_wrapper (
         .rst_l                  ( mcu_rst_b ),
         .dbg_rst_l              ( cptra_ss_pwrgood_i ), //FIXME same as caliptra?
         .clk                    ( cptra_ss_clk_i ),

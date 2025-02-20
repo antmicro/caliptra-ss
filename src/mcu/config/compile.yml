@@ -6,7 +6,7 @@ targets:
   rtl:
     directories: [$COMPILE_ROOT/rtl]
     files:
-      - $COMPILE_ROOT/rtl/mcu_top.sv
+      - $COMPILE_ROOT/rtl/caliptra_mcu_top.sv
     tops: [mcu_top]
   rtl_lint:
     waiver_files:

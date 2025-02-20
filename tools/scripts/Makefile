@@ -46,11 +46,16 @@ RISCV_HW_IF_DIR = $(CALIPTRA_SS)/src/integration/test_suites/libs/riscv_hw_if
 #ISR_DIR    = $(CALIPTRA_SS)/src/integration/test_suites/libs/caliptra_isr FIXME for MCU
 PRINTF_DIR = $(CALIPTRA_SS)/src/integration/test_suites/libs/printf
 
-DUT ?= caliptra_mcu_top_tb
+DUT ?= caliptra_ss_top_tb
 
+CALIPTRA_ROOT = $(CALIPTRA_SS)/third_party/caliptra-rtl
 CALIPTRA_DIR = $(CALIPTRA_SS)/third_party/caliptra-rtl/src/integration/test_suites
 SOC_IFC_DIR = $(CALIPTRA_DIR)/libs/soc_ifc
 CALIPTRA_RTL = $(CALIPTRA_SS)/third_party/caliptra-rtl/src/integration/rtl
+
+export CALIPTRA_ROOT
+export CALIPTRA_SS_ROOT=$(CALIPTRA_SS)
+export I3C_ROOT_DIR=$(CALIPTRA_SS)/third_party/i3c-core/
 
 # Determine test directory
 #ifneq (,$(wildcard $(TBDIR)/tests/$(TEST)))
@@ -86,8 +91,13 @@ HEADER_FILES := $(RTL_DIR)/soc_address_map.h \
 #$(INCLUDES_DIR)/caliptra_defines.h \
 #$(INCLUDES_DIR)/defines.h \
 
-TEST_GEN_FILES := $(CALIPTRA_SS)/src/ecc/tb/ecdsa_secp384r1.exe \
-	          $(CALIPTRA_SS)/src/doe/tb/doe_test_gen.py
+TEST_GEN_FILES := $(CALIPTRA_SS)/third_party/caliptra-rtl/src/ecc/tb/ecc_secp384r1.exe \
+				$(CALIPTRA_SS)/third_party/caliptra-rtl/src/doe/tb/doe_test_gen.py \
+				$(CALIPTRA_SS)/third_party/caliptra-rtl/src/sha256/tb/sha256_wntz_test_gen.py \
+				$(CALIPTRA_SS)/third_party/caliptra-rtl/submodules/adams-bridge/src/mldsa_top/uvmf/Dilithium_ref/dilithium/ref/test/test_dilithium5 \
+				$(CALIPTRA_SS)/third_party/caliptra-rtl/submodules/adams-bridge/src/mldsa_top/uvmf/Dilithium_ref/dilithium/ref/test/test_dilithium5_debug \
+				$(CALIPTRA_SS)/third_party/caliptra-rtl/src/mldsa/tb/smoke_test_mldsa_vector.hex \
+				$(CALIPTRA_SS)/src/fuse_ctrl/data/otp-img.2048.vmem
 
 # Separate OFILE variable since this is not used to build remote images
 # (i.e. FMC or RunTime)
@@ -133,6 +143,7 @@ endif
 
 # VPATH = $(TEST_DIR) $(BUILD_DIR) $(TBDIR) $(RISCV_HW_IF_DIR) $(ISR_DIR) $(PRINTF_DIR) $(COMP_LIBS)
 VPATH = $(TEST_DIR) $(BUILD_DIR) $(TBDIR) $(RISCV_HW_IF_DIR) $(SOC_IFC_DIR) $(PRINTF_DIR)
+$(info VPATH is $(VPATH))
 
 # Use eval to expand env variables in the .vf file
 # $(eval TBFILES = $(shell cat $(TBDIR)/../config/$(DUT).vf | grep -v '+incdir+'))
@@ -193,8 +204,8 @@ VERILATOR_MAKE_FLAGS = OPT_FAST="-Os"
 TB_DPI_SRCS = jtagdpi/jtagdpi.c \
               tcp_server/tcp_server.c
 
-TB_DPI_INCS := $(addprefix -I$(CALIPTRA_SS)/src/integration/test_suites/libs/,$(dir $(TB_DPI_SRCS)))
-TB_DPI_SRCS := $(addprefix $(CALIPTRA_SS)/src/integration/test_suites/libs/,$(TB_DPI_SRCS))
+TB_DPI_INCS := $(addprefix -I$(CALIPTRA_ROOT)/src/integration/test_suites/libs/,$(dir $(TB_DPI_SRCS)))
+TB_DPI_SRCS := $(addprefix $(CALIPTRA_ROOT)/src/integration/test_suites/libs/,$(TB_DPI_SRCS))
 
 # Testbench sources
 TB_VERILATOR_SRCS = $(TBDIR)/test_$(DUT).cpp $(TB_DPI_SRCS)
@@ -234,7 +245,7 @@ clean_fw:
 ############ Model Builds ###############################
 
 #verilator-build: $(TBFILES) $(INCLUDES_DIR)/defines.h $(TB_VERILATOR_SRCS)
-verilator-build: $(INCLUDES_DIR)/defines.h $(TB_VERILATOR_SRCS)
+verilator-build: $(INCLUDES_DIR)/caliptra_defines.h $(TB_VERILATOR_SRCS)
 	$(VERILATOR) $(TB_VERILATOR_SRCS) --cc -CFLAGS "$(CFLAGS)" \
 	  +libext+.v+.sv +define+RV_OPENSOURCE \
 	  --timescale 1ns/1ps \
@@ -248,27 +259,60 @@ verilator-build: $(INCLUDES_DIR)/defines.h $(TB_VERILATOR_SRCS)
 	$(MAKE) -j`nproc` -e -C obj_dir/ -f V$(DUT).mk $(VERILATOR_MAKE_FLAGS) VM_PARALLEL_BUILDS=1
 	touch verilator-build
 
+VCS_OPTS = +define+CPTRA_TB_TOP_NAME=caliptra_ss_top_tb \
+	  +define+CPTRA_TB_TOP_NAME=caliptra_ss_top_tb \
+	  +define+CPTRA_TOP_PATH=caliptra_ss_top_tb.caliptra_ss_dut.caliptra_top_dut \
+	  +define+MCU_RV_BUILD_AXI4 \
+	  +define+css_mcu0_RV_BUILD_AXI4 \
+	  +define+MCU_RV_OPENSOURCE \
+	  +define+AVERY_VCS \
+	  +define+AVERY_CLOCK=5 \
+	  +define+LCC_FC_BFM_SIM=1 \
+	  +define+FOUR_OUTSTANDING \
+	  +define+AVERY_AXI_INTERCONNECT \
+	  +define+AAXI_MAX_DATA_WIDTH=64 \
+	  +define+AAXI_MAX_ADDR_WIDTH=64 \
+	  +define+AAXI_MAX_ID_WIDTH=5 \
+	  +define+AAXI_MAX_ARUSER_WIDTH=32 \
+	  +define+AAXI_MAX_AWUSER_WIDTH=32 \
+	  +define+CALIPTRA_INTERNAL_UART \
+	  -noinherit_timescale=1ns/1ps \
+	  +define+AAXI_INTC_MASTER_CNT=5 \
+	  +define+AAXI_INTC_SLAVE_CNT=8 \
+	  +define+AI3C_LANE_NUM=1 \
+	  +define+DIGITAL_IO_I3C=1 \
+	  +define+AVERY_SV_TEST_CASE=1 \
+	  +define+AI3C_TEST_CASE=${CALIPTRA_SS_ROOT}/src/integration/test_suites/ai3ct_ext_basic.sv \
+	  ${AVERY_PLI}/lib.linux/libtb_vcs64.so \
+	  -P ${AVERY_PLI}/tb_vcs64.tab \
+	  -f $(TBDIR)/../config/$(DUT).vf \
+	  +warn=noIWNF \
+	  +warn=noPCWM-W \
+	  -ignore unique_checks \
+	  -timescale=1ns/1ps
+
 #vcs-build: $(TBFILES) $(INCLUDES_DIR)/defines.h $(TB_DPI_SRCS)
-vcs-build: $(INCLUDES_DIR)/defines.h $(TB_DPI_SRCS)
+vcs-build: $(INCLUDES_DIR)/caliptra_defines.h $(TB_DPI_SRCS)
 	vlogan -full64 -sverilog -kdb -incr_vlogan +lint=IA_CHECKFAIL -assert svaext \
 	  +define+CLP_ASSERT_ON $(TB_DEFS) -noinherit_timescale=1ns/1ps \
-	  -f $(TBDIR)/../config/$(DUT).vf
-	vcs -full64 -kdb -lca -debug_access+all -j8 +vcs+lic+wait -partcomp -fastpartcomp=j8 \
-	  -assert enable_hier $(DUT) -o simv.$(DUT) +dpi -cflags "$(TB_DPI_INCS)" $(TB_DPI_SRCS)
+	  $(VCS_OPTS)
+	vcs -sverilog -full64 -kdb -lca -debug_access+all -j8 +vcs+lic+wait -partcomp -fastpartcomp=j8 \
+	  $(VCS_OPTS) -assert svaext -o simv.$(DUT) +dpi -cflags "$(TB_DPI_INCS)" -l vcs.log $(TB_DPI_SRCS)
+
 
 ############ TEST Simulation ###############################
 
 verilator: program.hex verilator-build
 	./obj_dir/V$(DUT) $(VERILATOR_RUN_ARGS)
 
-vcs: program.hex vcs-build
+vcs: mcu_program.hex vcs-build
 	cp $(TEST_GEN_FILES) $(BUILD_DIR)
 	./simv.$(DUT)
 
 ############ TEST build ###############################
 
 ifeq ($(shell which $(GCC_PREFIX)-gcc 2> /dev/null),)
-program.hex: $(BUILD_DIR)/defines.h
+program.hex: $(BUILD_DIR)/caliptra_defines.h
 	@echo " !!! No $(GCC_PREFIX)-gcc in path, using canned hex files !!"
 	cp $(HEX_DIR)/$(TESTNAME).hex program.hex
 else ifneq (,$(wildcard $(TEST_DIR)/$(TESTNAME).makefile))
@@ -379,4 +423,3 @@ help:
 	@echo Possible targets: verilator vcs irun vlog riviera help clean all verilator-build irun-build vcs-build riviera-build program.hex
 
 .PHONY: help clean clean_fw verilator vcs irun vlog riviera
-

@@ -15,7 +15,7 @@
 // limitations under the License.
 //********************************************************************************
 
-module mcu_top
+module caliptra_mcu_top
     import css_mcu0_el2_pkg::*;
 #(
     `include "css_mcu0_el2_param.vh"
