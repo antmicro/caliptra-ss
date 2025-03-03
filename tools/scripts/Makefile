@@ -97,7 +97,11 @@ TEST_GEN_FILES := $(CALIPTRA_SS)/third_party/caliptra-rtl/src/ecc/tb/ecc_secp384
 				$(CALIPTRA_SS)/third_party/caliptra-rtl/submodules/adams-bridge/src/mldsa_top/uvmf/Dilithium_ref/dilithium/ref/test/test_dilithium5 \
 				$(CALIPTRA_SS)/third_party/caliptra-rtl/submodules/adams-bridge/src/mldsa_top/uvmf/Dilithium_ref/dilithium/ref/test/test_dilithium5_debug \
 				$(CALIPTRA_SS)/third_party/caliptra-rtl/src/mldsa/tb/smoke_test_mldsa_vector.hex \
-				$(CALIPTRA_SS)/src/fuse_ctrl/data/otp-img.2048.vmem
+				$(CALIPTRA_SS)/src/fuse_ctrl/data/otp-img.2048.vmem \
+				$(CALIPTRA_SS)/third_party/caliptra-rtl/run/dccm.hex \
+				$(CALIPTRA_SS)/third_party/caliptra-rtl/run/iccm.hex \
+				$(CALIPTRA_SS)/third_party/caliptra-rtl/run/mailbox.hex \
+				$(CALIPTRA_SS)/third_party/caliptra-rtl/run/program.hex
 
 # Separate OFILE variable since this is not used to build remote images
 # (i.e. FMC or RunTime)
