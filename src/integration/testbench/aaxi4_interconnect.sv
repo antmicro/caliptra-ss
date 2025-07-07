@@ -226,6 +226,7 @@ initial begin
 `endif
     end
         //-- Not Connected
+        slave[`CSS_INTC_SINTF_NC0_IDX].cfg_info.passive_mode = 0;
         slave[`CSS_INTC_SINTF_NC0_IDX].cfg_info.base_address[0]  = 64'h1000_0000;
         slave[`CSS_INTC_SINTF_NC0_IDX].cfg_info.limit_address[0] = 64'h1000_FFFF;
         slave[`CSS_INTC_SINTF_NC0_IDX].cfg_info.data_bus_bytes = AAXI_DATA_WIDTH >> 3; // set DATA BUS WIDTH to match interconnect native width
@@ -417,4 +418,3 @@ initial begin
         test.run();
     endtask
 endmodule
-

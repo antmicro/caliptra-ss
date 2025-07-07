@@ -217,6 +217,38 @@ module caliptra_ss_top_tb
         .rst_l    (cptra_ss_rst_b_i)
     );
 
+    int fp;
+    int r;
+    string line;
+    bit [7:0] read_mem[8192][16];
+    bit [31:0] img_sz;
+    bit [31:0] remainder;
+    initial begin
+        if($test$plusargs("LOAD_RECOVERY_IMAGE")) begin
+            fp = $fopen("./fw_update.size", "r");
+            if (fp == 0) begin
+                $finish;
+            end
+            r = $fgets(line, fp);
+            if (r == 0) begin
+                $finish;
+            end
+            img_sz = line.atoi();
+            $fclose(fp);
+            img_sz = (img_sz + 3)/4;
+            $readmemh("fw_update.hex", read_mem);
+            for (int i=0; i<4; ++i) begin
+                axi_interconnect.slave[`CSS_INTC_SINTF_NC0_IDX].memory_fill_direct(64'h1000_0000+i, img_sz[i*8+:8]);
+            end
+            for (int i=0; i<(img_sz+3)/4; ++i) begin
+                for(int j=0; j<16; ++j) begin
+                    axi_interconnect.slave[`CSS_INTC_SINTF_NC0_IDX].memory_fill_direct(
+                        64'h1000_0004+i*16+j, read_mem[i][j]);
+                end
+            end
+        end
+    end
+
     // AXI Interface
     axi_if #(
         .AW(`CALIPTRA_AXI_DMA_ADDR_WIDTH),
