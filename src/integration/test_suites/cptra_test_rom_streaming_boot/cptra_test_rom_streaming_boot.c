@@ -302,6 +302,7 @@ void recovery_sequence() {
 
     VPRINTF(LOW, "CPTRA: Recovery Sequence completed successfully\n");
         
+    SEND_STDOUT_CTRL(0xff);
 }
 
 void main(void) {
