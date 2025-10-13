@@ -918,6 +918,8 @@ ${CALIPTRA_SS_ROOT}/src/integration/testbench/mci_sram.sv
 ${CALIPTRA_SS_ROOT}/src/integration/testbench/caliptra_ss_sram.sv
 ${CALIPTRA_SS_ROOT}/src/integration/testbench/aaxi_pkg_caliptra_test.sv
 ${CALIPTRA_SS_ROOT}/src/integration/testbench/aaxi4_interconnect.sv
+${CALIPTRA_SS_ROOT}/src/integration/testbench/axi_32_to_64_width_converter.sv
+${CALIPTRA_SS_ROOT}/src/integration/testbench/axi_64_to_32_width_converter.sv
 ${CALIPTRA_SS_ROOT}/src/integration/testbench/fuse_ctrl_bfm.sv
 ${CALIPTRA_SS_ROOT}/src/integration/testbench/prim_generic_otp.sv
 ${CALIPTRA_SS_ROOT}/src/integration/testbench/lc_ctrl_bfm.sv

@@ -115,8 +115,8 @@ generate
     defparam master_mon[`CSS_INTC_MINTF_MCU_IFU_IDX].monitor.BUS_DATA_WIDTH= AAXI_DATA_WIDTH; // set DATA BUS WIDTH to match interconnect native width
     defparam master_mon[`CSS_INTC_MINTF_MCU_SB_IDX ].monitor.BUS_DATA_WIDTH= AAXI_DATA_WIDTH; // set DATA BUS WIDTH to match interconnect native width
     // Caliptra AXI DMA, SoC BFM i/fs
-    defparam master_mon[`CSS_INTC_MINTF_CPTRA_DMA_IDX].monitor.BUS_DATA_WIDTH= AAXI_DATA_WIDTH/2; // set DATA BUS WIDTH to interconnect native width / 2 (32b)
-    defparam master_mon[`CSS_INTC_MINTF_SOC_BFM_IDX  ].monitor.BUS_DATA_WIDTH= AAXI_DATA_WIDTH/2; // set DATA BUS WIDTH to interconnect native width / 2 (32b)
+    defparam master_mon[`CSS_INTC_MINTF_CPTRA_DMA_IDX].monitor.BUS_DATA_WIDTH= AAXI_DATA_WIDTH; // set DATA BUS WIDTH to interconnect native width / 2 (32b)
+    defparam master_mon[`CSS_INTC_MINTF_SOC_BFM_IDX  ].monitor.BUS_DATA_WIDTH= AAXI_DATA_WIDTH; // set DATA BUS WIDTH to interconnect native width / 2 (32b)
 
     // interfaces between Slave BFMs and Interconnect master ports
     for ( i = 0; i < AAXI_INTC_SLAVE_CNT; i++ ) begin: slave_mon
@@ -131,11 +131,11 @@ generate
     defparam slave_mon[`CSS_INTC_SINTF_MCU_ROM_IDX].monitor.BUS_DATA_WIDTH= AAXI_DATA_WIDTH; // set DATA BUS WIDTH to match interconnect native width
     defparam slave_mon[`CSS_INTC_SINTF_NC1_IDX    ].monitor.BUS_DATA_WIDTH= AAXI_DATA_WIDTH; // set DATA BUS WIDTH to match interconnect native width
     // I3C, Caliptra SoC IFC, MCI, FC, LCC
-    defparam slave_mon[`CSS_INTC_SINTF_I3C_IDX          ].monitor.BUS_DATA_WIDTH= AAXI_DATA_WIDTH/2; // set DATA BUS WIDTH to interconnect native width / 2 (32b)
-    defparam slave_mon[`CSS_INTC_SINTF_CPTRA_SOC_IFC_IDX].monitor.BUS_DATA_WIDTH= AAXI_DATA_WIDTH/2; // set DATA BUS WIDTH to interconnect native width / 2 (32b)
-    defparam slave_mon[`CSS_INTC_SINTF_MCI_IDX          ].monitor.BUS_DATA_WIDTH= AAXI_DATA_WIDTH/2; // set DATA BUS WIDTH to interconnect native width / 2 (32b)
-    defparam slave_mon[`CSS_INTC_SINTF_FC_IDX           ].monitor.BUS_DATA_WIDTH= AAXI_DATA_WIDTH/2; // set DATA BUS WIDTH to interconnect native width / 2 (32b)
-    defparam slave_mon[`CSS_INTC_SINTF_LCC_IDX          ].monitor.BUS_DATA_WIDTH= AAXI_DATA_WIDTH/2; // set DATA BUS WIDTH to interconnect native width / 2 (32b)
+    defparam slave_mon[`CSS_INTC_SINTF_I3C_IDX          ].monitor.BUS_DATA_WIDTH= AAXI_DATA_WIDTH; // set DATA BUS WIDTH to interconnect native width / 2 (32b)
+    defparam slave_mon[`CSS_INTC_SINTF_CPTRA_SOC_IFC_IDX].monitor.BUS_DATA_WIDTH= AAXI_DATA_WIDTH; // set DATA BUS WIDTH to interconnect native width / 2 (32b)
+    defparam slave_mon[`CSS_INTC_SINTF_MCI_IDX          ].monitor.BUS_DATA_WIDTH= AAXI_DATA_WIDTH; // set DATA BUS WIDTH to interconnect native width / 2 (32b)
+    defparam slave_mon[`CSS_INTC_SINTF_FC_IDX           ].monitor.BUS_DATA_WIDTH= AAXI_DATA_WIDTH; // set DATA BUS WIDTH to interconnect native width / 2 (32b)
+    defparam slave_mon[`CSS_INTC_SINTF_LCC_IDX          ].monitor.BUS_DATA_WIDTH= AAXI_DATA_WIDTH; // set DATA BUS WIDTH to interconnect native width / 2 (32b)
         
 endgenerate 
 
@@ -195,8 +195,8 @@ initial begin
     master[`CSS_INTC_MINTF_MCU_LSU_IDX].  cfg_info.data_bus_bytes = AAXI_DATA_WIDTH >> 3; // set DATA BUS WIDTH to match interconnect native width
     master[`CSS_INTC_MINTF_MCU_IFU_IDX].  cfg_info.data_bus_bytes = AAXI_DATA_WIDTH >> 3; // set DATA BUS WIDTH to match interconnect native width
     master[`CSS_INTC_MINTF_MCU_SB_IDX].   cfg_info.data_bus_bytes = AAXI_DATA_WIDTH >> 3; // set DATA BUS WIDTH to match interconnect native width
-    master[`CSS_INTC_MINTF_CPTRA_DMA_IDX].cfg_info.data_bus_bytes = AAXI_DATA_WIDTH >> 4; // set DATA BUS WIDTH to interconnect native width / 2 (32b)
-    master[`CSS_INTC_MINTF_SOC_BFM_IDX].  cfg_info.data_bus_bytes = AAXI_DATA_WIDTH >> 4; // set DATA BUS WIDTH to interconnect native width / 2 (32b)
+    master[`CSS_INTC_MINTF_CPTRA_DMA_IDX].cfg_info.data_bus_bytes = AAXI_DATA_WIDTH >> 3; // set DATA BUS WIDTH to interconnect native width / 2 (32b)
+    master[`CSS_INTC_MINTF_SOC_BFM_IDX].  cfg_info.data_bus_bytes = AAXI_DATA_WIDTH >> 3; // set DATA BUS WIDTH to interconnect native width / 2 (32b)
 
     wait (slave[0] != null);
     for (int i=0; i<AAXI_INTC_SLAVE_CNT; i++) begin
@@ -238,7 +238,7 @@ initial begin
         slave[`CSS_INTC_SINTF_I3C_IDX].cfg_info.opt_ruser_enable = 1; // optional, axi4_interconn_routings.sv need it
         slave[`CSS_INTC_SINTF_I3C_IDX].cfg_info.base_address[0] = 64'(`SOC_I3CCSR_BASE_ADDR);
         slave[`CSS_INTC_SINTF_I3C_IDX].cfg_info.limit_address[0] = 64'(`SOC_I3CCSR_BASE_ADDR) + 64'hFFF; // FIXME hardcoded offset
-        slave[`CSS_INTC_SINTF_I3C_IDX].cfg_info.data_bus_bytes = AAXI_DATA_WIDTH >> 4; // set DATA BUS WIDTH to interconnect native width / 2 (32b)
+        slave[`CSS_INTC_SINTF_I3C_IDX].cfg_info.data_bus_bytes = AAXI_DATA_WIDTH >> 3; // set DATA BUS WIDTH to interconnect native width / 2 (32b)
         slave[`CSS_INTC_SINTF_I3C_IDX].cfg_info.total_outstanding_depth = 4;
         slave[`CSS_INTC_SINTF_I3C_IDX].cfg_info.id_outstanding_depth = 4;
 
@@ -261,7 +261,7 @@ initial begin
         slave[`CSS_INTC_SINTF_CPTRA_SOC_IFC_IDX].cfg_info.fifo_limit[0] = 64'(`SOC_MBOX_CSR_MBOX_DATAOUT);
         slave[`CSS_INTC_SINTF_CPTRA_SOC_IFC_IDX].cfg_info.fifo_address[1] = 64'(`SOC_SHA512_ACC_CSR_DATAIN);
         slave[`CSS_INTC_SINTF_CPTRA_SOC_IFC_IDX].cfg_info.fifo_limit[1] = 64'(`SOC_SHA512_ACC_CSR_DATAIN);
-        slave[`CSS_INTC_SINTF_CPTRA_SOC_IFC_IDX].cfg_info.data_bus_bytes = AAXI_DATA_WIDTH >> 4; // set DATA BUS WIDTH to interconnect native width / 2 (32b)
+        slave[`CSS_INTC_SINTF_CPTRA_SOC_IFC_IDX].cfg_info.data_bus_bytes = AAXI_DATA_WIDTH >> 3; // set DATA BUS WIDTH to interconnect native width / 2 (32b)
         slave[`CSS_INTC_SINTF_CPTRA_SOC_IFC_IDX].cfg_info.total_outstanding_depth = 4;
         slave[`CSS_INTC_SINTF_CPTRA_SOC_IFC_IDX].cfg_info.id_outstanding_depth = 4;
 
@@ -274,7 +274,7 @@ initial begin
         slave[`CSS_INTC_SINTF_MCI_IDX].cfg_info.opt_buser_enable = 1; // optional, axi4_interconn_routings.sv need it
         slave[`CSS_INTC_SINTF_MCI_IDX].cfg_info.base_address[0]  = {32'h0, `SOC_MCI_TOP_MCI_REG_BASE_ADDR}; //64'h2100_0000;
         slave[`CSS_INTC_SINTF_MCI_IDX].cfg_info.limit_address[0] = {32'h0, `SOC_MCI_TOP_MCU_SRAM_END_ADDR}; // Always the last address in MCU
-        slave[`CSS_INTC_SINTF_MCI_IDX].cfg_info.data_bus_bytes = AAXI_DATA_WIDTH >> 4; // set DATA BUS WIDTH to interconnect native width / 2 (32b)
+        slave[`CSS_INTC_SINTF_MCI_IDX].cfg_info.data_bus_bytes = AAXI_DATA_WIDTH >> 3; // set DATA BUS WIDTH to interconnect native width / 2 (32b)
         slave[`CSS_INTC_SINTF_MCI_IDX].cfg_info.total_outstanding_depth = 4;
         slave[`CSS_INTC_SINTF_MCI_IDX].cfg_info.id_outstanding_depth = 4;
 
@@ -287,7 +287,7 @@ initial begin
         slave[`CSS_INTC_SINTF_FC_IDX].cfg_info.opt_buser_enable = 1; // optional, axi4_interconn_routings.sv need it
         slave[`CSS_INTC_SINTF_FC_IDX].cfg_info.base_address[0] = {32'h0, `SOC_OTP_CTRL_BASE_ADDR}; //64'h7000_0000;
         slave[`CSS_INTC_SINTF_FC_IDX].cfg_info.limit_address[0] = {32'h0, `SOC_OTP_CTRL_BASE_ADDR} + 'h1FF; //64'h7000_01FF;
-        slave[`CSS_INTC_SINTF_FC_IDX].cfg_info.data_bus_bytes = AAXI_DATA_WIDTH >> 4; // set DATA BUS WIDTH to interconnect native width / 2 (32b)
+        slave[`CSS_INTC_SINTF_FC_IDX].cfg_info.data_bus_bytes = AAXI_DATA_WIDTH >> 3; // set DATA BUS WIDTH to interconnect native width / 2 (32b)
         slave[`CSS_INTC_SINTF_FC_IDX].cfg_info.total_outstanding_depth = 4;
         slave[`CSS_INTC_SINTF_FC_IDX].cfg_info.id_outstanding_depth = 4;
 
@@ -311,7 +311,7 @@ initial begin
         slave[`CSS_INTC_SINTF_LCC_IDX].cfg_info.opt_buser_enable = 1; // optional, axi4_interconn_routings.sv need it
         slave[`CSS_INTC_SINTF_LCC_IDX].cfg_info.base_address[0] = {32'h0, `SOC_LC_CTRL_BASE_ADDR}; //64'h7000_0400;
         slave[`CSS_INTC_SINTF_LCC_IDX].cfg_info.limit_address[0] = {32'h0, `SOC_LC_CTRL_BASE_ADDR} + 'h5FF;// 64'h7000_05FF;
-        slave[`CSS_INTC_SINTF_LCC_IDX].cfg_info.data_bus_bytes = AAXI_DATA_WIDTH >> 4; // set DATA BUS WIDTH to interconnect native width / 2 (32b)
+        slave[`CSS_INTC_SINTF_LCC_IDX].cfg_info.data_bus_bytes = AAXI_DATA_WIDTH >> 3; // set DATA BUS WIDTH to interconnect native width / 2 (32b)
         slave[`CSS_INTC_SINTF_LCC_IDX].cfg_info.total_outstanding_depth = 4;
         slave[`CSS_INTC_SINTF_LCC_IDX].cfg_info.id_outstanding_depth = 4;
 

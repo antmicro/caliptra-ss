@@ -150,6 +150,8 @@ targets:
       - $COMPILE_ROOT/testbench/caliptra_ss_sram.sv
       - $COMPILE_ROOT/testbench/aaxi_pkg_caliptra_test.sv
       - $COMPILE_ROOT/testbench/aaxi4_interconnect.sv
+      - $COMPILE_ROOT/testbench/axi_32_to_64_width_converter.sv
+      - $COMPILE_ROOT/testbench/axi_64_to_32_width_converter.sv
       - $COMPILE_ROOT/testbench/fuse_ctrl_bfm.sv
       - $COMPILE_ROOT/testbench/prim_generic_otp.sv
       - $COMPILE_ROOT/testbench/lc_ctrl_bfm.sv
