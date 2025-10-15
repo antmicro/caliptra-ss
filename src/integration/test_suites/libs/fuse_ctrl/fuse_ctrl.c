@@ -99,6 +99,14 @@ void initialize_otp_controller(void) {
     VPRINTF(LOW, "DEBUG: Locking background check registers...\n");
     lsu_write_32(SOC_OTP_CTRL_CHECK_REGWEN, 0x0);
     VPRINTF(LOW, "INFO: CHECK_REGWEN locked.\n");
+
+    // Step 4: Wait for lfsr to finish
+    do {
+        status = lsu_read_32(SOC_OTP_CTRL_STATUS);
+        for (uint16_t ii = 0; ii < 160; ii++) {
+            __asm__ volatile ("nop"); // Sleep loop as "nop"
+        }
+    } while (status & 0x80000000);
 }
 
 #define FUSE_CTRL_CMD_DAI_WRITE 0x2
