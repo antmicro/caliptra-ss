@@ -54,7 +54,10 @@ module caliptra_ss_top_sva
   // When the fuse_ctrl access control filter discards an AXI write request, the DAI
   // must signal a recoverable AccessError.
   `CALIPTRA_ASSERT(FcAxiFilterDaiAccessError_A,
-    ($fell(`FC_PATH.discard_fuse_write)) |-> otp_err_e'(`FC_PATH.part_error[DaiIdx]) == AccessError)
+                   `FC_PATH.dai_req ##1
+                   `FC_PATH.discard_fuse_write ##0
+                   `FC_PATH.otp_operation_done[->1] |=>
+                   `FC_PATH.u_otp_ctrl_dai.error_o == {AccessError})
 
   //WDT checks:
   cascade_wdt_t1_pet: assert property (
