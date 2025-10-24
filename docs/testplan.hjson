@@ -4,7 +4,7 @@
   [
     {
       name: caliptra_ss_fuse_ctrl_axi_id
-      desc: ""
+      desc: "This test performs DAI writes over the AXI bus on the boundaries of the fuse controller access table entries with randomized fuse writes and random AXI user ids."
       stage: ""
       tests:
       [
@@ -13,7 +13,7 @@
     }
     {
       name: caliptra_ss_fuse_ctrl_bus_ecc_error
-      desc: ""
+      desc: "This test injects ECC error on DAI write and validates ECC error reporting."
       stage: ""
       tests:
       [
@@ -22,7 +22,7 @@
     }
     {
       name: caliptra_ss_fuse_ctrl_escalation
-      desc: ""
+      desc: "This test triggers fault conditions in the fuse controller and verifies that all partitions are in terminal state."
       stage: ""
       tests:
       [
