@@ -1,0 +1,4 @@
+include:
+    - project: microsoft-caliptra-branch-ci-scripts
+      ref: 85785-vck190-fpga-build
+      file: caliptra-ss.yml
