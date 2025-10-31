@@ -38,9 +38,7 @@ def get_testpoints_from_yamls(yaml_list):
     for yaml_file in yaml_list:
         parent = yaml_file.parent.name
         testpoints.setdefault(parent, [])
-        with open(yaml_file, "r") as f:
-            data = yaml.load(f, Loader=yaml.SafeLoader)
-            testpoints[parent].append(data.get("testname"))
+        testpoints[parent].append(yaml_file.with_suffix("").name)
     return testpoints
 
 
