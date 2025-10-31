@@ -134,37 +134,6 @@ void main (void) {
     lsu_write_32(SOC_I3CCSR_I3C_EC_SOCMGMTIF_REC_INTF_REG_W1C_ACCESS, i3c_reg_data);
     VPRINTF(LOW, "I3C core recovery control register set to IMAGE ACTIVATION\n");
 
-    // MBOX: Acquire lock
-    VPRINTF(LOW, "MCU: Acquiring Mbox lock\n");
-    while((lsu_read_32(SOC_MBOX_CSR_MBOX_LOCK) & MBOX_CSR_MBOX_LOCK_LOCK_MASK));
-    VPRINTF(LOW, "MCU: Mbox lock acquired\n");
-
-    // MBOX: Write CMD
-    lsu_write_32(SOC_MBOX_CSR_MBOX_CMD, 0x46574C44 | MBOX_CMD_FIELD_RESP_MASK); // Resp required
-
-    // MBOX: Write DLEN
-    lsu_write_32(SOC_MBOX_CSR_MBOX_DLEN, 0);
-
-    // MBOX: Execute
-    lsu_write_32(SOC_MBOX_CSR_MBOX_EXECUTE, MBOX_CSR_MBOX_EXECUTE_EXECUTE_MASK);
-    VPRINTF(LOW, "MCU: Mbox execute\n");
-
-    // MBOX: Poll status
-    while(((lsu_read_32(SOC_MBOX_CSR_MBOX_STATUS) & MBOX_CSR_MBOX_STATUS_STATUS_MASK) >> MBOX_CSR_MBOX_STATUS_STATUS_LOW) != CMD_COMPLETE) {
-        for (uint8_t ii = 0; ii < 16; ii++) {
-            __asm__ volatile ("nop"); // Sleep loop as "nop"
-        }
-    }
-    VPRINTF(LOW, "MCU: Mbox response ready\n");
-
-    for (uint8_t ii = 0; ii < 16; ii++) {
-        __asm__ volatile ("nop"); // Sleep loop as "nop"
-    }
-
-    // MBOX: Clear Execute
-    lsu_write_32(SOC_MBOX_CSR_MBOX_EXECUTE, 0);
-    VPRINTF(LOW, "MCU: Mbox execute clear\n");
-
     // -- Read Recovery Status register to indicate RECOVERY SUCCESS by reading value 0x00000003
     while(1){
         i3c_reg_data = lsu_read_32(SOC_I3CCSR_I3C_EC_SECFWRECOVERYIF_RECOVERY_STATUS);
