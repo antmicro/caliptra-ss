@@ -50,7 +50,7 @@ void main (void) {
         .cfg_cptra_fuse=true,
         .cfg_cptra_wdt=true,
         .cfg_boot_i3c_core=true,
-        .cfg_trigger_prod_rom=false);
+        .cfg_trigger_prod_rom=true);
 
     //-- Boot MCU
     VPRINTF(LOW, "MCU: Booting...\n");
