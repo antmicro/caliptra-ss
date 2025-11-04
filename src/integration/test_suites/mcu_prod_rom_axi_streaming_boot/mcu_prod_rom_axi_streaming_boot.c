@@ -137,16 +137,16 @@ void main (void) {
     // -- Read Recovery Status register to indicate RECOVERY SUCCESS by reading value 0x00000003
     while(1){
         i3c_reg_data = lsu_read_32(SOC_I3CCSR_I3C_EC_SECFWRECOVERYIF_RECOVERY_STATUS);
-        if( i3c_reg_data != 0x00000002 || i3c_reg_data != 0x00000003 || i3c_reg_data != 0x00000004) { 
+        if( i3c_reg_data != 0x00000002 && i3c_reg_data != 0x00000003) {
             VPRINTF(LOW, "I3C core recovery status is not set to expected value\n");
             err_count++;
         }
         if (i3c_reg_data == 0x00000003) {
-            VPRINTF(LOW, "I3C core recovery status is set to 0x3\n");
+            VPRINTF(LOW, "Success, I3C core recovery status is set to 0x3\n");
             break;
         }
         // Wait for the I3C core to finish the test
-        VPRINTF(LOW, "Waiting for recovery status update\n");
+        VPRINTF(LOW, "Waiting for recovery status update (current status: 0x%0x)\n", i3c_reg_data);
         mcu_sleep(1000);
     }
 
