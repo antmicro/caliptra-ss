@@ -150,6 +150,12 @@ void main (void) {
         mcu_sleep(1000);
     }
 
+    // Finish test
+    if(err_count > 0) {
+        SEND_STDOUT_CTRL(0x01);
+    } else {
+        SEND_STDOUT_CTRL(0xff);
+    }
 
     //Halt the core to wait for Caliptra to finish the test
     csr_write_mpmc_halt();
