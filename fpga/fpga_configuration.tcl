@@ -148,7 +148,7 @@ set_property -dict [list \
 # AXI Interconnect for Caliptra IPs (behind firewall)
 create_bd_cell -type ip -vlnv xilinx.com:ip:smartconnect:1.0 axi_interconnect_1
 set_property -dict [list \
-  CONFIG.NUM_MI {9} \
+  CONFIG.NUM_MI {10} \
   CONFIG.NUM_SI {5} \
   CONFIG.NUM_CLKS {2} \
   ] [get_bd_cells axi_interconnect_1]
@@ -201,6 +201,12 @@ set_property -dict [list \
 # Create CDC for AXI I3C
 create_bd_cell -type ip -vlnv xilinx.com:ip:xpm_cdc_gen:1.0 xpm_cdc_gen_0
 set_property CONFIG.CDC_TYPE {xpm_cdc_sync_rst} [get_bd_cells xpm_cdc_gen_0]
+
+# Add QSPI
+create_bd_cell -type ip -vlnv xilinx.com:ip:axi_quad_spi:3.2 axi_quad_spi_0
+# Set QSPI mode
+set_property CONFIG.C_SPI_MODE {2} [get_bd_cells axi_quad_spi_0]
+
 
 # TODO: Consider removing
 # Move blocks around on the block diagram. This step is optional.
@@ -280,6 +286,8 @@ set_property name S_AXI_WRAPPER [get_bd_intf_nets axi_interconnect_1_M06_AXI]
 connect_bd_intf_net [get_bd_intf_pins axi_interconnect_1/M07_AXI] [get_bd_intf_pins xilinx_i3c_0/S_AXI]
 # OTP RAM
 connect_bd_intf_net [get_bd_intf_pins axi_interconnect_1/M08_AXI] [get_bd_intf_pins otp_ram_bram_ctrl_0/S_AXI]
+# Xilinx QSPI
+connect_bd_intf_net [get_bd_intf_pins axi_interconnect_1/M09_AXI] [get_bd_intf_pins axi_quad_spi_0/AXI_LITE]
 #### End axi_interconnect_1 ####
 
 
@@ -294,6 +302,7 @@ connect_bd_net -net proc_sys_reset_0_peripheral_aresetn \
   [get_bd_pins cptra_rom_backdoor_bram_0/s_axi_aresetn] \
   [get_bd_pins mcu_rom_backdoor_bram_0/s_axi_aresetn] \
   [get_bd_pins otp_ram_bram_ctrl_0/s_axi_aresetn] \
+  [get_bd_pins axi_quad_spi_0/s_axi_aresetn] \
   [get_bd_pins axi_firewall_0/aresetn]
 # Connect auxillary reset source to package
 connect_bd_net [get_bd_pins caliptra_package_top_0/axi_reset] [get_bd_pins proc_sys_reset_0/aux_reset_in]
@@ -310,6 +319,8 @@ connect_bd_net \
   [get_bd_pins cptra_rom_backdoor_bram_0/s_axi_aclk] \
   [get_bd_pins mcu_rom_backdoor_bram_0/s_axi_aclk] \
   [get_bd_pins otp_ram_bram_ctrl_0/s_axi_aclk] \
+  [get_bd_pins axi_quad_spi_0/s_axi_aclk] \
+  [get_bd_pins axi_quad_spi_0/ext_spi_clk] \
   [get_bd_pins axi_firewall_0/aclk]
 # Create clock connection for I3C
 if {$FAST_I3C} {
@@ -366,6 +377,11 @@ if {FALSE} {
   #connect_bd_net [get_bd_pins xpm_cdc_gen_0/dest_clk] [get_bd_pins ps_0/pl1_ref_clk]
 }
 
+# QSPI connections
+create_bd_intf_port -mode Master -vlnv xilinx.com:interface:spi_rtl:1.0 spi_rtl
+connect_bd_intf_net /spi_rtl /axi_quad_spi_0/SPI_0
+make_bd_intf_pins_external  [get_bd_intf_pins axi_quad_spi_0/SPI_0]
+
 #### ARM Core USER value ####
 connect_bd_net [get_bd_pins caliptra_package_top_0/ARM_USER] [get_bd_pins axi_firewall_0/s_axi_awuser]
 connect_bd_net [get_bd_pins caliptra_package_top_0/ARM_USER] [get_bd_pins axi_firewall_0/s_axi_aruser]
@@ -394,6 +410,8 @@ foreach manager $managers {
   assign_bd_address -offset 0xA4060000 -range 0x00002000 -target_address_space [get_bd_addr_spaces $manager] [get_bd_addr_segs caliptra_package_top_0/S_AXI_OTP/reg0] -force
   # AXI I3C
   assign_bd_address -offset 0xA4080000 -range 0x00001000 -target_address_space [get_bd_addr_spaces $manager] [get_bd_addr_segs xilinx_i3c_0/S_AXI/Reg] -force
+  # AXI QSPI
+  assign_bd_address -offset 0xa4081000 -range 0x00001000 -target_address_space [get_bd_addr_spaces $manager] [get_bd_addr_segs axi_quad_spi_0/AXI_LITE/Reg] -force
   # AXI Firewall Control
   assign_bd_address -offset 0xA4090000 -range 0x00001000 -target_address_space [get_bd_addr_spaces $manager] [get_bd_addr_segs axi_firewall_0/S_AXI_CTL/Control] -force
   # Caliptra Core
@@ -434,6 +452,8 @@ set_property STEPS.SYNTH_DESIGN.ARGS.GATED_CLOCK_CONVERSION $GATED_CLOCK_CONVERS
 # Add DDR pin placement constraints
 add_files -fileset constrs_1 $fpgaDir/src/ddr4_constraints.xdc
 
+# Add QSPI pin constraints
+add_files -fileset constrs_1 $fpgaDir/src/qspi.xdc
 
 # Consider constraint:
 # set_max_delay -from [get_clocks clk_pl_0] -to [get_clocks clk_pl_1] 25.0
