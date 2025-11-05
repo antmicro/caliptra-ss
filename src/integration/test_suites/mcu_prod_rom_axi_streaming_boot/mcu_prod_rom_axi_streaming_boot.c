@@ -42,7 +42,7 @@ void main (void) {
     uint32_t image_size, it;
     int err_count = 0;
 
-    // Initialize the printf library   
+    // Initialize the printf library
     VPRINTF(LOW, "=== MCU boot.. started == \n");
 
     mcu_cptra_init_d(
@@ -85,7 +85,7 @@ void main (void) {
         VPRINTF(LOW, "Error : I3C core not in the correct state\n");
         err_count++;
     }
-    
+
     i3c_reg_data = lsu_read_32(SOC_I3CCSR_I3C_EC_SECFWRECOVERYIF_PROT_CAP_1);
     if (i3c_reg_data != 0x56434552) {
         VPRINTF(LOW, "I3C core not in the correct state\n");
@@ -104,7 +104,7 @@ void main (void) {
     lsu_write_32(SOC_I3CCSR_I3C_EC_SECFWRECOVERYIF_RECOVERY_CTRL, i3c_reg_data);
     VPRINTF(LOW, "I3C core recovery control register is set to 0x0\n");
 
-    //-- writing INDIRECT_FIFO_CTRL Register 
+    //-- writing INDIRECT_FIFO_CTRL Register
     i3c_reg_data = 0x00000100;
     lsu_write_32(SOC_I3CCSR_I3C_EC_SECFWRECOVERYIF_INDIRECT_FIFO_CTRL_0, i3c_reg_data);
     VPRINTF(LOW, "I3C core indirect FIFO control register is set to 0x0100\n");
@@ -116,7 +116,6 @@ void main (void) {
     VPRINTF(LOW, "I3C core indirect FIFO control register 1 is set to %x\n", image_size);
 
     //-- writing INDIRECT_FIFO_DATA Register
-
     for (it = 0; it < image_size; ++it) {
         i3c_reg_data = lsu_read_32(SOC_I3CCSR_I3C_EC_SECFWRECOVERYIF_INDIRECT_FIFO_STATUS_0);
         VPRINTF(LOW, "I3C core indirect FIFO status %x\n", i3c_reg_data);
@@ -156,7 +155,4 @@ void main (void) {
     } else {
         SEND_STDOUT_CTRL(0xff);
     }
-
-    //Halt the core to wait for Caliptra to finish the test
-    csr_write_mpmc_halt();
 }
