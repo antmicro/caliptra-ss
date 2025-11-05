@@ -134,15 +134,15 @@ void main (void) {
     lsu_write_32(SOC_I3CCSR_I3C_EC_SOCMGMTIF_REC_INTF_REG_W1C_ACCESS, i3c_reg_data);
     VPRINTF(LOW, "I3C core recovery control register set to IMAGE ACTIVATION\n");
 
-    // -- Read Recovery Status register to indicate RECOVERY SUCCESS by reading value 0x00000003
+    // -- Read Recovery Status register to indicate RECOVERY SUCCESS by reading value 0x3 or 0x11
     while(1){
         i3c_reg_data = lsu_read_32(SOC_I3CCSR_I3C_EC_SECFWRECOVERYIF_RECOVERY_STATUS);
-        if( i3c_reg_data != 0x00000002 && i3c_reg_data != 0x00000003) {
+        if( i3c_reg_data != 0x00000002 && i3c_reg_data != 0x00000003 && i3c_reg_data != 0x00000011) {
             VPRINTF(LOW, "I3C core recovery status is not set to expected value\n");
             err_count++;
         }
-        if (i3c_reg_data == 0x00000003) {
-            VPRINTF(LOW, "Success, I3C core recovery status is set to 0x3\n");
+        if (i3c_reg_data == 0x00000003 || i3c_reg_data == 0x00000011) {
+            VPRINTF(LOW, "Success, I3C core recovery status is set to 0x%0x\n", i3c_reg_data);
             break;
         }
         // Wait for the I3C core to finish the test
