@@ -111,7 +111,7 @@ static void (* const nonstd_veer_isr_31) (void) = std_rv_nop_machine; // -------
 // be 4-byte aligned per the VeeR PRM, and the base address of the table (i.e.
 // the value of meivt) must be 1024-byte aligned, also per the PRM
 // For support of Fast Interrupt Redirect feature, this should be in DCCM
-static void (* __attribute__ ((aligned(4))) nonstd_veer_isr_vector_table [CSS_MCU0_RV_PIC_TOTAL_INT_PLUS1]) (void) __attribute__ ((aligned(1024),section (".dccm.nonstd_isr.vec_table"))) = {
+static void (* __attribute__ ((aligned(4))) nonstd_veer_isr_vector_table [RV_PIC_TOTAL_INT_PLUS1]) (void) __attribute__ ((aligned(1024),section (".dccm.nonstd_isr.vec_table"))) = {
     nonstd_veer_isr_0,
     nonstd_veer_isr_1,
     nonstd_veer_isr_2,
@@ -174,7 +174,7 @@ void init_interrupts(void) {
     volatile uint32_t * const mtime_h        = (uint32_t*) SOC_MCI_TOP_MCI_REG_MCU_RV_MTIME_H;
     volatile uint32_t * const mtimecmp_l     = (uint32_t*) SOC_MCI_TOP_MCI_REG_MCU_RV_MTIMECMP_L;
     volatile uint32_t * const mtimecmp_h     = (uint32_t*) SOC_MCI_TOP_MCI_REG_MCU_RV_MTIMECMP_H;
-    char* DCCM = (char *) CSS_MCU0_RV_DCCM_SADR;
+    char* DCCM = (char *) RV_DCCM_SADR;
     uint32_t value;
 
     /* -- Enable standard RISC-V interrupts (mtvec etc.) -- */
@@ -213,7 +213,7 @@ void init_interrupts(void) {
     // MEIPL_S - assign interrupt priorities
     meipls[CSS_MCU0_VEER_INTR_VEC_MCI] = CSS_MCU0_VEER_INTR_PRIO_MCI; __asm__ volatile ("fence");
     meipls[CSS_MCU0_VEER_INTR_VEC_I3C] = CSS_MCU0_VEER_INTR_PRIO_I3C; __asm__ volatile ("fence");
-    for (uint32_t undef = CSS_MCU0_VEER_INTR_EXT_LSB; undef <= CSS_MCU0_RV_PIC_TOTAL_INT; undef++) {
+    for (uint32_t undef = CSS_MCU0_VEER_INTR_EXT_LSB; undef <= RV_PIC_TOTAL_INT; undef++) {
         meipls[undef] = 0; __asm__ volatile ("fence"); // Set to 0 meaning NEVER interrupt
     }
 
@@ -231,7 +231,7 @@ void init_interrupts(void) {
                       : "i" (VEER_CSR_MEICURPL), "i" (0x00)  /* input : immediate  */ \
                       : /* clobbers: none */);
 
-    for (uint32_t vec = 1; vec <= CSS_MCU0_RV_PIC_TOTAL_INT; vec++) {
+    for (uint32_t vec = 1; vec <= RV_PIC_TOTAL_INT; vec++) {
         // MEIGWCTRL_S
         meigwctrls[vec] = VEER_MEIGWCTRL_ACTIVE_HI_LEVEL;  __asm__ volatile ("fence");
 
