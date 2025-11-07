@@ -355,7 +355,7 @@
     }
     {
       name: mcu_axi_streaming_boot_test_rom
-      desc: ""
+      desc: "This test instantiates AXI memory perihperal and initializes it with a production MCU firmware binary. Software running on the MCU configures the I3C to the bypass mode and performs the recovery flow over AXI, reading data from AXI memory and feeding it to the I3C core. The test checks if the recovery process is performed correctly and new image gets activated"
       stage: ""
       tests:
       [
