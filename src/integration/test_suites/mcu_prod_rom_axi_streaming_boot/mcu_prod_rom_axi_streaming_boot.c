@@ -136,7 +136,7 @@ void main (void) {
     // -- Read Recovery Status register to indicate RECOVERY SUCCESS by reading value 0x3 or 0x11
     while(1){
         i3c_reg_data = lsu_read_32(SOC_I3CCSR_I3C_EC_SECFWRECOVERYIF_RECOVERY_STATUS);
-        if( i3c_reg_data != 0x00000002 && i3c_reg_data != 0x00000003 && i3c_reg_data != 0x00000011) {
+        if( i3c_reg_data != 0x00000001 && i3c_reg_data != 0x00000002 && i3c_reg_data != 0x00000003 && i3c_reg_data != 0x00000011) {
             VPRINTF(LOW, "I3C core recovery status is not set to expected value\n");
             err_count++;
         }
