@@ -909,24 +909,20 @@ void reset_exp_reg_data(mci_reg_exp_dict_t *dict, reset_type_t reset_type, mci_r
     const mci_register_info_t *ss_config_done_reg = get_register_info(REG_GROUP_SS, 1);
     ss_config_done = mci_reg_read(ss_config_done_reg->address);
 
-
     mci_register_group_t group_index;
     int reg_index;
     const mci_register_info_t *reg_info;
     const mci_register_info_t *intr_glb_sts_reg;
     const mci_register_info_t *intr_sts_reg;
     const mci_register_info_t *axi_user_lock_reg;
-    const mci_register_info_t *capabilities_reg;
     const mci_register_info_t *cap_lock_reg;
     uint32_t glb_sts_mask;
     uint32_t intr_sts_mask;
     uint32_t err_data;
     uint32_t read_intr_sts;
     uint32_t axi_user_lock;
-    uint32_t cap_lock_reg_value = 0;
+    uint32_t cap_lock_reg_value;
     bool update_axi_user = false;
-    bool update_config_reg = false;
-    bool update_cap_lock_reg = false;
     bool reset_reason_reg = false;
     bool update_exp_data = false;
 
@@ -981,49 +977,22 @@ void reset_exp_reg_data(mci_reg_exp_dict_t *dict, reset_type_t reset_type, mci_r
         }
     }
 
-    if (group_index == REG_GROUP_CAPABILITIES) {
-        if (reg_index <= 1) {
-            cap_lock_reg = get_register_info(REG_GROUP_CAPABILITIES, 2);
-            cap_lock_reg_value = mci_reg_read(cap_lock_reg->address);
-            if (cap_lock_reg_value == 0) {
-                update_config_reg = true;
-            }
-        } else if (reg_index == 2) {
-            if (ss_config_done == 0) {
-                update_cap_lock_reg = true;
-            }
-        }   
-    }
-
-    /*
-    if (group_index == REG_GROUP_CAPABILITIES && reg_index <= 2) {
-        capabilities_reg = get_register_info(REG_GROUP_CAPABILITIES, reg_index);
-        if (ss_config_done == 0) {
-            update_config_reg = true;
-        }
-    }
-    */
-
-
-    // Special handling as stickiness is different for different fields
-    //if (reg_info->address == SOC_MCI_TOP_MCI_REG_RESET_REASON) {
-    //    reset_reason_reg = true;
-    //}
-
-
     bool force_update = (address == SOC_MCI_TOP_MCI_REG_SS_CONFIG_DONE_STICKY);
     
     // Standard update condition
-    if (ss_config_done_sticky == 0 || reg_info->is_sticky != REG_CONFIG_DONE_STICKY || force_update || update_axi_user || update_config_reg || update_cap_lock_reg) {
-    	update_exp_data = true;
+    if (ss_config_done_sticky == 0 || reg_info->is_sticky != REG_CONFIG_DONE_STICKY || force_update || update_axi_user) {
+        update_exp_data = true;
     }
 
     // Special case for capabilities registers - override the above conditions
-    if (group_index == REG_GROUP_CAPABILITIES && reg_index <= 2 && cap_lock_reg_value == 1) {
-        update_exp_data = false;  // Block update regardless of other conditions
+    if (group_index == REG_GROUP_CAPABILITIES && reg_index <= 2) {
+        cap_lock_reg = get_register_info(REG_GROUP_CAPABILITIES, 2);
+        cap_lock_reg_value = mci_reg_read(cap_lock_reg->address);
+
+        update_exp_data = (cap_lock_reg_value == 0);
+
         VPRINTF(MEDIUM, "Capabilities REG %d, cap lock = %d, update_exp_data = %d\n", reg_index, cap_lock_reg_value, update_exp_data);
     }
-    
 
     bool pulse_timer_reg = (address == SOC_MCI_TOP_MCI_REG_WDT_TIMER1_CTRL || address == SOC_MCI_TOP_MCI_REG_WDT_TIMER2_CTRL);
     bool pulse_intr_reg = (group_index == REG_GROUP_INTERRUPT_TRIGGER_PULSE_RW1S);
@@ -1033,12 +1002,7 @@ void reset_exp_reg_data(mci_reg_exp_dict_t *dict, reset_type_t reset_type, mci_r
         if (dict->entries[i].address == address) {
             VPRINTF(MEDIUM, "Entry exists!\n");
             // Update existing entry's expected data only if sticky bit is NOT set
-            //if (ss_config_done_sticky == 0 || reg_info->is_sticky != REG_CONFIG_DONE_STICKY || force_update || update_axi_user || update_config_reg) {
-	        if (update_exp_data) {
-                //if (reset_reason_reg) {
-                //    VPRINTF(MEDIUM, "Only [1:0] is not sticky\n");
-                //    dict->entries[i].expected_data = value & (MCI_REG_RESET_REASON_FW_HITLESS_UPD_RESET_MASK | MCI_REG_RESET_REASON_FW_BOOT_UPD_RESET_MASK);
-                //} else 
+            if (update_exp_data) {
                 if (!pulse_timer_reg && !pulse_intr_reg) {
                     VPRINTF(MEDIUM, "Not pulse reg, value = 0x%0x\n", value & mask);
                     dict->entries[i].expected_data = value & mask;
@@ -1064,10 +1028,6 @@ void reset_exp_reg_data(mci_reg_exp_dict_t *dict, reset_type_t reset_type, mci_r
     // Add new entry if space available
     if (dict->count < MAX_REGISTER_ENTRIES) {
         dict->entries[dict->count].address = address;
-        //if (reset_reason_reg) {
-        //    VPRINTF(MEDIUM, "Only [1:0] is not sticky\n");
-        //    dict->entries[dict->count].expected_data = value & (MCI_REG_RESET_REASON_FW_HITLESS_UPD_RESET_MASK | MCI_REG_RESET_REASON_FW_BOOT_UPD_RESET_MASK);
-        //} else 
         if (!pulse_timer_reg && !pulse_intr_reg) {
             VPRINTF(MEDIUM, "Not pulse reg, value = 0x%0x\n", value & mask);
             dict->entries[dict->count].expected_data = value & mask;
@@ -1239,19 +1199,19 @@ void write_random_to_register_group_and_track(mci_register_group_t group, mci_re
             if (!is_register_excluded(reg->address)) {
                 // Generate a unique value for each register
                 uint32_t rand_value = xorshift32();
-            
-                VPRINTF(MEDIUM, "  Writing 0x%08x to %s (0x%08x)\n", rand_value, reg->name, reg->address);
-                mci_reg_write(reg->address, rand_value);
-                
+
                 /* Get mask for this register */
                 uint32_t mask = get_register_mask(reg->address);
-                
+
                 // Store in dictionary
                 if (!ro_reg) {
                     if (set_reg_exp_data(dict, reg->address, rand_value, mask, true) != 0) {
                         VPRINTF(MEDIUM, "  WARNING: Could not store expected data for %s\n", reg->name);
                     }
                 }
+
+                VPRINTF(MEDIUM, "  Writing 0x%08x to %s (0x%08x)\n", rand_value, reg->name, reg->address);
+                mci_reg_write(reg->address, rand_value);
             } else {
                 VPRINTF(MEDIUM, "  Skipping excluded register %s (0x%08x)\n", reg->name, reg->address);
             }
