@@ -1310,10 +1310,22 @@ int read_register_group_and_verify(mci_register_group_t group, mci_reg_exp_dict_
                             if (mci_reg_read(SOC_MCI_TOP_MCI_REG_SECURITY_STATE) & MCI_REG_SECURITY_STATE_SCAN_MODE_MASK) {
                                 exp_data |= MCI_REG_INTR_BLOCK_RF_NOTIF0_INTERNAL_INTR_R_NOTIF_SCAN_MODE_STS_MASK;
                             }
-                        } 
+                            if (read_data == exp_data) {
+                                VPRINTF(MEDIUM,"  Match: %s (0x%08x): Read 0x%08x, Expected 0x%08x\n", reg->name, reg->address, read_data, exp_data);
+                            } else {
+                                VPRINTF(LOW, "  No match: %s (0x%08x): Read 0x%08x, Expected 0x%08x\n", reg->name, reg->address, read_data, exp_data);
+                                mismatch_count++;
+                            }
+                        }
                         else if (reg->address == SOC_MCI_TOP_MCI_REG_INTR_BLOCK_RF_NOTIF_DEBUG_LOCKED_INTR_COUNT_R &&
                                     mci_reg_read(SOC_MCI_TOP_MCI_REG_SECURITY_STATE) & MCI_REG_SECURITY_STATE_DEBUG_LOCKED_MASK) {
                             exp_data = 0x1;
+                            if (read_data == exp_data) {
+                                VPRINTF(MEDIUM,"  Match: %s (0x%08x): Read 0x%08x, Expected 0x%08x\n", reg->name, reg->address, read_data, exp_data);
+                            } else {
+                                VPRINTF(LOW, "  No match: %s (0x%08x): Read 0x%08x, Expected 0x%08x\n", reg->name, reg->address, read_data, exp_data);
+                                mismatch_count++;
+                            }
                         } else {
                             VPRINTF(LOW, "  No match: %s (0x%08x): Read 0x%08x, Expected 0x%08x\n", reg->name, reg->address, read_data, exp_data);
                             mismatch_count++;
@@ -1368,8 +1380,20 @@ int read_register_group_and_verify(mci_register_group_t group, mci_reg_exp_dict_
                                 }
                             } else if (reg->address == SOC_MCI_TOP_MCI_REG_INTR_BLOCK_RF_NOTIF0_INTERNAL_INTR_R) {
                                 exp_data |= MCI_REG_INTR_BLOCK_RF_NOTIF0_INTERNAL_INTR_R_NOTIF_DEBUG_LOCKED_STS_MASK; // debug_locked_en_sts is set on Warm Reset
+                                if (read_data == exp_data) {
+                                    VPRINTF(MEDIUM,"  Match: %s (0x%08x): Read 0x%08x, Expected 0x%08x\n",reg->name, reg->address, read_data, exp_data);
+                                } else {
+                                    VPRINTF(LOW, "  No match: %s (0x%08x): Read 0x%08x, Expected 0x%08x\n", reg->name, reg->address, read_data, exp_data);
+                                    mismatch_count++;
+                                }
                             } else if (reg->address == SOC_MCI_TOP_MCI_REG_INTR_BLOCK_RF_NOTIF1_INTERNAL_INTR_R) {
                                 exp_data = 0;
+                                if (read_data == exp_data) {
+                                    VPRINTF(MEDIUM,"  Match: %s (0x%08x): Read 0x%08x, Expected 0x%08x\n",reg->name, reg->address, read_data, exp_data);
+                                } else {
+                                    VPRINTF(LOW, "  No match: %s (0x%08x): Read 0x%08x, Expected 0x%08x\n", reg->name, reg->address, read_data, exp_data);
+                                    mismatch_count++;
+                                }
                             } else if (reg->address == SOC_MCI_TOP_MCI_REG_RESET_REASON) {
                                 exp_data = exp_data & ~(MCI_REG_RESET_REASON_FW_BOOT_UPD_RESET_MASK | MCI_REG_RESET_REASON_FW_HITLESS_UPD_RESET_MASK) | MCI_REG_RESET_REASON_WARM_RESET_MASK; // bits 0 & 1 are not sticky
                                 if (read_data == exp_data) {
