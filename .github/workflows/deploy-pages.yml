@@ -1,0 +1,39 @@
+name: Deploy Pages
+
+on: [ workflow_dispatch ]
+
+jobs:
+  deploy-pages:
+    runs-on: ubuntu-24.04
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    env:
+      GH_TOKEN: ${{ github.token }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download latest docs
+        run: gh release download -p docs.zip
+
+      - run: unzip docs.zip
+
+      - name: Fetch coverage data from releases
+        run: |
+          releases="$(gh release list --json tagName --jq '.[].tagName')"
+          for rel in $releases; do
+              gh release download $rel -p coverage.zip -D "docs/_static/$rel"
+          done
+
+      - name: Upload Artifacts
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: docs/
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
