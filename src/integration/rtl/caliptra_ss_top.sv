@@ -451,7 +451,9 @@ module caliptra_ss_top
     assign cptra_ss_cptra_generic_fw_exec_ctrl_o = cptra_ss_cptra_generic_fw_exec_ctrl_internal[127:3];
     assign cptra_ss_cptra_generic_fw_exec_ctrl_2_mcu_o = cptra_ss_cptra_generic_fw_exec_ctrl_internal[2];
 
-    caliptra_top caliptra_top_dut (
+    caliptra_top #(
+        .CSS_IDCODE_VALUE(CSS_IDCODE_VALUE)
+    ) caliptra_top_dut (
         .clk                        (cptra_ss_clk_i),
         .cptra_pwrgood              (cptra_ss_pwrgood_i),
         .cptra_rst_b                (cptra_ss_mci_cptra_rst_b_i),
