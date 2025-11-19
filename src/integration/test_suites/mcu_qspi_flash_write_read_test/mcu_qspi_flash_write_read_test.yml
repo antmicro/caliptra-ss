@@ -1,0 +1,5 @@
+seed: 1
+testname: mcu_qspi_flash_write_read_test
+pre-exec: |
+  echo "Running pre_exec for test mcu_qspi_flash_write_read_test " &&
+  make -f $CALIPTRA_SS_ROOT/tools/scripts/Makefile TESTNAME=mcu_qspi_flash_write_read_test mcu_program.hex
