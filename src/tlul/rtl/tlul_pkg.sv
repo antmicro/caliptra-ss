@@ -103,6 +103,8 @@ package tlul_pkg;
     logic                         d_ready;
   } tl_h2d_t;
 
+  parameter int TL_H2D_T_WIDTH = $bits(tl_h2d_t);
+
   // The choice of all 1's as the blanked value is deliberate.
   // It is assumed that most security features of the design are opt-in instead
   // of opt-out.
