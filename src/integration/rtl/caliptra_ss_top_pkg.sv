@@ -1,7 +1,4 @@
-
-//********************************************************************************
 // SPDX-License-Identifier: Apache-2.0
-// Copyright 2020 Western Digital Corporation or its affiliates.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,11 +11,11 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-//********************************************************************************
-commit 8d9457af9f7966506c871aba1ae4ff8a2a4e17b0 (HEAD -> 2.0-patches, origin/2.0-patches)
-Author: Karol Gugala <kgugala@antmicro.com>
-Date:   Wed Oct 8 19:31:52 2025 +0200
 
-    CI: bump riscv_dv_matrix_include.py
+package caliptra_ss_top_pkg;
 
-    Signed-off-by: Karol Gugala <kgugala@antmicro.com>
+  parameter lc_ctrl_state_pkg::lc_token_t RndCnstRawUnlockTokenHashed = {
+    128'h896e4a11_d1c8cbba_de8a30e6_f0930a4d
+  };
+
+endpackage
