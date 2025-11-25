@@ -14,6 +14,8 @@ set FAST_I3C TRUE
 
 set I3C_OUTSIDE FALSE
 set APB FALSE
+set SEGMENTED FALSE
+set SEGMENTED_WRITE_NCR FALSE
 # Simplistic processing of command line arguments to override defaults
 foreach arg $argv {
   regexp {(.*)=(.*)} $arg fullmatch option value
@@ -94,6 +96,9 @@ source create_caliptra_package.tcl
 # Create a project for the SOC connections
 create_project caliptra_fpga_project $outputDir -part $PART
 set_property board_part $BOARD_PART [current_project]
+if {$SEGMENTED} {
+  set_property segmented_configuration true [current_project]
+}
 
 # Include the packaged IP
 set_property  ip_repo_paths "$caliptrapackageDir" [current_project]
@@ -117,8 +122,18 @@ source create_versal_cips.tcl
 
 # Create XDC file with jtag constraints
 set xdc_fd [ open $outputDir/jtag_constraints.xdc w ]
-puts $xdc_fd {create_clock -period 5000.000 -name {jtag_clk} -waveform {0.000 2500.000} [get_pins {caliptra_fpga_project_bd_i/ps_0/inst/pspmc_0/inst/PS9_inst/EMIOGPIO2O[0]}]}
-puts $xdc_fd {set_clock_groups -asynchronous -group [get_clocks {jtag_clk}]}
+puts $xdc_fd {create_clock -period 5000.000 -name {cal_jtag_clk} -waveform {0.000 2500.000} [get_pins {caliptra_fpga_project_bd_i/ps_0/inst/pspmc_0/inst/PS9_inst/EMIOGPIO2O[0]}]}
+puts $xdc_fd {create_clock -period 5000.000 -name {lcc_jtag_clk} -waveform {0.000 2500.000} [get_pins {caliptra_fpga_project_bd_i/ps_0/inst/pspmc_0/inst/PS9_inst/EMIOGPIO2O[5]}]}
+puts $xdc_fd {create_clock -period 5000.000 -name {mcu_jtag_clk} -waveform {0.000 2500.000} [get_pins {caliptra_fpga_project_bd_i/ps_0/inst/pspmc_0/inst/PS9_inst/EMIOGPIO2O[10]}]}
+puts $xdc_fd {set_clock_groups -asynchronous -group [get_clocks {cal_jtag_clk}]}
+puts $xdc_fd {set_clock_groups -asynchronous -group [get_clocks {lcc_jtag_clk}]}
+puts $xdc_fd {set_clock_groups -asynchronous -group [get_clocks {mcu_jtag_clk}]}
+puts $xdc_fd {set_false_path -from [get_clocks {clk_pl_0}] -to [get_clocks {cal_jtag_clk}]}
+puts $xdc_fd {set_false_path -from [get_clocks {clk_pl_0}] -to [get_clocks {lcc_jtag_clk}]}
+puts $xdc_fd {set_false_path -from [get_clocks {clk_pl_0}] -to [get_clocks {mcu_jtag_clk}]}
+puts $xdc_fd {set_false_path -from [get_clocks {cal_jtag_clk}] -to [get_clocks {clk_pl_0}]}
+puts $xdc_fd {set_false_path -from [get_clocks {lcc_jtag_clk}] -to [get_clocks {clk_pl_0}]}
+puts $xdc_fd {set_false_path -from [get_clocks {mcu_jtag_clk}] -to [get_clocks {clk_pl_0}]}
 close $xdc_fd
 
 #### Add AXI Infrastructure
@@ -400,6 +415,7 @@ connect_bd_net [get_bd_pins caliptra_package_top_0/jtag_in] [get_bd_pins $ps_gpi
 add_files -fileset constrs_1 $outputDir/jtag_constraints.xdc
 
 save_bd_design
+
 puts "Fileset when setting defines the second time: [current_fileset]"
 set_property verilog_define $VERILOG_OPTIONS [current_fileset]
 puts "\n\nVERILOG DEFINES: [get_property verilog_define [current_fileset]]"
@@ -504,6 +520,16 @@ apply_bd_automation -rule xilinx.com:bd_rule:debug -dict [list \
 set_property CONFIG.C_DATA_DEPTH {8192} [get_bd_cells axis_ila_0]
 save_bd_design
 
+# Set initial boot property to make the NOC connections part of the boot PDI.
+if {$SEGMENTED} {
+  set_property initial_boot true [get_noc_logical_paths]
+}
+
+# Load a previous NCR
+if {$SEGMENTED} {
+  read_noc_solution -file $fpgaDir/saved_noc_solution.ncr
+}
+
 # Start build
 if {$BUILD} {
 launch_runs synth_1 -jobs 32
@@ -512,6 +538,25 @@ launch_runs impl_1 -to_step write_device_image -jobs 32
 wait_on_runs impl_1
 open_run impl_1
 report_utilization -file $outputDir/utilization.txt
+
+if {$SEGMENTED} {
+  if {$SEGMENTED_WRITE_NCR} {
+    # Lock the NoC path segments and save the solution for later builds.
+    set_property lock true [get_noc_net_routes -of [get_noc_logical_paths -filter {initial_boot == 1}]]
+    write_noc_solution -file $fpgaDir/saved_noc_solution.ncr
+    file copy -force $outputDir/caliptra_fpga_project.runs/impl_1/caliptra_fpga_project_bd_wrapper_routed.dcp $fpgaDir/segmented_golden_routed.dcp
+    puts stderr "Replace file in GCS bucket: [exec realpath $fpgaDir/segmented_golden_routed.dcp]"
+  } else {
+    # TODO(lkedziora): Verification of the DCP is mandatory, we need to do
+    # something similar after generating the initial golden files.
+
+    # Verify that the NoC Solutions are identical and the PLD images are compatible.
+    # exec curl -s -O "https://storage.googleapis.com/caliptra-github-ci-bitstreams/scratch/fpga_2px_golden_routed.dcp"
+    # pr_verify -initial $fpgaDir/fpga_2px_golden_routed.dcp -additional $outputDir/caliptra_fpga_project.runs/impl_1/caliptra_fpga_project_bd_wrapper_routed.dcp
+  }
+  # Copy the PDI containing runtime info to a more convenient location.
+  file copy $outputDir/caliptra_fpga_project.runs/impl_1/caliptra_fpga_project_bd_wrapper_pld.pdi $outputDir/runtime_$VERSION.pdi
+}
 
 write_hw_platform -fixed -include_bit -force -file $outputDir/caliptra_fpga.xsa
 }
