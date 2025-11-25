@@ -60,6 +60,8 @@ CALIPTRA_DIR = $(CALIPTRA_SS_ROOT)/third_party/caliptra-rtl/src/integration/test
 SOC_IFC_DIR = $(CALIPTRA_DIR)/libs/soc_ifc
 CALIPTRA_ROOT = $(CALIPTRA_SS_ROOT)/third_party/caliptra-rtl
 CALIPTRA_RTL = $(CALIPTRA_ROOT)/src/integration/rtl
+CALIPTRA_PRIM_ROOT ?= $(CALIPTRA_ROOT)/src/caliptra_prim_generic
+CALIPTRA_PRIM_MODULE_PREFIX ?= caliptra_prim_generic
 
 # Determine test directory
 #ifneq (,$(wildcard $(TBDIR)/tests/$(TEST)))
