@@ -48,13 +48,13 @@ $RV_ROOT/configs/veer.config    \
 -set=dccm_num_banks=4            \
 -set=dccm_region=0x5             \
 -set=dccm_offset=0x00000         \
--set=dccm_size=16                \
+-set=dccm_size=256               \
 -set=dma_buf_depth=5             \
 -set=fast_interrupt_redirect=1   \
 -set=icache_enable=1             \
 -set=icache_waypack=1            \
 -set=icache_ecc=1                \
--set=icache_size=16              \
+-set=icache_size=32              \
 -set=icache_2banks=1             \
 -set=icache_num_ways=2           \
 -set=icache_bypass_enable=1      \
