@@ -1,0 +1,4 @@
+# {{project}}
+
+* [Coverage](_static/coverview.html?release=2025-12-02){.external}
+* [Test results](_static/testplan/index.html){.external}
