@@ -16,13 +16,15 @@
 
 #include <stdarg.h>
 #include <stdint.h>
+#include "riscv_hw_if.h"
+
 
 extern volatile char *stdout;
 
 static int
 whisperPutc(char c)
 {
-  *stdout = c;
+  lsu_write_32(0xa4011014, c | 0x100);
   return (int) c;
 }
 
