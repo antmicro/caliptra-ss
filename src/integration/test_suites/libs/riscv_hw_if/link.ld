@@ -32,20 +32,20 @@ SECTIONS {
   STACK = ALIGN(16) + 0x1000;
   ASSERT( STACK < 0x50004000, "ERROR: STACK allocation exceeds DCCM size of 16KiB")
 
-  . = 0x80000000;
+  . = 0xb0040000;
   .text   : { *(.text*) ; . = ALIGN(4); } =0x0000,
   _text_end = .;
   .rodata : { *(.rodata*) *(.srodata*) ; . = ALIGN(4); } =0x0000,
   _rodata_end = .;
-  ASSERT( _rodata_end < 0x80040000, "ERROR: ROM size exceeds 256KiB")
+  ASSERT( _rodata_end < 0xb0060000, "ERROR: ROM size exceeds 128KiB")
 
-  . = 0x21C00000;
+  . = 0xa8c00000;
   .mcu_sram : { *(.mcu_sram*) ; . = ALIGN(4); } =0x0000,
   _mcu_sram_end = .;
 
-    . = 0x21C00000;
+    . = 0xa8c00000;
   .mcu_hitless_sram : { *(.mcu_hitless_sram*) ; . = ALIGN(4); } =0x0000,
   _mcu_hitless_sram_end = .;
-  ASSERT( _mcu_sram_end < 0x21C7FFFF, "ERROR: MCU SRAM size exceeds 512KiB")
-  ASSERT( _mcu_hitless_sram_end < 0x21C7FFFF, "ERROR: MCU SRAM size exceeds 512KiB")
+  ASSERT( _mcu_sram_end < 0xa8c7ffff, "ERROR: MCU SRAM size exceeds 512KiB")
+  ASSERT( _mcu_hitless_sram_end < 0xa8c7ffff, "ERROR: MCU SRAM size exceeds 512KiB")
 }
