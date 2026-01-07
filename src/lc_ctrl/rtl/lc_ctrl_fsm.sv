@@ -563,7 +563,8 @@ module lc_ctrl_fsm
       ///////////////////////////////////////////////////////////////////
       // Terminal states.
       ScrapSt,
-      PostTransSt: ;
+      PostTransSt: begin
+      end
 
 
       EscalateSt: begin

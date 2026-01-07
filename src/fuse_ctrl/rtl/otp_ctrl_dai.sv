@@ -306,7 +306,8 @@ module otp_ctrl_dai
               scrmbl_mtx_req_o = 1'b1;
               base_sel_d = PartOffset;
             end
-            default: ; // Ignore invalid commands
+            default: begin // Ignore invalid commands
+            end
           endcase // dai_cmd_i
         end // dai_req_i
       end
