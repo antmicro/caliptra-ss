@@ -66,8 +66,7 @@ module otp_ctrl_part_unbuf
   import caliptra_prim_mubi_pkg::*;
   import caliptra_prim_util_pkg::vbits;
 
-  localparam logic [OtpByteAddrWidth:0] PartEnd = (OtpByteAddrWidth+1)'(Info.offset) +
-                                                  (OtpByteAddrWidth+1)'(Info.size);
+  localparam logic [OtpByteAddrWidth:0] PartEnd = Info.offset + Info.size;
   localparam int unsigned DigestOffsetInt = int'(PartEnd) - ScrmblBlockWidth/8;
 
   localparam bit [OtpByteAddrWidth-1:0] DigestOffset = DigestOffsetInt[OtpByteAddrWidth-1:0];

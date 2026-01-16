@@ -802,7 +802,8 @@ module otp_ctrl_dai
   // Note that OTP works on halfword (16bit) addresses, hence need to
   // shift the addresses appropriately.
   logic [OtpByteAddrWidth-1:0] addr_calc;
-  assign addr_calc = {cnt, {$clog2(ScrmblBlockWidth/8){1'b0}}} + addr_base;
+  // Assume it won't overflow
+  assign addr_calc = OtpByteAddrWidth'({cnt, {$clog2(ScrmblBlockWidth/8){1'b0}}} + addr_base);
   assign otp_addr_o = OtpAddrWidth'(addr_calc >> OtpAddrShift);
 
   ///////////////

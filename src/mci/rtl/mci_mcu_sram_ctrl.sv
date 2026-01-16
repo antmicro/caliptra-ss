@@ -232,7 +232,7 @@ assign exec_region_end_calc     = exec_region_base + exec_region_size_bytes - 1;
 assign exec_region_overflow  = |exec_region_end_calc[28:MCU_SRAM_CIF_ADDR_W];
 // If there was overflow set to the MCU SRAM size.
 // Otherwise take the calculated value
-assign exec_region_end  = exec_region_overflow ? (MCU_SRAM_SIZE_BYTES-1) : 
+assign exec_region_end  = exec_region_overflow ? $bits(exec_region_end)'(MCU_SRAM_SIZE_BYTES-1) :
                             exec_region_end_calc;  
 
 
