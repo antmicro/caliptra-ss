@@ -14,8 +14,6 @@ module tlul_err import tlul_pkg::*; (
   output logic err_o
 );
 
-  localparam int IW  = $bits(tl_i.a_source);
-  localparam int SZW = $bits(tl_i.a_size);
   localparam int DW  = $bits(tl_i.a_data);
   localparam int MW  = $bits(tl_i.a_mask);
   localparam int SubAW = $clog2(DW/8);

@@ -45,7 +45,6 @@ module mci_mcu_sram_ctrl
     ,localparam MCU_SRAM_DATA_W = 32 // ECC not parametrized so can't expose this parameter
     ,localparam MCU_SRAM_DATA_W_BYTES = MCU_SRAM_DATA_W / BITS_IN_BYTE
     ,localparam MCU_SRAM_ECC_DATA_W = 7 // ECC not parameterized so can't expose this parameter
-    ,localparam MCU_SRAM_DATA_AND_ECC_W = MCU_SRAM_DATA_W + MCU_SRAM_ECC_DATA_W
     ,localparam MCU_SRAM_DEPTH = MCU_SRAM_SIZE_BYTES / MCU_SRAM_DATA_W_BYTES
     ,localparam MCU_SRAM_ADDR_W = $clog2(MCU_SRAM_DEPTH)
 

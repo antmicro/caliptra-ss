@@ -14,8 +14,10 @@ module lc_ctrl
   import axi_pkg::*;
   import kmac_pkg::*;
 #(
+// ------------------------Removing Alert sender module----------------------------
   // Enable asynchronous transitions on alerts.
-  parameter logic [NumAlerts-1:0] AlertAsyncOn = {NumAlerts{1'b1}},
+  // parameter logic [NumAlerts-1:0] AlertAsyncOn = {NumAlerts{1'b1}},
+//------------------------------------------------------------------------------------
   // Hardware revision numbers exposed in the CSRs.
   parameter logic [SiliconCreatorIdWidth-1:0] SiliconCreatorId = '0,
   parameter logic [ProductIdWidth-1:0]        ProductId        = '0,

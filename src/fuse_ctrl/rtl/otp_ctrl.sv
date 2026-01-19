@@ -14,15 +14,9 @@ module otp_ctrl
   import otp_ctrl_part_pkg::*;
   import axi_pkg::*;
 #(
-  // Enable asynchronous transitions on alerts.
-  parameter logic [NumAlerts-1:0] AlertAsyncOn = {NumAlerts{1'b1}},
   // Compile time random constants, to be overriden by topgen.
   parameter lfsr_seed_t RndCnstLfsrSeed = RndCnstLfsrSeedDefault,
-  parameter lfsr_perm_t RndCnstLfsrPerm = RndCnstLfsrPermDefault,
-  parameter scrmbl_key_init_t RndCnstScrmblKeyInit = RndCnstScrmblKeyInitDefault,
-  // Hexfile file to initialize the OTP macro.
-  // Note that the hexdump needs to account for ECC.
-  parameter MemInitFile = ""
+  parameter lfsr_perm_t RndCnstLfsrPerm = RndCnstLfsrPermDefault
 ) (
   // OTP clock
   input                                              clk_i,
@@ -692,14 +686,6 @@ end
     reg2hw.alert_test.fatal_check_error.qe,
     reg2hw.alert_test.fatal_macro_error.q &
     reg2hw.alert_test.fatal_macro_error.qe
-  };
-
-  localparam logic [NumAlerts-1:0] AlertIsFatal = {
-    1'b0, // recov_prim_otp_alert
-    1'b1, // fatal_prim_otp_alert
-    1'b1, // fatal_bus_integ_error_q
-    1'b1, // fatal_check_error_q
-    1'b1  // fatal_macro_error_q
   };
 
   ////////////////////////////////

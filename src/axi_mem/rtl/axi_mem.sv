@@ -20,7 +20,6 @@ module axi_mem #(
               BW = $clog2(BC), // Byte count Width
     parameter UW = 32,         // User Width
     parameter IW = 1,          // ID Width
-              ID_NUM = 1 << IW, // Don't override
 
     parameter EX_EN = 0    // Enable exclusive access tracking w/ AxLOCK
 )

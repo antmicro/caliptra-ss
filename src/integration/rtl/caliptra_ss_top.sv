@@ -1246,9 +1246,7 @@ module caliptra_ss_top
     assign otp_ctrl_to_mci_otp_ctrl_done = pwrmgr_pkg::pwr_otp_rsp_t'(u_otp_ctrl_pwr_otp_o.otp_done);
     assign otp_ctrl_init_req.otp_init = mci_to_otp_ctrl_init_req;
 
-    otp_ctrl #(
-        .MemInitFile ("otp-img.2048.vmem")
-    ) u_otp_ctrl (
+    otp_ctrl u_otp_ctrl (
         .clk_i                      (cptra_ss_clk_i),
         .rst_ni                     (cptra_ss_rst_b_o),
         .FIPS_ZEROIZATION_CMD_i     (FIPS_ZEROIZATION_CMD),
