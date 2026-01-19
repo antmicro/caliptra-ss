@@ -384,14 +384,14 @@ module caliptra_ss_keccak_2share
   endfunction : box_to_bitarray
 
   // Rotate integer indices
-  function automatic integer rot_int(integer in, integer num);
-    integer out;
-    if (in == 0) begin
-      out = num - 1;
+  function automatic integer rot_int(integer int_in, integer num);
+    integer int_out;
+    if (int_in == 0) begin
+      int_out = num - 1;
     end else begin
-      out = in - 1;
+      int_out = int_in - 1;
     end
-    return out;
+    return int_out;
   endfunction
 
   // Step Mapping =============================================================
