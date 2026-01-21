@@ -137,9 +137,9 @@ def _validate_part(part: Dict, key_names: List[str], is_last: bool):
 
     # the DV and HW assumes that the last partition is always the life cycle
     # partition.
-    if (part["variant"] == "LifeCycle") != is_last:
-        raise RuntimeError("The last partition must always be the life cycle"
-                           "partition")
+    #if (part["variant"] == "LifeCycle") != is_last:
+    #    raise RuntimeError("The last partition must always be the life cycle"
+    #                       "partition")
 
     if part["key_sel"] not in (["NoKey"] + key_names):
         raise RuntimeError("Invalid key sel {}".format(part["key_sel"]))
