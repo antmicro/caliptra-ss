@@ -12,13 +12,6 @@ It has been generated with ./tools/scripts/fuse_ctrl_script/gen_fuse_ctrl_partit
 |      SECRET_PROD_PARTITION_3      |   yes    |    yes     |     yes     | yes (Digest)  | yes (Digest)  | Secret production partition 3.                                      |
 |        SW_MANUF_PARTITION         |    no    |     no     |     yes     | yes (Digest)  |   yes (CSR)   | Software manufacturing partition.                                   |
 |  SECRET_LC_TRANSITION_PARTITION   |   yes    |    yes     |     yes     | yes (Digest)  | yes (Digest)  | Secret life-cycle unlock token partition.                           |
-|           SVN_PARTITION           |    no    |     no     |     no      |      no       |   yes (CSR)   | SVN Partition.                                                      |
-|       VENDOR_TEST_PARTITION       |    no    |     no     |     no      | yes (Digest)  |   yes (CSR)   | Vendor test partition.                                              |
-|   VENDOR_HASHES_MANUF_PARTITION   |    no    |     no     |     no      | yes (Digest)  |   yes (CSR)   | Vendor hashes manufacturing partition.                              |
-|   VENDOR_HASHES_PROD_PARTITION    |    no    |     no     |     no      | yes (Digest)  |   yes (CSR)   | Vendor hashes production partition.                                 |
-| VENDOR_REVOCATIONS_PROD_PARTITION |    no    |     no     |     no      | yes (Digest)  |   yes (CSR)   | Vendor revocations production partition.                            |
-|   VENDOR_SECRET_PROD_PARTITION    |   yes    |    yes     |     yes     | yes (Digest)  | yes (Digest)  | Vendor secret production partition.                                 |
-| VENDOR_NON_SECRET_PROD_PARTITION  |    no    |     no     |     yes     | yes (Digest)  |   yes (CSR)   | Vendor non-secret production partition.                             |
 |            LIFE_CYCLE             |    no    |    yes     |     yes     |      no       |      no       | Lifecycle partition.                                                |
 |                                   |          |            |             |               |               | This contains lifecycle transition count and state. This partition  |
 |                                   |          |            |             |               |               | cannot be locked since the life cycle state needs to advance to RMA |
@@ -28,3 +21,9 @@ It has been generated with ./tools/scripts/fuse_ctrl_script/gen_fuse_ctrl_partit
 |                                   |          |            |             |               |               | possible to read the raw manufacturing life cycle state in encoded  |
 |                                   |          |            |             |               |               | form, since that encoding is considered a netlist secret. The LC    |
 |                                   |          |            |             |               |               | controller only exposes a decoded version of this state.            |
+|           SVN_PARTITION           |    no    |     no     |     no      |      no       |   yes (CSR)   | SVN Partition.                                                      |
+|   VENDOR_HASHES_MANUF_PARTITION   |    no    |     no     |     no      | yes (Digest)  |   yes (CSR)   | Vendor hashes manufacturing partition.                              |
+|   VENDOR_HASHES_PROD_PARTITION    |    no    |     no     |     no      | yes (Digest)  |   yes (CSR)   | Vendor hashes production partition.                                 |
+| VENDOR_REVOCATIONS_PROD_PARTITION |    no    |     no     |     no      | yes (Digest)  |   yes (CSR)   | Vendor revocations production partition.                            |
+| VENDOR_NON_SECRET_PROD_PARTITION  |    no    |     no     |     no      |      no       |   yes (CSR)   | Vendor non-secret production partition.                             |
+|           CSR_PARTITION           |    no    |     no     |     no      |      no       |      no       | Addresses mapped to FMC register space.                             |

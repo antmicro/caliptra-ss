@@ -250,44 +250,44 @@
             items: [
                 {
                     name: "CPTRA_CORE_ANTI_ROLLBACK_DISABLE",
-                    size: "4",
+                    size: "8",
                     desc: '''
                     Disables anti-rollback support from Caliptra.
                     For example, if a Platform RoT is managing FW storage and anti-rollback protection external to the SoC.
                     '''
                 },
-                {
-                    name: "CPTRA_CORE_IDEVID_CERT_IDEVID_ATTR",
-                    size: "96",
-                    desc: '''
-                    IDevID Certificate Generation Attributes.
-                    Caliptra only uses 352 bits (44 bytes). Integrator is not required to back the remaining 416 bits with physical fuses.
-                    '''
-                },
-                {
-                    name: "SOC_SPECIFIC_IDEVID_CERTIFICATE",
-                    size: "4",
-                    desc: '''
-                    SoC product requirements determine the certificate sizes based on used DSA (ML-DSA and/or ECC).
-                    Size is determined by product requirements. SoC integrator re-generates the actual size based on
-                    how certificates are handled for a given product.
-                    '''
-                },
-                {
-                    name: "CPTRA_CORE_IDEVID_MANUF_HSM_IDENTIFIER",
-                    size: "16",
-                    desc: '''
-                    Spare bits for Vendor IDevID provisioner CA identifiers.
-                    Caliptra does not use these bits. SoC may have other mechanisms to back this identifier, therefore integrator is not required to back these with physical fuses.
-                    '''
-                },
-                {
-                    name: "CPTRA_CORE_SOC_STEPPING_ID",
-                    size: "4",
-                    desc: '''
-                    Identifier assigned by vendor to differentiate silicon steppings.
-                    '''
-                },
+                //{
+                //    name: "CPTRA_CORE_IDEVID_CERT_IDEVID_ATTR",
+                //    size: "96",
+                //    desc: '''
+                //    IDevID Certificate Generation Attributes.
+                //    Caliptra only uses 352 bits (44 bytes). Integrator is not required to back the remaining 416 bits with physical fuses.
+                //    '''
+                //},
+                //{
+                //    name: "SOC_SPECIFIC_IDEVID_CERTIFICATE",
+                //    size: "4",
+                //    desc: '''
+                //    SoC product requirements determine the certificate sizes based on used DSA (ML-DSA and/or ECC).
+                //    Size is determined by product requirements. SoC integrator re-generates the actual size based on
+                //    how certificates are handled for a given product.
+                //    '''
+                //},
+                //{
+                //    name: "CPTRA_CORE_IDEVID_MANUF_HSM_IDENTIFIER",
+                //    size: "16",
+                //    desc: '''
+                //    Spare bits for Vendor IDevID provisioner CA identifiers.
+                //    Caliptra does not use these bits. SoC may have other mechanisms to back this identifier, therefore integrator is not required to back these with physical fuses.
+                //    '''
+                //},
+                //{
+                //    name: "CPTRA_CORE_SOC_STEPPING_ID",
+                //    size: "4",
+                //    desc: '''
+                //    Identifier assigned by vendor to differentiate silicon steppings.
+                //    '''
+                //},
                 {
                     name: "CPTRA_SS_PROD_DEBUG_UNLOCK_PKS_0",
                     size: "48",
@@ -297,69 +297,69 @@
                     SoC chooses the number of debug levels based on the product requirements.
                     '''
                 },
-                {
-                    name: "CPTRA_SS_PROD_DEBUG_UNLOCK_PKS_1",
-                    size: "48",
-                    desc: '''
-                    There are 8 different debug levels in production state that Caliptra-Subsystem is configured and validated.
-                    There is a need to have eight 384-bit for the each of public key.
-                    SoC chooses the number of debug levels based on the product requirements.
-                    '''
-                },
-                {
-                    name: "CPTRA_SS_PROD_DEBUG_UNLOCK_PKS_2",
-                    size: "48",
-                    desc: '''
-                    There are 8 different debug levels in production state that Caliptra-Subsystem is configured and validated.
-                    There is a need to have eight 384-bit for the each of public key.
-                    SoC chooses the number of debug levels based on the product requirements.
-                    '''
-                },
-                {
-                    name: "CPTRA_SS_PROD_DEBUG_UNLOCK_PKS_3",
-                    size: "48",
-                    desc: '''
-                    There are 8 different debug levels in production state that Caliptra-Subsystem is configured and validated.
-                    There is a need to have eight 384-bit for the each of public key.
-                    SoC chooses the number of debug levels based on the product requirements.
-                    '''
-                },
-                {
-                    name: "CPTRA_SS_PROD_DEBUG_UNLOCK_PKS_4",
-                    size: "48",
-                    desc: '''
-                    There are 8 different debug levels in production state that Caliptra-Subsystem is configured and validated.
-                    There is a need to have eight 384-bit for the each of public key.
-                    SoC chooses the number of debug levels based on the product requirements.
-                    '''
-                },
-                {
-                    name: "CPTRA_SS_PROD_DEBUG_UNLOCK_PKS_5",
-                    size: "48",
-                    desc: '''
-                    There are 8 different debug levels in production state that Caliptra-Subsystem is configured and validated.
-                    There is a need to have eight 384-bit for the each of public key.
-                    SoC chooses the number of debug levels based on the product requirements.
-                    '''
-                },
-                {
-                    name: "CPTRA_SS_PROD_DEBUG_UNLOCK_PKS_6",
-                    size: "48",
-                    desc: '''
-                    There are 8 different debug levels in production state that Caliptra-Subsystem is configured and validated.
-                    There is a need to have eight 384-bit for the each of public key.
-                    SoC chooses the number of debug levels based on the product requirements.
-                    '''
-                },
-                {
-                    name: "CPTRA_SS_PROD_DEBUG_UNLOCK_PKS_7",
-                    size: "48",
-                    desc: '''
-                    There are 8 different debug levels in production state that Caliptra-Subsystem is configured and validated.
-                    There is a need to have eight 384-bit for the each of public key.
-                    SoC chooses the number of debug levels based on the product requirements.
-                    '''
-                },
+                //{
+                //    name: "CPTRA_SS_PROD_DEBUG_UNLOCK_PKS_1",
+                //    size: "48",
+                //    desc: '''
+                //    There are 8 different debug levels in production state that Caliptra-Subsystem is configured and validated.
+                //    There is a need to have eight 384-bit for the each of public key.
+                //    SoC chooses the number of debug levels based on the product requirements.
+                //    '''
+                //},
+                //{
+                //    name: "CPTRA_SS_PROD_DEBUG_UNLOCK_PKS_2",
+                //    size: "48",
+                //    desc: '''
+                //    There are 8 different debug levels in production state that Caliptra-Subsystem is configured and validated.
+                //    There is a need to have eight 384-bit for the each of public key.
+                //    SoC chooses the number of debug levels based on the product requirements.
+                //    '''
+                //},
+                //{
+                //    name: "CPTRA_SS_PROD_DEBUG_UNLOCK_PKS_3",
+                //    size: "48",
+                //    desc: '''
+                //    There are 8 different debug levels in production state that Caliptra-Subsystem is configured and validated.
+                //    There is a need to have eight 384-bit for the each of public key.
+                //    SoC chooses the number of debug levels based on the product requirements.
+                //    '''
+                //},
+                //{
+                //    name: "CPTRA_SS_PROD_DEBUG_UNLOCK_PKS_4",
+                //    size: "48",
+                //    desc: '''
+                //    There are 8 different debug levels in production state that Caliptra-Subsystem is configured and validated.
+                //    There is a need to have eight 384-bit for the each of public key.
+                //    SoC chooses the number of debug levels based on the product requirements.
+                //    '''
+                //},
+                //{
+                //    name: "CPTRA_SS_PROD_DEBUG_UNLOCK_PKS_5",
+                //    size: "48",
+                //    desc: '''
+                //    There are 8 different debug levels in production state that Caliptra-Subsystem is configured and validated.
+                //    There is a need to have eight 384-bit for the each of public key.
+                //    SoC chooses the number of debug levels based on the product requirements.
+                //    '''
+                //},
+                //{
+                //    name: "CPTRA_SS_PROD_DEBUG_UNLOCK_PKS_6",
+                //    size: "48",
+                //    desc: '''
+                //    There are 8 different debug levels in production state that Caliptra-Subsystem is configured and validated.
+                //    There is a need to have eight 384-bit for the each of public key.
+                //    SoC chooses the number of debug levels based on the product requirements.
+                //    '''
+                //},
+                //{
+                //    name: "CPTRA_SS_PROD_DEBUG_UNLOCK_PKS_7",
+                //    size: "48",
+                //    desc: '''
+                //    There are 8 different debug levels in production state that Caliptra-Subsystem is configured and validated.
+                //    There is a need to have eight 384-bit for the each of public key.
+                //    SoC chooses the number of debug levels based on the product requirements.
+                //    '''
+                //},
             ],
             desc: '''Software manufacturing partition.
             '''
@@ -478,6 +478,53 @@
             '''
         },
         {
+            name:         "LIFE_CYCLE",
+            variant:      "LifeCycle",
+            absorb:       false,
+            secret:       false,
+            sw_digest:    false,
+            hw_digest:    false,
+            write_lock:   "None",
+            read_lock:    "None",
+            key_sel:      "NoKey",
+            integrity:    true,
+            bkout_type:   false,
+            lc_phase:     "LcStRaw",
+            items: [
+                // The life cycle transition count is specified
+                // first such that any programming attempt of the life cycle
+                // partition through the LCI will always write the transition
+                // counter words first when programming an updated state vector.
+                // This is an additional safeguard, to the sequencing in the
+                // life cycle controller to ensure that the counter is always written
+                // before any state update. I.e., the life cycle controller
+                // already splits the counter and state updates into two
+                // supsequent requests through the LCI, where the first request
+                // only contains the updated transition counter, and the second
+                // request the updated transition counter and state.
+                {
+                    name: "LC_TRANSITION_CNT",
+                    inv_default: "<random>",
+                    size: "48"
+                }
+                {
+                    name: "LC_STATE",
+                    inv_default: "<random>",
+                    size: "40"
+                }
+            ],
+            desc: '''Lifecycle partition.
+            This contains lifecycle transition count and state. This partition
+            cannot be locked since the life cycle state needs to advance to RMA
+            in-field. Note that while this partition is not marked secret, it
+            is not readable nor writeable via the DAI. Only the LC controller
+            can access this partition, and even via the LC controller it is not
+            possible to read the raw manufacturing life cycle state in encoded
+            form, since that encoding is considered a netlist secret. The LC
+            controller only exposes a decoded version of this state.
+            '''
+        },
+        {
             name:         "SVN_PARTITION",
             variant:      "Unbuffered",
             absorb:       false,
@@ -495,28 +542,28 @@
             items: [
                 {
                     name: "CPTRA_CORE_FMC_KEY_MANIFEST_SVN",
-                    size: "4",
+                    size: "8",
                     desc: '''
                     FMC security version number.
                     '''
                 },
                 {
                     name: "CPTRA_CORE_RUNTIME_SVN",
-                    size: "16",
+                    size: "32",
                     desc: '''
                     Runtime firmware security version number.
                     '''
                 },
                 {
                     name: "CPTRA_CORE_SOC_MANIFEST_SVN",
-                    size: "16",
+                    size: "32",
                     desc: '''
                     One-hot encoded value for the SOC authorization manifest minimum supported SVN.
                     '''
                 },
                 {
                     name: "CPTRA_CORE_SOC_MANIFEST_MAX_SVN",
-                    size: "4",
+                    size: "8",
                     desc: '''
                     Maximum value for the SOC authorization manifest SVN..
                     '''
@@ -525,33 +572,33 @@
             desc: '''SVN Partition.
             '''
         },
-        {
-            name:         "VENDOR_TEST_PARTITION",
-            variant:      "Unbuffered",
-            absorb:       false,
-            size:         "64", // in bytes
-            secret:       false,
-            sw_digest:    true,
-            hw_digest:    false,
-            write_lock:   "Digest",
-            read_lock:    "CSR",
-            key_sel:      "NoKey",
-            integrity:    false, // Do not use integrity (ECC) on this partition.
-            bkout_type:   false, // Do not generate a breakout type for this partition.
-            lc_phase:     "LcStProd",
-            items: [
-                {
-                    name: "VENDOR_TEST",
-                    size: "56",
-                    desc: '''
-                    This is a partition used to test if FUSE programming is done accordingly.
-                    It has 14 32-bit vendor test write location and one 64-bit for their digest values.
-                    '''
-                }
-            ],
-            desc: '''Vendor test partition.
-            '''
-        },
+        //{
+        //    name:         "VENDOR_TEST_PARTITION",
+        //    variant:      "Unbuffered",
+        //    absorb:       false,
+        //    size:         "64", // in bytes
+        //    secret:       false,
+        //    sw_digest:    true,
+        //    hw_digest:    false,
+        //    write_lock:   "Digest",
+        //    read_lock:    "CSR",
+        //    key_sel:      "NoKey",
+        //    integrity:    false, // Do not use integrity (ECC) on this partition.
+        //    bkout_type:   false, // Do not generate a breakout type for this partition.
+        //    lc_phase:     "LcStProd",
+        //    items: [
+        //        {
+        //            name: "VENDOR_TEST",
+        //            size: "32",
+        //            desc: '''
+        //            This is a partition used to test if FUSE programming is done accordingly.
+        //            It has 14 32-bit vendor test write location and one 64-bit for their digest values.
+        //            '''
+        //        }
+        //    ],
+        //    desc: '''Vendor test partition.
+        //    '''
+        //},
 #############################################################
 ## Start vendor-specific fuses
 #############################################################
@@ -575,6 +622,13 @@
                     size: "48",
                     desc: '''
                     SHA384 hash of the Vendor ECDSA P384 and LMS or MLDSA Public Key Descriptors.
+                    '''
+                },
+                {
+                    name: "CPTRA_CORE_VENDOR_PK_HASH_0_ECC",
+                    size: "20",
+                    desc: '''
+                    ECC for CPTRA_CORE_VENDOR_PK_HASH_0.
                     '''
                 },
                 {
@@ -612,6 +666,13 @@
                     '''
                 },
                 {
+                    name: "CPTRA_SS_OWNER_PK_HASH_ECC",
+                    size: "20",
+                    desc: '''
+                    ECC for CPTRA_SS_OWNER_PK_HASH.
+                    '''
+                },
+                {
                     name:   "CPTRA_SS_OWNER_PQC_KEY_TYPE",
                     size:   "4",
                     desc: '''
@@ -635,6 +696,13 @@
                     desc: '''
                     SHA384 hash of the Vendor ECDSA P384 and LMS or MLDSA Public Key Descriptors.
                     SoC product requirements determine the need of this partition; and the number of public keys required.
+                    '''
+                },
+                {
+                    name: "CPTRA_CORE_VENDOR_PK_HASH_${i}_ECC",
+                    size: "20",
+                    desc: '''
+                    ECC for CPTRA_CORE_VENDOR_PK_HASH_${i}.
                     '''
                 },
                 {
@@ -723,6 +791,13 @@
                     '''
                 },
     % endfor                                  
+                {
+                    name:   "REVOCATION_RSVD",
+                    size:   "4",
+                    desc: '''
+                    Filling for partition alignment to 64-bit.
+                    '''
+                },
             ],
             desc: '''Vendor revocations production partition.
             '''
@@ -763,12 +838,12 @@
             variant:      "Unbuffered",
             absorb:       false,
             secret:       false,
-            sw_digest:    true,
+            sw_digest:    false,
             hw_digest:    false,
-            write_lock:   "Digest",
+            write_lock:   "None",
             read_lock:    "CSR",
             key_sel:      "NoKey",
-            integrity:    true,
+            integrity:    false,
             bkout_type:   false,
             lc_phase:     "LcStProd",
             items: [
@@ -780,17 +855,20 @@
                     '''
                 },
     % endfor
+//               {
+//                    name: "CPTRA_SS_VENDOR_SPECIFIC_RSVD",
+//                    size: "28",
+//                    desc: '''Vendor-specific non-secret fuse.
+//                    '''
+//                },
             ],
             desc: '''Vendor non-secret production partition.
             '''
         },
 % endif
-#############################################################
-## End vendor-specific fuses
-#############################################################      
         {
-            name:         "LIFE_CYCLE",
-            variant:      "LifeCycle",
+            name:         "CSR_PARTITION",
+            variant:      "Unbuffered",
             absorb:       false,
             secret:       false,
             sw_digest:    false,
@@ -798,42 +876,22 @@
             write_lock:   "None",
             read_lock:    "None",
             key_sel:      "NoKey",
-            integrity:    true,
+            integrity:    false,
             bkout_type:   false,
-            lc_phase:     "LcStRaw",
+            lc_phase:     "LcStProd",
+            zeroizable:   false,
             items: [
-                // The life cycle transition count is specified
-                // first such that any programming attempt of the life cycle
-                // partition through the LCI will always write the transition
-                // counter words first when programming an updated state vector.
-                // This is an additional safeguard, to the sequencing in the
-                // life cycle controller to ensure that the counter is always written
-                // before any state update. I.e., the life cycle controller
-                // already splits the counter and state updates into two
-                // supsequent requests through the LCI, where the first request
-                // only contains the updated transition counter, and the second
-                // request the updated transition counter and state.
                 {
-                    name: "LC_TRANSITION_CNT",
-                    inv_default: "<random>",
-                    size: "48"
-                }
-                {
-                    name: "LC_STATE",
-                    inv_default: "<random>",
-                    size: "40"
-                }
+                    name: "CSR_REGION",
+                    size: "192",
+                    desc: '''Access to FMC CSR.
+                    '''
+                },
             ],
-            desc: '''Lifecycle partition.
-            This contains lifecycle transition count and state. This partition
-            cannot be locked since the life cycle state needs to advance to RMA
-            in-field. Note that while this partition is not marked secret, it
-            is not readable nor writeable via the DAI. Only the LC controller
-            can access this partition, and even via the LC controller it is not
-            possible to read the raw manufacturing life cycle state in encoded
-            form, since that encoding is considered a netlist secret. The LC
-            controller only exposes a decoded version of this state.
+            desc: '''Addresses mapped to FMC register space.
             '''
         },
+#############################################################
+## End vendor-specific fuses
     ]
 }
