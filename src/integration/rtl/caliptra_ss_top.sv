@@ -37,8 +37,8 @@ module caliptra_ss_top
     ,parameter MCU_SRAM_SIZE_KB = 512
     ,parameter bit LCC_SecVolatileRawUnlockEn = 1
     ,parameter LCC_IDCODE_VALUE = 32'h0000_0001
-    ,parameter MCU_IDCODE_VALUE = 32'h0000_0000
-    ,parameter CSS_IDCODE_VALUE = 32'h0000_0000
+    ,parameter MCU_IDCODE_VALUE = 32'h0000_0001
+    ,parameter CSS_IDCODE_VALUE = 32'h0000_0001
 ) (
     input logic cptra_ss_clk_i,
     output logic cptra_ss_rdc_clk_cg_o,

@@ -24,7 +24,7 @@
 module css_mcu0_el2_veer_wrapper
 import css_mcu0_el2_pkg::*;
  #(
-  parameter MCU_IDCODE_VALUE = 32'h0000_0000,
+  parameter MCU_IDCODE_VALUE = 32'h0000_0001,
 `include "css_mcu0_el2_param.vh"
 )
 (

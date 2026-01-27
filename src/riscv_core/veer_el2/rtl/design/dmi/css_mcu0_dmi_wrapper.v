@@ -22,7 +22,7 @@
 //-------------------------------------------------------------------------------------
 
 module css_mcu0_dmi_wrapper #(
-    parameter MCU_IDCODE_VALUE=32'h0000_0000
+    parameter MCU_IDCODE_VALUE=32'h0000_0001
   ) (
 
   // JTAG signals
