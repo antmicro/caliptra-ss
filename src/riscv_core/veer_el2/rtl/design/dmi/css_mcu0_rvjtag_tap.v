@@ -15,7 +15,7 @@
 
 module css_mcu0_rvjtag_tap #(
 parameter AWIDTH = 7,
-parameter MCU_IDCODE_VALUE = 32'h0000_0000
+parameter MCU_IDCODE_VALUE = 32'h0000_0001
 )
 (
 input               trst,
@@ -47,6 +47,12 @@ input   [3:0]       version
 
 localparam USER_DR_LENGTH = AWIDTH + 34;
 
+// Validate the parameter
+generate
+  if ((MCU_IDCODE_VALUE & 1) == 0) begin
+    $error("Illegal MCU_IDCODE_VALUE, IEEE Std 1149.1 requires that LSB is 1");
+  end
+endgenerate
 
 reg [USER_DR_LENGTH-1:0] sr, nsr, dr;
 
