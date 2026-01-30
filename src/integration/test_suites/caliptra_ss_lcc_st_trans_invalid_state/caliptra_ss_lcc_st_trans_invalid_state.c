@@ -91,9 +91,11 @@ void main (void) {
 
         uint32_t count = 0;
         memset(buf, 0, sizeof(buf));
-        for (uint32_t i = 1, k = 0; (i + lc_state_curr)< NUM_LC_STATES; i++) {
-            if (trans_matrix[lc_state_curr][i+lc_state_curr] == INV) {
-                buf[count] = i + lc_state_curr;
+        for (uint32_t i = 0; i < NUM_LC_STATES; i++) {
+            // Ignore transitions to self
+            if (i == lc_state_curr) continue;
+            if (trans_matrix[lc_state_curr][i] == INV) {
+                buf[count] = i;
                 count++;
             }
         }
