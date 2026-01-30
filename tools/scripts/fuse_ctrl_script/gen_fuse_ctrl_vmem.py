@@ -261,7 +261,8 @@ def main():
     else:
         # Generate random LC state index.
         num_states = len(lc_state_cfg['lc_state'])
-        lc_state_idx = random.randint(0, num_states - 1)
+        # Most tests assume that transitions are possible, so skip SCRAP.
+        lc_state_idx = random.randint(0, num_states - 2)
     # Convert LC state index to LC state string.
     lc_state = list(lc_state_cfg['lc_state'].items())[lc_state_idx][0]
 
