@@ -60,7 +60,7 @@ module otp_ctrl_lci
 
   import caliptra_prim_util_pkg::vbits;
 
-  localparam int NumLcOtpWords = int'(Info.size) >> OtpAddrShift;
+  localparam int NumLcOtpWords = int'(Info.size >> OtpAddrShift);
   localparam int CntWidth = vbits(NumLcOtpWords);
 
   localparam int unsigned LastLcOtpWordInt = NumLcOtpWords - 1;

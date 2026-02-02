@@ -47,7 +47,7 @@ module mci_lcc_st_trans
 
     // Converted Signals from LCC 
     output  logic                                       SOC_DFT_EN,
-    output 	logic                                       SOC_HW_DEBUG_EN,
+    output  logic                                       SOC_HW_DEBUG_EN,
 
     output lc_state_e                                   otp_static_state,
     output logic                                        otp_state_valid_o, // FC Security State Output is valid           
@@ -358,18 +358,18 @@ $rose((otp_static_state inside {LcStTestUnlocked0, LcStTestUnlocked1, LcStTestUn
 )
 
 
-//  | **LCC State vs Decoder Output** 	| **DFT_EN** 	    | **SOC_DFT_EN** 	        | **SOC_HW_DEBUG_EN**           | **Caliptra “Core” Security States**  |
-//  | :--------- 	      			    | :--------- 	    | :--------- 	            | :--------- 	         	    | :---------                           |
-//  | RAW 					            | Low 		        | Low 		                | Low 			                | Prod Non-Debug                       |
-//  | TEST_LOCKED 				        | Low 		        | Low 		                | Low 			                | Prod Non-Debug                       |
-//  | TEST_UNLOCKED  			        | High  	        | High  	                | High	 		                | Unprovisioned Debug                  |
-//  | MANUF 				            | Low 		        | Low 		                | High 			                | Manuf Non-Debug                      |
-//  | MANUF* 				            | Low 		        | Low 		                | High 			                | Manuf Debug                          |
-//  | PROD 					            | Low 		        | Low 		                | Low 			                | Prod Non-Debug                       |
-//  | PROD* 				            | Low 	      	    | High**                    | High** 		                | Prod Debug                           |
-//  | PROD_END 				            | Low 		        | Low 		                | Low 			                | Prod Non-Debug                       |
-//  | RMA 					            | High 		        | High 		                | High 			                | Prod Debug                           |
-//  | SCRAP 				            | Low 		        | Low 		                | Low 			                | Prod Non-Debug                       |
+//  | **LCC State vs Decoder Output**   | **DFT_EN**        | **SOC_DFT_EN**            | **SOC_HW_DEBUG_EN**           | **Caliptra “Core” Security States**  |
+//  | :---------                        | :---------        | :---------                | :---------                    | :---------                           |
+//  | RAW                               | Low               | Low                       | Low                           | Prod Non-Debug                       |
+//  | TEST_LOCKED                       | Low               | Low                       | Low                           | Prod Non-Debug                       |
+//  | TEST_UNLOCKED                     | High              | High                      | High                          | Unprovisioned Debug                  |
+//  | MANUF                             | Low               | Low                       | High                          | Manuf Non-Debug                      |
+//  | MANUF*                            | Low               | Low                       | High                          | Manuf Debug                          |
+//  | PROD                              | Low               | Low                       | Low                           | Prod Non-Debug                       |
+//  | PROD*                             | Low               | High**                    | High**                        | Prod Debug                           |
+//  | PROD_END                          | Low               | Low                       | Low                           | Prod Non-Debug                       |
+//  | RMA                               | High              | High                      | High                          | Prod Debug                           |
+//  | SCRAP                             | Low               | Low                       | Low                           | Prod Non-Debug                       |
 
 //-----------------------------------------------------
 // 1. If SOC_DFT_EN is Low and SOC_HW_DEBUG_EN is Low,

@@ -266,10 +266,10 @@ caliptra_prim_flop_2sync #(
 ///////////////////////////////////////////////
 // Map CIF WSTRB to BITEN of CSR block
 ///////////////////////////////////////////////
-genvar i;
+genvar genvar_i;
 generate 
-    for (i = 0; i < MCI_REG_DATA_WIDTH; i = i + 1) begin : map_wstrb_to_biten
-        assign c_cpuif_wr_biten[i] = cif_resp_if.req_data.wstrb[i/8];
+    for (genvar_i = 0; genvar_i < MCI_REG_DATA_WIDTH; genvar_i = genvar_i + 1) begin : map_wstrb_to_biten
+        assign c_cpuif_wr_biten[genvar_i] = cif_resp_if.req_data.wstrb[genvar_i/8];
     end
 endgenerate
 
@@ -342,10 +342,10 @@ always_comb begin
     mci_reg_hwif_in.MCU_NMI_VECTOR.vec.next             = mcu_dmi_uncore_wdata ; 
 
     // Straps with no override
-    mci_reg_hwif_in.MCU_IFU_AXI_USER.value.next = { {(32-$bits(strap_mcu_ifu_axi_user)){1'b0}}, strap_mcu_ifu_axi_user};
-    mci_reg_hwif_in.MCU_LSU_AXI_USER.value.next = { {(32-$bits(strap_mcu_lsu_axi_user)){1'b0}}, strap_mcu_lsu_axi_user};
-    mci_reg_hwif_in.MCU_SRAM_CONFIG_AXI_USER.value.next = { {(32-$bits(strap_mcu_sram_config_axi_user)){1'b0}}, strap_mcu_sram_config_axi_user} ;
-    mci_reg_hwif_in.MCI_SOC_CONFIG_AXI_USER.value.next  = { {(32-$bits(strap_mci_soc_config_axi_user )){1'b0}}, strap_mci_soc_config_axi_user} ;
+    mci_reg_hwif_in.MCU_IFU_AXI_USER.value.next = 32'(strap_mcu_ifu_axi_user);
+    mci_reg_hwif_in.MCU_LSU_AXI_USER.value.next = 32'(strap_mcu_lsu_axi_user);
+    mci_reg_hwif_in.MCU_SRAM_CONFIG_AXI_USER.value.next = 32'(strap_mcu_sram_config_axi_user);
+    mci_reg_hwif_in.MCI_SOC_CONFIG_AXI_USER.value.next  = 32'(strap_mci_soc_config_axi_user);
 
 end
 

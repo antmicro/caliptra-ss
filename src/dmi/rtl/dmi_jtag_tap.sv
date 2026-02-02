@@ -223,6 +223,8 @@ module dmi_jtag_tap #(
     shift_ir           = 1'b0;
     // pause_ir           = 1'b0; unused
     update_ir          = 1'b0;
+    // Lint complains if this isn't set, even though each case below covers it
+    tap_state_d        = TestLogicReset;
 
     unique case (tap_state_q)
       TestLogicReset: begin
@@ -295,7 +297,9 @@ module dmi_jtag_tap #(
         update_ir = 1'b1;
         tap_state_d = (tms_i) ? SelectDrScan : RunTestIdle;
       end
-      default: begin // can't actually happen since case is full
+      default: begin
+        // Make linter happy(-ish)
+        tap_state_d = TestLogicReset;
       end
     endcase
   end

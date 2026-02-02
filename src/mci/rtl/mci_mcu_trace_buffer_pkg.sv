@@ -33,6 +33,6 @@ package mci_mcu_trace_buffer_pkg;
   } mci_mcu_trace_buffer_dmi_reg_t;
 
   // Add 31 to round up in case the packet is not a multiple of 32.
-  parameter MCI_MCU_TRACE_PACKET_NUM_DWORDS = ($bits(mci_mcu_trace_packet_t)  + 31)/ 32;
+  parameter MCI_MCU_TRACE_PACKET_NUM_DWORDS = unsigned'($bits(mci_mcu_trace_packet_t)  + 31)/ 32;
 
 endpackage

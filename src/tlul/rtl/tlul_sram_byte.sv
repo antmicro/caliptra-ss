@@ -493,6 +493,8 @@ module tlul_sram_byte import tlul_pkg::*; #(
 
         default: begin
           alert_o = 1'b1;
+          // Even though this was done before, lint complains if it's not in default case
+          state_d = state_q;
         end
       endcase // unique case (state_q)
 

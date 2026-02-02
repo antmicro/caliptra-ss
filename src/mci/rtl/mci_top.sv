@@ -179,7 +179,7 @@ module mci_top
 
     // Converted Signals from LCC 
     output  logic                                       SOC_DFT_EN,
-    output 	logic                                       SOC_HW_DEBUG_EN,
+    output  logic                                       SOC_HW_DEBUG_EN,
 
     output lc_ctrl_state_pkg::lc_state_e                                   otp_static_state_o,
     output logic                                        otp_state_valid_o, // FC Security State Output is valid
