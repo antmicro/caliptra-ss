@@ -144,7 +144,7 @@ void poll_for_payload_available() {
     uint32_t reg_data;
     
     // Poll for payload available
-    for (uint16_t slp = 0; slp < 200; slp++) {
+    for (uint16_t slp = 0; slp < 250; slp++) {
 
         reg_data = 0x00000000;
         reg_data = lsu_read_32(CLP_AXI_DMA_REG_STATUS0) & AXI_DMA_REG_STATUS0_PAYLOAD_AVAILABLE_MASK;
@@ -159,8 +159,8 @@ void poll_for_payload_available() {
             VPRINTF(LOW, "CPTRA: Payload is available\n");
             break;
         }
-        if(slp == 199) {
-            VPRINTF(ERROR, "CPTRA: Payload not available after 199 attempts\n");
+        if(slp == 249) {
+            VPRINTF(ERROR, "CPTRA: Payload not available after 249 attempts\n");
             SEND_STDOUT_CTRL(0x1);
             while(1);
         }
