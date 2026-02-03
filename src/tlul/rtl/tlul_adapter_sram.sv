@@ -264,7 +264,7 @@ module tlul_adapter_sram
   logic sramreqaddrfifo_wready;
   logic [SramBusBankAW-1:0] sramreqaddrfifo_wdata, sramreqaddrfifo_rdata;
 
-  logic rspfifo_wvalid, rspfifo_wready;
+  logic rspfifo_wvalid, unused_rspfifo_wready;  // Used in assert, but make linter happy
   logic rspfifo_rvalid, rspfifo_rready;
   rsp_t rspfifo_wdata,  rspfifo_rdata;
 
@@ -636,7 +636,7 @@ module tlul_adapter_sram
     .rst_ni,
     .clr_i   (1'b0),
     .wvalid_i(rspfifo_wvalid),
-    .wready_o(rspfifo_wready),
+    .wready_o(unused_rspfifo_wready),
     .wdata_i (rspfifo_wdata),
     .rvalid_o(rspfifo_rvalid),
     .rready_i(rspfifo_rready),
@@ -651,7 +651,7 @@ module tlul_adapter_sram
 
   // below assertion fails when outstanding value is too small (SRAM rvalid is asserted
   // even though the RspFifo is full)
-  `CALIPTRA_ASSERT(rvalidHighWhenRspFifoFull, rvalid_i |-> rspfifo_wready)
+  `CALIPTRA_ASSERT(rvalidHighWhenRspFifoFull, rvalid_i |-> unused_rspfifo_wready)
 
   // If both ErrOnWrite and ErrOnRead are set, this block is useless
   `CALIPTRA_ASSERT_INIT(adapterNoReadOrWrite, (ErrOnWrite & ErrOnRead) == 0)

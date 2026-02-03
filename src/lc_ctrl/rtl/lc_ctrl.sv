@@ -160,14 +160,14 @@ module lc_ctrl
   output lc_hw_rev_t                                 hw_rev_o
 );
   //Unused signals
-  lc_tx_t                                     lc_cpu_en_o;
+  lc_tx_t                                     unused_lc_cpu_en_o;
   // Short-cut assignments since Caliptra-SS does not use this ports
-  lc_tx_t                                     lc_nvm_debug_en_o;
-  lc_tx_t                                     lc_iso_part_sw_rd_en_o;
-  lc_tx_t                                     lc_iso_part_sw_wr_en_o;
-  lc_tx_t                                     lc_keymgr_en_o;
-  lc_flash_rma_seed_t                         lc_flash_rma_seed_o;
-  lc_keymgr_div_t                             lc_keymgr_div_o;
+  lc_tx_t                                     unused_lc_nvm_debug_en_o;
+  lc_tx_t                                     unused_lc_iso_part_sw_rd_en_o;
+  lc_tx_t                                     unused_lc_iso_part_sw_wr_en_o;
+  lc_tx_t                                     unused_lc_keymgr_en_o;
+  lc_flash_rma_seed_t                         unused_lc_flash_rma_seed_o;
+  lc_keymgr_div_t                             unused_lc_keymgr_div_o;
   lc_tx_t                                     lc_flash_rma_req_o;
   lc_tx_t[NumRmaAckSigs-1:0]                  lc_flash_rma_ack_i;
   assign lc_flash_rma_ack_i = (lc_tx_test_true_strict(lc_flash_rma_req_o)) ? {NumRmaAckSigs{lc_ctrl_pkg::On}} : {NumRmaAckSigs{lc_ctrl_pkg::Off}};
@@ -671,7 +671,7 @@ module lc_ctrl
   end
   // ----------- VOLATILE_TEST_UNLOCKED CODE SECTION END -----------
 
-  assign lc_flash_rma_seed_o = transition_token_q[RmaSeedWidth-1:0];
+  assign unused_lc_flash_rma_seed_o = transition_token_q[RmaSeedWidth-1:0];
 
   // Gate the vendor specific test ctrl/status bits to zero in production states.
   // Buffer the enable signal to prevent optimization of the multibit signal.
@@ -697,8 +697,8 @@ module lc_ctrl
   //////////////////
 
   // logic [NumAlerts-1:0] alerts;
-  logic [NumAlerts-1:0] alert_test;
-  logic [NumAlerts-1:0] tap_alert_test;
+  logic [NumAlerts-1:0] unused_alert_test;
+  logic [NumAlerts-1:0] unused_tap_alert_test;
 
   assign alerts = {
     fatal_bus_integ_error_q,
@@ -706,7 +706,7 @@ module lc_ctrl
     fatal_prog_error_q
   };
 
-  assign alert_test = {
+  assign unused_alert_test = {
     reg2hw.alert_test.fatal_bus_integ_error.q &
     reg2hw.alert_test.fatal_bus_integ_error.qe,
     reg2hw.alert_test.fatal_state_error.q &
@@ -715,7 +715,7 @@ module lc_ctrl
     reg2hw.alert_test.fatal_prog_error.qe
   };
 
-   assign tap_alert_test = {
+   assign unused_tap_alert_test = {
     tap_reg2hw.alert_test.fatal_bus_integ_error.q &
     tap_reg2hw.alert_test.fatal_bus_integ_error.qe,
     tap_reg2hw.alert_test.fatal_state_error.q &
@@ -971,22 +971,22 @@ module lc_ctrl
     .state_invalid_error_o  ( state_invalid_error_d            ),
     .lc_raw_test_rma_o      ( lc_raw_test_rma                  ),
     .lc_dft_en_o,
-    .lc_nvm_debug_en_o,
+    .lc_nvm_debug_en_o      ( unused_lc_nvm_debug_en_o         ),
     .lc_hw_debug_en_o,
-    .lc_cpu_en_o,
+    .lc_cpu_en_o            ( unused_lc_cpu_en_o               ),
     .lc_creator_seed_sw_rw_en_o,
     .lc_owner_seed_sw_rw_en_o,
-    .lc_iso_part_sw_rd_en_o,
-    .lc_iso_part_sw_wr_en_o,
+    .lc_iso_part_sw_rd_en_o ( unused_lc_iso_part_sw_rd_en_o    ),
+    .lc_iso_part_sw_wr_en_o ( unused_lc_iso_part_sw_wr_en_o    ),
     .lc_seed_hw_rd_en_o,
-    .lc_keymgr_en_o,
+    .lc_keymgr_en_o         ( unused_lc_keymgr_en_o            ),
     .lc_escalate_en_o,
     .lc_check_byp_en_o,
     .lc_clk_byp_req_o,
     .lc_clk_byp_ack_i,
     .lc_flash_rma_req_o,
     .lc_flash_rma_ack_i,
-    .lc_keymgr_div_o
+    .lc_keymgr_div_o        ( unused_lc_keymgr_div_o           )
   );
 
   ////////////////
@@ -998,21 +998,21 @@ module lc_ctrl
   `CALIPTRA_ASSERT_KNOWN(LcOtpProgramKnown_A,    lc_otp_program_o           )
   `CALIPTRA_ASSERT_KNOWN(LcOtpTokenKnown_A,      kmac_data_o                )
   `CALIPTRA_ASSERT_KNOWN(LcDftEnKnown_A,         lc_dft_en_o                )
-  `CALIPTRA_ASSERT_KNOWN(LcNvmDebugEnKnown_A,    lc_nvm_debug_en_o          )
+  `CALIPTRA_ASSERT_KNOWN(LcNvmDebugEnKnown_A,    unused_lc_nvm_debug_en_o   )
   `CALIPTRA_ASSERT_KNOWN(LcHwDebugEnKnown_A,     lc_hw_debug_en_o           )
-  `CALIPTRA_ASSERT_KNOWN(LcCpuEnKnown_A,         lc_cpu_en_o                )
+  `CALIPTRA_ASSERT_KNOWN(LcCpuEnKnown_A,         unused_lc_cpu_en_o         )
   `CALIPTRA_ASSERT_KNOWN(LcCreatorSwRwEn_A,      lc_creator_seed_sw_rw_en_o )
   `CALIPTRA_ASSERT_KNOWN(LcOwnerSwRwEn_A,        lc_owner_seed_sw_rw_en_o   )
-  `CALIPTRA_ASSERT_KNOWN(LcIsoSwRwEn_A,          lc_iso_part_sw_rd_en_o     )
-  `CALIPTRA_ASSERT_KNOWN(LcIsoSwWrEn_A,          lc_iso_part_sw_wr_en_o     )
+  `CALIPTRA_ASSERT_KNOWN(LcIsoSwRwEn_A,          unused_lc_iso_part_sw_rd_en_o )
+  `CALIPTRA_ASSERT_KNOWN(LcIsoSwWrEn_A,          unused_lc_iso_part_sw_wr_en_o )
   `CALIPTRA_ASSERT_KNOWN(LcSeedHwRdEn_A,         lc_seed_hw_rd_en_o         )
-  `CALIPTRA_ASSERT_KNOWN(LcKeymgrEnKnown_A,      lc_keymgr_en_o             )
+  `CALIPTRA_ASSERT_KNOWN(LcKeymgrEnKnown_A,      unused_lc_keymgr_en_o      )
   `CALIPTRA_ASSERT_KNOWN(LcEscalateEnKnown_A,    lc_escalate_en_o           )
   `CALIPTRA_ASSERT_KNOWN(LcCheckBypassEnKnown_A, lc_check_byp_en_o          )
   `CALIPTRA_ASSERT_KNOWN(LcClkBypReqKnown_A,     lc_clk_byp_req_o           )
-  `CALIPTRA_ASSERT_KNOWN(LcFlashRmaSeedKnown_A,  lc_flash_rma_seed_o        )
+  `CALIPTRA_ASSERT_KNOWN(LcFlashRmaSeedKnown_A,  unused_lc_flash_rma_seed_o )
   `CALIPTRA_ASSERT_KNOWN(LcFlashRmaReqKnown_A,   lc_flash_rma_req_o         )
-  `CALIPTRA_ASSERT_KNOWN(LcKeymgrDiv_A,          lc_keymgr_div_o            )
+  `CALIPTRA_ASSERT_KNOWN(LcKeymgrDiv_A,          unused_lc_keymgr_div_o     )
 
 
 
@@ -1020,23 +1020,24 @@ module lc_ctrl
 // NOTE: Assertions have been updated since Caliptra-SS changed the alert and escalation
 // signals
 
-  caliptra_prim_alert_pkg::alert_tx_t state_alert;
-  caliptra_prim_alert_pkg::alert_tx_t program_alert;
+  // These are used in assertions, but make linter happy
+  caliptra_prim_alert_pkg::alert_tx_t unused_state_alert;
+  caliptra_prim_alert_pkg::alert_tx_t unused_program_alert;
 
   always_comb begin
     if (fatal_state_error_q) begin
-      state_alert.alert_p = 1'b1;
-      state_alert.alert_n = 1'b0;
+      unused_state_alert.alert_p = 1'b1;
+      unused_state_alert.alert_n = 1'b0;
     end else begin
-      state_alert.alert_p = 1'b0;
-      state_alert.alert_n = 1'b1;
+      unused_state_alert.alert_p = 1'b0;
+      unused_state_alert.alert_n = 1'b1;
     end
     if (fatal_prog_error_q) begin
-      program_alert.alert_p = 1'b1;
-      program_alert.alert_n = 1'b0;
+      unused_program_alert.alert_p = 1'b1;
+      unused_program_alert.alert_n = 1'b0;
     end else begin
-      program_alert.alert_p = 1'b0;
-      program_alert.alert_n = 1'b1;
+      unused_program_alert.alert_p = 1'b0;
+      unused_program_alert.alert_n = 1'b1;
     end
   end
 
@@ -1044,7 +1045,7 @@ module lc_ctrl
   // `CALIPTRA_ASSERT_PRIM_FSM_ERROR_TRIGGER_ALERT(CtrlLcFsmCheck_A,
   //     u_lc_ctrl_fsm.u_fsm_state_regs, alert_tx_o[1])
   `CALIPTRA_ASSERT_PRIM_FSM_ERROR_TRIGGER_ALERT(CtrlLcFsmCheck_A,
-      u_lc_ctrl_fsm.u_fsm_state_regs, state_alert)
+      u_lc_ctrl_fsm.u_fsm_state_regs, unused_state_alert)
   // `CALIPTRA_ASSERT_PRIM_FSM_ERROR_TRIGGER_ALERT(CtrlLcStateCheck_A,
   //     u_lc_ctrl_fsm.u_state_regs, alert_tx_o[1],
   //     !$past(otp_lc_data_i.valid) ||
@@ -1052,7 +1053,7 @@ module lc_ctrl
   //     u_lc_ctrl_fsm.esc_scrap_state0_i ||
   //     u_lc_ctrl_fsm.esc_scrap_state1_i)
   `CALIPTRA_ASSERT_PRIM_FSM_ERROR_TRIGGER_ALERT(CtrlLcStateCheck_A,
-      u_lc_ctrl_fsm.u_state_regs, state_alert,
+      u_lc_ctrl_fsm.u_state_regs, unused_state_alert,
       !$past(otp_lc_data_i.valid) ||
       u_lc_ctrl_fsm.fsm_state_q inside {ResetSt, EscalateSt, PostTransSt, InvalidSt, ScrapSt} ||
       u_lc_ctrl_fsm.esc_scrap_state0_i ||
@@ -1064,7 +1065,7 @@ module lc_ctrl
   //     u_lc_ctrl_fsm.esc_scrap_state0_i ||
   //     u_lc_ctrl_fsm.esc_scrap_state1_i)
   `CALIPTRA_ASSERT_PRIM_FSM_ERROR_TRIGGER_ALERT(CtrlLcCntCheck_A,
-      u_lc_ctrl_fsm.u_cnt_regs, state_alert,
+      u_lc_ctrl_fsm.u_cnt_regs, unused_state_alert,
        !$past(otp_lc_data_i.valid) ||
       u_lc_ctrl_fsm.fsm_state_q inside {ResetSt, EscalateSt, PostTransSt, InvalidSt, ScrapSt} ||
       u_lc_ctrl_fsm.esc_scrap_state0_i ||
@@ -1075,7 +1076,7 @@ module lc_ctrl
   //       u_lc_ctrl_fsm.esc_scrap_state0_i ||
   //       u_lc_ctrl_fsm.esc_scrap_state1_i)
   `CALIPTRA_ASSERT_PRIM_FSM_ERROR_TRIGGER_ALERT(CtrlKmacIfFsmCheck_A,
-      u_lc_ctrl_kmac_if.u_state_regs, state_alert,
+      u_lc_ctrl_kmac_if.u_state_regs, unused_state_alert,
       u_lc_ctrl_fsm.fsm_state_q inside {EscalateSt} ||
       u_lc_ctrl_fsm.esc_scrap_state0_i ||
       u_lc_ctrl_fsm.esc_scrap_state1_i)
@@ -1084,9 +1085,9 @@ module lc_ctrl
   // `CALIPTRA_ASSERT_PRIM_REG_WE_ONEHOT_ERROR_TRIGGER_ALERT(RegsWeOnehotCheck_A, u_reg, alert_tx_o[2])
   // `CALIPTRA_ASSERT_PRIM_REG_WE_ONEHOT_ERROR_TRIGGER_ALERT(TapDmiWeOnehotCheck_A,
   //                                                u_reg_tap_dmi, alert_tx_o[2], 0)
-  `CALIPTRA_ASSERT_PRIM_REG_WE_ONEHOT_ERROR_TRIGGER_ALERT(RegsWeOnehotCheck_A, u_reg, program_alert)
+  `CALIPTRA_ASSERT_PRIM_REG_WE_ONEHOT_ERROR_TRIGGER_ALERT(RegsWeOnehotCheck_A, u_reg, unused_program_alert)
   `CALIPTRA_ASSERT_PRIM_REG_WE_ONEHOT_ERROR_TRIGGER_ALERT(TapDmiWeOnehotCheck_A,
-                                                 u_reg_tap, program_alert, 0)
+                                                 u_reg_tap, unused_program_alert, 0)
 
 // ------------------------------------------------------------------------------------------
 

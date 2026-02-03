@@ -191,9 +191,10 @@ module otp_ctrl
   // Life Cycle Signal Synchronization //
   ///////////////////////////////////////
 
-  lc_ctrl_pkg::lc_tx_t       lc_creator_seed_sw_rw_en, lc_owner_seed_sw_rw_en,
-                             lc_seed_hw_rd_en, lc_check_byp_en;
+  lc_ctrl_pkg::lc_tx_t       unused_lc_creator_seed_sw_rw_en, unused_lc_owner_seed_sw_rw_en,
+                             unused_lc_seed_hw_rd_en, lc_check_byp_en;
   lc_ctrl_pkg::lc_tx_t [2:0] lc_dft_en;
+  lc_ctrl_pkg::lc_tx_t [1:0] unused_lc_dft_en;
   // NumAgents + lfsr timer and scrambling datapath.
   lc_ctrl_pkg::lc_tx_t [NumAgentsIdx+1:0] lc_escalate_en, lc_escalate_en_synced;
   // Single wire for gating assertions in arbitration and CDC primitives.
@@ -214,7 +215,7 @@ module otp_ctrl
     .clk_i,
     .rst_ni,
     .lc_en_i(lc_creator_seed_sw_rw_en_i),
-    .lc_en_o({lc_creator_seed_sw_rw_en})
+    .lc_en_o({unused_lc_creator_seed_sw_rw_en})
   );
 
   caliptra_prim_lc_sync #(
@@ -223,7 +224,7 @@ module otp_ctrl
     .clk_i,
     .rst_ni,
     .lc_en_i(lc_owner_seed_sw_rw_en_i),
-    .lc_en_o({lc_owner_seed_sw_rw_en})
+    .lc_en_o({unused_lc_owner_seed_sw_rw_en})
   );
 
   caliptra_prim_lc_sync #(
@@ -232,7 +233,7 @@ module otp_ctrl
     .clk_i,
     .rst_ni,
     .lc_en_i(lc_seed_hw_rd_en_i),
-    .lc_en_o({lc_seed_hw_rd_en})
+    .lc_en_o({unused_lc_seed_hw_rd_en})
   );
 
   caliptra_prim_lc_sync #(
@@ -252,6 +253,8 @@ module otp_ctrl
     .lc_en_i(lc_check_byp_en_i),
     .lc_en_o({lc_check_byp_en})
   );
+
+  assign unused_lc_dft_en = lc_dft_en[2:1];
 
   /////////////////////////////////////
   // TL-UL SW partition select logic //
@@ -667,7 +670,7 @@ end
   );
 
   // logic [NumAlerts-1:0] alerts;
-  logic [NumAlerts-1:0] alert_test;
+  logic [NumAlerts-1:0] unused_alert_test;
   logic fatal_prim_otp_alert, recov_prim_otp_alert;
 
   assign alerts = {
@@ -678,7 +681,7 @@ end
     fatal_macro_error_q
   };
 
-  assign alert_test = {
+  assign unused_alert_test = {
     reg2hw.alert_test.recov_prim_otp_alert.q &
     reg2hw.alert_test.recov_prim_otp_alert.qe,
     reg2hw.alert_test.fatal_prim_otp_alert.q &
@@ -788,7 +791,7 @@ end
   caliptra_prim_otp_pkg::err_e          part_otp_err;
   logic [OtpIfWidth-1:0]       part_otp_rdata;
   logic                        otp_rvalid;
-  tlul_pkg::tl_h2d_t           prim_tl_h2d_gated;
+  tlul_pkg::tl_h2d_t           unused_prim_tl_h2d_gated;
   tlul_pkg::tl_d2h_t           prim_tl_d2h_gated;
 
   // Life cycle qualification of TL-UL test interface.
@@ -801,7 +804,7 @@ end
     .rst_ni,
     .tl_h2d_i(prim_tl_i),
     .tl_d2h_o(prim_tl_o),
-    .tl_h2d_o(prim_tl_h2d_gated),
+    .tl_h2d_o(unused_prim_tl_h2d_gated),
     .tl_d2h_i(prim_tl_d2h_gated),
     .lc_en_i (lc_dft_en[0]),
     .flush_req_i('0),

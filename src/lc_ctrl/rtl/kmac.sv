@@ -1353,6 +1353,9 @@ module kmac
     logic unused_entropy_status;
     assign unused_entropy_status = entropy_in_keyblock;
 
+    logic unused_lc_escalate_en;
+    assign unused_lc_escalate_en = ^lc_escalate_en[5];
+
     // If Masking is off, always entropy configured
     assign entropy_configured = caliptra_prim_mubi_pkg::MuBi4True;
   end

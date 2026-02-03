@@ -156,7 +156,6 @@ logic mcu_sram_dmi_addr_wr_req_f ;
 logic mcu_sram_dmi_data_wr_req ;
 logic mcu_sram_dmi_addr_rd_req ;
 logic mcu_sram_dmi_data_rd_req ;
-logic mcu_sram_dmi_req;
 logic [MCU_SRAM_ADDR_W-1:0] mcu_sram_dmi_addr_reg;
 logic [MCU_SRAM_DATA_W-1:0] mcu_sram_dmi_data_reg;
 
@@ -178,8 +177,6 @@ assign mcu_sram_dmi_data_wr_req = mcu_sram_dmi_data_req && dmi_uncore_wr_en;
 // Read request
 assign mcu_sram_dmi_addr_rd_req = mcu_sram_dmi_addr_req && ~dmi_uncore_wr_en ;
 assign mcu_sram_dmi_data_rd_req = mcu_sram_dmi_data_req && ~dmi_uncore_wr_en ;
-
-assign mcu_sram_dmi_req = mcu_sram_dmi_data_wr_req | mcu_sram_dmi_data_rd_req;
 
 // DMI ADDR Reg
 always_ff @ (posedge clk or negedge mci_pwrgood) begin

@@ -391,6 +391,10 @@ module caliptra_ss_top
     logic                       disable_id_filtering_i;
     logic [`AXI_USER_WIDTH-1:0] priv_ids [`NUM_PRIV_IDS];
 
+    // ----------------------- Unused signals ---------------------------
+    logic unused_reg;
+    assign unused_reg = ^{debug_brkpt_status, mpc_debug_halt_ack, o_debug_mode_status,
+                          mpc_debug_run_ack, o_cpu_run_ack, cptra_ss_cptra_core_generic_output_wires_o};
 
     ///////
     // AXI USER assignments

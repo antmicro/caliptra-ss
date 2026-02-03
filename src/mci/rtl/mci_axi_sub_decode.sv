@@ -102,7 +102,7 @@ logic soc_mcu_mbox0_req;
 logic soc_mcu_mbox1_req;
 
 // MISC signals
-logic soc_req_miss;
+logic unused_soc_req_miss;  // Used in assert, named as unused to make linter happy
 logic mci_soc_config_req_disable;
 logic mci_soc_config_req_force_enable;
 logic mci_soc_config_axi_user_detect;
@@ -220,7 +220,7 @@ always_comb soc_resp_if.req_hold =  (soc_mcu_sram_req           & (~soc_mcu_sram
 
 // Missed all destinations 
 // Do not respond with error to avoid bringing down the system if a miss occurs.
-always_comb soc_req_miss = soc_resp_if.dv & ~(soc_mcu_sram_req | soc_mcu_trace_buffer_req | soc_mci_reg_req | soc_mcu_mbox0_req | soc_mcu_mbox1_req);
+always_comb unused_soc_req_miss = soc_resp_if.dv & ~(soc_mcu_sram_req | soc_mcu_trace_buffer_req | soc_mci_reg_req | soc_mcu_mbox0_req | soc_mcu_mbox1_req);
 
 // Error for SOC
 always_comb soc_resp_if.error = (soc_mcu_sram_req           & mcu_sram_req_if.error)  |
@@ -265,7 +265,7 @@ assign axi_mcu_sram_config_req      = soc_resp_if.dv & ~(|(soc_resp_if.req_data.
 `CALIPTRA_ASSERT_INIT(ERR_AXI_ADDR_CHECK_MCU_MBOX0, MBOX0_END_ADDR < MBOX1_START_ADDR)
 `CALIPTRA_ASSERT_INIT(ERR_AXI_ADDR_CHECK_MCU_MBOX1, MBOX1_END_ADDR < MCU_SRAM_START_ADDR)
 
-`CALIPTRA_ASSERT(MCI_MISS_NO_DV_A, soc_req_miss |-> 
+`CALIPTRA_ASSERT(MCI_MISS_NO_DV_A, unused_soc_req_miss |-> 
 !mcu_sram_req_if.dv  && !mcu_trace_buffer_req_if.dv  && !mci_reg_req_if.dv  && !mcu_mbox0_req_if.dv  && !mcu_mbox1_req_if.dv  
     ,clk, !rst_b)
 

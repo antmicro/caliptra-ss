@@ -252,7 +252,7 @@ module mci_top
     logic soc_req_mbox1_lock;
 
     // Other
-    logic mci_ss_debug_intent;
+    logic unused_mci_ss_debug_intent;
 
 
 
@@ -612,7 +612,7 @@ mci_reg_top #(
     
     // Debug intent
     .ss_debug_intent,
-    .mci_ss_debug_intent,
+    .mci_ss_debug_intent(unused_mci_ss_debug_intent),
 
     .strap_mcu_lsu_axi_user,
     .strap_mcu_ifu_axi_user,
