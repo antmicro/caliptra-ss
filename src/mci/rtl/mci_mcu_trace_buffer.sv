@@ -63,6 +63,7 @@ mci_mcu_trace_packet_t  write_trace_data_packet;
 mci_mcu_trace_packet_t  read_trace_data_packet;
 logic [31:0]            read_trace_data;
 
+logic [32:0] write_ptr_next;
 logic [31:0] write_ptr_shift; // Shifted write_ptr
 logic [NUM_TRACE_ENTRIES_PTR_WIDTH-1:0] write_ptr_chop; // Shortened write_ptr
 logic [31:0] read_ptr; // Entry into trace_buffer array
@@ -114,13 +115,14 @@ end
 always_comb begin
     trace_buffer_hwif_in.WRITE_PTR.ptr.next = trace_buffer_hwif_out.WRITE_PTR.ptr.value;
     trace_buffer_hwif_in.STATUS.wrapped.next = trace_buffer_hwif_out.STATUS.wrapped.value;
+    write_ptr_next = trace_buffer_hwif_out.WRITE_PTR.ptr.value + MCI_MCU_TRACE_PACKET_NUM_DWORDS;
     if(write_trace_buffer) begin
-        if ((trace_buffer_hwif_out.WRITE_PTR.ptr.value + MCI_MCU_TRACE_PACKET_NUM_DWORDS) >= TRACE_BUFFER_DWORD_DEPTH) begin
+        if (write_ptr_next >= TRACE_BUFFER_DWORD_DEPTH) begin
             trace_buffer_hwif_in.STATUS.wrapped.next = 1'b1;
             trace_buffer_hwif_in.WRITE_PTR.ptr.next = '0;
         end
         else begin
-            trace_buffer_hwif_in.WRITE_PTR.ptr.next = trace_buffer_hwif_out.WRITE_PTR.ptr.value + MCI_MCU_TRACE_PACKET_NUM_DWORDS;
+            trace_buffer_hwif_in.WRITE_PTR.ptr.next = write_ptr_next[31:0];
         end
     end
 end

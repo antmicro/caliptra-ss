@@ -372,6 +372,9 @@ module otp_ctrl
 
   logic [lc_ctrl_state_pkg::DecLcStateWidth-1:0] lc_state_idx;
 
+  logic [31:0] top_addr;
+  assign top_addr = (ProdVendorHashStart + ((reg2hw.vendor_pk_hash_volatile_lock-1) * ProdVendorHashSize));
+
   // SEC_CM: ACCESS.CTRL.MUBI
   part_access_t [NumPart-1:0] part_access_pre, part_access;
   always_comb begin : p_access_control
@@ -391,7 +394,7 @@ module otp_ctrl
       if (dai_cmd == DaiWrite && reg2hw.vendor_pk_hash_volatile_lock != '0 &&
           dai_addr >= ProdVendorHashStart &&
           dai_addr < ProdVendorHashEnd) begin
-        if (32'(dai_addr) >= (ProdVendorHashStart + ((reg2hw.vendor_pk_hash_volatile_lock-1) * ProdVendorHashSize))) begin
+        if (32'(dai_addr) >= top_addr) begin
           part_access_pre[VendorHashesProdPartitionIdx].write_lock = MuBi8True;
         end
       end
