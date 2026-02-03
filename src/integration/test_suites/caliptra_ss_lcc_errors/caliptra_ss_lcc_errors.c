@@ -120,8 +120,9 @@ void main (void) {
     transition_state_check(TEST_UNLOCKED0, raw_unlock_token[0], raw_unlock_token[1], raw_unlock_token[2], raw_unlock_token[3], 1);
 
     initialize_otp_controller();
-
-    switch (xorshift32() % 5) {
+    uint16_t i = xorshift32() % 6; // Randomly pick one of the 6 errors to trigger.
+    
+    switch (i) {
         case 0: {
             VPRINTF(LOW, "INFO: triggering trans_cnt_oflw_error\n");
             trans_cnt_oflw_error();
