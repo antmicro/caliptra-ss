@@ -149,4 +149,7 @@ module sub2tlul
                             cmd_intg,
                             data_intg };
 
+    logic unused_last;
+    assign unused_last = ^{last, write};
+
 endmodule

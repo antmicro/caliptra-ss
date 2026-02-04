@@ -340,8 +340,8 @@ module caliptra_ss_keccak_2share
   `CALIPTRA_ASSERT_INIT(ValidRound_A, MaxRound <= 24) // Keccak-f only
 
   // phase_sel_i shall stay for two cycle after change to 1.
-  lc_ctrl_pkg::lc_tx_t unused_lc_sig;
-  assign unused_lc_sig = lc_escalate_en_i;
+  logic unused_signals;
+  assign unused_signals = ^{lc_escalate_en_i, phase_sel_i};
   if (EnMasking) begin : gen_selperiod_chk
     `CALIPTRA_ASSUME(SelStayTwoCycleIfTrue_A,
         ($past(phase_sel_i) == MuBi4False) && (phase_sel_i == MuBi4True)

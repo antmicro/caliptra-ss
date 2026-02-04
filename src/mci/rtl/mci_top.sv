@@ -253,9 +253,9 @@ module mci_top
 
     // Other
     logic unused_mci_ss_debug_intent;
+    logic unused_mcu_dmi_active;
 
-
-
+assign unused_mcu_dmi_active = ^{mcu_dmi_active, unused_mci_ss_debug_intent};
 
 // Clock gating only using RDC clock gating functionality
 clk_gate cg ( 

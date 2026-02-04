@@ -176,6 +176,10 @@ module kmac_errchk
   // Signal to block the SW command propagation
   logic block_swcmd;
 
+  // Create a load for unused signals to make linter happy
+  logic unused_reg;
+  assign unused_reg = ^{entropy_ready_pulse_i, err_processed_i};
+
   ///////////////////
   // Error Checker //
   ///////////////////

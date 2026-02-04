@@ -1401,9 +1401,9 @@ end
   // production testing in RAW life cycle state where the OTP regs are not accessible.
   assign otp_lc_data_o.error    = |part_error[LifeCycleIdx];
 
-  // Not all bits of part_buf_data are used here.
-  logic unused_buf_data;
-  assign unused_buf_data = ^part_buf_data;
+  // Not all bits of part_buf_data are used here, and none of lc_otp_vendor_test_i.
+  logic unused_bits;
+  assign unused_bits = ^{part_buf_data, lc_otp_vendor_test_i};
 
   ////////////////
   // Assertions //
