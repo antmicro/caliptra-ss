@@ -1371,7 +1371,7 @@ module kmac
   );
 
   // Register top
-  logic [NumAlerts-1:0] alert_test, alerts, alerts_q;
+  logic [NumAlerts-1:0] alert_test, alerts;
 
   logic shadowed_storage_err, shadowed_update_err;
   kmac_reg_top u_reg (
@@ -1477,35 +1477,31 @@ module kmac
 
   // Below assumes NumAlerts == 2
   `CALIPTRA_ASSERT_INIT(NumAlerts2_A, NumAlerts == 2)
+  logic fatal_alert, unused_recoverable_alert;
 
   always_ff @(posedge clk_i or negedge rst_ni) begin
   // break up the combinatorial path for local escalation
     if (!rst_ni) begin
-      alerts_q[1] <= 1'b0;
+      fatal_alert <= 1'b0;
     end else if (alerts[1]) begin
       // fatal alerts cannot be cleared
-      alerts_q[1] <= 1'b1;
+      fatal_alert <= 1'b1;
     end
   end
 
   always_ff @(posedge clk_i or negedge rst_ni) begin
   // break up the combinatorial path for local escalation
     if (!rst_ni) begin
-      alerts_q[0] <= 1'b0;
+      unused_recoverable_alert <= 1'b0;
     end else begin
       // recoverable alerts can be cleared so just latch the value
-      alerts_q[0] <= alerts[0];
+      unused_recoverable_alert <= alerts[0];
     end
   end
-
-  // Latched recoverable alert[0] is not used. Rather removing above,
-  // keep alert_q[1:0] and make alert_q[0] unused (lint waive).
-  logic unused_alerts_q0;
-  assign unused_alerts_q0 = alerts_q[0];
 
   // SEC_CM: LC_ESCALATE_EN.INTERSIG.MUBI, FSM.GLOBAL_ESC, FSM.LOCAL_ESC
   lc_ctrl_pkg::lc_tx_t alert_to_lc_tx;
-  assign alert_to_lc_tx = lc_ctrl_pkg::lc_tx_bool_to_lc_tx(alerts_q[1]);
+  assign alert_to_lc_tx = lc_ctrl_pkg::lc_tx_bool_to_lc_tx(fatal_alert);
   for (genvar i = 0; i < NumLcSyncCopies; i++) begin : gen_or_alert_lc_sync
       assign lc_escalate_en[i] = lc_ctrl_pkg::lc_tx_or_hi(alert_to_lc_tx, lc_escalate_en_sync[i]);
   end
