@@ -1,7 +1,7 @@
 [submodule "third_party/caliptra-rtl"]
 	path = third_party/caliptra-rtl
 	url = https://github.com/antmicro/caliptra-rtl.git
-	branch = peakrdl-ifdef
+	branch = validate-idcode
 [submodule "third_party/i3c-core"]
 	path = third_party/i3c-core
 	url = https://github.com/antmicro/i3c-core.git
