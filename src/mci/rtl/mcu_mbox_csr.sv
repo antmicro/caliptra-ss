@@ -110,8 +110,8 @@ module mcu_mbox_csr (
     always_comb begin
         automatic logic is_external;
         is_external = '0;
-        decoded_reg_strb.MBOX_SRAM = cpuif_req_masked & (cpuif_addr >= 22'h0) & (cpuif_addr <= 22'h0 + 22'h1fffff);
-        is_external |= cpuif_req_masked & (cpuif_addr >= 22'h0) & (cpuif_addr <= 22'h0 + 22'h1fffff);
+        decoded_reg_strb.MBOX_SRAM = cpuif_req_masked & (cpuif_addr <= 22'h0 + 22'h1fffff);
+        is_external |= cpuif_req_masked & (cpuif_addr <= 22'h0 + 22'h1fffff);
         decoded_reg_strb.mbox_lock = cpuif_req_masked & (cpuif_addr == 22'h200000);
         decoded_reg_strb.mbox_user = cpuif_req_masked & (cpuif_addr == 22'h200004);
         decoded_reg_strb.mbox_target_user = cpuif_req_masked & (cpuif_addr == 22'h200008);
