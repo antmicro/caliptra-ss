@@ -247,25 +247,23 @@ module fc_lcc_tb_services (
   //-------------------------------------------------------------------------
 
   reg fault_active_q;
-  reg [15:0] faulted_word_q [0:6];
+  reg [15:0] faulted_word_q [0:5];
 
-  localparam int partition_offsets [0:6] = '{
+  localparam int partition_offsets [0:5] = '{
     SecretManufPartitionOffset/2,
     SecretProdPartition0Offset/2,
     SecretProdPartition1Offset/2,
     SecretProdPartition2Offset/2,
     SecretProdPartition3Offset/2,
-    SecretLcTransitionPartitionOffset/2,
-    VendorSecretProdPartitionOffset/2
+    SecretLcTransitionPartitionOffset/2
   };
-  localparam int partition_digests [0:6] = '{
+  localparam int partition_digests [0:5] = '{
     SecretManufPartitionDigestOffset/2,
     SecretProdPartition0DigestOffset/2,
     SecretProdPartition1DigestOffset/2,
     SecretProdPartition2DigestOffset/2,
     SecretProdPartition3DigestOffset/2,
-    SecretLcTransitionPartitionDigestOffset/2,
-    VendorSecretProdPartitionDigestOffset/2
+    SecretLcTransitionPartitionDigestOffset/2
   };
 
   always_ff @(posedge clk or negedge cptra_rst_b) begin
@@ -279,7 +277,7 @@ module fc_lcc_tb_services (
   end
 
   generate
-  for (genvar i = 0; i < 7; i++) begin
+  for (genvar i = 0; i < 6; i++) begin
     always_ff @(posedge clk or negedge cptra_rst_b) begin
       if (!cptra_rst_b) begin
         faulted_word_q[i] <= '0;
@@ -298,7 +296,7 @@ module fc_lcc_tb_services (
   endgenerate
 
   generate
-  for (genvar i = 0; i < 7; i++) begin
+  for (genvar i = 0; i < 6; i++) begin
     always_comb begin
       if (fault_active_q) begin
         force `FC_MEM[partition_offsets[i]][15:0] = faulted_word_q[i];

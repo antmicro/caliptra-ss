@@ -1514,9 +1514,7 @@ module caliptra_ss_top_tb
         .TestCtrlWidth    ( otp_ctrl_pkg::OtpTestCtrlWidth    ),
         .TestStatusWidth  ( otp_ctrl_pkg::OtpTestStatusWidth  ),
         .TestVectWidth    ( otp_ctrl_pkg::OtpTestVectWidth    ),
-        .MemInitFile      ("otp-img.2048.vmem"                  ),
-        .VendorTestOffset ( otp_ctrl_reg_pkg::VendorTestOffset    ),
-        .VendorTestSize   ( otp_ctrl_reg_pkg::VendorTestSize      )
+        .MemInitFile      ("otp-img.2048.vmem"                  )
     ) u_otp (
         // Clock and Reset
         .clk_i          ( cptra_ss_fuse_macro_inputs_tb.clk_i ),
