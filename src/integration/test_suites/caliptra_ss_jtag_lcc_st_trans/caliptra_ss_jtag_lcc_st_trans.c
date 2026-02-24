@@ -22,6 +22,7 @@
 #include "caliptra_ss_lc_ctrl_address_map.h"
 #include "caliptra_ss_lib.h"
 #include "fuse_ctrl.h"
+#include "fuse_ctrl_mmap.h"
 #include "lc_ctrl.h"
 
 #define CLAIM_TRANS_VAL 0x96 // Tried to match MuBi8True
@@ -42,7 +43,7 @@ void wait_dai_op_idle_no_mask() {
         status = lsu_read_32(SOC_OTP_CTRL_STATUS);
         dai_idle = (status >> OTP_CTRL_STATUS_DAI_IDLE_LOW) & 0x1;
         check_pending = (status >> OTP_CTRL_STATUS_CHECK_PENDING_LOW) & 0x1;
-    } while ((!dai_idle || check_pending) && ((status & 0x3FFFF) != 0x3FFFF));
+    } while ((!dai_idle || check_pending) && ((status & OTP_CTRL_STATUS_FULL_MASK) != OTP_CTRL_STATUS_FULL_MASK));
 
     VPRINTF(LOW, "DEBUG: DAI is now idle.\n");
     return;

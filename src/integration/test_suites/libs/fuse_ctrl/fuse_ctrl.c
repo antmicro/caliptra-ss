@@ -40,6 +40,9 @@ void grant_caliptra_core_for_fc_writes(void) {
     }
 }
 
+// Mask all partition errors, DAI and LCI
+#define OTP_CTRL_STATUS_FULL_MASK ((OTP_CTRL_STATUS_LCI_ERROR_MASK << 1) - 1)
+
 void wait_dai_op_idle(uint32_t status_mask) {
     uint32_t status;
     uint32_t dai_idle;
@@ -49,11 +52,11 @@ void wait_dai_op_idle(uint32_t status_mask) {
         status = lsu_read_32(SOC_OTP_CTRL_STATUS);
         dai_idle = (status >> OTP_CTRL_STATUS_DAI_IDLE_LOW) & 0x1;
         check_pending = (status >> OTP_CTRL_STATUS_CHECK_PENDING_LOW) & 0x1;
-    } while ((!dai_idle || check_pending) && ((status & 0x3FFFF) != 0x3FFFF));
+    } while ((!dai_idle || check_pending) && ((status & OTP_CTRL_STATUS_FULL_MASK) != OTP_CTRL_STATUS_FULL_MASK));
 
     // Clear the IDLE bit from the status value
     status &= ((((uint32_t)1) << (OTP_CTRL_STATUS_DAI_IDLE_LOW - 1)) - 1);
-    if ((status & 0x3FFFF) != status_mask) {
+    if ((status & OTP_CTRL_STATUS_FULL_MASK) != status_mask) {
         VPRINTF(LOW, "ERROR: unexpected status: expected: %08X actual: %08X\n", status_mask, status);
     }
     VPRINTF(LOW, "DEBUG: DAI is now idle.\n");
@@ -68,7 +71,7 @@ void initialize_otp_controller(void) {
     status = lsu_read_32(SOC_OTP_CTRL_STATUS);
 
     // Check for error bits in the status register
-    if (status & 0x3FFFFF != 0 ) { // Mask all bits except DAI_IDLE
+    if (status & (OTP_CTRL_STATUS_DAI_IDLE_MASK - 1) != 0 ) { // Mask all bits except DAI_IDLE
         VPRINTF(LOW, "ERROR: OTP controller initialization failed. STATUS: 0x%08X\n", status);
         return;
     }

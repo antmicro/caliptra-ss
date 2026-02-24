@@ -100,75 +100,6 @@ void program_sw_manuf_partition(uint32_t seed) {
     VPRINTF(LOW, "DEBUG: program sw manuf successful\n");
 }
 
-/**
- * Program a randomized fuse in `VENDOR_SECRET_PROD_PARTITION`. The function consists
- * of the following steps:
- * 
- *   1. Write a value to a randomized fuse.
- *   2. Read back the value and verify it is equal to the value written in Step 1.
- *      This works as long as the secret partition has not been locked.
- *   3. Verify that the partition's digest register is 0.
- *   4. Lock the partition by calculating a hardware digest.
- *   5. Reset the RTL.
- *   6. Try to read the fuse and verify that it results in an error as the
- *      is secret and locked thus not accessible by software anymore.
- *   7. Try to write a value into the fuse and verify that it results in an error
- *      as the partition has been locked in Step 5.
- *   8. Read back the digest from the partition's digest register and verify it
- *      is non-zero.
- */
-void program_vendor_secret_prod_partition(uint32_t seed) {
-    // Set AXI user ID to 1.
-    uint32_t axi_conf;
-    axi_conf = lsu_read_32(0x70000080);
-
-    const uint32_t base_address = 0x9A8;
-    uint32_t fuse_address = base_address + 32*(seed % 15);
-
-    const uint32_t data[2] = {0xdeadbeef, 0xcafebabe};
-    uint32_t read_data[2];
-
-    // Step 1
-    dai_wr(fuse_address, data[0], data[1], 64, 0);
-
-    // Step 2
-    dai_rd(fuse_address, &read_data[0], &read_data[1], 64, 0);
-    if (data[0] != read_data[0] || data[1] != read_data[1]) {
-        VPRINTF(LOW, "ERROR: incorrect fuse data: expected: %08X actual: %08X\n", data, read_data);
-        exit(1);
-    }
-
-    // Step 3
-    uint32_t digest[2];
-    digest[0] = lsu_read_32(SOC_OTP_CTRL_VENDOR_SECRET_PROD_PARTITION_DIGEST_DIGEST_0);
-    digest[1] = lsu_read_32(SOC_OTP_CTRL_VENDOR_SECRET_PROD_PARTITION_DIGEST_DIGEST_1);
-    if (digest[0] != 0 || digest[1] != 0) {
-        VPRINTF(LOW, "ERROR: digest is not 0\n");
-    }
-
-    // Step 4
-    calculate_digest(base_address);
-
-    // Step 5
-    reset_fc_lcc_rtl();
-
-    // Step 6
-    dai_rd(fuse_address, &read_data[0], &read_data[1], 64, OTP_CTRL_STATUS_DAI_ERROR_MASK);
-
-    // Step 7
-    dai_wr(fuse_address, data[0], data[1], 64, OTP_CTRL_STATUS_DAI_ERROR_MASK);
-
-    // Step 8
-    digest[0] = lsu_read_32(SOC_OTP_CTRL_VENDOR_SECRET_PROD_PARTITION_DIGEST_DIGEST_0);
-    digest[1] = lsu_read_32(SOC_OTP_CTRL_VENDOR_SECRET_PROD_PARTITION_DIGEST_DIGEST_1);
-    if (digest[0] == 0 && digest[1] == 0) {
-        VPRINTF(LOW, "ERROR: digest is 0\n");
-        exit(1);
-    }
-
-    VPRINTF(LOW, "DEBUG: program vendor secret prod successful\n");
-}
-
 void main (void) {
     VPRINTF(LOW, "=================\nMCU Caliptra Boot Go\n=================\n\n")
     
@@ -185,11 +116,7 @@ void main (void) {
 
     uint32_t rnd = xorshift32();
 
-#ifdef PROGRAM_SECRET_PARTITON
-    program_vendor_secret_prod_partition(rnd);
-#else
     program_sw_manuf_partition(rnd);
-#endif // PROGRAM_SECRET_PARTITION
 
     for (uint8_t ii = 0; ii < 160; ii++) {
         __asm__ volatile ("nop"); // Sleep loop as "nop"

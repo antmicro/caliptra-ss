@@ -46,7 +46,7 @@ volatile char* stdout = (char *)SOC_MCI_TOP_MCI_REG_DEBUG_OUT;
  *   3. Verify that writing to the second fuse now results in an error.
  */
 void program_vendor_hashes_prod_partition(void) {
-    const uint32_t addresses[2] = {CPTRA_CORE_VENDOR_PK_HASH_3, CPTRA_CORE_VENDOR_PK_HASH_4};
+    const uint32_t addresses[2] = {CPTRA_SS_OWNER_PK_HASH, CPTRA_CORE_VENDOR_PK_HASH_1};
 
     const uint32_t data = 0xdeadbeef;
 
@@ -54,7 +54,7 @@ void program_vendor_hashes_prod_partition(void) {
     dai_wr(addresses[0], data, 0, 32, 0);
 
     // Step 2
-    lsu_write_32(SOC_OTP_CTRL_VENDOR_PK_HASH_VOLATILE_LOCK, 4); // Lock all hashes starting from index 4.
+    lsu_write_32(SOC_OTP_CTRL_VENDOR_PK_HASH_VOLATILE_LOCK, 1); // Lock all hashes starting from index 1.
 
     // Step 3
     dai_wr(addresses[1], data+2, 0, 32, OTP_CTRL_STATUS_DAI_ERROR_MASK);

@@ -48,28 +48,41 @@ void test_unlocked0_provision() {
     }
 
     uint32_t read_value, zero;
-    uint32_t rnd_fuse_addresses[NUM_PARTITIONS-1];
+    // Exclude life-cycle partition as it is not writable and
+    // CSR partition as it doesn't contain fuses
+    uint32_t rnd_fuse_addresses[NUM_PARTITIONS-2];
+    uint32_t part_idx;
 
-    for (uint32_t i = 0; i < (NUM_PARTITIONS-1); i++) {
-        if (partitions[i].address > 0x40 && partitions[i].address < 0xD0) {
+    for (uint32_t i = 0; i < (NUM_PARTITIONS-2); i++) {
+        part_idx = i;
+        if (i >= LIFE_CYCLE) part_idx++;
+        if (i >= CSR_PARTITION) part_idx++;
+
+        // 'xorshift32() % 0' is undefined behaviour, don't allow that to happen
+        if (partitions[part_idx].num_fuses == 0) {
+            VPRINTF(LOW, "ERROR: partition with index %d has no fuses\n", part_idx);
+            continue;
+        }
+
+        if (partitions[part_idx].address > 0x40 && partitions[part_idx].address < 0xD0) {
             grant_caliptra_core_for_fc_writes();
         } else {
             grant_mcu_for_fc_writes(); 
         }
 
-        rnd_fuse_addresses[i] = partitions[i].fuses[xorshift32() % partitions[i].num_fuses];
+        rnd_fuse_addresses[i] = partitions[part_idx].fuses[xorshift32() % partitions[part_idx].num_fuses];
         
-        dai_wr(rnd_fuse_addresses[i], sentinel, 0, partitions[i].granularity, 0);
+        dai_wr(rnd_fuse_addresses[i], sentinel, 0, partitions[part_idx].granularity, 0);
         
-        dai_rd(rnd_fuse_addresses[i], &read_value, &zero, partitions[i].granularity, 0);
+        dai_rd(rnd_fuse_addresses[i], &read_value, &zero, partitions[part_idx].granularity, 0);
         if ((read_value & 0xFF) != sentinel) {
             VPRINTF(LOW, "ERROR: incorrect value: exp: %08X act: %08X\n", read_value, sentinel);
         }
 
-        if (partitions[i].sw_digest) {
-            dai_wr(partitions[i].digest_address, sentinel, 0, 64, 0);
-        } else if (partitions[i].hw_digest) {
-            calculate_digest(partitions[i].address);
+        if (partitions[part_idx].sw_digest) {
+            dai_wr(partitions[part_idx].digest_address, sentinel, 0, 64, 0);
+        } else if (partitions[part_idx].hw_digest) {
+            calculate_digest(partitions[part_idx].address);
         }
     } 
 
@@ -77,18 +90,22 @@ void test_unlocked0_provision() {
     wait_dai_op_idle(0);
 
     for (uint32_t i = 0; i < (NUM_PARTITIONS-1); i++) {
-        if (partitions[i].address > 0x40 && partitions[i].address < 0xD0) {
+        part_idx = i;
+        if (i >= LIFE_CYCLE) part_idx++;
+        if (i >= CSR_PARTITION) part_idx++;
+
+        if (partitions[part_idx].address > 0x40 && partitions[part_idx].address < 0xD0) {
             grant_caliptra_core_for_fc_writes();
         } else {
             grant_mcu_for_fc_writes(); 
         }
 
-        if (partitions[i].sw_digest || partitions[i].hw_digest) {
-            dai_wr(rnd_fuse_addresses[i], sentinel, 0, partitions[i].granularity, OTP_CTRL_STATUS_DAI_ERROR_MASK);
+        if (partitions[part_idx].sw_digest || partitions[part_idx].hw_digest) {
+            dai_wr(rnd_fuse_addresses[i], sentinel, 0, partitions[part_idx].granularity, OTP_CTRL_STATUS_DAI_ERROR_MASK);
         }
         
-        if (partitions[i].sw_digest) {
-            dai_rd(rnd_fuse_addresses[i], &read_value, &zero, partitions[i].granularity, 0);
+        if (partitions[part_idx].sw_digest) {
+            dai_rd(rnd_fuse_addresses[i], &read_value, &zero, partitions[part_idx].granularity, 0);
             if ((read_value & 0xFF) != sentinel) {
                 VPRINTF(LOW, "ERROR: incorrect value: exp: %08X act: %08X\n", read_value, sentinel);
             }

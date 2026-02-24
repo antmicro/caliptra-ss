@@ -16,6 +16,7 @@
 
 `include "caliptra_ss_includes.svh"
 `include "caliptra_ss_top_tb_path_defines.svh"
+`include "soc_address_map_defines.svh"
 
 interface fuse_ctrl_cov_if
 (
@@ -45,10 +46,10 @@ interface fuse_ctrl_cov_if
 
         fuse_ctrl_filter_awaddr_cp: coverpoint core_axi_wr_req_awaddr
         {
-            bins DirectAccessCmd      = { 32'h7000_0060 };
-            bins DirectAccessAddress  = { 32'h7000_0064 };
-            bins DirectAccessWData0   = { 32'h7000_0068 };
-            bins DirectAccessWData1   = { 32'h7000_006c };
+            bins DirectAccessCmd      = { `SOC_OTP_CTRL_DIRECT_ACCESS_CMD };
+            bins DirectAccessAddress  = { `SOC_OTP_CTRL_DIRECT_ACCESS_ADDRESS };
+            bins DirectAccessWData0   = { `SOC_OTP_CTRL_DAI_WDATA_RF_DIRECT_ACCESS_WDATA_0 };
+            bins DirectAccessWData1   = { `SOC_OTP_CTRL_DAI_WDATA_RF_DIRECT_ACCESS_WDATA_1 };
         }
 
         // fuse_ctrl_filter_awuser_cp: coverpoint core_axi_wr_req_awuser
