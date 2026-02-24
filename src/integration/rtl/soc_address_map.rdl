@@ -27,17 +27,17 @@
 
 addrmap soc {
 
-    I3CCSR I3CCSR @ 0x2000_4000;
+    I3CCSR I3CCSR @ 0xa403_0000;
 
-    mci_top mci_top @ 0x2100_0000;
+    mci_top mci_top @ 0xa800_0000;
     
-    mbox_csr mbox_csr @ 0xa002_0000;
+    mbox_csr mbox_csr @ 0xa412_0000;
 
     sha512_acc_csr sha512_acc_csr @ 0xa002_1000;
 
-    soc_ifc_reg soc_ifc_reg @ 0xa003_0000;
+    soc_ifc_reg soc_ifc_reg @ 0xa413_0000;
 
-    otp_ctrl otp_ctrl @ 0x7000_0000;
+    otp_ctrl otp_ctrl @ 0xa406_0000;
 
-    lc_ctrl lc_ctrl @ 0x7000_0400;
+    lc_ctrl lc_ctrl @ 0xa404_0000;
 };
