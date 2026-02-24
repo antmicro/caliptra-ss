@@ -26,6 +26,7 @@
 #include "caliptra_ss_lc_ctrl_address_map.h"
 #include "caliptra_ss_lib.h"
 #include "fuse_ctrl.h"
+#include "fuse_ctrl_mmap.h"
 #include "lc_ctrl.h"
 
 volatile char* stdout = (char *)SOC_MCI_TOP_MCI_REG_DEBUG_OUT;
@@ -53,7 +54,7 @@ void main (void) {
 
     initialize_otp_controller();
 
-    wait_dai_op_idle(0x3FFFF);
+    wait_dai_op_idle(OTP_CTRL_STATUS_FULL_MASK);
 
     for (uint8_t ii = 0; ii < 160; ii++) {
         __asm__ volatile ("nop"); // Sleep loop as "nop"

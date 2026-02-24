@@ -24,6 +24,7 @@
 `include "caliptra_macros.svh"
 `include "i3c_defines.svh"
 `include "soc_address_map_defines.svh"
+`include "soc_address_map_field_defines.svh"
 `include "caliptra_ss_includes.svh"
 `include "caliptra_ss_top_tb_intc_includes.svh"
 
@@ -1656,13 +1657,13 @@ module caliptra_ss_top_tb
     assign cptra_ss_strap_caliptra_base_addr_i  = 64'(`SOC_SOC_IFC_REG_BASE_ADDR - (`SOC_SOC_IFC_REG_BASE_ADDR & ((1<<SOC_IFC_ADDR_W)-1)));
     assign cptra_ss_strap_mci_base_addr_i       = 64'(`SOC_MCI_TOP_BASE_ADDR);
     assign cptra_ss_strap_recovery_ifc_base_addr_i = {32'h0, `SOC_I3CCSR_I3C_EC_START};
-    assign cptra_ss_strap_otp_fc_base_addr_i    = 64'h0000_0000_7000_0000;
+    assign cptra_ss_strap_otp_fc_base_addr_i    = 64'(`SOC_OTP_CTRL_BASE_ADDR);
     assign cptra_ss_strap_uds_seed_base_addr_i  = 64'h0000_0000_0000_0048;
     assign cptra_ss_strap_prod_debug_unlock_auth_pk_hash_reg_bank_offset_i = 32'h0;
     assign cptra_ss_strap_num_of_prod_debug_unlock_auth_pk_hashes_i        = 32'h0;
-    assign cptra_ss_strap_generic_0_i           = 32'h001E_0010; // {16'hIDLE_BIT_STATUS's bit Location in SOC_OTP_CTRL_STATUS,
-                                                                // 16'hSOC_OTP_CTRL_STATUS's address in SOC_IFC_REG - SOC_OTP_CTRL_BASE_ADDR}
-    assign cptra_ss_strap_generic_1_i           = 32'h0000_0080; // {32'hSOC_OTP_CTRL_DIRECT_ACCESS_CMD's address in SOC_IFC_REG - SOC_OTP_CTRL_BASE_ADDR}
+    assign cptra_ss_strap_generic_0_i           = {16'(`OTP_CTRL_STATUS_DAI_IDLE_LOW),  // {16'hIDLE_BIT_STATUS's bit Location in SOC_OTP_CTRL_STATUS,
+                                                   16'(`OTP_CTRL_STATUS)};              //  16'hSOC_OTP_CTRL_STATUS's address in SOC_IFC_REG - SOC_OTP_CTRL_BASE_ADDR}
+    assign cptra_ss_strap_generic_1_i           = `OTP_CTRL_DIRECT_ACCESS_CMD; // {32'hSOC_OTP_CTRL_DIRECT_ACCESS_CMD's address in SOC_IFC_REG - SOC_OTP_CTRL_BASE_ADDR}
     assign cptra_ss_strap_generic_2_i           = 32'h0;
     assign cptra_ss_strap_generic_3_i           = 32'h0;
     assign cptra_ss_debug_intent_i              = 1'b0;

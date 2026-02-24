@@ -56,7 +56,7 @@ void register_accesses() {
     uint32_t read_data;
 
     // Step 1
-    for (int i = 0; i < 18; i++) {
+    for (int i = 0; i < NUM_ERR_CODE_REGS; i++) {
         if (lsu_read_32(SOC_OTP_CTRL_ERR_CODE_RF_ERR_CODE_0+0x4*i)) {
             VPRINTF(LOW, "ERROR: err register %d is not zero\n", i);
             exit(1);

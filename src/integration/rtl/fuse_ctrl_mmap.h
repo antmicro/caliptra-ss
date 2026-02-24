@@ -116,6 +116,9 @@ typedef struct {
 } partition_t;
 
 #define NUM_PARTITIONS 15
+// One for each partition + one DAI + one LCI
+#define NUM_ERR_CODE_REGS          (NUM_PARTITIONS + 2)
+#define OTP_CTRL_STATUS_FULL_MASK  ((1 << NUM_ERR_CODE_REGS) - 1)
 
 uint32_t sw_test_unlock_partition_fuses[] = {
     CPTRA_SS_MANUF_DEBUG_UNLOCK_TOKEN

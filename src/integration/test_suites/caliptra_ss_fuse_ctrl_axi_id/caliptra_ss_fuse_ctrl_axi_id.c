@@ -46,10 +46,13 @@ void axi_id() {
 
     partition_t partition;
     uint32_t axi_user;
+    partition_k part_idx;
 
     for (int i = 0; i < 4; i++) {
         // Exclude life-cycle partition as it is not writable.
-        partition = partitions[xorshift32() % (NUM_PARTITIONS-1)];
+        part_idx = xorshift32() % (NUM_PARTITIONS-1);
+        if (part_idx >= LIFE_CYCLE) part_idx++;
+        partition = partitions[part_idx];
         axi_user = xorshift32() % 2;
         
         if (axi_user) {

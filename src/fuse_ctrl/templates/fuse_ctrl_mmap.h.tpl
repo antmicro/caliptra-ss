@@ -64,6 +64,9 @@ typedef struct {
 } partition_t;
 
 #define NUM_PARTITIONS ${len(partitions)}
+// One for each partition + one DAI + one LCI
+#define NUM_ERR_CODE_REGS          (NUM_PARTITIONS + 2)
+#define OTP_CTRL_STATUS_FULL_MASK  ((1 << NUM_ERR_CODE_REGS) - 1)
 
 % for i, p in enumerate(partitions[:len(partitions)]):
 uint32_t ${p["name"].lower()}_fuses[] = {

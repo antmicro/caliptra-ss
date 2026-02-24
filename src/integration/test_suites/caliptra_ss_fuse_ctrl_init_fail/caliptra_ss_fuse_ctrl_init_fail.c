@@ -72,7 +72,7 @@ void init_fail() {
 
     reset_fc_lcc_rtl();
     wait_dai_op_idle(
-        fault == CMD_FC_LCC_CORRECTABLE_FAULT ? 1 << partition.index : 0x3FFFF
+        fault == CMD_FC_LCC_CORRECTABLE_FAULT ? 1 << partition.index : OTP_CTRL_STATUS_FULL_MASK
     );
 
     uint32_t err_reg = lsu_read_32(SOC_OTP_CTRL_ERR_CODE_RF_ERR_CODE_0 + 0x4*partition.index);
