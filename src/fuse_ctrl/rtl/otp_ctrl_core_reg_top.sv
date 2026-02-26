@@ -68,9 +68,9 @@ module otp_ctrl_core_reg_top (
 
   // also check for spurious write enables
   logic reg_we_err;
-  logic [63:0] reg_we_check;
+  logic [65:0] reg_we_check;
   caliptra_prim_reg_we_check #(
-    .OneHotWidth(64)
+    .OneHotWidth(66)
   ) u_caliptra_prim_reg_we_check (
     .clk_i(clk_i),
     .rst_ni(rst_ni),
@@ -210,8 +210,8 @@ module otp_ctrl_core_reg_top (
   logic status_sw_manuf_partition_error_qs;
   logic status_secret_lc_transition_partition_error_qs;
   logic status_life_cycle_error_qs;
-  logic status_svn_partition_error_qs;
   logic status_vendor_hashes_manuf_partition_error_qs;
+  logic status_vendor_hashes_owner_prod_partition_error_qs;
   logic status_vendor_hashes_prod_partition_error_qs;
   logic status_vendor_revocations_prod_partition_error_qs;
   logic status_vendor_non_secret_prod_partition_error_qs;
@@ -300,12 +300,12 @@ module otp_ctrl_core_reg_top (
   logic sw_manuf_partition_read_lock_we;
   logic sw_manuf_partition_read_lock_qs;
   logic sw_manuf_partition_read_lock_wd;
-  logic svn_partition_read_lock_we;
-  logic svn_partition_read_lock_qs;
-  logic svn_partition_read_lock_wd;
   logic vendor_hashes_manuf_partition_read_lock_we;
   logic vendor_hashes_manuf_partition_read_lock_qs;
   logic vendor_hashes_manuf_partition_read_lock_wd;
+  logic vendor_hashes_owner_prod_partition_read_lock_we;
+  logic vendor_hashes_owner_prod_partition_read_lock_qs;
+  logic vendor_hashes_owner_prod_partition_read_lock_wd;
   logic vendor_hashes_prod_partition_read_lock_we;
   logic vendor_hashes_prod_partition_read_lock_qs;
   logic vendor_hashes_prod_partition_read_lock_wd;
@@ -354,6 +354,10 @@ module otp_ctrl_core_reg_top (
   logic [31:0] vendor_hashes_manuf_partition_digest_0_qs;
   logic vendor_hashes_manuf_partition_digest_1_re;
   logic [31:0] vendor_hashes_manuf_partition_digest_1_qs;
+  logic vendor_hashes_owner_prod_partition_digest_0_re;
+  logic [31:0] vendor_hashes_owner_prod_partition_digest_0_qs;
+  logic vendor_hashes_owner_prod_partition_digest_1_re;
+  logic [31:0] vendor_hashes_owner_prod_partition_digest_1_qs;
   logic vendor_hashes_prod_partition_digest_0_re;
   logic [31:0] vendor_hashes_prod_partition_digest_0_qs;
   logic vendor_hashes_prod_partition_digest_1_re;
@@ -734,22 +738,7 @@ module otp_ctrl_core_reg_top (
     .qs     (status_life_cycle_error_qs)
   );
 
-  //   F[svn_partition_error]: 9:9
-  caliptra_prim_subreg_ext #(
-    .DW    (1)
-  ) u_status_svn_partition_error (
-    .re     (status_re),
-    .we     (1'b0),
-    .wd     ('0),
-    .d      (hw2reg.status.svn_partition_error.d),
-    .qre    (),
-    .qe     (),
-    .q      (),
-    .ds     (),
-    .qs     (status_svn_partition_error_qs)
-  );
-
-  //   F[vendor_hashes_manuf_partition_error]: 10:10
+  //   F[vendor_hashes_manuf_partition_error]: 9:9
   caliptra_prim_subreg_ext #(
     .DW    (1)
   ) u_status_vendor_hashes_manuf_partition_error (
@@ -762,6 +751,21 @@ module otp_ctrl_core_reg_top (
     .q      (),
     .ds     (),
     .qs     (status_vendor_hashes_manuf_partition_error_qs)
+  );
+
+  //   F[vendor_hashes_owner_prod_partition_error]: 10:10
+  caliptra_prim_subreg_ext #(
+    .DW    (1)
+  ) u_status_vendor_hashes_owner_prod_partition_error (
+    .re     (status_re),
+    .we     (1'b0),
+    .wd     ('0),
+    .d      (hw2reg.status.vendor_hashes_owner_prod_partition_error.d),
+    .qre    (),
+    .qe     (),
+    .q      (),
+    .ds     (),
+    .qs     (status_vendor_hashes_owner_prod_partition_error_qs)
   );
 
   //   F[vendor_hashes_prod_partition_error]: 11:11
@@ -1660,37 +1664,6 @@ module otp_ctrl_core_reg_top (
   );
 
 
-  // R[svn_partition_read_lock]: V(False)
-  // Create REGWEN-gated WE signal
-  logic svn_partition_read_lock_gated_we;
-  assign svn_partition_read_lock_gated_we = svn_partition_read_lock_we & direct_access_regwen_qs;
-  caliptra_prim_subreg #(
-    .DW      (1),
-    .SwAccess(caliptra_prim_subreg_pkg::SwAccessW0C),
-    .RESVAL  (1'h1),
-    .Mubi    (1'b0)
-  ) u_svn_partition_read_lock (
-    .clk_i   (clk_i),
-    .rst_ni  (rst_ni),
-
-    // from register interface
-    .we     (svn_partition_read_lock_gated_we),
-    .wd     (svn_partition_read_lock_wd),
-
-    // from internal hardware
-    .de     (1'b0),
-    .d      ('0),
-
-    // to internal hardware
-    .qe     (),
-    .q      (reg2hw.svn_partition_read_lock.q),
-    .ds     (),
-
-    // to register interface (read)
-    .qs     (svn_partition_read_lock_qs)
-  );
-
-
   // R[vendor_hashes_manuf_partition_read_lock]: V(False)
   // Create REGWEN-gated WE signal
   logic vendor_hashes_manuf_partition_read_lock_gated_we;
@@ -1720,6 +1693,38 @@ module otp_ctrl_core_reg_top (
 
     // to register interface (read)
     .qs     (vendor_hashes_manuf_partition_read_lock_qs)
+  );
+
+
+  // R[vendor_hashes_owner_prod_partition_read_lock]: V(False)
+  // Create REGWEN-gated WE signal
+  logic vendor_hashes_owner_prod_partition_read_lock_gated_we;
+  assign vendor_hashes_owner_prod_partition_read_lock_gated_we =
+    vendor_hashes_owner_prod_partition_read_lock_we & direct_access_regwen_qs;
+  caliptra_prim_subreg #(
+    .DW      (1),
+    .SwAccess(caliptra_prim_subreg_pkg::SwAccessW0C),
+    .RESVAL  (1'h1),
+    .Mubi    (1'b0)
+  ) u_vendor_hashes_owner_prod_partition_read_lock (
+    .clk_i   (clk_i),
+    .rst_ni  (rst_ni),
+
+    // from register interface
+    .we     (vendor_hashes_owner_prod_partition_read_lock_gated_we),
+    .wd     (vendor_hashes_owner_prod_partition_read_lock_wd),
+
+    // from internal hardware
+    .de     (1'b0),
+    .d      ('0),
+
+    // to internal hardware
+    .qe     (),
+    .q      (reg2hw.vendor_hashes_owner_prod_partition_read_lock.q),
+    .ds     (),
+
+    // to register interface (read)
+    .qs     (vendor_hashes_owner_prod_partition_read_lock_qs)
   );
 
 
@@ -2153,6 +2158,40 @@ module otp_ctrl_core_reg_top (
   );
 
 
+  // Subregister 0 of Multireg vendor_hashes_owner_prod_partition_digest
+  // R[vendor_hashes_owner_prod_partition_digest_0]: V(True)
+  caliptra_prim_subreg_ext #(
+    .DW    (32)
+  ) u_vendor_hashes_owner_prod_partition_digest_0 (
+    .re     (vendor_hashes_owner_prod_partition_digest_0_re),
+    .we     (1'b0),
+    .wd     ('0),
+    .d      (hw2reg.vendor_hashes_owner_prod_partition_digest[0].d),
+    .qre    (),
+    .qe     (),
+    .q      (),
+    .ds     (),
+    .qs     (vendor_hashes_owner_prod_partition_digest_0_qs)
+  );
+
+
+  // Subregister 1 of Multireg vendor_hashes_owner_prod_partition_digest
+  // R[vendor_hashes_owner_prod_partition_digest_1]: V(True)
+  caliptra_prim_subreg_ext #(
+    .DW    (32)
+  ) u_vendor_hashes_owner_prod_partition_digest_1 (
+    .re     (vendor_hashes_owner_prod_partition_digest_1_re),
+    .we     (1'b0),
+    .wd     ('0),
+    .d      (hw2reg.vendor_hashes_owner_prod_partition_digest[1].d),
+    .qre    (),
+    .qe     (),
+    .q      (),
+    .ds     (),
+    .qs     (vendor_hashes_owner_prod_partition_digest_1_qs)
+  );
+
+
   // Subregister 0 of Multireg vendor_hashes_prod_partition_digest
   // R[vendor_hashes_prod_partition_digest_0]: V(True)
   caliptra_prim_subreg_ext #(
@@ -2222,7 +2261,7 @@ module otp_ctrl_core_reg_top (
 
 
 
-  logic [63:0] addr_hit;
+  logic [65:0] addr_hit;
   always_comb begin
     addr_hit = '0;
     addr_hit[ 0] = (reg_addr == OTP_CTRL_INTR_STATE_OFFSET);
@@ -2261,8 +2300,8 @@ module otp_ctrl_core_reg_top (
     addr_hit[33] = (reg_addr == OTP_CTRL_INTEGRITY_CHECK_PERIOD_OFFSET);
     addr_hit[34] = (reg_addr == OTP_CTRL_CONSISTENCY_CHECK_PERIOD_OFFSET);
     addr_hit[35] = (reg_addr == OTP_CTRL_SW_MANUF_PARTITION_READ_LOCK_OFFSET);
-    addr_hit[36] = (reg_addr == OTP_CTRL_SVN_PARTITION_READ_LOCK_OFFSET);
-    addr_hit[37] = (reg_addr == OTP_CTRL_VENDOR_HASHES_MANUF_PARTITION_READ_LOCK_OFFSET);
+    addr_hit[36] = (reg_addr == OTP_CTRL_VENDOR_HASHES_MANUF_PARTITION_READ_LOCK_OFFSET);
+    addr_hit[37] = (reg_addr == OTP_CTRL_VENDOR_HASHES_OWNER_PROD_PARTITION_READ_LOCK_OFFSET);
     addr_hit[38] = (reg_addr == OTP_CTRL_VENDOR_HASHES_PROD_PARTITION_READ_LOCK_OFFSET);
     addr_hit[39] = (reg_addr == OTP_CTRL_VENDOR_REVOCATIONS_PROD_PARTITION_READ_LOCK_OFFSET);
     addr_hit[40] = (reg_addr == OTP_CTRL_VENDOR_NON_SECRET_PROD_PARTITION_READ_LOCK_OFFSET);
@@ -2285,10 +2324,12 @@ module otp_ctrl_core_reg_top (
     addr_hit[57] = (reg_addr == OTP_CTRL_SECRET_LC_TRANSITION_PARTITION_DIGEST_1_OFFSET);
     addr_hit[58] = (reg_addr == OTP_CTRL_VENDOR_HASHES_MANUF_PARTITION_DIGEST_0_OFFSET);
     addr_hit[59] = (reg_addr == OTP_CTRL_VENDOR_HASHES_MANUF_PARTITION_DIGEST_1_OFFSET);
-    addr_hit[60] = (reg_addr == OTP_CTRL_VENDOR_HASHES_PROD_PARTITION_DIGEST_0_OFFSET);
-    addr_hit[61] = (reg_addr == OTP_CTRL_VENDOR_HASHES_PROD_PARTITION_DIGEST_1_OFFSET);
-    addr_hit[62] = (reg_addr == OTP_CTRL_VENDOR_REVOCATIONS_PROD_PARTITION_DIGEST_0_OFFSET);
-    addr_hit[63] = (reg_addr == OTP_CTRL_VENDOR_REVOCATIONS_PROD_PARTITION_DIGEST_1_OFFSET);
+    addr_hit[60] = (reg_addr == OTP_CTRL_VENDOR_HASHES_OWNER_PROD_PARTITION_DIGEST_0_OFFSET);
+    addr_hit[61] = (reg_addr == OTP_CTRL_VENDOR_HASHES_OWNER_PROD_PARTITION_DIGEST_1_OFFSET);
+    addr_hit[62] = (reg_addr == OTP_CTRL_VENDOR_HASHES_PROD_PARTITION_DIGEST_0_OFFSET);
+    addr_hit[63] = (reg_addr == OTP_CTRL_VENDOR_HASHES_PROD_PARTITION_DIGEST_1_OFFSET);
+    addr_hit[64] = (reg_addr == OTP_CTRL_VENDOR_REVOCATIONS_PROD_PARTITION_DIGEST_0_OFFSET);
+    addr_hit[65] = (reg_addr == OTP_CTRL_VENDOR_REVOCATIONS_PROD_PARTITION_DIGEST_1_OFFSET);
   end
 
   assign addrmiss = (reg_re || reg_we) ? ~|addr_hit : 1'b0 ;
@@ -2359,7 +2400,9 @@ module otp_ctrl_core_reg_top (
                (addr_hit[60] & (|(OTP_CTRL_CORE_PERMIT[60] & ~reg_be))) |
                (addr_hit[61] & (|(OTP_CTRL_CORE_PERMIT[61] & ~reg_be))) |
                (addr_hit[62] & (|(OTP_CTRL_CORE_PERMIT[62] & ~reg_be))) |
-               (addr_hit[63] & (|(OTP_CTRL_CORE_PERMIT[63] & ~reg_be)))));
+               (addr_hit[63] & (|(OTP_CTRL_CORE_PERMIT[63] & ~reg_be))) |
+               (addr_hit[64] & (|(OTP_CTRL_CORE_PERMIT[64] & ~reg_be))) |
+               (addr_hit[65] & (|(OTP_CTRL_CORE_PERMIT[65] & ~reg_be)))));
   end
 
   // Generate write-enables
@@ -2452,12 +2495,12 @@ module otp_ctrl_core_reg_top (
   assign sw_manuf_partition_read_lock_we = addr_hit[35] & reg_we & !reg_error;
 
   assign sw_manuf_partition_read_lock_wd = reg_wdata[0];
-  assign svn_partition_read_lock_we = addr_hit[36] & reg_we & !reg_error;
-
-  assign svn_partition_read_lock_wd = reg_wdata[0];
-  assign vendor_hashes_manuf_partition_read_lock_we = addr_hit[37] & reg_we & !reg_error;
+  assign vendor_hashes_manuf_partition_read_lock_we = addr_hit[36] & reg_we & !reg_error;
 
   assign vendor_hashes_manuf_partition_read_lock_wd = reg_wdata[0];
+  assign vendor_hashes_owner_prod_partition_read_lock_we = addr_hit[37] & reg_we & !reg_error;
+
+  assign vendor_hashes_owner_prod_partition_read_lock_wd = reg_wdata[0];
   assign vendor_hashes_prod_partition_read_lock_we = addr_hit[38] & reg_we & !reg_error;
 
   assign vendor_hashes_prod_partition_read_lock_wd = reg_wdata[0];
@@ -2488,10 +2531,12 @@ module otp_ctrl_core_reg_top (
   assign secret_lc_transition_partition_digest_1_re = addr_hit[57] & reg_re & !reg_error;
   assign vendor_hashes_manuf_partition_digest_0_re = addr_hit[58] & reg_re & !reg_error;
   assign vendor_hashes_manuf_partition_digest_1_re = addr_hit[59] & reg_re & !reg_error;
-  assign vendor_hashes_prod_partition_digest_0_re = addr_hit[60] & reg_re & !reg_error;
-  assign vendor_hashes_prod_partition_digest_1_re = addr_hit[61] & reg_re & !reg_error;
-  assign vendor_revocations_prod_partition_digest_0_re = addr_hit[62] & reg_re & !reg_error;
-  assign vendor_revocations_prod_partition_digest_1_re = addr_hit[63] & reg_re & !reg_error;
+  assign vendor_hashes_owner_prod_partition_digest_0_re = addr_hit[60] & reg_re & !reg_error;
+  assign vendor_hashes_owner_prod_partition_digest_1_re = addr_hit[61] & reg_re & !reg_error;
+  assign vendor_hashes_prod_partition_digest_0_re = addr_hit[62] & reg_re & !reg_error;
+  assign vendor_hashes_prod_partition_digest_1_re = addr_hit[63] & reg_re & !reg_error;
+  assign vendor_revocations_prod_partition_digest_0_re = addr_hit[64] & reg_re & !reg_error;
+  assign vendor_revocations_prod_partition_digest_1_re = addr_hit[65] & reg_re & !reg_error;
 
   // Assign write-enables to checker logic vector.
   always_comb begin
@@ -2532,8 +2577,8 @@ module otp_ctrl_core_reg_top (
     reg_we_check[33] = integrity_check_period_gated_we;
     reg_we_check[34] = consistency_check_period_gated_we;
     reg_we_check[35] = sw_manuf_partition_read_lock_gated_we;
-    reg_we_check[36] = svn_partition_read_lock_gated_we;
-    reg_we_check[37] = vendor_hashes_manuf_partition_read_lock_gated_we;
+    reg_we_check[36] = vendor_hashes_manuf_partition_read_lock_gated_we;
+    reg_we_check[37] = vendor_hashes_owner_prod_partition_read_lock_gated_we;
     reg_we_check[38] = vendor_hashes_prod_partition_read_lock_gated_we;
     reg_we_check[39] = vendor_revocations_prod_partition_read_lock_gated_we;
     reg_we_check[40] = vendor_non_secret_prod_partition_read_lock_gated_we;
@@ -2560,6 +2605,8 @@ module otp_ctrl_core_reg_top (
     reg_we_check[61] = 1'b0;
     reg_we_check[62] = 1'b0;
     reg_we_check[63] = 1'b0;
+    reg_we_check[64] = 1'b0;
+    reg_we_check[65] = 1'b0;
   end
 
   // Read data return
@@ -2599,8 +2646,8 @@ module otp_ctrl_core_reg_top (
         reg_rdata_next[6] = status_sw_manuf_partition_error_qs;
         reg_rdata_next[7] = status_secret_lc_transition_partition_error_qs;
         reg_rdata_next[8] = status_life_cycle_error_qs;
-        reg_rdata_next[9] = status_svn_partition_error_qs;
-        reg_rdata_next[10] = status_vendor_hashes_manuf_partition_error_qs;
+        reg_rdata_next[9] = status_vendor_hashes_manuf_partition_error_qs;
+        reg_rdata_next[10] = status_vendor_hashes_owner_prod_partition_error_qs;
         reg_rdata_next[11] = status_vendor_hashes_prod_partition_error_qs;
         reg_rdata_next[12] = status_vendor_revocations_prod_partition_error_qs;
         reg_rdata_next[13] = status_vendor_non_secret_prod_partition_error_qs;
@@ -2743,11 +2790,11 @@ module otp_ctrl_core_reg_top (
       end
 
       addr_hit[36]: begin
-        reg_rdata_next[0] = svn_partition_read_lock_qs;
+        reg_rdata_next[0] = vendor_hashes_manuf_partition_read_lock_qs;
       end
 
       addr_hit[37]: begin
-        reg_rdata_next[0] = vendor_hashes_manuf_partition_read_lock_qs;
+        reg_rdata_next[0] = vendor_hashes_owner_prod_partition_read_lock_qs;
       end
 
       addr_hit[38]: begin
@@ -2839,18 +2886,26 @@ module otp_ctrl_core_reg_top (
       end
 
       addr_hit[60]: begin
-        reg_rdata_next[31:0] = vendor_hashes_prod_partition_digest_0_qs;
+        reg_rdata_next[31:0] = vendor_hashes_owner_prod_partition_digest_0_qs;
       end
 
       addr_hit[61]: begin
-        reg_rdata_next[31:0] = vendor_hashes_prod_partition_digest_1_qs;
+        reg_rdata_next[31:0] = vendor_hashes_owner_prod_partition_digest_1_qs;
       end
 
       addr_hit[62]: begin
-        reg_rdata_next[31:0] = vendor_revocations_prod_partition_digest_0_qs;
+        reg_rdata_next[31:0] = vendor_hashes_prod_partition_digest_0_qs;
       end
 
       addr_hit[63]: begin
+        reg_rdata_next[31:0] = vendor_hashes_prod_partition_digest_1_qs;
+      end
+
+      addr_hit[64]: begin
+        reg_rdata_next[31:0] = vendor_revocations_prod_partition_digest_0_qs;
+      end
+
+      addr_hit[65]: begin
         reg_rdata_next[31:0] = vendor_revocations_prod_partition_digest_1_qs;
       end
 
