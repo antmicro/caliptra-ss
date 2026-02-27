@@ -617,70 +617,6 @@
             lc_phase:     "LcStDev",
             items: [
                 {
-                    name: "CPTRA_CORE_VENDOR_PK_HASH_0",
-                    size: "48",
-                    desc: '''
-                    SHA384 hash of the Vendor ECDSA P384 and LMS or MLDSA Public Key Descriptors.
-                    SoC product requirements determine the need of this partition; and the number of public keys required.
-                    '''
-                },
-                //{
-                //    name: "CPTRA_CORE_VENDOR_PK_HASH_0_ECC",
-                //    size: "20",
-                //    desc: '''
-                //    ECC for CPTRA_CORE_VENDOR_PK_HASH_0.
-                //    '''
-                //},
-                //{
-                //    name:   "CPTRA_CORE_PQC_KEY_TYPE_0",
-                //    size:   "4",
-                //    desc: '''
-                //    One-hot encoded selection of PQC key type for firmware validation. Bit 0 -> MLDSA, Bit 1 -> LMS.
-                //    SoC product requirements determine the need of this partition; and the number of public keys required.
-                //    '''
-                //},
-                {
-                    name:   "CPTRA_CORE_VENDOR_PK_HASH_0_VALID",
-                    size:   "4",
-                    desc: '''
-                    Once a key is marked valid, anything above should not be able to be written (essentially
-                    a volatile lock should be implemented on higher order bits).
-                    SoC product requirements determine the need of this partition; and the number of public keys required.
-                    '''
-                },                                          
-                {
-                    name: "CPTRA_CORE_VENDOR_PK_HASH_1",
-                    size: "48",
-                    desc: '''
-                    SHA384 hash of the Vendor ECDSA P384 and LMS or MLDSA Public Key Descriptors.
-                    SoC product requirements determine the need of this partition; and the number of public keys required.
-                    '''
-                },
-                //{
-                //    name: "CPTRA_CORE_VENDOR_PK_HASH_1_ECC",
-                //    size: "20",
-                //    desc: '''
-                //    ECC for CPTRA_CORE_VENDOR_PK_HASH_1.
-                //    '''
-                //},
-                //{
-                //    name:   "CPTRA_CORE_PQC_KEY_TYPE_1",
-                //    size:   "4",
-                //    desc: '''
-                //    One-hot encoded selection of PQC key type for firmware validation. Bit 0 -> MLDSA, Bit 1 -> LMS.
-                //    SoC product requirements determine the need of this partition; and the number of public keys required.
-                //    '''
-                //},
-                {
-                    name:   "CPTRA_CORE_VENDOR_PK_HASH_1_VALID",
-                    size:   "4",
-                    desc: '''
-                    Once a key is marked valid, anything above should not be able to be written (essentially
-                    a volatile lock should be implemented on higher order bits).
-                    SoC product requirements determine the need of this partition; and the number of public keys required.
-                    '''
-                },                                          
-                {
                     name: "CPTRA_CORE_VENDOR_PK_HASH_2",
                     size: "48",
                     desc: '''
@@ -705,6 +641,70 @@
                 //},
                 {
                     name:   "CPTRA_CORE_VENDOR_PK_HASH_2_VALID",
+                    size:   "4",
+                    desc: '''
+                    Once a key is marked valid, anything above should not be able to be written (essentially
+                    a volatile lock should be implemented on higher order bits).
+                    SoC product requirements determine the need of this partition; and the number of public keys required.
+                    '''
+                },                                          
+                {
+                    name: "CPTRA_CORE_VENDOR_PK_HASH_3",
+                    size: "48",
+                    desc: '''
+                    SHA384 hash of the Vendor ECDSA P384 and LMS or MLDSA Public Key Descriptors.
+                    SoC product requirements determine the need of this partition; and the number of public keys required.
+                    '''
+                },
+                //{
+                //    name: "CPTRA_CORE_VENDOR_PK_HASH_3_ECC",
+                //    size: "20",
+                //    desc: '''
+                //    ECC for CPTRA_CORE_VENDOR_PK_HASH_3.
+                //    '''
+                //},
+                //{
+                //    name:   "CPTRA_CORE_PQC_KEY_TYPE_3",
+                //    size:   "4",
+                //    desc: '''
+                //    One-hot encoded selection of PQC key type for firmware validation. Bit 0 -> MLDSA, Bit 1 -> LMS.
+                //    SoC product requirements determine the need of this partition; and the number of public keys required.
+                //    '''
+                //},
+                {
+                    name:   "CPTRA_CORE_VENDOR_PK_HASH_3_VALID",
+                    size:   "4",
+                    desc: '''
+                    Once a key is marked valid, anything above should not be able to be written (essentially
+                    a volatile lock should be implemented on higher order bits).
+                    SoC product requirements determine the need of this partition; and the number of public keys required.
+                    '''
+                },                                          
+                {
+                    name: "CPTRA_CORE_VENDOR_PK_HASH_4",
+                    size: "48",
+                    desc: '''
+                    SHA384 hash of the Vendor ECDSA P384 and LMS or MLDSA Public Key Descriptors.
+                    SoC product requirements determine the need of this partition; and the number of public keys required.
+                    '''
+                },
+                //{
+                //    name: "CPTRA_CORE_VENDOR_PK_HASH_4_ECC",
+                //    size: "20",
+                //    desc: '''
+                //    ECC for CPTRA_CORE_VENDOR_PK_HASH_4.
+                //    '''
+                //},
+                //{
+                //    name:   "CPTRA_CORE_PQC_KEY_TYPE_4",
+                //    size:   "4",
+                //    desc: '''
+                //    One-hot encoded selection of PQC key type for firmware validation. Bit 0 -> MLDSA, Bit 1 -> LMS.
+                //    SoC product requirements determine the need of this partition; and the number of public keys required.
+                //    '''
+                //},
+                {
+                    name:   "CPTRA_CORE_VENDOR_PK_HASH_4_VALID",
                     size:   "4",
                     desc: '''
                     Once a key is marked valid, anything above should not be able to be written (essentially
@@ -745,14 +745,14 @@
                 //    ECC for CPTRA_SS_OWNER_PK_HASH.
                 //    '''
                 //},
-                //{
-                //    name:   "CPTRA_SS_OWNER_PQC_KEY_TYPE",
-                //    size:   "4",
-                //    desc: '''
-                //    One-hot encoded selection of PQC key type for firmware validation. Bit 0 -> MLDSA, Bit 1 -> LMS.
-                //    SoC product requirements determine the need of this partition.
-                //    '''
-                //},
+                {
+                    name:   "CPTRA_SS_OWNER_PQC_KEY_TYPE",
+                    size:   "4",
+                    desc: '''
+                    One-hot encoded selection of PQC key type for firmware validation. Bit 0 -> MLDSA, Bit 1 -> LMS.
+                    SoC product requirements determine the need of this partition.
+                    '''
+                },
                 {
                     name:   "CPTRA_SS_OWNER_PK_HASH_VALID",
                     size:   "4",
@@ -781,7 +781,7 @@
             lc_phase:     "LcStProd",
             items: [
                 {
-                    name: "CPTRA_CORE_VENDOR_PK_HASH_3",
+                    name: "CPTRA_CORE_VENDOR_PK_HASH_1",
                     size: "48",
                     desc: '''
                     SHA384 hash of the Vendor ECDSA P384 and LMS or MLDSA Public Key Descriptors.
@@ -789,22 +789,22 @@
                     '''
                 },
                 //{
-                //    name: "CPTRA_CORE_VENDOR_PK_HASH_3_ECC",
+                //    name: "CPTRA_CORE_VENDOR_PK_HASH_1_ECC",
                 //    size: "20",
                 //    desc: '''
-                //    ECC for CPTRA_CORE_VENDOR_PK_HASH_3.
-                //    '''
-                //},
-                //{
-                //    name:   "CPTRA_CORE_PQC_KEY_TYPE_3",
-                //    size:   "4",
-                //    desc: '''
-                //    One-hot encoded selection of PQC key type for firmware validation. Bit 0 -> MLDSA, Bit 1 -> LMS.
-                //    SoC product requirements determine the need of this partition; and the number of public keys required.
+                //    ECC for CPTRA_CORE_VENDOR_PK_HASH_1.
                 //    '''
                 //},
                 {
-                    name:   "CPTRA_CORE_VENDOR_PK_HASH_3_VALID",
+                    name:   "CPTRA_CORE_PQC_KEY_TYPE_1",
+                    size:   "4",
+                    desc: '''
+                    One-hot encoded selection of PQC key type for firmware validation. Bit 0 -> MLDSA, Bit 1 -> LMS.
+                    SoC product requirements determine the need of this partition; and the number of public keys required.
+                    '''
+                },
+                {
+                    name:   "CPTRA_CORE_VENDOR_PK_HASH_1_VALID",
                     size:   "4",
                     desc: '''
                     Once a key is marked valid, anything above should not be able to be written (essentially
@@ -854,9 +854,9 @@
                     SoC product requirements determine the need of this partition.
                     '''
                 },
-    % for i in range(num_vendor_pk_fuses):  
+    % for i in range(4):  
                 {
-                    name:   "CPTRA_CORE_ECC_REVOCATION_${i}",
+                    name:   "CPTRA_CORE_ECC_REVOCATION_${i+1}",
                     size:   "4",
                     desc: '''
                     One-hot encoded list of revoked Vendor ECDSA P384 Public Keys (up to 4 keys).
@@ -864,7 +864,7 @@
                     '''
                 },
                 //{
-                //    name:   "CPTRA_CORE_LMS_REVOCATION_${i}",
+                //    name:   "CPTRA_CORE_LMS_REVOCATION_${i+1}",
                 //    size:   "4",
                 //    desc: '''
                 //    One-hot encoded list of revoked Vendor LMS Public Keys (up to 32 keys).
@@ -872,7 +872,7 @@
                 //    '''
                 //},
                 {
-                    name:   "CPTRA_CORE_MLDSA_REVOCATION_${i}",
+                    name:   "CPTRA_CORE_MLDSA_REVOCATION_${i+1}",
                     size:   "4",
                     desc: '''
                     One-hot encoded list of revoked Vendor MLDSA Public Keys (up to 4 keys).
