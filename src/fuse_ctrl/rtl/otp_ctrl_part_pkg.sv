@@ -24,7 +24,7 @@ package otp_ctrl_part_pkg;
   import otp_ctrl_pkg::*;
   import lc_ctrl_state_pkg::*;
 
-  parameter int NumVendorPkFuses = 1;
+  parameter int NumVendorPkFuses = 2;
   parameter int NumVendorSecretFuses = 0;
   parameter int NumVendorNonSecretFuses = 1;
 
@@ -764,9 +764,9 @@ package otp_ctrl_part_pkg;
     return otp_keymgr_key;
   endfunction : named_keymgr_key_assign
 
-  parameter int ProdVendorHashNum   = 0;
-  parameter int ProdVendorHashSize  = 0;
-  parameter int ProdVendorHashStart = 0;
-  parameter int ProdVendorHashEnd   = 0;
+  parameter int ProdVendorHashNum   = NumVendorPkFuses-1;
+  parameter int ProdVendorHashSize  = CptraCoreVendorPkHash1Size + CptraCorePqcKeyType1Size;
+  parameter int ProdVendorHashStart = CptraCoreVendorPkHash1Offset;
+  parameter int ProdVendorHashEnd   = CptraCoreVendorPkHash1Offset + (ProdVendorHashSize * ProdVendorHashNum);
 
 endpackage : otp_ctrl_part_pkg
