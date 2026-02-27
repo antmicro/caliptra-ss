@@ -117,6 +117,8 @@ package otp_ctrl_reg_pkg;
   parameter int CptraCoreVendorPkHash4Size = 48;
   parameter int CptraCoreVendorPkHash4ValidOffset = 744;
   parameter int CptraCoreVendorPkHash4ValidSize = 4;
+  parameter int CptraCoreVendorPkHashPadOffset = 748;
+  parameter int CptraCoreVendorPkHashPadSize = 4;
   parameter int VendorHashesManufPartitionDigestOffset = 752;
   parameter int VendorHashesManufPartitionDigestSize = 8;
   parameter int VendorHashesOwnerProdPartitionOffset = 760;

@@ -732,6 +732,18 @@
       default: "4",
       local: "true"
     },
+    { name: "CptraCoreVendorPkHashPadOffset",
+      desc: "Offset of CPTRA_CORE_VENDOR_PK_HASH_PAD",
+      type: "int",
+      default: "748",
+      local: "true"
+    },
+    { name: "CptraCoreVendorPkHashPadSize",
+      desc: "Size of CPTRA_CORE_VENDOR_PK_HASH_PAD",
+      type: "int",
+      default: "4",
+      local: "true"
+    },
     { name: "VendorHashesManufPartitionDigestOffset",
       desc: "Offset of VENDOR_HASHES_MANUF_PARTITION_DIGEST",
       type: "int",

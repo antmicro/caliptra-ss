@@ -54,6 +54,7 @@ typedef enum {
     CPTRA_CORE_VENDOR_PK_HASH_3_VALID = 0x02B4,
     CPTRA_CORE_VENDOR_PK_HASH_4 = 0x02B8,
     CPTRA_CORE_VENDOR_PK_HASH_4_VALID = 0x02E8,
+    CPTRA_CORE_VENDOR_PK_HASH_PAD = 0x02EC,
     // VENDOR_HASHES_OWNER_PROD_PARTITION
     CPTRA_SS_OWNER_PK_HASH = 0x02F8,
     CPTRA_SS_OWNER_PQC_KEY_TYPE = 0x0328,
@@ -161,7 +162,8 @@ uint32_t vendor_hashes_manuf_partition_fuses[] = {
     CPTRA_CORE_VENDOR_PK_HASH_3,
     CPTRA_CORE_VENDOR_PK_HASH_3_VALID,
     CPTRA_CORE_VENDOR_PK_HASH_4,
-    CPTRA_CORE_VENDOR_PK_HASH_4_VALID
+    CPTRA_CORE_VENDOR_PK_HASH_4_VALID,
+    CPTRA_CORE_VENDOR_PK_HASH_PAD
 };
 uint32_t vendor_hashes_owner_prod_partition_fuses[] = {
     CPTRA_SS_OWNER_PK_HASH,
@@ -360,7 +362,7 @@ partition_t partitions[NUM_PARTITIONS] = {
         .has_ecc = true,
         .lc_phase = 16,
         .is_lifecycle = false,
-        .num_fuses = 6,
+        .num_fuses = 7,
         .fuses = vendor_hashes_manuf_partition_fuses
     },
     // VENDOR_HASHES_OWNER_PROD_PARTITION

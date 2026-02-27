@@ -39,6 +39,7 @@ It has been generated with ./tools/scripts/fuse_ctrl_script/gen_fuse_ctrl_partit
 |         |                                    |            |      32bit       |                               CPTRA_CORE_VENDOR_PK_HASH_3_VALID                               |     0x2B4      |     4      |
 |         |                                    |            |      32bit       |                                  CPTRA_CORE_VENDOR_PK_HASH_4                                  |     0x2B8      |     48     |
 |         |                                    |            |      32bit       |                               CPTRA_CORE_VENDOR_PK_HASH_4_VALID                               |     0x2E8      |     4      |
+|         |                                    |            |      32bit       |                                 CPTRA_CORE_VENDOR_PK_HASH_PAD                                 |     0x2EC      |     4      |
 |         |                                    |            |      64bit       |      [VENDOR_HASHES_MANUF_PARTITION_DIGEST](#Reg_vendor_hashes_manuf_partition_digest_0)      |     0x2F0      |     8      |
 |   10    | VENDOR_HASHES_OWNER_PROD_PARTITION |     64     |      32bit       |                                    CPTRA_SS_OWNER_PK_HASH                                     |     0x2F8      |     48     |
 |         |                                    |            |      32bit       |                                  CPTRA_SS_OWNER_PQC_KEY_TYPE                                  |     0x328      |     4      |

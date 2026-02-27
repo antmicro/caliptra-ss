@@ -712,6 +712,13 @@
                     SoC product requirements determine the need of this partition; and the number of public keys required.
                     '''
                 },                                          
+                {
+                    name:   "CPTRA_CORE_VENDOR_PK_HASH_PAD",
+                    size:   "4",
+                    desc: '''
+                    Padding for partition alignment
+                    '''
+                },                                          
             ],
             desc: '''Vendor hash manufacturing partition.
             '''
