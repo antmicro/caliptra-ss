@@ -1029,7 +1029,7 @@
     { name: "VendorNonSecretProdPartitionSize",
       desc: "Size of the VENDOR_NON_SECRET_PROD_PARTITION partition",
       type: "int",
-      default: "24",
+      default: "8",
       local: "true"
     },
     { name: "CptraSsVendorSpecificNonSecretFuse0Offset",
@@ -1041,13 +1041,13 @@
     { name: "CptraSsVendorSpecificNonSecretFuse0Size",
       desc: "Size of CPTRA_SS_VENDOR_SPECIFIC_NON_SECRET_FUSE_0",
       type: "int",
-      default: "24",
+      default: "4",
       local: "true"
     },
     { name: "CsrPartitionOffset",
       desc: "Offset of the CSR_PARTITION partition",
       type: "int",
-      default: "960",
+      default: "944",
       local: "true"
     },
     { name: "CsrPartitionSize",
@@ -1059,7 +1059,7 @@
     { name: "CsrRegionOffset",
       desc: "Offset of CSR_REGION",
       type: "int",
-      default: "960",
+      default: "944",
       local: "true"
     },
     { name: "CsrRegionSize",

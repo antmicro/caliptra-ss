@@ -945,7 +945,7 @@
     % for i in range(num_vendor_non_secret_fuses):
                {
                     name: "CPTRA_SS_VENDOR_SPECIFIC_NON_SECRET_FUSE_${i}",
-                    size: "24",
+                    size: "4",
                     desc: '''Vendor-specific non-secret fuse ${i}.
                     '''
                 },

@@ -166,12 +166,12 @@ package otp_ctrl_reg_pkg;
   parameter int VendorRevocationsProdPartitionDigestOffset = 928;
   parameter int VendorRevocationsProdPartitionDigestSize = 8;
   parameter int VendorNonSecretProdPartitionOffset = 936;
-  parameter int VendorNonSecretProdPartitionSize = 24;
+  parameter int VendorNonSecretProdPartitionSize = 8;
   parameter int CptraSsVendorSpecificNonSecretFuse0Offset = 936;
-  parameter int CptraSsVendorSpecificNonSecretFuse0Size = 24;
-  parameter int CsrPartitionOffset = 960;
+  parameter int CptraSsVendorSpecificNonSecretFuse0Size = 4;
+  parameter int CsrPartitionOffset = 944;
   parameter int CsrPartitionSize = 192;
-  parameter int CsrRegionOffset = 960;
+  parameter int CsrRegionOffset = 944;
   parameter int CsrRegionSize = 192;
   parameter int NumAlerts = 5;
 

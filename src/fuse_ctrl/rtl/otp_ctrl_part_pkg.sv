@@ -356,7 +356,7 @@ package otp_ctrl_part_pkg;
     '{
       variant:          Unbuffered,
       offset:           12'd936,
-      size:             24,
+      size:             8,
       key_sel:          key_sel_e'('0),
       secret:           1'b0,
       sw_digest:        1'b0,
@@ -371,7 +371,7 @@ package otp_ctrl_part_pkg;
     // CSR_PARTITION
     '{
       variant:          Unbuffered,
-      offset:           12'd960,
+      offset:           12'd944,
       size:             192,
       key_sel:          key_sel_e'('0),
       secret:           1'b0,
@@ -497,12 +497,13 @@ package otp_ctrl_part_pkg;
 
 
   // OTP invalid partition default for buffered partitions.
-  parameter logic [9215:0] PartInvDefault = 9216'({
+  parameter logic [9087:0] PartInvDefault = 9088'({
     1536'({
       1536'h0
     }),
-    192'({
-      192'h0
+    64'({
+      32'h0, // unallocated space
+      32'h0
     }),
     384'({
       64'hAA3F4C71234F097C,

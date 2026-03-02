@@ -60,5 +60,5 @@ It has been generated with ./tools/scripts/fuse_ctrl_script/gen_fuse_ctrl_partit
 |         |                                    |            |      32bit       |                                  CPTRA_CORE_ECC_REVOCATION_4                                  |     0x398      |     4      |
 |         |                                    |            |      32bit       |                                 CPTRA_CORE_MLDSA_REVOCATION_4                                 |     0x39C      |     4      |
 |         |                                    |            |      64bit       |  [VENDOR_REVOCATIONS_PROD_PARTITION_DIGEST](#Reg_vendor_revocations_prod_partition_digest_0)  |     0x3A0      |     8      |
-|   13    |  VENDOR_NON_SECRET_PROD_PARTITION  |     24     |      32bit       |                          CPTRA_SS_VENDOR_SPECIFIC_NON_SECRET_FUSE_0                           |     0x3A8      |     24     |
-|   14    |           CSR_PARTITION            |    192     |      32bit       |                                          CSR_REGION                                           |     0x3C0      |    192     |
+|   13    |  VENDOR_NON_SECRET_PROD_PARTITION  |     8      |      32bit       |                          CPTRA_SS_VENDOR_SPECIFIC_NON_SECRET_FUSE_0                           |     0x3A8      |     4      |
+|   14    |           CSR_PARTITION            |    192     |      32bit       |                                          CSR_REGION                                           |     0x3B0      |    192     |

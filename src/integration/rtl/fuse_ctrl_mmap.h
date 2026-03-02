@@ -77,7 +77,7 @@ typedef enum {
     // VENDOR_NON_SECRET_PROD_PARTITION
     CPTRA_SS_VENDOR_SPECIFIC_NON_SECRET_FUSE_0 = 0x03A8,
     // CSR_PARTITION
-    CSR_REGION = 0x03C0
+    CSR_REGION = 0x03B0
 } fuse_k;
 
 typedef enum {
@@ -436,7 +436,7 @@ partition_t partitions[NUM_PARTITIONS] = {
     // CSR_PARTITION
     {
         .index = 14,
-        .address = 0x03C0,
+        .address = 0x03B0,
         .digest_address = 0x0000,
         .variant = 1,
         .granularity = 32,
