@@ -368,7 +368,7 @@ import css_mcu0_el2_pkg::*;
    //------------------------------------------------------------------------------
 
    // Function to do 8 to 3 bit encoding
-   function automatic logic [2:0] f_Enc8to3;
+   function automatic logic [2:0] f_enc8to3;
       input logic [7:0] Dec_value;
 
       logic [2:0]       Enc_value;
@@ -377,7 +377,7 @@ import css_mcu0_el2_pkg::*;
       Enc_value[2] = Dec_value[4] | Dec_value[5] | Dec_value[6] | Dec_value[7];
 
       return Enc_value[2:0];
-   endfunction // f_Enc8to3
+   endfunction // f_enc8to3
 
    // Buffer hit logic for bus load forwarding
    assign ldst_byteen_hi_m[3:0]   = ldst_byteen_ext_m[7:4];
@@ -614,9 +614,9 @@ import css_mcu0_el2_pkg::*;
 
    assign found_cmdptr0 = |CmdPtr0Dec;
    assign found_cmdptr1 = |CmdPtr1Dec;
-   assign CmdPtr0 = f_Enc8to3(8'(CmdPtr0Dec[DEPTH-1:0]));
-   assign CmdPtr1 = f_Enc8to3(8'(CmdPtr1Dec[DEPTH-1:0]));
-   assign RspPtr  = f_Enc8to3(8'(RspPtrDec[DEPTH-1:0]));
+   assign CmdPtr0 = DEPTH_LOG2'(f_enc8to3(8'(CmdPtr0Dec[DEPTH-1:0])));
+   assign CmdPtr1 = DEPTH_LOG2'(f_enc8to3(8'(CmdPtr1Dec[DEPTH-1:0])));
+   assign RspPtr  = DEPTH_LOG2'(f_enc8to3(8'(RspPtrDec[DEPTH-1:0])));
 
    // Age vector
    for (genvar i=0; i<DEPTH; i++) begin: GenAgeVec
@@ -665,6 +665,9 @@ import css_mcu0_el2_pkg::*;
       assign buf_sz_in[i]         = ibuf_drainvec_vld[i] ? ibuf_sz : {lsu_pkt_r.word, lsu_pkt_r.half};
       assign buf_write_in[i]      = ibuf_drainvec_vld[i] ? ibuf_write : lsu_pkt_r.store;
 
+      // SpyGlass doesn't recognize i as constant
+      localparam logic [DEPTH_LOG2-1:0] lpi = i[DEPTH_LOG2-1:0];
+
       // Buffer entry state machine
       always_comb begin
          buf_nxtstate[i]          = IDLE;
@@ -679,15 +682,16 @@ import css_mcu0_el2_pkg::*;
          buf_ldfwd_en[i]          = dec_tlu_force_halt;
          buf_ldfwd_in[i]          = '0;
          buf_ldfwdtag_in[i]       = '0;
+         buf_cmd_state_bus_en[i]  = '0;
 
          case (buf_state[i])
             IDLE: begin
                      buf_nxtstate[i] = lsu_bus_clk_en ? CMD : START_WAIT;
-                     buf_state_en[i] = (lsu_busreq_r & lsu_commit_r & (((ibuf_byp | ldst_dual_r) & ~ibuf_merge_en & (i == WrPtr0_r)) | (ibuf_byp & ldst_dual_r & (i == WrPtr1_r)))) |
-                                       (ibuf_drain_vld & (i == ibuf_tag));
+                     buf_state_en[i] = (lsu_busreq_r & lsu_commit_r & (((ibuf_byp | ldst_dual_r) & ~ibuf_merge_en & (lpi == WrPtr0_r)) | (ibuf_byp & ldst_dual_r & (lpi == WrPtr1_r)))) |
+                                       (ibuf_drain_vld & (lpi == ibuf_tag));
                      buf_wr_en[i]    = buf_state_en[i];
                      buf_data_en[i]  = buf_state_en[i];
-                     buf_data_in[i]   = (ibuf_drain_vld & (i == ibuf_tag)) ? ibuf_data_out[31:0] : store_data_lo_r[31:0];
+                     buf_data_in[i]   = (ibuf_drain_vld & (lpi == ibuf_tag)) ? ibuf_data_out[31:0] : store_data_lo_r[31:0];
                      buf_cmd_state_bus_en[i]  = '0;
             end
             START_WAIT: begin
@@ -697,7 +701,7 @@ import css_mcu0_el2_pkg::*;
             end
             CMD: begin
                      buf_nxtstate[i]          = dec_tlu_force_halt ? IDLE : (obuf_nosend & bus_rsp_read & (bus_rsp_read_tag == obuf_rdrsp_tag)) ? DONE_WAIT : RESP;
-                     buf_cmd_state_bus_en[i]  = ((obuf_tag0 == i) | (obuf_merge & (obuf_tag1 == i))) & obuf_valid & obuf_wr_enQ;  // Just use the recently written obuf_valid
+                     buf_cmd_state_bus_en[i]  = ((obuf_tag0 == lpi) | (obuf_merge & (obuf_tag1 == lpi))) & obuf_valid & obuf_wr_enQ;  // Just use the recently written obuf_valid
                      buf_state_bus_en[i]      = buf_cmd_state_bus_en[i];
                      buf_state_en[i]          = (buf_state_bus_en[i] & lsu_bus_clk_en) | dec_tlu_force_halt;
                      buf_ldfwd_in[i]          = 1'b1;
@@ -713,17 +717,17 @@ import css_mcu0_el2_pkg::*;
                                                            (buf_ldfwd[i] | any_done_wait_state |
                                                             (buf_dual[i] & ~buf_samedw[i] & ~buf_write[i] & buf_ldfwd[buf_dualtag[i]] &
                                                              (buf_state[buf_dualtag[i]] == DONE_PARTIAL) & any_done_wait_state)) ? DONE_WAIT : DONE;
-                     buf_resp_state_bus_en[i]  = (bus_rsp_write & (bus_rsp_write_tag == (pt.LSU_BUS_TAG)'(i))) |
-                                                 (bus_rsp_read  & ((bus_rsp_read_tag == (pt.LSU_BUS_TAG)'(i)) |
+                     buf_resp_state_bus_en[i]  = (bus_rsp_write & (bus_rsp_write_tag == (pt.LSU_BUS_TAG)'(lpi))) |
+                                                 (bus_rsp_read  & ((bus_rsp_read_tag == (pt.LSU_BUS_TAG)'(lpi)) |
                                                                    (buf_ldfwd[i] & (bus_rsp_read_tag == (pt.LSU_BUS_TAG)'(buf_ldfwdtag[i]))) |
                                                                    (buf_dual[i] & buf_dualhi[i] & ~buf_write[i] & buf_samedw[i] & (bus_rsp_read_tag == (pt.LSU_BUS_TAG)'(buf_dualtag[i])))));
                      buf_state_bus_en[i]       = buf_resp_state_bus_en[i];
                      buf_state_en[i]           = (buf_state_bus_en[i] & lsu_bus_clk_en) | dec_tlu_force_halt;
                      buf_data_en[i]            = buf_state_bus_en[i] & bus_rsp_read & lsu_bus_clk_en;
                       // Need to capture the error for stores as well for AXI
-                     buf_error_en[i]           = buf_state_bus_en[i] & lsu_bus_clk_en & ((bus_rsp_read_error  & (bus_rsp_read_tag  == (pt.LSU_BUS_TAG)'(i))) |
+                     buf_error_en[i]           = buf_state_bus_en[i] & lsu_bus_clk_en & ((bus_rsp_read_error  & (bus_rsp_read_tag  == (pt.LSU_BUS_TAG)'(lpi))) |
                                                                                          (bus_rsp_read_error  & buf_ldfwd[i] & (bus_rsp_read_tag == (pt.LSU_BUS_TAG)'(buf_ldfwdtag[i]))) |
-                                                                                         (bus_rsp_write_error & (bus_rsp_write_tag == (pt.LSU_BUS_TAG)'(i))));
+                                                                                         (bus_rsp_write_error & (bus_rsp_write_tag == (pt.LSU_BUS_TAG)'(lpi))));
                      buf_data_in[i][31:0]      = (buf_state_en[i] & ~buf_error_en[i]) ? (buf_addr[i][2] ? bus_rsp_rdata[63:32] : bus_rsp_rdata[31:0]) : bus_rsp_rdata[31:0];
                      buf_cmd_state_bus_en[i]  = '0;
             end
@@ -736,7 +740,7 @@ import css_mcu0_el2_pkg::*;
             end
             DONE_WAIT: begin  // START_WAIT state if there are multiple outstanding nb returns
                       buf_nxtstate[i]           = dec_tlu_force_halt ? IDLE : DONE;
-                      buf_state_en[i]           = ((RspPtr == DEPTH_LOG2'(i)) | (buf_dual[i] & (buf_dualtag[i] == RspPtr))) | dec_tlu_force_halt;
+                      buf_state_en[i]           = ((RspPtr == lpi) | (buf_dual[i] & (buf_dualtag[i] == RspPtr))) | dec_tlu_force_halt;
                       buf_cmd_state_bus_en[i]  = '0;
             end
             DONE: begin
@@ -759,6 +763,9 @@ import css_mcu0_el2_pkg::*;
                      buf_data_en[i]           = '0;
                      buf_error_en[i]          = '0;
                      buf_rst[i]               = '0;
+                     buf_ldfwd_en[i]          = dec_tlu_force_halt;
+                     buf_ldfwd_in[i]          = '0;
+                     buf_ldfwdtag_in[i]       = '0;
                      buf_cmd_state_bus_en[i]  = '0;
             end
             /*pragma coverage on*/

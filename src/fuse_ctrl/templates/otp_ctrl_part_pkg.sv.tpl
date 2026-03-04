@@ -25,22 +25,22 @@ package otp_ctrl_part_pkg;
   import otp_ctrl_pkg::*;
   import lc_ctrl_state_pkg::*;
 
-  parameter int NumVendorPkFuses = ${num_vendor_pk_fuses};
-  parameter int NumVendorSecretFuses = ${num_vendor_secret_fuses};
-  parameter int NumVendorNonSecretFuses = ${num_vendor_non_secret_fuses};
+  parameter int unsigned NumVendorPkFuses = ${num_vendor_pk_fuses};
+  parameter int unsigned NumVendorSecretFuses = ${num_vendor_secret_fuses};
+  parameter int unsigned NumVendorNonSecretFuses = ${num_vendor_non_secret_fuses};
 
   ////////////////////////////////////
   // Scrambling Constants and Types //
   ////////////////////////////////////
 
-  parameter int NumScrmblKeys = ${len(otp_mmap.config["scrambling"]["keys"])};
-  parameter int NumDigestSets = ${len(otp_mmap.config["scrambling"]["digests"])};
+  parameter int unsigned NumScrmblKeys = ${len(otp_mmap.config["scrambling"]["keys"])};
+  parameter int unsigned NumDigestSets = ${len(otp_mmap.config["scrambling"]["digests"])};
 
-  parameter int ScrmblKeySelWidth = vbits(NumScrmblKeys);
-  parameter int DigestSetSelWidth = vbits(NumDigestSets);
-  parameter int ConstSelWidth = (ScrmblKeySelWidth > DigestSetSelWidth) ?
-                                ScrmblKeySelWidth :
-                                DigestSetSelWidth;
+  parameter int unsigned ScrmblKeySelWidth = vbits(NumScrmblKeys);
+  parameter int unsigned DigestSetSelWidth = vbits(NumDigestSets);
+  parameter int unsigned ConstSelWidth = (ScrmblKeySelWidth > DigestSetSelWidth) ?
+                                         ScrmblKeySelWidth :
+                                         DigestSetSelWidth;
 
   typedef enum logic [ConstSelWidth-1:0] {
     StandardMode,
@@ -181,7 +181,7 @@ package otp_ctrl_part_pkg;
     NumAgentsIdx
   } part_idx_e;
 
-  parameter int NumAgents = int'(NumAgentsIdx);
+  parameter int unsigned NumAgents = unsigned'(int'(NumAgentsIdx));
 
   // Breakout types for easier access of individual items.
 % for part in otp_mmap.config["partitions"]:
@@ -381,18 +381,18 @@ package otp_ctrl_part_pkg;
   endfunction : named_keymgr_key_assign
 
 % if num_vendor_pk_fuses <= 1:
-  parameter int ProdVendorHashNum   = 0;
-  parameter int ProdVendorHashSize  = 0;
-  parameter int ProdVendorHashStart = 0;
-  parameter int ProdVendorHashEnd   = 0;
+  parameter int unsigned ProdVendorHashNum   = 0;
+  parameter int unsigned ProdVendorHashSize  = 0;
+  parameter int unsigned ProdVendorHashStart = 0;
+  parameter int unsigned ProdVendorHashEnd   = 0;
   % if num_vendor_pk_fuses == 0:
-  parameter int VendorHashesProdPartitionIdx = 0;
+  parameter int unsigned VendorHashesProdPartitionIdx = 0;
   % endif
 % else:
-  parameter int ProdVendorHashNum   = NumVendorPkFuses-1;
-  parameter int ProdVendorHashSize  = CptraCoreVendorPkHash1Size + CptraCorePqcKeyType1Size;
-  parameter int ProdVendorHashStart = CptraCoreVendorPkHash1Offset;
-  parameter int ProdVendorHashEnd   = CptraCoreVendorPkHash1Offset + (ProdVendorHashSize * ProdVendorHashNum);
+  parameter int unsigned ProdVendorHashNum   = NumVendorPkFuses-1;
+  parameter int unsigned ProdVendorHashSize  = CptraCoreVendorPkHash1Size + CptraCorePqcKeyType1Size;
+  parameter int unsigned ProdVendorHashStart = CptraCoreVendorPkHash1Offset;
+  parameter int unsigned ProdVendorHashEnd   = CptraCoreVendorPkHash1Offset + (ProdVendorHashSize * ProdVendorHashNum);
 % endif
 
 endpackage : otp_ctrl_part_pkg

@@ -15,22 +15,22 @@ package otp_ctrl_pkg;
 
   // Number of vendor-specific test CSR bits coming from and going to
   // the life cycle TAP registers.
-  parameter int OtpTestCtrlWidth   = 32;
-  parameter int OtpTestStatusWidth = 32;
-  parameter int OtpTestVectWidth   = 8;
+  parameter int unsigned OtpTestCtrlWidth   = 32;
+  parameter int unsigned OtpTestStatusWidth = 32;
+  parameter int unsigned OtpTestVectWidth   = 8;
 
   // Width of entropy input
-  parameter int EdnDataWidth = 64;
+  parameter int unsigned EdnDataWidth = 64;
 
-  parameter int NumPartWidth = vbits(NumPart);
+  parameter int unsigned NumPartWidth = vbits(NumPart);
 
-  parameter int SwWindowAddrWidth = vbits(NumSwCfgWindowWords);
+  parameter int unsigned SwWindowAddrWidth = vbits(NumSwCfgWindowWords);
 
   // Background check timer LFSR width.
-  parameter int LfsrWidth = 40;
+  parameter int unsigned LfsrWidth = 40;
   // The LFSR will be reseeded once LfsrUsageThreshold
   // values have been drawn from it.
-  parameter int LfsrUsageThreshold = 16;
+  parameter int unsigned LfsrUsageThreshold = 16;
 
   // Redundantly encoded and complementary values are used to for signalling to the partition
   // controller FSMs and the DAI whether a partition is locked or not. Any other value than
@@ -40,17 +40,17 @@ package otp_ctrl_pkg;
     caliptra_prim_mubi_pkg::mubi8_t write_lock;
   } part_access_t;
 
-  parameter int DaiCmdWidth = 3;
+  parameter int unsigned DaiCmdWidth = 3;
   typedef enum logic [DaiCmdWidth-1:0] {
     DaiRead   = 3'b001,
     DaiWrite  = 3'b010,
     DaiDigest = 3'b100
   } dai_cmd_e;
 
-  parameter int DeviceIdWidth = 256;
+  parameter int unsigned DeviceIdWidth = 256;
   typedef logic [DeviceIdWidth-1:0] otp_device_id_t;
 
-  parameter int ManufStateWidth = 256;
+  parameter int unsigned ManufStateWidth = 256;
   typedef logic [ManufStateWidth-1:0] otp_manuf_state_t;
 
   //////////////////////////////////////
@@ -58,15 +58,15 @@ package otp_ctrl_pkg;
   //////////////////////////////////////
 
   // OTP-macro specific
-  parameter int OtpWidth         = 16;
-  parameter int OtpAddrWidth     = OtpByteAddrWidth - $clog2(OtpWidth/8);
-  parameter int OtpDepth         = 2**OtpAddrWidth;
-  parameter int OtpSizeWidth     = 2; // Allows to transfer up to 4 native OTP words at once.
-  parameter int OtpErrWidth      = 3;
-  parameter int OtpPwrSeqWidth   = 2;
-  parameter int OtpIfWidth       = 2**OtpSizeWidth*OtpWidth;
+  parameter int unsigned OtpWidth         = 16;
+  parameter int unsigned OtpAddrWidth     = OtpByteAddrWidth - $clog2(OtpWidth/8);
+  parameter int unsigned OtpDepth         = 2**OtpAddrWidth;
+  parameter int unsigned OtpSizeWidth     = 2; // Allows to transfer up to 4 native OTP words at once.
+  parameter int unsigned OtpErrWidth      = 3;
+  parameter int unsigned OtpPwrSeqWidth   = 2;
+  parameter int unsigned OtpIfWidth       = 2**OtpSizeWidth*OtpWidth;
   // Number of Byte address bits to cut off in order to get the native OTP word address.
-  parameter int OtpAddrShift     = OtpByteAddrWidth - OtpAddrWidth;
+  parameter int unsigned OtpAddrShift     = OtpByteAddrWidth - OtpAddrWidth;
 
   typedef enum logic [OtpErrWidth-1:0] {
     NoError              = 3'h0,
@@ -83,11 +83,11 @@ package otp_ctrl_pkg;
   // Typedefs for OTP Scrambling //
   /////////////////////////////////
 
-  parameter int ScrmblKeyWidth   = 128;
-  parameter int ScrmblBlockWidth = 64;
+  parameter int unsigned ScrmblKeyWidth   = 128;
+  parameter int unsigned ScrmblBlockWidth = 64;
 
-  parameter int NumPresentRounds = 31;
-  parameter int ScrmblBlockHalfWords = ScrmblBlockWidth / OtpWidth;
+  parameter int unsigned NumPresentRounds = 31;
+  parameter int unsigned ScrmblBlockHalfWords = ScrmblBlockWidth / OtpWidth;
 
   typedef enum logic [2:0] {
     Decrypt,
@@ -182,26 +182,26 @@ package otp_ctrl_pkg;
   // Typedefs for Key Broadcast //
   ////////////////////////////////
 
-  parameter int FlashKeySeedWidth = 256;
-  parameter int SramKeySeedWidth  = 128;
-  parameter int KeyMgrKeyWidth    = 256;
-  parameter int FlashKeyWidth     = 128;
-  parameter int SramKeyWidth      = 128;
-  parameter int SramNonceWidth    = 128;
-  parameter int OtbnKeyWidth      = 128;
-  parameter int OtbnNonceWidth    = 64;
+  parameter int unsigned FlashKeySeedWidth = 256;
+  parameter int unsigned SramKeySeedWidth  = 128;
+  parameter int unsigned KeyMgrKeyWidth    = 256;
+  parameter int unsigned FlashKeyWidth     = 128;
+  parameter int unsigned SramKeyWidth      = 128;
+  parameter int unsigned SramNonceWidth    = 128;
+  parameter int unsigned OtbnKeyWidth      = 128;
+  parameter int unsigned OtbnNonceWidth    = 64;
 
   typedef logic [SramKeyWidth-1:0]   sram_key_t;
   typedef logic [SramNonceWidth-1:0] sram_nonce_t;
   typedef logic [OtbnKeyWidth-1:0]   otbn_key_t;
   typedef logic [OtbnNonceWidth-1:0] otbn_nonce_t;
 
-  localparam int OtbnNonceSel  = OtbnNonceWidth / ScrmblBlockWidth;
-  localparam int FlashNonceSel = FlashKeyWidth / ScrmblBlockWidth;
-  localparam int SramNonceSel  = SramNonceWidth / ScrmblBlockWidth;
+  localparam int unsigned OtbnNonceSel  = OtbnNonceWidth / ScrmblBlockWidth;
+  localparam int unsigned FlashNonceSel = FlashKeyWidth / ScrmblBlockWidth;
+  localparam int unsigned SramNonceSel  = SramNonceWidth / ScrmblBlockWidth;
 
   // Get maximum nonce width
-  localparam int NumNonceChunks =
+  localparam int unsigned NumNonceChunks =
     (OtbnNonceWidth > FlashKeyWidth) ?
     ((OtbnNonceWidth > SramNonceSel) ? OtbnNonceSel : SramNonceSel) :
     ((FlashKeyWidth > SramNonceSel)  ? FlashNonceSel  : SramNonceSel);
@@ -348,7 +348,7 @@ package otp_ctrl_pkg;
     logic [31:0] upper_addr;  // Upper bound of the address range
   } access_control_entry_t;
   
-  localparam int FC_TABLE_NUM_RANGES = 3;
+  localparam int unsigned FC_TABLE_NUM_RANGES = 3;
   
   localparam access_control_entry_t access_control_table [FC_TABLE_NUM_RANGES] = '{
     '{ lower_addr: 32'h00000000, upper_addr: 32'h00003FD8}, // Caliptra core
@@ -359,8 +359,8 @@ package otp_ctrl_pkg;
 
   // The range of addresses that are available to the Caliptra core but not the MCU (corresponding
   // to a gap between two ranges in access_control_table). The upper bound is inclusive.
-  localparam int CALIPTRA_SECRET_ACCESS_LOWER_ADDR = 32'h48;
-  localparam int CALIPTRA_SECRET_ACCESS_UPPER_ADDR = 32'hC8;
+  localparam int unsigned CALIPTRA_SECRET_ACCESS_LOWER_ADDR = 32'h48;
+  localparam int unsigned CALIPTRA_SECRET_ACCESS_UPPER_ADDR = 32'hC8;
 
     //------------------------------------------------------------------
     // Typedef for PRIM GENERIC Module Inputs

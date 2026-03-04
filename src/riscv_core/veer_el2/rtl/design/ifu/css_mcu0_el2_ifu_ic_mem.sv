@@ -63,28 +63,26 @@ import css_mcu0_el2_pkg::*;
    // split the veer_icache_src interface into veer_icache_data and veer_icache_tag
    css_mcu0_el2_mem_if local_icache_export();
 
-   always_comb begin
-      // data
-      icache_export.ic_b_sb_wren = local_icache_export.ic_b_sb_wren;
-      icache_export.ic_b_sb_bit_en_vec = local_icache_export.ic_b_sb_bit_en_vec;
-      icache_export.ic_sb_wr_data = local_icache_export.ic_sb_wr_data;
-      icache_export.ic_rw_addr_bank_q = local_icache_export.ic_rw_addr_bank_q;
-      icache_export.ic_bank_way_clken_final = local_icache_export.ic_bank_way_clken_final;
-      icache_export.ic_bank_way_clken_final_up = local_icache_export.ic_bank_way_clken_final_up;
+   // data
+   assign icache_export.ic_b_sb_wren = local_icache_export.ic_b_sb_wren;
+   assign icache_export.ic_b_sb_bit_en_vec = local_icache_export.ic_b_sb_bit_en_vec;
+   assign icache_export.ic_sb_wr_data = local_icache_export.ic_sb_wr_data;
+   assign icache_export.ic_rw_addr_bank_q = local_icache_export.ic_rw_addr_bank_q;
+   assign icache_export.ic_bank_way_clken_final = local_icache_export.ic_bank_way_clken_final;
+   assign icache_export.ic_bank_way_clken_final_up = local_icache_export.ic_bank_way_clken_final_up;
 
-      local_icache_export.wb_packeddout_pre = icache_export.wb_packeddout_pre;
-      local_icache_export.wb_dout_pre_up = icache_export.wb_dout_pre_up;
+   assign local_icache_export.wb_packeddout_pre = icache_export.wb_packeddout_pre;
+   assign local_icache_export.wb_dout_pre_up = icache_export.wb_dout_pre_up;
 
-      // tag
-      icache_export.ic_tag_clken_final = local_icache_export.ic_tag_clken_final;
-      icache_export.ic_tag_wren_q = local_icache_export.ic_tag_wren_q;
-      icache_export.ic_tag_wren_biten_vec = local_icache_export.ic_tag_wren_biten_vec;
-      icache_export.ic_tag_wr_data = local_icache_export.ic_tag_wr_data;
-      icache_export.ic_rw_addr_q = local_icache_export.ic_rw_addr_q;
+   // tag
+   assign icache_export.ic_tag_clken_final = local_icache_export.ic_tag_clken_final;
+   assign icache_export.ic_tag_wren_q = local_icache_export.ic_tag_wren_q;
+   assign icache_export.ic_tag_wren_biten_vec = local_icache_export.ic_tag_wren_biten_vec;
+   assign icache_export.ic_tag_wr_data = local_icache_export.ic_tag_wr_data;
+   assign icache_export.ic_rw_addr_q = local_icache_export.ic_rw_addr_q;
 
-      local_icache_export.ic_tag_data_raw_pre = icache_export.ic_tag_data_raw_pre;
-      local_icache_export.ic_tag_data_raw_packed_pre = icache_export.ic_tag_data_raw_packed_pre;
-   end
+   assign local_icache_export.ic_tag_data_raw_pre = icache_export.ic_tag_data_raw_pre;
+   assign local_icache_export.ic_tag_data_raw_packed_pre = icache_export.ic_tag_data_raw_packed_pre;
 
    css_mcu0_EL2_IC_TAG #(.pt(pt)) ic_tag_inst
           (
@@ -217,13 +215,11 @@ import css_mcu0_el2_pkg::*;
    logic                                                                          ic_debug_rd_en_ff;
 
    // Use exported ICache interface. Some signals are assigned here, some in the blocks below.
-   always_comb begin
-      icache_export.ic_b_sb_wren = ic_b_sb_wren;
-      icache_export.ic_sb_wr_data = ic_sb_wr_data;
-      icache_export.ic_rw_addr_bank_q = ic_rw_addr_bank_q;
-      icache_export.ic_bank_way_clken_final =ic_bank_way_clken_final;
-      icache_export.ic_bank_way_clken_final_up =ic_bank_way_clken_final_up;
-   end
+   assign icache_export.ic_b_sb_wren = ic_b_sb_wren;
+   assign icache_export.ic_sb_wr_data = ic_sb_wr_data;
+   assign icache_export.ic_rw_addr_bank_q = ic_rw_addr_bank_q;
+   assign icache_export.ic_bank_way_clken_final = ic_bank_way_clken_final;
+   assign icache_export.ic_bank_way_clken_final_up = ic_bank_way_clken_final_up;
 
 
 //-----------------------------------------------------------
@@ -746,7 +742,7 @@ import css_mcu0_el2_pkg::*;
       input logic                                                  ic_debug_tag_array,   // Debug tag array
       input logic [pt.ICACHE_NUM_WAYS-1:0]                         ic_debug_way,         // Debug way. Rd or Wr.
 
-      css_mcu0_el2_mem_if.veer_icache_tag                                  icache_export,
+      css_mcu0_el2_mem_if.veer_icache_tag                          icache_export,
 
       output logic [25:0]                                          ictag_debug_rd_data,
       input  logic [70:0]                                          ic_debug_wr_data,     // Debug wr cache.

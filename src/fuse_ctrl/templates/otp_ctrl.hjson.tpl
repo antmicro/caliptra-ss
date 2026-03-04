@@ -150,37 +150,37 @@ otp_size_as_uint32 = otp_size_as_bytes // 4
     // Normal parameters
     { name: "NumSramKeyReqSlots",
       desc: "Number of key slots",
-      type: "int",
+      type: "int unsigned",
       default: "4",
       local: "true"
     },
     { name: "OtpByteAddrWidth",
       desc: "Width of the OTP byte address.",
-      type: "int",
+      type: "int unsigned",
       default: "${otp_mmap.config["otp"]["byte_addr_width"]}",
       local: "true"
     },
     { name: "NumErrorEntries",
       desc: "Number of error register entries.",
-      type: "int",
+      type: "int unsigned",
       default: "${num_part + 2}", // partitions + DAI/LCI
       local: "true"
     },
     { name: "NumDaiWords",
       desc: "Number of 32bit words in the DAI.",
-      type: "int",
+      type: "int unsigned",
       default: "2",
       local: "true"
     },
     { name: "NumDigestWords",
       desc: "Size of the digest fields in 32bit words.",
-      type: "int",
+      type: "int unsigned",
       default: "2",
       local: "true"
     },
     { name: "NumSwCfgWindowWords",
       desc: "Size of the TL-UL window in 32bit words. Note that the effective partition size is smaller than that.",
-      type: "int",
+      type: "int unsigned",
       default: "${otp_size_as_uint32}",
       local: "true"
     }
@@ -188,19 +188,19 @@ otp_size_as_uint32 = otp_size_as_bytes // 4
     // Memory map Info
     { name: "NumPart",
       desc: "Number of partitions",
-      type: "int",
+      type: "int unsigned",
       default: "${num_part}",
       local: "true"
     },
     { name: "NumPartUnbuf",
       desc: "Number of unbuffered partitions",
-      type: "int",
+      type: "int unsigned",
       default: "${num_part_unbuf}",
       local: "true"
     },
     { name: "NumPartBuf",
       desc: "Number of buffered partitions (including 1 lifecycle partition)",
-      type: "int",
+      type: "int unsigned",
       default: "${num_part_buf}",
       local: "true"
     },
@@ -211,13 +211,13 @@ otp_size_as_uint32 = otp_size_as_bytes // 4
 %>\
     { name: "${part_name_camel}Offset",
       desc: "Offset of the ${part["name"]} partition",
-      type: "int",
+      type: "int unsigned",
       default: "${part["offset"]}",
       local: "true"
     },
     { name: "${part_name_camel}Size",
       desc: "Size of the ${part["name"]} partition",
-      type: "int",
+      type: "int unsigned",
       default: "${part["size"]}",
       local: "true"
     },
@@ -228,13 +228,13 @@ otp_size_as_uint32 = otp_size_as_bytes // 4
 %>\
     { name: "${item_name_camel}Offset",
       desc: "Offset of ${item["name"]}",
-      type: "int",
+      type: "int unsigned",
       default: "${item["offset"]}",
       local: "true"
     },
     { name: "${item_name_camel}Size",
       desc: "Size of ${item["name"]}",
-      type: "int",
+      type: "int unsigned",
       default: "${item["size"]}",
       local: "true"
     },

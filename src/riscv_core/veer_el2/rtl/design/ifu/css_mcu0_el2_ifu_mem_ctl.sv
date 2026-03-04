@@ -1433,22 +1433,21 @@ if (pt.ICACHE_ENABLE == 1 ) begin: icache_enabled
       .dout({ifu_status_wr_addr_ff[pt.ICACHE_INDEX_HI:pt.ICACHE_TAG_INDEX_LO],      way_status_wr_en_ff,      way_status_new_ff[pt.ICACHE_STATUS_BITS-1:0]} )
       );
 
-   logic [(pt.ICACHE_TAG_DEPTH/8)-1 : 0] way_status_clken;
-   logic [(pt.ICACHE_TAG_DEPTH/8)-1 : 0] way_status_clk;
-
    for (genvar i=0 ; i<pt.ICACHE_TAG_DEPTH/8 ; i++) begin : CLK_GRP_WAY_STATUS
-      assign way_status_clken[i] = (ifu_status_wr_addr_ff[pt.ICACHE_INDEX_HI:pt.ICACHE_TAG_INDEX_LO+3] == i );
+      logic way_status_clken;
+      logic way_status_clk;
+      assign way_status_clken = (ifu_status_wr_addr_ff[pt.ICACHE_INDEX_HI:pt.ICACHE_TAG_INDEX_LO+3] == i );
      `ifdef RV_FPGA_OPTIMIZE
-        assign way_status_clk[i] = 1'b0;
+        assign way_status_clk = 1'b0;
      `else
-           css_mcu0_rvclkhdr way_status_cgc ( .en(way_status_clken[i]),   .l1clk(way_status_clk[i]), .* );
+           css_mcu0_rvclkhdr way_status_cgc ( .en(way_status_clken),   .l1clk(way_status_clk), .* );
      `endif
 
 
       for (genvar j=0 ; j<8 ; j++) begin : WAY_STATUS
          css_mcu0_rvdffs_fpga #(pt.ICACHE_STATUS_BITS) ic_way_status (.*,
-                   .clk(way_status_clk[i]),
-                   .clken(way_status_clken[i]),
+                   .clk(way_status_clk),
+                   .clken(way_status_clken),
                    .rawclk(clk),
                    .en(((ifu_status_wr_addr_ff[pt.ICACHE_TAG_INDEX_LO+2:pt.ICACHE_TAG_INDEX_LO] == j) & way_status_wr_en_ff)),
                    .din(way_status_new_ff[pt.ICACHE_STATUS_BITS-1:0]),
@@ -1485,30 +1484,29 @@ if (pt.ICACHE_ENABLE == 1 ) begin: icache_enabled
 
    logic [pt.ICACHE_NUM_WAYS-1:0] [pt.ICACHE_TAG_DEPTH-1:0] ic_tag_valid_out ;
 
-   logic [(pt.ICACHE_TAG_DEPTH/32)-1:0] [pt.ICACHE_NUM_WAYS-1:0] tag_valid_clken ;
-   logic [(pt.ICACHE_TAG_DEPTH/32)-1:0] [pt.ICACHE_NUM_WAYS-1:0] tag_valid_clk   ;
-
    for (genvar i=0 ; i<pt.ICACHE_TAG_DEPTH/32 ; i++) begin : CLK_GRP_TAG_VALID
       for (genvar j=0; j<pt.ICACHE_NUM_WAYS; j++) begin : way_clken
+      logic tag_valid_clken ;
+      logic tag_valid_clk   ;
       if (pt.ICACHE_TAG_DEPTH == 32 ) begin
-        assign tag_valid_clken[i][j] =  ifu_tag_wren_ff[j] | perr_err_inv_way[j] | reset_all_tags;
+        assign tag_valid_clken =  ifu_tag_wren_ff[j] | perr_err_inv_way[j] | reset_all_tags;
       end else begin
-         assign tag_valid_clken[i][j] = (((ifu_ic_rw_int_addr_ff[pt.ICACHE_INDEX_HI:pt.ICACHE_TAG_INDEX_LO+5] == i ) &  ifu_tag_wren_ff[j] ) |
+         assign tag_valid_clken = (((ifu_ic_rw_int_addr_ff[pt.ICACHE_INDEX_HI:pt.ICACHE_TAG_INDEX_LO+5] == i ) &  ifu_tag_wren_ff[j] ) |
                                         ((perr_ic_index_ff     [pt.ICACHE_INDEX_HI:pt.ICACHE_TAG_INDEX_LO+5] == i ) &  perr_err_inv_way[j]) | reset_all_tags);
       end
 
      `ifdef RV_FPGA_OPTIMIZE
-        assign tag_valid_clk[i][j]  = 1'b0;
+        assign tag_valid_clk  = 1'b0;
      `else
-           css_mcu0_rvclkhdr way_status_cgc ( .en(tag_valid_clken[i][j]),   .l1clk(tag_valid_clk[i][j]), .* );
+           css_mcu0_rvclkhdr way_status_cgc ( .en(tag_valid_clken),   .l1clk(tag_valid_clk), .* );
      `endif
 
 
 
       for (genvar k=0 ; k<32 ; k++) begin : TAG_VALID
          css_mcu0_rvdffs_fpga #(1) ic_way_tagvalid_dup (.*,
-                   .clk(tag_valid_clk[i][j]),
-                   .clken(tag_valid_clken[i][j]),
+                   .clk(tag_valid_clk),
+                   .clken(tag_valid_clken),
                    .rawclk(clk),
                    .en(((ifu_ic_rw_int_addr_ff[pt.ICACHE_INDEX_HI:pt.ICACHE_TAG_INDEX_LO] == (k + 32*i)) & ifu_tag_wren_ff[j] ) |
                        ((perr_ic_index_ff     [pt.ICACHE_INDEX_HI:pt.ICACHE_TAG_INDEX_LO] == (k + 32*i)) & perr_err_inv_way[j]) | reset_all_tags),

@@ -593,7 +593,7 @@ import css_mcu0_el2_pkg::*;
 
        for (crc32_bi=0; crc32_bi<8; crc32_bi++)
          begin
-            crc32_bd[31:0] = (crc32_bd[31:0] >> 1) ^ (crc32_poly_rev[31:0] & {32{crc32_bd[0]}});
+            crc32_bd[31:0] = {1'b0, crc32_bd[31:1]} ^ (crc32_poly_rev[31:0] & {32{crc32_bd[0]}});
          end      // FOR    crc32_bi
      end          // ALWAYS_COMB
 
@@ -604,7 +604,7 @@ import css_mcu0_el2_pkg::*;
 
        for (crc32_hi=0; crc32_hi<16; crc32_hi++)
          begin
-            crc32_hd[31:0] = (crc32_hd[31:0] >> 1) ^ (crc32_poly_rev[31:0] & {32{crc32_hd[0]}});
+            crc32_hd[31:0] = {1'b0, crc32_hd[31:1]} ^ (crc32_poly_rev[31:0] & {32{crc32_hd[0]}});
          end      // FOR    crc32_hi
      end          // ALWAYS_COMB
 
@@ -615,7 +615,7 @@ import css_mcu0_el2_pkg::*;
 
        for (crc32_wi=0; crc32_wi<32; crc32_wi++)
          begin
-            crc32_wd[31:0] = (crc32_wd[31:0] >> 1) ^ (crc32_poly_rev[31:0] & {32{crc32_wd[0]}});
+            crc32_wd[31:0] = {1'b0, crc32_wd[31:1]} ^ (crc32_poly_rev[31:0] & {32{crc32_wd[0]}});
          end      // FOR    crc32_wi
      end          // ALWAYS_COMB
 
@@ -628,7 +628,7 @@ import css_mcu0_el2_pkg::*;
 
        for (crc32c_bi=0; crc32c_bi<8; crc32c_bi++)
          begin
-            crc32c_bd[31:0] = (crc32c_bd[31:0] >> 1) ^ (crc32c_poly_rev[31:0] & {32{crc32c_bd[0]}});
+            crc32c_bd[31:0] = {1'b0, crc32c_bd[31:1]} ^ (crc32c_poly_rev[31:0] & {32{crc32c_bd[0]}});
          end      // FOR    crc32c_bi
      end          // ALWAYS_COMB
 
@@ -639,7 +639,7 @@ import css_mcu0_el2_pkg::*;
 
        for (crc32c_hi=0; crc32c_hi<16; crc32c_hi++)
          begin
-            crc32c_hd[31:0] = (crc32c_hd[31:0] >> 1) ^ (crc32c_poly_rev[31:0] & {32{crc32c_hd[0]}});
+            crc32c_hd[31:0] = {1'b0, crc32c_hd[31:1]} ^ (crc32c_poly_rev[31:0] & {32{crc32c_hd[0]}});
          end      // FOR    crc32c_hi
      end          // ALWAYS_COMB
 
@@ -650,7 +650,7 @@ import css_mcu0_el2_pkg::*;
 
        for (crc32c_wi=0; crc32c_wi<32; crc32c_wi++)
          begin
-            crc32c_wd[31:0] = (crc32c_wd[31:0] >> 1) ^ (crc32c_poly_rev[31:0] & {32{crc32c_wd[0]}});
+            crc32c_wd[31:0] = {1'b0, crc32c_wd[31:1]} ^ (crc32c_poly_rev[31:0] & {32{crc32c_wd[0]}});
          end      // FOR    crc32c_wi
      end          // ALWAYS_COMB
 

@@ -328,7 +328,7 @@ for (i=0; i<pt.PIC_TOTAL_INT_PLUS1 ; i++) begin  : SETREG
     assign intpriority_reg_inv[i] =  intpriord ? ~intpriority_reg[i] : intpriority_reg[i] ;
 
     assign intpend_w_prior_en[i]  =  {INTPRIORITY_BITS{(extintsrc_req_gw[i] & intenable_reg[i])}} & intpriority_reg_inv[i] ;
-    assign intpend_id[i]          =  i ;
+    assign intpend_id[i]          =  i[ID_BITS-1:0] ;
 end
 
 
@@ -338,8 +338,6 @@ end
 //end
 //else begin : genblock
 //end
-
- genvar l, m , j, k;
 
 if (pt.PIC_2CYCLE == 1) begin : genblock
         logic [NUM_LEVELS/2:0] [pt.PIC_TOTAL_INT_PLUS1+2:0] [INTPRIORITY_BITS-1:0] level_intpend_w_prior_en;
@@ -356,8 +354,10 @@ if (pt.PIC_2CYCLE == 1) begin : genblock
         assign levelx_intpend_w_prior_en[NUM_LEVELS/2][(pt.PIC_TOTAL_INT_PLUS1/2**(NUM_LEVELS/2))+1:0] = {{1*INTPRIORITY_BITS{1'b0}},l2_intpend_w_prior_en_ff[(pt.PIC_TOTAL_INT_PLUS1/2**(NUM_LEVELS/2)):0]} ;
         assign levelx_intpend_id[NUM_LEVELS/2][(pt.PIC_TOTAL_INT_PLUS1/2**(NUM_LEVELS/2))+1:0]         = {{1*ID_BITS{1'b1}},l2_intpend_id_ff[(pt.PIC_TOTAL_INT_PLUS1/2**(NUM_LEVELS/2)):0]} ;
 ///  Do the prioritization of the interrupts here  ////////////
+ genvar i, j, l;
  for (l=0; l<NUM_LEVELS/2 ; l++) begin : TOP_LEVEL
-    for (m=0; m<=(pt.PIC_TOTAL_INT_PLUS1)/(2**(l+1)) ; m++) begin : COMPARE
+    genvar m;
+    for (m=0; m<=(pt.PIC_TOTAL_INT_PLUS1)/(2**(l+1)) ; m++) begin : COMPARE_TOP
        if ( m == (pt.PIC_TOTAL_INT_PLUS1)/(2**(l+1))) begin
             assign level_intpend_w_prior_en[l+1][m+1] = '0 ;
             assign level_intpend_id[l+1][m+1]         = '0 ;
@@ -374,13 +374,14 @@ if (pt.PIC_2CYCLE == 1) begin : genblock
     end
  end
 
-        for (i=0; i<=pt.PIC_TOTAL_INT_PLUS1/2**(NUM_LEVELS/2) ; i++) begin : MIDDLE_FLOPS
-          css_mcu0_rvdff #(INTPRIORITY_BITS) level2_intpend_prior_reg  (.*, .din (level_intpend_w_prior_en[NUM_LEVELS/2][i]), .dout(l2_intpend_w_prior_en_ff[i]),  .clk(free_clk));
-          css_mcu0_rvdff #(ID_BITS)          level2_intpend_id_reg     (.*, .din (level_intpend_id[NUM_LEVELS/2][i]),         .dout(l2_intpend_id_ff[i]),          .clk(free_clk));
-        end
+ for (i=0; i<=pt.PIC_TOTAL_INT_PLUS1/2**(NUM_LEVELS/2) ; i++) begin : MIDDLE_FLOPS
+    css_mcu0_rvdff #(INTPRIORITY_BITS) level2_intpend_prior_reg  (.*, .din (level_intpend_w_prior_en[NUM_LEVELS/2][i]), .dout(l2_intpend_w_prior_en_ff[i]),  .clk(free_clk));
+    css_mcu0_rvdff #(ID_BITS)          level2_intpend_id_reg     (.*, .din (level_intpend_id[NUM_LEVELS/2][i]),         .dout(l2_intpend_id_ff[i]),          .clk(free_clk));
+ end
 
  for (j=NUM_LEVELS/2; j<NUM_LEVELS ; j++) begin : BOT_LEVELS
-    for (k=0; k<=(pt.PIC_TOTAL_INT_PLUS1)/(2**(j+1)) ; k++) begin : COMPARE
+    genvar k;
+    for (k=0; k<=(pt.PIC_TOTAL_INT_PLUS1)/(2**(j+1)) ; k++) begin : COMPARE_BOT
        if ( k == (pt.PIC_TOTAL_INT_PLUS1)/(2**(j+1))) begin
             assign levelx_intpend_w_prior_en[j+1][k+1] = '0 ;
             assign levelx_intpend_id[j+1][k+1]         = '0 ;
@@ -408,8 +409,9 @@ else begin : genblock
         assign level_intpend_id[0][pt.PIC_TOTAL_INT_PLUS1+1:0] = {{2*ID_BITS{1'b1}},intpend_id[pt.PIC_TOTAL_INT_PLUS1-1:0]} ;
 
 ///  Do the prioritization of the interrupts here  ////////////
-// genvar l, m , j, k;  already declared outside ifdef
+ genvar l;
  for (l=0; l<NUM_LEVELS ; l++) begin : LEVEL
+    genvar m;
     for (m=0; m<=(pt.PIC_TOTAL_INT_PLUS1)/(2**(l+1)) ; m++) begin : COMPARE
        if ( m == (pt.PIC_TOTAL_INT_PLUS1)/(2**(l+1))) begin
             assign level_intpend_w_prior_en[l+1][m+1] = '0 ;
@@ -482,7 +484,7 @@ assign intpriority_reg_read =  raddr_intpriority_base_match & picm_rden_ff;
 assign intenable_reg_read   =  raddr_intenable_base_match   & picm_rden_ff;
 assign gw_config_reg_read   =  raddr_config_gw_base_match   & picm_rden_ff;
 
-assign intpend_reg_extended[INTPEND_SIZE-1:0]  = {{INTPEND_SIZE-pt.PIC_TOTAL_INT_PLUS1{1'b0}},extintsrc_req_gw[pt.PIC_TOTAL_INT_PLUS1-1:0]} ;
+assign intpend_reg_extended[INTPEND_SIZE-1:0]  = INTPEND_SIZE'(extintsrc_req_gw[pt.PIC_TOTAL_INT_PLUS1-1:0]) ;
 
    for (i=0; i<(INT_GRPS); i++) begin
             assign intpend_rd_part_out[i] =  (({32{intpend_reg_read & picm_raddr_ff[5:2] == i}}) & intpend_reg_extended[((32*i)+31):(32*i)]) ;
@@ -490,8 +492,8 @@ assign intpend_reg_extended[INTPEND_SIZE-1:0]  = {{INTPEND_SIZE-pt.PIC_TOTAL_INT
 
    always_comb begin : INTPEND_RD
          intpend_rd_out =  '0 ;
-         for (int i=0; i<INT_GRPS; i++) begin
-               intpend_rd_out |=  intpend_rd_part_out[i] ;
+         for (int g=0; g<INT_GRPS; g++) begin
+               intpend_rd_out |=  intpend_rd_part_out[g] ;
          end
    end
 
@@ -499,15 +501,15 @@ assign intpend_reg_extended[INTPEND_SIZE-1:0]  = {{INTPEND_SIZE-pt.PIC_TOTAL_INT
          intenable_rd_out =  '0 ;
          intpriority_rd_out =  '0 ;
          gw_config_rd_out =  '0 ;
-         for (int i=0; i<pt.PIC_TOTAL_INT_PLUS1; i++) begin
-              if (intenable_reg_re[i]) begin
-               intenable_rd_out    =  intenable_reg[i]  ;
+         for (int g=0; g<pt.PIC_TOTAL_INT_PLUS1; g++) begin
+              if (intenable_reg_re[g]) begin
+               intenable_rd_out    =  intenable_reg[g]  ;
               end
-              if (intpriority_reg_re[i]) begin
-               intpriority_rd_out  =  intpriority_reg[i] ;
+              if (intpriority_reg_re[g]) begin
+               intpriority_rd_out  =  intpriority_reg[g] ;
               end
-              if (gw_config_reg_re[i]) begin
-               gw_config_rd_out  =  gw_config_reg[i] ;
+              if (gw_config_reg_re[g]) begin
+               gw_config_rd_out  =  gw_config_reg[g] ;
               end
          end
    end

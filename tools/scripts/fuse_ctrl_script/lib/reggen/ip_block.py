@@ -276,7 +276,7 @@ class IpBlock:
             existing_param = params.get('NumAlerts')
             if existing_param is not None:
                 if ((not isinstance(existing_param, LocalParam) or
-                     existing_param.param_type != 'int' or
+                     existing_param.param_type != 'int unsigned' or
                      existing_param.value != str(len(alerts)))):
                     raise ValueError('Conflicting definition of NumAlerts '
                                      'parameter.')
@@ -284,7 +284,7 @@ class IpBlock:
                 params.add(
                     LocalParam(name='NumAlerts',
                                desc='Number of alerts',
-                               param_type='int',
+                               param_type='int unsigned',
                                value=str(len(alerts)),
                                unpacked_dimensions=None))
 

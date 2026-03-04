@@ -674,19 +674,19 @@ assign use_fa_plus = (~bht_dir_f[0] & ~fetch_start_f[0] & ~btb_rd_pc4_f);
         btb_bank0_rd_data_way0_p1_f[BTB_DWIDTH-1:0] = '0 ;
         btb_bank0_rd_data_way1_p1_f[BTB_DWIDTH-1:0] = '0 ;
 
-        for (int j=0; j< LRU_SIZE; j++) begin
-          if (btb_rd_addr_f[pt.BTB_ADDR_HI:pt.BTB_ADDR_LO] == (pt.BTB_ADDR_HI-pt.BTB_ADDR_LO+1)'(j)) begin
+        for (int l=0; l< LRU_SIZE; l++) begin
+          if (btb_rd_addr_f[pt.BTB_ADDR_HI:pt.BTB_ADDR_LO] == (pt.BTB_ADDR_HI-pt.BTB_ADDR_LO+1)'(l)) begin
 
-           btb_bank0_rd_data_way0_f[BTB_DWIDTH-1:0] =  btb_bank0_rd_data_way0_out[j];
-           btb_bank0_rd_data_way1_f[BTB_DWIDTH-1:0] =  btb_bank0_rd_data_way1_out[j];
+           btb_bank0_rd_data_way0_f[BTB_DWIDTH-1:0] =  btb_bank0_rd_data_way0_out[l];
+           btb_bank0_rd_data_way1_f[BTB_DWIDTH-1:0] =  btb_bank0_rd_data_way1_out[l];
 
           end
         end
-        for (int j=0; j< LRU_SIZE; j++) begin
-          if (btb_rd_addr_p1_f[pt.BTB_ADDR_HI:pt.BTB_ADDR_LO] == (pt.BTB_ADDR_HI-pt.BTB_ADDR_LO+1)'(j)) begin
+        for (int l=0; l< LRU_SIZE; l++) begin
+          if (btb_rd_addr_p1_f[pt.BTB_ADDR_HI:pt.BTB_ADDR_LO] == (pt.BTB_ADDR_HI-pt.BTB_ADDR_LO+1)'(l)) begin
 
-           btb_bank0_rd_data_way0_p1_f[BTB_DWIDTH-1:0] =  btb_bank0_rd_data_way0_out[j];
-           btb_bank0_rd_data_way1_p1_f[BTB_DWIDTH-1:0] =  btb_bank0_rd_data_way1_out[j];
+           btb_bank0_rd_data_way0_p1_f[BTB_DWIDTH-1:0] =  btb_bank0_rd_data_way0_out[l];
+           btb_bank0_rd_data_way1_p1_f[BTB_DWIDTH-1:0] =  btb_bank0_rd_data_way1_out[l];
 
           end
         end
@@ -833,20 +833,20 @@ end
    //-----------------------------------------------------------------------------
 
    logic [1:0] [pt.BHT_ARRAY_DEPTH-1:0] [1:0]                bht_bank_rd_data_out ;
-   logic [1:0] [(pt.BHT_ARRAY_DEPTH/NUM_BHT_LOOP)-1:0]                 bht_bank_clken ;
-   logic [1:0] [(pt.BHT_ARRAY_DEPTH/NUM_BHT_LOOP)-1:0]                 bht_bank_clk   ;
 
    for ( i=0; i<2; i++) begin : BANKS
      wire[pt.BHT_ARRAY_DEPTH-1:0] wr0, wr1;
      assign wr0 = pt.BHT_ARRAY_DEPTH'(bht_wr_en0[i] << bht_wr_addr0);
      assign wr1 = pt.BHT_ARRAY_DEPTH'(bht_wr_en2[i] << bht_wr_addr2);
      for (genvar k=0 ; k < (pt.BHT_ARRAY_DEPTH)/NUM_BHT_LOOP ; k++) begin : BHT_CLK_GROUP
-     assign bht_bank_clken[i][k]  = (bht_wr_en0[i] & ((bht_wr_addr0[pt.BHT_ADDR_HI: NUM_BHT_LOOP_OUTER_LO]==k) |  BHT_NO_ADDR_MATCH)) |
-                                    (bht_wr_en2[i] & ((bht_wr_addr2[pt.BHT_ADDR_HI: NUM_BHT_LOOP_OUTER_LO]==k) |  BHT_NO_ADDR_MATCH));
+     logic bht_bank_clken ;
+     logic bht_bank_clk   ;
+     assign bht_bank_clken  = (bht_wr_en0[i] & ((bht_wr_addr0[pt.BHT_ADDR_HI: NUM_BHT_LOOP_OUTER_LO]==k) |  BHT_NO_ADDR_MATCH)) |
+                              (bht_wr_en2[i] & ((bht_wr_addr2[pt.BHT_ADDR_HI: NUM_BHT_LOOP_OUTER_LO]==k) |  BHT_NO_ADDR_MATCH));
 `ifndef RV_FPGA_OPTIMIZE
-     css_mcu0_rvclkhdr bht_bank_grp_cgc ( .en(bht_bank_clken[i][k]), .l1clk(bht_bank_clk[i][k]), .* ); // ifndef RV_FPGA_OPTIMIZE
+     css_mcu0_rvclkhdr bht_bank_grp_cgc ( .en(bht_bank_clken), .l1clk(bht_bank_clk), .* ); // ifndef RV_FPGA_OPTIMIZE
 `else
-     assign bht_bank_clk[i][k] = clk;
+     assign bht_bank_clk = clk;
 `endif
 
      for (j=0 ; j<NUM_BHT_LOOP ; j++) begin : BHT_FLOPS
@@ -858,7 +858,7 @@ end
 
 
           css_mcu0_rvdffs_fpga #(2) bht_bank (.*,
-                    .clk        (bht_bank_clk[i][k]),
+                    .clk        (bht_bank_clk),
                     .en         (bank_sel),
                     .rawclk     (clk),
                     .clken      (bank_sel),
@@ -873,25 +873,24 @@ end
      bht_bank0_rd_data_f[1:0] = '0 ;
      bht_bank1_rd_data_f[1:0] = '0 ;
      bht_bank0_rd_data_p1_f[1:0] = '0 ;
-     for (int j=0; j< pt.BHT_ARRAY_DEPTH; j++) begin
-       if (bht_rd_addr_f[pt.BHT_ADDR_HI:pt.BHT_ADDR_LO] == (pt.BHT_ADDR_HI-pt.BHT_ADDR_LO+1)'(j)) begin
-         bht_bank0_rd_data_f[1:0] = bht_bank_rd_data_out[0][j];
-         bht_bank1_rd_data_f[1:0] = bht_bank_rd_data_out[1][j];
+     for (int l=0; l< pt.BHT_ARRAY_DEPTH; l++) begin
+       if (bht_rd_addr_f[pt.BHT_ADDR_HI:pt.BHT_ADDR_LO] == (pt.BHT_ADDR_HI-pt.BHT_ADDR_LO+1)'(l)) begin
+         bht_bank0_rd_data_f[1:0] = bht_bank_rd_data_out[0][l];
+         bht_bank1_rd_data_f[1:0] = bht_bank_rd_data_out[1][l];
        end
-       if (bht_rd_addr_p1_f[pt.BHT_ADDR_HI:pt.BHT_ADDR_LO] == (pt.BHT_ADDR_HI-pt.BHT_ADDR_LO+1)'(j)) begin
-         bht_bank0_rd_data_p1_f[1:0] = bht_bank_rd_data_out[0][j];
+       if (bht_rd_addr_p1_f[pt.BHT_ADDR_HI:pt.BHT_ADDR_LO] == (pt.BHT_ADDR_HI-pt.BHT_ADDR_LO+1)'(l)) begin
+         bht_bank0_rd_data_p1_f[1:0] = bht_bank_rd_data_out[0][l];
        end
       end
     end // block: BHT_rd_mux
 
 
-function [1:0] countones;
+function automatic logic [1:0] countones;
       input [1:0] valid;
 
       begin
-
-countones[1:0] = {1'b0, valid[1]} +
-                 {1'b0, valid[0]};
+        countones[1:0] = {1'b0, valid[1]} +
+                         {1'b0, valid[0]};
       end
    endfunction
 endmodule // css_mcu0_el2_ifu_bp_ctl

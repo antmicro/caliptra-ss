@@ -774,12 +774,12 @@ module lc_ctrl_fsm
   // SEC_CM: STATE.CONFIG.SPARSE
   // The trans_target_i signal comes from the CSR and uses a replication encoding,
   // hence we can use different indices of the array.
-  assign token_idx0 = (int'(dec_lc_state_o[0]) < NumLcStates &&
-                       int'(trans_target_i[0]) < NumLcStates) ?
+  assign token_idx0 = (dec_lc_state_o[0] < NumLcStates &&
+                       trans_target_i[0] < NumLcStates) ?
                       TransTokenIdxMatrix[dec_lc_state_o[0]][trans_target_i[0]] :
                       InvalidTokenIdx;
-  assign token_idx1 = (int'(dec_lc_state_o[1]) < NumLcStates &&
-                       int'(trans_target_i[1]) < NumLcStates) ?
+  assign token_idx1 = (dec_lc_state_o[1] < NumLcStates &&
+                       trans_target_i[1] < NumLcStates) ?
                       TransTokenIdxMatrix[dec_lc_state_o[1]][trans_target_i[1]] :
                       InvalidTokenIdx;
   assign hashed_token_mux = {hashed_tokens_lower[token_idx0],

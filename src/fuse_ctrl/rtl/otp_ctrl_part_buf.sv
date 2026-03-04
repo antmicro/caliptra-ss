@@ -82,9 +82,8 @@ module otp_ctrl_part_buf
   import caliptra_prim_mubi_pkg::*;
   import caliptra_prim_util_pkg::vbits;
 
-  localparam int unsigned DigestOffsetInt = (int'(Info.offset) +
-                                             int'(Info.size) - ScrmblBlockWidth/8);
-  localparam int NumScrmblBlocks = int'(Info.size) / (ScrmblBlockWidth/8);
+  localparam int unsigned DigestOffsetInt = (Info.offset + Info.size - ScrmblBlockWidth/8);
+  localparam int NumScrmblBlocks = Info.size / (ScrmblBlockWidth/8);
   localparam int CntWidth = vbits(NumScrmblBlocks);
 
   localparam bit [OtpByteAddrWidth-1:0] DigestOffset = DigestOffsetInt[OtpByteAddrWidth-1:0];

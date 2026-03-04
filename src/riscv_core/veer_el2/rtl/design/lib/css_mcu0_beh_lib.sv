@@ -778,9 +778,9 @@ module `css_mcu0_TEC_RV_ICG
 
    assign      enable = EN | SE;
 
-   always @(CK, enable) begin
+   always_latch begin
       if(!CK)
-        en_ff = enable;
+        en_ff <= enable;
    end
    assign Q = CK & en_ff;
 

@@ -24,22 +24,22 @@ package otp_ctrl_part_pkg;
   import otp_ctrl_pkg::*;
   import lc_ctrl_state_pkg::*;
 
-  parameter int NumVendorPkFuses = 16;
-  parameter int NumVendorSecretFuses = 16;
-  parameter int NumVendorNonSecretFuses = 16;
+  parameter int unsigned NumVendorPkFuses = 16;
+  parameter int unsigned NumVendorSecretFuses = 16;
+  parameter int unsigned NumVendorNonSecretFuses = 16;
 
   ////////////////////////////////////
   // Scrambling Constants and Types //
   ////////////////////////////////////
 
-  parameter int NumScrmblKeys = 7;
-  parameter int NumDigestSets = 1;
+  parameter int unsigned NumScrmblKeys = 7;
+  parameter int unsigned NumDigestSets = 1;
 
-  parameter int ScrmblKeySelWidth = vbits(NumScrmblKeys);
-  parameter int DigestSetSelWidth = vbits(NumDigestSets);
-  parameter int ConstSelWidth = (ScrmblKeySelWidth > DigestSetSelWidth) ?
-                                ScrmblKeySelWidth :
-                                DigestSetSelWidth;
+  parameter int unsigned ScrmblKeySelWidth = vbits(NumScrmblKeys);
+  parameter int unsigned DigestSetSelWidth = vbits(NumDigestSets);
+  parameter int unsigned ConstSelWidth = (ScrmblKeySelWidth > DigestSetSelWidth) ?
+                                         ScrmblKeySelWidth :
+                                         DigestSetSelWidth;
 
   typedef enum logic [ConstSelWidth-1:0] {
     StandardMode,
@@ -429,7 +429,7 @@ package otp_ctrl_part_pkg;
     NumAgentsIdx
   } part_idx_e;
 
-  parameter int NumAgents = int'(NumAgentsIdx);
+  parameter int unsigned NumAgents = unsigned'(int'(NumAgentsIdx));
 
   // Breakout types for easier access of individual items.
   typedef struct packed {
@@ -955,9 +955,9 @@ package otp_ctrl_part_pkg;
     return otp_keymgr_key;
   endfunction : named_keymgr_key_assign
 
-  parameter int ProdVendorHashNum   = NumVendorPkFuses-1;
-  parameter int ProdVendorHashSize  = CptraCoreVendorPkHash1Size + CptraCorePqcKeyType1Size;
-  parameter int ProdVendorHashStart = CptraCoreVendorPkHash1Offset;
-  parameter int ProdVendorHashEnd   = CptraCoreVendorPkHash1Offset + (ProdVendorHashSize * ProdVendorHashNum);
+  parameter int unsigned ProdVendorHashNum   = NumVendorPkFuses-1;
+  parameter int unsigned ProdVendorHashSize  = CptraCoreVendorPkHash1Size + CptraCorePqcKeyType1Size;
+  parameter int unsigned ProdVendorHashStart = CptraCoreVendorPkHash1Offset;
+  parameter int unsigned ProdVendorHashEnd   = CptraCoreVendorPkHash1Offset + (ProdVendorHashSize * ProdVendorHashNum);
 
 endpackage : otp_ctrl_part_pkg

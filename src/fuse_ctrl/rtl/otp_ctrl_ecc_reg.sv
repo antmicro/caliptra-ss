@@ -8,9 +8,9 @@
 `include "caliptra_prim_assert.sv"
 
 module otp_ctrl_ecc_reg #(
-  parameter  int Width = 64, // bit
-  parameter  int Depth = 128,
-  localparam int Aw    = caliptra_prim_util_pkg::vbits(Depth) // derived parameter
+  parameter  int unsigned Width = 64, // bit
+  parameter  int unsigned Depth = 128,
+  localparam int unsigned Aw    = caliptra_prim_util_pkg::vbits(Depth) // derived parameter
 ) (
   input  logic                        clk_i,
   input  logic                        rst_ni,
@@ -29,7 +29,7 @@ module otp_ctrl_ecc_reg #(
   // Integration checks for parameters.
   `CALIPTRA_ASSERT_INIT(WidthMustBe64bit_A, Width == 64)
 
-  localparam int EccWidth = 8;
+  localparam int unsigned EccWidth = 8;
 
   logic [Depth-1:0][Width-1:0] data_d, data_q;
   logic [Depth-1:0][EccWidth-1:0] ecc_d, ecc_q;
