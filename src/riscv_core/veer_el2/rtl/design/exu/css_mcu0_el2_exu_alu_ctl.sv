@@ -370,7 +370,7 @@ import css_mcu0_el2_pkg::*;
 
        for (bitmanip_cpop_i=0; bitmanip_cpop_i<32; bitmanip_cpop_i++)
          begin
-            bitmanip_cpop[5:0]          =  bitmanip_cpop[5:0] + {5'b0,a_in[bitmanip_cpop_i]};
+            bitmanip_cpop[5:0]          =  6'(bitmanip_cpop[5:0] + {5'b0,a_in[bitmanip_cpop_i]});
          end      // FOR    bitmanip_cpop_i
      end          // ALWAYS_COMB
 

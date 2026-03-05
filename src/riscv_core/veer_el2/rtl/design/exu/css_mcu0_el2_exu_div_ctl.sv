@@ -1511,21 +1511,21 @@ module css_mcu0_el2_exu_div_new_4bit_fullshortq
    assign b_ff[37:33]            = {b_ff[32],b_ff[32],b_ff[32],b_ff[32],b_ff[32]};
 
 
-   assign adder01_out[34:0]      = {         r_ff[30:0],a_ff[31:28]}  +                                                                   b_ff[34:0];
-   assign adder02_out[35:0]      = {         r_ff[31:0],a_ff[31:28]}  +                                             {b_ff[34:0],1'b0};
-   assign adder03_out[36:0]      = {         r_ff[32:0],a_ff[31:28]}  +                                             {b_ff[35:0],1'b0}  +  b_ff[36:0];
-   assign adder04_out[37:0]      = {r_ff[32],r_ff[32:0],a_ff[31:28]}  +                       {b_ff[35:0],2'b0};
-   assign adder05_out[37:0]      = {r_ff[32],r_ff[32:0],a_ff[31:28]}  +                       {b_ff[35:0],2'b0}  +                        b_ff[37:0];
-   assign adder06_out[37:0]      = {r_ff[32],r_ff[32:0],a_ff[31:28]}  +                       {b_ff[35:0],2'b0}  +  {b_ff[36:0],1'b0};
-   assign adder07_out[37:0]      = {r_ff[32],r_ff[32:0],a_ff[31:28]}  +                       {b_ff[35:0],2'b0}  +  {b_ff[36:0],1'b0}  +  b_ff[37:0];
-   assign adder08_out[37:0]      = {r_ff[32],r_ff[32:0],a_ff[31:28]}  +  {b_ff[34:0],3'b0};
-   assign adder09_out[37:0]      = {r_ff[32],r_ff[32:0],a_ff[31:28]}  +  {b_ff[34:0],3'b0} +                                              b_ff[37:0];
-   assign adder10_out[37:0]      = {r_ff[32],r_ff[32:0],a_ff[31:28]}  +  {b_ff[34:0],3'b0} +                        {b_ff[36:0],1'b0};
-   assign adder11_out[37:0]      = {r_ff[32],r_ff[32:0],a_ff[31:28]}  +  {b_ff[34:0],3'b0} +                        {b_ff[36:0],1'b0}  +  b_ff[37:0];
-   assign adder12_out[37:0]      = {r_ff[32],r_ff[32:0],a_ff[31:28]}  +  {b_ff[34:0],3'b0} +  {b_ff[35:0],2'b0};
-   assign adder13_out[37:0]      = {r_ff[32],r_ff[32:0],a_ff[31:28]}  +  {b_ff[34:0],3'b0} +  {b_ff[35:0],2'b0}  +                        b_ff[37:0];
-   assign adder14_out[37:0]      = {r_ff[32],r_ff[32:0],a_ff[31:28]}  +  {b_ff[34:0],3'b0} +  {b_ff[35:0],2'b0}  +  {b_ff[36:0],1'b0};
-   assign adder15_out[37:0]      = {r_ff[32],r_ff[32:0],a_ff[31:28]}  +  {b_ff[34:0],3'b0} +  {b_ff[35:0],2'b0}  +  {b_ff[36:0],1'b0}  +  b_ff[37:0];
+   assign adder01_out[34:0]      = 35'({         r_ff[30:0],a_ff[31:28]}  +                                                                   b_ff[34:0]);
+   assign adder02_out[35:0]      = 36'({         r_ff[31:0],a_ff[31:28]}  +                                             {b_ff[34:0],1'b0});
+   assign adder03_out[36:0]      = 37'({         r_ff[32:0],a_ff[31:28]}  +                                             {b_ff[35:0],1'b0}  +  b_ff[36:0]);
+   assign adder04_out[37:0]      = 38'({r_ff[32],r_ff[32:0],a_ff[31:28]}  +                       {b_ff[35:0],2'b0});
+   assign adder05_out[37:0]      = 38'({r_ff[32],r_ff[32:0],a_ff[31:28]}  +                       {b_ff[35:0],2'b0}  +                        b_ff[37:0]);
+   assign adder06_out[37:0]      = 38'({r_ff[32],r_ff[32:0],a_ff[31:28]}  +                       {b_ff[35:0],2'b0}  +  {b_ff[36:0],1'b0});
+   assign adder07_out[37:0]      = 38'({r_ff[32],r_ff[32:0],a_ff[31:28]}  +                       {b_ff[35:0],2'b0}  +  {b_ff[36:0],1'b0}  +  b_ff[37:0]);
+   assign adder08_out[37:0]      = 38'({r_ff[32],r_ff[32:0],a_ff[31:28]}  +  {b_ff[34:0],3'b0});
+   assign adder09_out[37:0]      = 38'({r_ff[32],r_ff[32:0],a_ff[31:28]}  +  {b_ff[34:0],3'b0} +                                              b_ff[37:0]);
+   assign adder10_out[37:0]      = 38'({r_ff[32],r_ff[32:0],a_ff[31:28]}  +  {b_ff[34:0],3'b0} +                        {b_ff[36:0],1'b0});
+   assign adder11_out[37:0]      = 38'({r_ff[32],r_ff[32:0],a_ff[31:28]}  +  {b_ff[34:0],3'b0} +                        {b_ff[36:0],1'b0}  +  b_ff[37:0]);
+   assign adder12_out[37:0]      = 38'({r_ff[32],r_ff[32:0],a_ff[31:28]}  +  {b_ff[34:0],3'b0} +  {b_ff[35:0],2'b0});
+   assign adder13_out[37:0]      = 38'({r_ff[32],r_ff[32:0],a_ff[31:28]}  +  {b_ff[34:0],3'b0} +  {b_ff[35:0],2'b0}  +                        b_ff[37:0]);
+   assign adder14_out[37:0]      = 38'({r_ff[32],r_ff[32:0],a_ff[31:28]}  +  {b_ff[34:0],3'b0} +  {b_ff[35:0],2'b0}  +  {b_ff[36:0],1'b0});
+   assign adder15_out[37:0]      = 38'({r_ff[32],r_ff[32:0],a_ff[31:28]}  +  {b_ff[34:0],3'b0} +  {b_ff[35:0],2'b0}  +  {b_ff[36:0],1'b0}  +  b_ff[37:0]);
 
    assign quotient_raw[01]       = (~adder01_out[34] ^ dividend_sign_ff) | ( (a_ff[27:0] == 28'b0) & (adder01_out[34:0] == 35'b0) );
    assign quotient_raw[02]       = (~adder02_out[35] ^ dividend_sign_ff) | ( (a_ff[27:0] == 28'b0) & (adder02_out[35:0] == 36'b0) );

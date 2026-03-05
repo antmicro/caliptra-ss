@@ -352,7 +352,7 @@ import css_mcu0_el2_pkg::*;
    end else begin: L2U1_Plus1_0
 
       logic [31:0] store_data_hi_m, store_data_lo_m;
-      logic [63:0] store_data_mask;
+      logic [31:0] store_data_mask;
       assign {store_data_hi_m[31:0] , store_data_lo_m[31:0]} = {32'b0,store_data_m[31:0]} << 8*lsu_addr_m[1:0];
 
       for (genvar i=0; i<4; i++) begin

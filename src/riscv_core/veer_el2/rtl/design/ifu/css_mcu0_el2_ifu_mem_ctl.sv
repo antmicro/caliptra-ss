@@ -1421,8 +1421,7 @@ if (pt.ICACHE_ENABLE == 1 ) begin: icache_enabled
 
          assign way_status_wr_en_w_debug = way_status_wr_en | (ic_debug_wr_en  & ic_debug_tag_array);
 
-         assign way_status_new_w_debug[pt.ICACHE_STATUS_BITS-1:0]  = (ic_debug_wr_en  & ic_debug_tag_array) ? (pt.ICACHE_STATUS_BITS == 1) ? ic_debug_wr_data[4] : ic_debug_wr_data[6:4] :
-                                                way_status_new[pt.ICACHE_STATUS_BITS-1:0] ;
+         assign way_status_new_w_debug[pt.ICACHE_STATUS_BITS-1:0]  = (ic_debug_wr_en  & ic_debug_tag_array) ? pt.ICACHE_STATUS_BITS'(ic_debug_wr_data[6:4]) : way_status_new[pt.ICACHE_STATUS_BITS-1:0] ;
 
    css_mcu0_rvdffe #(.WIDTH(pt.ICACHE_INDEX_HI-pt.ICACHE_TAG_INDEX_LO+1),.OVERRIDE(1)) perr_dat_ff    (.din(ifu_ic_rw_int_addr_ff[pt.ICACHE_INDEX_HI:pt.ICACHE_TAG_INDEX_LO]), .dout(perr_ic_index_ff[pt.ICACHE_INDEX_HI : pt.ICACHE_TAG_INDEX_LO]), .en(perr_sb_write_status),  .*);
                                           

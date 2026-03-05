@@ -70,22 +70,22 @@ wire [5:0] abits;
 assign abits = AWIDTH[5:0];
 
 
-localparam TEST_LOGIC_RESET_STATE = 0;
-localparam RUN_TEST_IDLE_STATE    = 1;
-localparam SELECT_DR_SCAN_STATE   = 2;
-localparam CAPTURE_DR_STATE       = 3;
-localparam SHIFT_DR_STATE         = 4;
-localparam EXIT1_DR_STATE         = 5;
-localparam PAUSE_DR_STATE         = 6;
-localparam EXIT2_DR_STATE         = 7;
-localparam UPDATE_DR_STATE        = 8;
-localparam SELECT_IR_SCAN_STATE   = 9;
-localparam CAPTURE_IR_STATE       = 10;
-localparam SHIFT_IR_STATE         = 11;
-localparam EXIT1_IR_STATE         = 12;
-localparam PAUSE_IR_STATE         = 13;
-localparam EXIT2_IR_STATE         = 14;
-localparam UPDATE_IR_STATE        = 15;
+localparam TEST_LOGIC_RESET_STATE = 4'd0;
+localparam RUN_TEST_IDLE_STATE    = 4'd1;
+localparam SELECT_DR_SCAN_STATE   = 4'd2;
+localparam CAPTURE_DR_STATE       = 4'd3;
+localparam SHIFT_DR_STATE         = 4'd4;
+localparam EXIT1_DR_STATE         = 4'd5;
+localparam PAUSE_DR_STATE         = 4'd6;
+localparam EXIT2_DR_STATE         = 4'd7;
+localparam UPDATE_DR_STATE        = 4'd8;
+localparam SELECT_IR_SCAN_STATE   = 4'd9;
+localparam CAPTURE_IR_STATE       = 4'd10;
+localparam SHIFT_IR_STATE         = 4'd11;
+localparam EXIT1_IR_STATE         = 4'd12;
+localparam PAUSE_IR_STATE         = 4'd13;
+localparam EXIT2_IR_STATE         = 4'd14;
+localparam UPDATE_IR_STATE        = 4'd15;
 
 always_comb  begin
     nstate = state;

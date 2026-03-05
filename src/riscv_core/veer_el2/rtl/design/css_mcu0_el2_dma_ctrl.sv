@@ -300,7 +300,7 @@ import css_mcu0_el2_pkg::*;
    always_comb begin
       num_fifo_vld[3:0] = {3'b0,bus_cmd_sent} - {3'b0,bus_rsp_sent};
       for (int i=0; i<DEPTH; i++) begin
-         num_fifo_vld[3:0] += {3'b0,fifo_valid[i]};
+         num_fifo_vld[3:0] = 4'(num_fifo_vld[3:0] + fifo_valid[i]);
       end
    end
    assign fifo_full_spec          = (num_fifo_vld[3:0] >= DEPTH);

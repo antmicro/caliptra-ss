@@ -425,7 +425,12 @@ else begin : genblock
                       .b_priority(level_intpend_w_prior_en[l][2*m+1]),
                       .out_id(level_intpend_id[l+1][m]),
                       .out_priority(level_intpend_w_prior_en[l+1][m])) ;
+    end
 
+    // tie-off unused bits to avoid lint violation
+    for (m=(pt.PIC_TOTAL_INT_PLUS1)/(2**(l+1))+1; m <(pt.PIC_TOTAL_INT_PLUS1+1) ; m++) begin : COMPARE_UNUSED
+       assign level_intpend_w_prior_en[l+1][m+1] = '0 ;
+       assign level_intpend_id[l+1][m+1]         = '0 ;
     end
  end
         assign claimid_in[ID_BITS-1:0]                      =      level_intpend_id[NUM_LEVELS][0] ;   // This is the last level output

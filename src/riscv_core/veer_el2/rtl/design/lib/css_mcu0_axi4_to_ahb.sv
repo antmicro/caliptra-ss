@@ -147,7 +147,7 @@ import css_mcu0_el2_pkg::*;
    logic [63:0]                buf_data_in;
    logic                       buf_write_in;
    logic                       buf_aligned_in;
-   logic [2:0]                 buf_size_in;
+   logic [1:0]                 buf_size_in;
 
    logic                       buf_state_en;
    logic                       buf_wr_en;

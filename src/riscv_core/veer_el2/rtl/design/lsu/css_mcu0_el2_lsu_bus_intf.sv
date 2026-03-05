@@ -202,7 +202,7 @@ import css_mcu0_el2_pkg::*;
    logic [3:0]        ld_byte_hit_buf_lo, ld_byte_hit_buf_hi;
    logic [31:0]       ld_fwddata_buf_lo, ld_fwddata_buf_hi;
 
-   logic [63:0]       ld_fwddata_lo, ld_fwddata_hi;
+   logic [31:0]       ld_fwddata_lo, ld_fwddata_hi;
    logic [63:0]       ld_fwddata_m;
 
    logic              ld_full_hit_hi_m, ld_full_hit_lo_m;

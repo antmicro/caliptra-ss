@@ -248,7 +248,7 @@ import css_mcu0_el2_pkg::*;
 
 logic exu_flush_final_d1;
 
- if(!pt.BTB_FULLYA) begin : genblock1
+ if(pt.BTB_FULLYA == 0) begin : genblock1
    assign fetch_mp_collision_f = ( (exu_mp_btag[pt.BTB_BTAG_SIZE-1:0] == fetch_rd_tag_f[pt.BTB_BTAG_SIZE-1:0]) &
                                     exu_mp_valid & ifc_fetch_req_f &
                                     (exu_mp_addr[pt.BTB_ADDR_HI:pt.BTB_ADDR_LO] == btb_rd_addr_f[pt.BTB_ADDR_HI:pt.BTB_ADDR_LO])
@@ -357,7 +357,7 @@ logic exu_flush_final_d1;
                                     .din(btb_lru_b0_ns[(LRU_SIZE)-1:0]),
                                    .dout(btb_lru_b0_f[(LRU_SIZE)-1:0]));
 
- end // if (!pt.BTB_FULLYA)
+ end // if (pt.BTB_FULLYA == 0)
    // Detect end of cache line and mask as needed
    logic eoc_near;
    logic eoc_mask;
@@ -585,7 +585,7 @@ assign use_fa_plus = (~bht_dir_f[0] & ~fetch_start_f[0] & ~btb_rd_pc4_f);
 
    assign btb_wr_tag[pt.BTB_BTAG_SIZE-1:0] = exu_mp_btag[pt.BTB_BTAG_SIZE-1:0];
 
-   if(!pt.BTB_FULLYA) begin
+   if(pt.BTB_FULLYA == 0) begin
 
       if(pt.BTB_BTAG_FOLD) begin : btbfold_en
          css_mcu0_el2_btb_tag_hash_fold #(.pt(pt)) rdtagf  (.hash(fetch_rd_tag_f[pt.BTB_BTAG_SIZE-1:0]),
@@ -611,7 +611,7 @@ assign use_fa_plus = (~bht_dir_f[0] & ~fetch_start_f[0] & ~btb_rd_pc4_f);
       assign vwayhit_f[1:0] = ( ({2{fetch_start_f[0]}} & {wayhit_f[1:0]}) |
                                 ({2{fetch_start_f[1]}} & {wayhit_p1_f[0], wayhit_f[1]})) & {eoc_mask, 1'b1};
 
-   end // if (!pt.BTB_FULLYA)
+   end // if (pt.BTB_FULLYA == 0)
 
    assign btb_wr_data[BTB_DWIDTH-1:0] = {btb_wr_tag[pt.BTB_BTAG_SIZE-1:0], exu_mp_tgt[pt.BTB_TOFFSET_SIZE-1:0], exu_mp_pc4, exu_mp_boffset,
                                                 exu_mp_call | exu_mp_ja, exu_mp_ret | exu_mp_ja, btb_valid} ;
@@ -650,7 +650,7 @@ assign use_fa_plus = (~bht_dir_f[0] & ~fetch_start_f[0] & ~btb_rd_pc4_f);
    // BTB
    // Entry -> tag[pt.BTB_BTAG_SIZE-1:0], toffset[11:0], pc4, boffset, call, ret, valid
 
-   if(!pt.BTB_FULLYA) begin
+   if(pt.BTB_FULLYA == 0) begin
 
       for (j=0 ; j<LRU_SIZE ; j++) begin : BTB_FLOPS
          // Way 0
@@ -691,13 +691,13 @@ assign use_fa_plus = (~bht_dir_f[0] & ~fetch_start_f[0] & ~btb_rd_pc4_f);
           end
         end
     end
-end // if (!pt.BTB_FULLYA)
+end // if (pt.BTB_FULLYA == 0)
 
 
 
 
 
-      if(pt.BTB_FULLYA) begin : fa
+      if(pt.BTB_FULLYA != 0) begin : fa
 
          logic found1, hit0, hit1;
          logic btb_used_reset, write_used;

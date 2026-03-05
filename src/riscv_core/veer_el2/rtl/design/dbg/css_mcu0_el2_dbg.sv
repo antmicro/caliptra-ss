@@ -609,7 +609,7 @@ import css_mcu0_el2_pkg::*;
 
    assign dbg_cmd_addr_incr[3:0]  = (command_reg[31:24] == 8'h2) ? (4'h1 << sb_abmem_cmd_size[1:0]) : 4'h1;
    assign dbg_cmd_curr_addr[31:0] = (command_reg[31:24] == 8'h2) ? data1_reg[31:0]  : {16'b0, command_reg[15:0]};
-   assign dbg_cmd_next_addr[31:0] = dbg_cmd_curr_addr[31:0] + {28'h0,dbg_cmd_addr_incr[3:0]};
+   assign dbg_cmd_next_addr[31:0] = 32'(dbg_cmd_curr_addr[31:0] + {28'h0,dbg_cmd_addr_incr[3:0]});
 
    // Ask DMA to stop taking bus trxns since debug request is done
    assign dbg_dma_bubble = ((dbg_state == CORE_CMD_START) & ~(|abstractcs_reg[10:8])) | (dbg_state == CORE_CMD_WAIT);

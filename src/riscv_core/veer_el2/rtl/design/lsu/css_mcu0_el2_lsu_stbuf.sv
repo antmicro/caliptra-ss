@@ -240,7 +240,7 @@ import css_mcu0_el2_pkg::*;
    always_comb begin
       stbuf_numvld_any[3:0] = '0;
       for (int i=0; i<DEPTH; i++) begin
-         stbuf_numvld_any[3:0] += {3'b0, stbuf_vld[i]};
+         stbuf_numvld_any[3:0] = 4'(stbuf_numvld_any[3:0] + stbuf_vld[i]);
       end
    end
 
@@ -250,7 +250,7 @@ import css_mcu0_el2_pkg::*;
 
    assign stbuf_specvld_m[1:0] = {1'b0,isdccmst_m} << (isdccmst_m & ldst_dual_m);
    assign stbuf_specvld_r[1:0] = {1'b0,isdccmst_r} << (isdccmst_r & ldst_dual_r);
-   assign stbuf_specvld_any[3:0] = stbuf_numvld_any[3:0] +  {2'b0, stbuf_specvld_m[1:0]} + {2'b0, stbuf_specvld_r[1:0]};
+   assign stbuf_specvld_any[3:0] = 4'(stbuf_numvld_any[3:0] +  {2'b0, stbuf_specvld_m[1:0]} + {2'b0, stbuf_specvld_r[1:0]});
 
    assign lsu_stbuf_full_any  = (~ldst_dual_d & dec_lsu_valid_raw_d) ? (stbuf_specvld_any[3:0] >= DEPTH) : (stbuf_specvld_any[3:0] >= (DEPTH-1));
    assign lsu_stbuf_empty_any = (stbuf_numvld_any[3:0] == 4'b0);

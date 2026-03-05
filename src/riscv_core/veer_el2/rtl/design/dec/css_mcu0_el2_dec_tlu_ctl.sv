@@ -1518,7 +1518,7 @@ end
 
    // Compute interrupt path:
    // If vectored async is set in mtvec, flush path for interrupts is MTVEC + (4 * CAUSE);
-   assign vectored_path[31:1]  = {mtvec[30:1], 1'b0} + {25'b0, exc_cause_r[4:0], 1'b0};
+   assign vectored_path[31:1]  = 31'({mtvec[30:1], 1'b0} + {25'b0, exc_cause_r[4:0], 1'b0});
    assign interrupt_path[31:1] = take_nmi ? nmi_vec[31:1] : ((mtvec[0] == 1'b1) ? vectored_path[31:1] : {mtvec[30:1], 1'b0});
 
    assign sel_npc_r  = lsu_i0_rfnpc_r | fence_i_r | iccm_repair_state_rfnpc | (i_cpu_run_req_d1 & ~interrupt_valid_r) | (rfpc_i0_r & ~dec_tlu_i0_valid_r);
@@ -1710,7 +1710,7 @@ end
 
    assign wr_mcycleh_r = dec_csr_wen_r_mod & (dec_csr_wraddr_r[11:0] == MCYCLEH);
 
-   assign mcycleh_inc[31:0] = mcycleh[31:0] + {31'b0, mcyclel_cout_f};
+   assign mcycleh_inc[31:0] = 32'(mcycleh[31:0] + {31'b0, mcyclel_cout_f});
    assign mcycleh_ns[31:0]  = wr_mcycleh_r ? dec_csr_wrdata_r[31:0] : mcycleh_inc[31:0];
 
    css_mcu0_rvdffe #(32)  mcycleh_ff (.*, .clk(free_l2clk), .en(wr_mcycleh_r | mcyclel_cout_f), .din(mcycleh_ns[31:0]), .dout(mcycleh[31:0]));
@@ -1751,7 +1751,7 @@ end
 
    assign wr_minstreth_r = dec_csr_wen_r_mod & (dec_csr_wraddr_r[11:0] == MINSTRETH);
 
-   assign minstreth_inc[31:0] = minstreth[31:0] + {31'b0, minstretl_cout_f};
+   assign minstreth_inc[31:0] = 32'(minstreth[31:0] + {31'b0, minstretl_cout_f});
    assign minstreth_ns[31:0]  = wr_minstreth_r ? dec_csr_wrdata_r[31:0] : minstreth_inc[31:0];
    css_mcu0_rvdffe #(32)  minstreth_ff (.*, .en((minstret_enable_f & minstretl_cout_f) | wr_minstreth_r), .din(minstreth_ns[31:0]), .dout(minstreth[31:0]));
 
@@ -1856,7 +1856,7 @@ end
 
 
    assign mtval_ns[31:0] = (({32{mtval_capture_pc_r}} & {pc_r[31:1], 1'b0}) |
-                            ({32{mtval_capture_pc_plus2_r}} & {pc_r[31:1] + 31'b1, 1'b0}) |
+                            ({32{mtval_capture_pc_plus2_r}} & {31'(pc_r[31:1] + 31'b1), 1'b0}) |
                             ({32{mtval_capture_inst_r}} & dec_illegal_inst[31:0]) |
                             ({32{mtval_capture_lsu_r}} & lsu_error_pkt_addr_r[31:0]) |
                             ({32{wr_mtval_r & ~interrupt_valid_r}} & dec_csr_wrdata_r[31:0]) |
@@ -2056,7 +2056,7 @@ end
    assign csr_sat[31:27] = (dec_csr_wrdata_r[31:27] > 5'd26) ? 5'd26 : dec_csr_wrdata_r[31:27];
 
    assign wr_micect_r = dec_csr_wen_r_mod & (dec_csr_wraddr_r[11:0] == MICECT);
-   assign micect_inc[26:0] = micect[26:0] + {26'b0, ic_perr_r};
+   assign micect_inc[26:0] = 27'(micect[26:0] + {26'b0, ic_perr_r});
    assign micect_ns =  wr_micect_r ? {csr_sat[31:27], dec_csr_wrdata_r[26:0]} : {micect[31:27], micect_inc[26:0]};
 
    css_mcu0_rvdffe #(32)  micect_ff (.*, .en(wr_micect_r | ic_perr_r), .din(micect_ns[31:0]), .dout(micect[31:0]));
@@ -2069,7 +2069,7 @@ end
    // [26:0]  : ICCM parity error count
 
    assign wr_miccmect_r     = dec_csr_wen_r_mod & (dec_csr_wraddr_r[11:0] == MICCMECT);
-   assign miccmect_inc[26:0] = miccmect[26:0] + {26'b0, iccm_sbecc_r | iccm_dma_sb_error};
+   assign miccmect_inc[26:0] = 27'(miccmect[26:0] + {26'b0, iccm_sbecc_r | iccm_dma_sb_error});
    assign miccmect_ns        = wr_miccmect_r ? {csr_sat[31:27], dec_csr_wrdata_r[26:0]} : {miccmect[31:27], miccmect_inc[26:0]};
 
    css_mcu0_rvdffe #(32)  miccmect_ff (.*, .clk(free_l2clk), .en(wr_miccmect_r | iccm_sbecc_r | iccm_dma_sb_error), .din(miccmect_ns[31:0]), .dout(miccmect[31:0]));
@@ -2082,7 +2082,7 @@ end
    // [26:0]  : DCCM parity error count
 
    assign wr_mdccmect_r     = dec_csr_wen_r_mod & (dec_csr_wraddr_r[11:0] == MDCCMECT);
-   assign mdccmect_inc[26:0] = mdccmect[26:0] + {26'b0, lsu_single_ecc_error_r_d1};
+   assign mdccmect_inc[26:0] = 27'(mdccmect[26:0] + {26'b0, lsu_single_ecc_error_r_d1});
    assign mdccmect_ns        = wr_mdccmect_r ? {csr_sat[31:27], dec_csr_wrdata_r[26:0]} : {mdccmect[31:27], mdccmect_inc[26:0]};
 
    css_mcu0_rvdffe #(32)  mdccmect_ff (.*, .clk(free_l2clk), .en(wr_mdccmect_r | lsu_single_ecc_error_r_d1), .din(mdccmect_ns[31:0]), .dout(mdccmect[31:0]));
@@ -3044,7 +3044,7 @@ import css_mcu0_el2_pkg::*;
    assign mitcnt0_inc_ok = mitctl0[MITCTL_ENABLE] & (~dec_pause_state | mitctl0[MITCTL_ENABLE_PAUSED]) & (~dec_tlu_pmu_fw_halted | mitctl0[MITCTL_ENABLE_HALTED]) & ~internal_dbg_halt_timers;
 
    assign {mitcnt0_inc_cout, mitcnt0_inc[7:0]} = mitcnt0[7:0] + {7'b0, 1'b1};
-   assign mitcnt0_inc[31:8] = mitcnt0[31:8] + {23'b0, mitcnt0_inc_cout};
+   assign mitcnt0_inc[31:8] = 24'(mitcnt0[31:8] + {23'b0, mitcnt0_inc_cout});
 
    assign mitcnt0_ns[31:0]  = wr_mitcnt0_r ? dec_csr_wrdata_r[31:0] : mit0_match_ns ? 'b0 : mitcnt0_inc[31:0];
 
@@ -3067,7 +3067,7 @@ import css_mcu0_el2_pkg::*;
 
    // only inc MITCNT1 if not cascaded with 0, or if 0 overflows
    assign {mitcnt1_inc_cout, mitcnt1_inc[7:0]} = mitcnt1[7:0] + {7'b0, 1'b1};
-   assign mitcnt1_inc[31:8] = mitcnt1[31:8] + {23'b0, mitcnt1_inc_cout};
+   assign mitcnt1_inc[31:8] = 24'(mitcnt1[31:8] + {23'b0, mitcnt1_inc_cout});
 
    assign mitcnt1_ns[31:0]  = wr_mitcnt1_r ? dec_csr_wrdata_r[31:0] : mit1_match_ns ? 'b0 : mitcnt1_inc[31:0];
 
