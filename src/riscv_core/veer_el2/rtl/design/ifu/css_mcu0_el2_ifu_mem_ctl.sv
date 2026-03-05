@@ -202,10 +202,6 @@ import css_mcu0_el2_pkg::*;
 
 //  Create different defines for ICACHE and ICCM enable combinations
 
- localparam   NUM_OF_BEATS = 8 ;
-
-
-
    logic [31:3]    ifu_ic_req_addr_f;
    logic           uncacheable_miss_in ;
    logic           uncacheable_miss_ff;

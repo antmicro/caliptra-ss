@@ -118,7 +118,6 @@ import css_mcu0_el2_pkg::*;
 
    localparam DEPTH = pt.DMA_BUF_DEPTH;
    localparam DEPTH_PTR = $clog2(DEPTH);
-   localparam NACK_COUNT = 7;
 
    logic [DEPTH-1:0]        fifo_valid;
    logic [DEPTH-1:0][1:0]   fifo_error;

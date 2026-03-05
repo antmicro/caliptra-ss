@@ -92,8 +92,6 @@ import css_mcu0_el2_pkg::*;
 
 );
 
-   localparam ID   = 1;
-   localparam PRTY = 1;
    typedef enum logic [3:0] {
         IDLE            = 4'b0000,
         CMD_RD          = 4'b0001,

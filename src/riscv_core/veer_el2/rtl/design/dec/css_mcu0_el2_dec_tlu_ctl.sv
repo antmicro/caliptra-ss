@@ -590,22 +590,6 @@ localparam MSECCFG_MML   = 0;
 `endif
 
    // ----------------------------------------------------------------------
-   // MISA (RO)
-   //  [31:30] XLEN - implementation width, 2'b01 - 32 bits
-   //  [20]    U    - user mode support (if enabled in config)
-   //  [12]    M    - integer mul/div
-   //  [8]     I    - RV32I
-   //  [2]     C    - Compressed extension
-   localparam MISA          = 12'h301;
-
-   // MVENDORID, MARCHID, MIMPID, MHARTID
-   localparam MVENDORID     = 12'hf11;
-   localparam MARCHID       = 12'hf12;
-   localparam MIMPID        = 12'hf13;
-   localparam MHARTID       = 12'hf14;
-
-
-   // ----------------------------------------------------------------------
    // MSTATUS (RW)
    // [17]    MPRV : Modify PRiVilege (if enabled in config)
    // [12:11] MPP  : Prior priv level, either 2'b11 (machine) or 2'b00 (user)
@@ -619,17 +603,6 @@ localparam MSECCFG_MML   = 0;
    // [1] - Reserved, not implemented, reads zero
    // [0]  MODE : 0 = Direct, 1 = Asyncs are vectored to BASE + (4 * CAUSE)
    localparam MTVEC         = 12'h305;
-
-   // ----------------------------------------------------------------------
-   // MIP (RW)
-   //
-   // [30] MCEIP  : (RO) M-Mode Correctable Error interrupt pending
-   // [29] MITIP0 : (RO) M-Mode Internal Timer0 interrupt pending
-   // [28] MITIP1 : (RO) M-Mode Internal Timer1 interrupt pending
-   // [11] MEIP   : (RO) M-Mode external interrupt pending
-   // [7]  MTIP   : (RO) M-Mode timer interrupt pending
-   // [3]  MSIP   : (RO) M-Mode software interrupt pending
-   localparam MIP           = 12'h344;
 
    // ----------------------------------------------------------------------
    // MIE (RW)
@@ -747,12 +720,6 @@ localparam MSECCFG_MML   = 0;
    // [31:0] : Dbus Error Address Unlock register
    //
    localparam MDEAU         = 12'hbc0;
-
-   // ----------------------------------------------------------------------
-   // MDSEAC (R)
-   // [31:0] : Dbus Store Error Address Capture register
-   //
-   localparam MDSEAC        = 12'hfc0;
 
    // ----------------------------------------------------------------------
    // MPMC (R0W1)
@@ -1908,7 +1875,6 @@ end
 `ifdef css_mcu0_RV_USER_MODE
 
    localparam MSECCFG  = 12'h747;
-   localparam MSECCFGH = 12'h757;
 
    // Detect if any PMP region is locked regardless of being enabled. This is
    // necessary for mseccfg.RLB bit write behavior
@@ -2527,7 +2493,6 @@ else
    //----------------------------------------------------------------------
    // Performance Monitor Counters section starts
    //----------------------------------------------------------------------
-   localparam MHPME_NOEVENT             = 10'd0;
    localparam MHPME_CLK_ACTIVE          = 10'd1; // OOP - out of pipe
    localparam MHPME_ICACHE_HIT          = 10'd2; // OOP
    localparam MHPME_ICACHE_MISS         = 10'd3; // OOP

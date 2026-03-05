@@ -159,9 +159,6 @@ import css_mcu0_el2_pkg::*;
    /*pragma coverage on*/
 );
 
-
-   localparam DCCM_WIDTH_BITS = $clog2(pt.DCCM_BYTE_WIDTH);
-
    logic                           lsu_dccm_rden_d, lsu_dccm_wren_d;
    logic                           ld_single_ecc_error_lo_r, ld_single_ecc_error_hi_r;
    logic                           ld_single_ecc_error_lo_r_ns, ld_single_ecc_error_hi_r_ns;
@@ -180,6 +177,8 @@ import css_mcu0_el2_pkg::*;
    logic [7:0]                     store_byteen_ext_m, store_byteen_ext_r;
 
    if (pt.LOAD_TO_USE_PLUS1 == 1) begin: L2U_Plus1_1
+      localparam DCCM_WIDTH_BITS = $clog2(pt.DCCM_BYTE_WIDTH);
+
       logic [63:0]  lsu_rdata_r, lsu_rdata_corr_r;
       logic [63:0]  dccm_rdata_r, dccm_rdata_corr_r;
       logic [63:0]  stbuf_fwddata_r;

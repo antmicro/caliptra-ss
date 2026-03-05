@@ -220,9 +220,6 @@ import css_mcu0_el2_pkg::*;
    /*pragma coverage on*/
    );
 
-   localparam TAGWIDTH = 2 ;
-   localparam IDWIDTH  = 2 ;
-
    logic                   ifu_fb_consume1, ifu_fb_consume2;
    logic [31:1]            ifc_fetch_addr_f;
    logic [31:1]            ifc_fetch_addr_bf;

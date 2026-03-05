@@ -99,7 +99,6 @@ import css_mcu0_el2_pkg::*;
 
    localparam LRU_SIZE=pt.BTB_ARRAY_DEPTH;
    localparam NUM_BHT_LOOP = (pt.BHT_ARRAY_DEPTH > 16 ) ? 16 : pt.BHT_ARRAY_DEPTH;
-   localparam NUM_BHT_LOOP_INNER_HI =  (pt.BHT_ARRAY_DEPTH > 16 ) ?pt.BHT_ADDR_LO+3 : pt.BHT_ADDR_HI;
    localparam NUM_BHT_LOOP_OUTER_LO =  (pt.BHT_ARRAY_DEPTH > 16 ) ?pt.BHT_ADDR_LO+4 : pt.BHT_ADDR_LO;
    localparam BHT_NO_ADDR_MATCH  = ( pt.BHT_ARRAY_DEPTH <= 16 );
 
@@ -833,11 +832,9 @@ end
    //
    //-----------------------------------------------------------------------------
 
-//   logic [1:0] [(pt.BHT_ARRAY_DEPTH/NUM_BHT_LOOP)-1:0][NUM_BHT_LOOP-1:0][1:0]      bht_bank_wr_data ;
    logic [1:0] [pt.BHT_ARRAY_DEPTH-1:0] [1:0]                bht_bank_rd_data_out ;
    logic [1:0] [(pt.BHT_ARRAY_DEPTH/NUM_BHT_LOOP)-1:0]                 bht_bank_clken ;
    logic [1:0] [(pt.BHT_ARRAY_DEPTH/NUM_BHT_LOOP)-1:0]                 bht_bank_clk   ;
-//   logic [1:0] [(pt.BHT_ARRAY_DEPTH/NUM_BHT_LOOP)-1:0][NUM_BHT_LOOP-1:0]           bht_bank_sel   ;
 
    for ( i=0; i<2; i++) begin : BANKS
      wire[pt.BHT_ARRAY_DEPTH-1:0] wr0, wr1;
@@ -856,11 +853,6 @@ end
      wire[1:0] wdata;
      wire  bank_sel = wr1[NUM_BHT_LOOP*k+j] | wr0[NUM_BHT_LOOP*k+j];
 
-//       assign   bht_bank_sel[i][k][j]    = (bht_wr_en0[i] & (bht_wr_addr0[NUM_BHT_LOOP_INNER_HI :pt.BHT_ADDR_LO] == j) & ((bht_wr_addr0[pt.BHT_ADDR_HI: NUM_BHT_LOOP_OUTER_LO]==k) | BHT_NO_ADDR_MATCH)) |
-//                                           (bht_wr_en2[i] & (bht_wr_addr2[NUM_BHT_LOOP_INNER_HI :pt.BHT_ADDR_LO] == j) & ((bht_wr_addr2[pt.BHT_ADDR_HI: NUM_BHT_LOOP_OUTER_LO]==k) | BHT_NO_ADDR_MATCH)) ;
-
-//       assign bht_bank_wr_data[i][k][j]  = (bht_wr_en2[i] & (bht_wr_addr2[NUM_BHT_LOOP_INNER_HI:pt.BHT_ADDR_LO] == j) & ((bht_wr_addr2[pt.BHT_ADDR_HI: NUM_BHT_LOOP_OUTER_LO]==k) | BHT_NO_ADDR_MATCH)) ? bht_wr_data2[1:0] :
-//                                                                                                                      bht_wr_data0[1:0]   ;
        assign wdata  = wr1[NUM_BHT_LOOP*k+j] ? bht_wr_data2[1:0] :bht_wr_data0;
 
 
