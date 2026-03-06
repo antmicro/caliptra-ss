@@ -687,7 +687,7 @@ import css_mcu0_el2_pkg::*;
    wire                            ifu_axi_bvalid;
    wire                            ifu_axi_bready;
    wire [1:0]                      ifu_axi_bresp;
-   wire [pt.IFU_BUS_TAG-1:0]      ifu_axi_bid;
+   wire [pt.IFU_BUS_TAG-1:0]       ifu_axi_bid;
 
    // AXI Read Channels
    wire                            ifu_axi_arvalid;
@@ -719,6 +719,8 @@ import css_mcu0_el2_pkg::*;
    assign                          ifu_axi_rdata = 0;
    assign                          ifu_axi_rresp = '0;
    assign                          ifu_axi_rlast = '0;
+   assign                          ifu_axi_awready = 1'b1;
+   assign                          ifu_axi_wready = 1'b1;
    //-------------------------- SB AXI signals--------------------------
    // AXI Write Channels
    wire                            sb_axi_awvalid;
@@ -844,13 +846,6 @@ import css_mcu0_el2_pkg::*;
    wire                         dma_axi_rlast;
 
    assign                       dma_axi_rready = 1'b0;
-   // AXI
-   assign ifu_axi_awready = 1'b1;
-   assign ifu_axi_wready = 1'b1;
-   assign ifu_axi_bvalid = '0;
-   assign ifu_axi_bresp[1:0] = '0;
-   assign ifu_axi_bid[pt.IFU_BUS_TAG-1:0] = '0;
- 
    /*pragma coverage on*/
 
 `endif //  `ifdef RV_BUILD_AHB_LITE
