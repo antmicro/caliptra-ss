@@ -32,9 +32,7 @@ module axi2tlul
         parameter DW = 32,         // Data Width
                   BC = DW/8,       // Byte Count
         parameter UW = 32,         // User Width
-        parameter IW = 1,          // ID Width
-
-        parameter EX_EN = 0    // Enable exclusive access tracking w/ AxLOCK
+        parameter IW = 1           // ID Width
     ) (
         input clk,
         input rst_n,
@@ -67,8 +65,7 @@ module axi2tlul
         .AW     (AW),
         .DW     (DW),
         .UW     (UW),
-        .IW     (IW),
-        .EX_EN  (EX_EN)
+        .IW     (IW)
 
     ) i_axi_sub (
         .clk    (clk    ),

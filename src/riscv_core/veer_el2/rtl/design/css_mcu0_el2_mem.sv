@@ -147,20 +147,40 @@ import css_mcu0_el2_pkg::*;
       assign dccm_rd_data_hi = '0;
    end
 
-if ( pt.ICACHE_ENABLE ) begin: icache
+if ( pt.ICACHE_ENABLE ) begin : icache
    css_mcu0_el2_ifu_ic_mem #(.pt(pt)) icm  (
       .clk_override(icm_clk_override),
       .icache_export(mem_export_local.veer_icache_src),
       .*
    );
 end
-else  begin
+else  begin : no_icache
    assign   ic_rd_hit[pt.ICACHE_NUM_WAYS-1:0] = '0;
    assign   ic_tag_perr    = '0 ;
    assign   ic_rd_data  = '0 ;
    assign   ictag_debug_rd_data  = '0 ;
    assign   ic_debug_rd_data  = '0 ;
    assign   ic_eccerr      = '0;
+   assign   ic_parerr      = '0;
+
+   assign mem_export_local.ic_b_sb_wren               = '0;
+   assign mem_export_local.ic_b_sb_bit_en_vec         = '0;
+   assign mem_export_local.ic_sb_wr_data              = '0;
+   assign mem_export_local.ic_rw_addr_bank_q          = '0;
+   assign mem_export_local.ic_bank_way_clken_final    = '0;
+   assign mem_export_local.ic_bank_way_clken_final_up = '0;
+   assign mem_export_local.ic_tag_clken_final         = '0;
+   assign mem_export_local.ic_tag_wren_q              = '0;
+   assign mem_export_local.ic_tag_wren_biten_vec      = '0;
+   assign mem_export_local.ic_tag_wr_data             = '0;
+   assign mem_export_local.ic_rw_addr_q               = '0;
+
+   // These are used only with ICACHE_ENABLE
+   logic unused_signals;
+   assign unused_signals = ^{dec_tlu_core_ecc_disable, ic_rd_en, ic_debug_rd_en,
+                             ic_debug_wr_en, ic_debug_tag_array, ic_debug_way,
+                             ic_rw_addr, ic_wr_data, ic_wr_en, ic_debug_addr,
+                             ic_debug_wr_data, ic_tag_valid};
 end // else: !if( pt.ICACHE_ENABLE )
 
 
@@ -173,7 +193,7 @@ if (pt.ICCM_ENABLE) begin : iccm
                   .iccm_mem_export(mem_export_local.veer_iccm)
                    );
 end
-else  begin
+else  begin : no_iccm
    assign iccm_rd_data     = '0 ;
    assign iccm_rd_data_ecc = '0 ;
    assign mem_export_local.iccm_addr_bank = '0;
@@ -181,6 +201,10 @@ else  begin
    assign mem_export_local.iccm_bank_wr_ecc = '0;
    assign mem_export_local.iccm_clken = '0;
    assign mem_export_local.iccm_wren_bank = '0;
+
+   // Used only with ICCM_ENABLE
+   logic unused_signals;
+   assign unused_signals = ^{iccm_buf_correct_ecc, iccm_correction_state};
 end
 
 

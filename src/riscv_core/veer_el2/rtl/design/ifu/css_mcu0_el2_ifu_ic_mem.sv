@@ -756,11 +756,10 @@ import css_mcu0_el2_pkg::*;
    ) ;
 
    logic [pt.ICACHE_NUM_WAYS-1:0] [25:0]                           ic_tag_data_raw;
-   logic [pt.ICACHE_NUM_WAYS-1:0] [25:0]                           ic_tag_data_raw_pre;
    logic [pt.ICACHE_NUM_WAYS-1:0] [36:pt.ICACHE_TAG_LO]            w_tout;
    logic [25:0]                                                    ic_tag_wr_data ;
-   logic [pt.ICACHE_NUM_WAYS-1:0] [31:0]                           ic_tag_corrected_data_unc;
-   logic [pt.ICACHE_NUM_WAYS-1:0] [06:0]                           ic_tag_corrected_ecc_unc;
+   logic [pt.ICACHE_NUM_WAYS-1:0] [31:0]                           ic_tag_corrected_data_nc;
+   logic [pt.ICACHE_NUM_WAYS-1:0] [06:0]                           ic_tag_corrected_ecc_nc;
    logic [pt.ICACHE_NUM_WAYS-1:0]                                  ic_tag_single_ecc_error;
    logic [pt.ICACHE_NUM_WAYS-1:0]                                  ic_tag_double_ecc_error;
    logic [6:0]                                                     ic_tag_ecc;
@@ -784,7 +783,6 @@ import css_mcu0_el2_pkg::*;
       icache_export.ic_tag_wren_q = ic_tag_wren_q;
       icache_export.ic_tag_wr_data = ic_tag_wr_data;
       icache_export.ic_rw_addr_q = ic_rw_addr_q;
-      ic_tag_data_raw_pre = icache_export.ic_tag_data_raw_pre;
    end
 
    assign  ic_tag_wren [pt.ICACHE_NUM_WAYS-1:0]  = ic_wr_en[pt.ICACHE_NUM_WAYS-1:0] & {pt.ICACHE_NUM_WAYS{(ic_rw_addr[pt.ICACHE_BEAT_ADDR_HI:4] == {pt.ICACHE_BEAT_BITS-1{1'b1}})}} ;
@@ -892,11 +890,13 @@ end // block: OTHERS
     logic [pt.ICACHE_NUM_WAYS-1:0]        any_bypass;
     logic [pt.ICACHE_NUM_WAYS-1:0]        any_addr_match;
     logic [pt.ICACHE_NUM_WAYS-1:0]        ic_tag_clken_final;
+    logic [pt.ICACHE_NUM_WAYS-1:0] [25:0] ic_tag_data_raw_pre;
 
     // Use exported ICache interface.
     always_comb begin
       icache_export.ic_tag_clken_final = ic_tag_clken_final;
       icache_export.ic_tag_wren_biten_vec = '0;
+      ic_tag_data_raw_pre = icache_export.ic_tag_data_raw_pre;
     end
     for (genvar i=0; i<pt.ICACHE_NUM_WAYS; i++) begin: WAYS
 
@@ -968,8 +968,8 @@ end // block: OTHERS
                          .sed_ded ( 1'b1 ),    // 1 : means only detection
                          .din({11'b0,ic_tag_data_raw[i][20:0]}),
                          .ecc_in({2'b0, ic_tag_data_raw[i][25:21]}),
-                         .dout(ic_tag_corrected_data_unc[i][31:0]),
-                         .ecc_out(ic_tag_corrected_ecc_unc[i][6:0]),
+                         .dout(ic_tag_corrected_data_nc[i][31:0]),
+                         .ecc_out(ic_tag_corrected_ecc_nc[i][6:0]),
                          .single_ecc_error(ic_tag_single_ecc_error[i]),
                          .double_ecc_error(ic_tag_double_ecc_error[i]));
 
@@ -1223,8 +1223,8 @@ end // block: OTHERS
                            .sed_ded ( 1'b1 ),    // 1 : means only detection
                            .din({11'b0,ic_tag_data_raw[i][20:0]}),
                            .ecc_in({2'b0, ic_tag_data_raw[i][25:21]}),
-                           .dout(ic_tag_corrected_data_unc[i][31:0]),
-                           .ecc_out(ic_tag_corrected_ecc_unc[i][6:0]),
+                           .dout(ic_tag_corrected_data_nc[i][31:0]),
+                           .ecc_out(ic_tag_corrected_ecc_nc[i][6:0]),
                            .single_ecc_error(ic_tag_single_ecc_error[i]),
                            .double_ecc_error(ic_tag_double_ecc_error[i]));
 

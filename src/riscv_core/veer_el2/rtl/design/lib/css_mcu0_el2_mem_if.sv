@@ -90,14 +90,12 @@ interface css_mcu0_el2_mem_if #(
   );
 
   modport veer_iccm(
-      input clk,
       // ICCM
       output iccm_clken, iccm_wren_bank, iccm_addr_bank, iccm_bank_wr_data, iccm_bank_wr_ecc,
       input iccm_bank_dout, iccm_bank_ecc
   );
 
   modport veer_dccm(
-      input clk,
       // DCCM
       output dccm_clken, dccm_wren_bank, dccm_addr_bank, dccm_wr_data_bank, dccm_wr_ecc_bank,
       input dccm_bank_dout, dccm_bank_ecc

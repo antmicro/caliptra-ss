@@ -257,6 +257,10 @@ import css_mcu0_el2_pkg::*;
       end
 
       css_mcu0_rvdffe #(32) lsu_ld_data_corr_rff(.*, .din(lsu_ld_data_corr_m[31:0]), .dout(lsu_ld_data_corr_r[31:0]), .en((lsu_pkt_m.valid & lsu_pkt_m.load & (addr_in_pic_m | addr_in_dccm_m)) | clk_override));
+
+      // Used only with LOAD_TO_USE_PLUS1
+      logic unused_signals;
+      assign unused_signals = ^{lsu_c1_r_clk, ldst_dual_r, sec_data_hi_r, sec_data_lo_r};
    end
 
    assign kill_ecc_corr_lo_r = (((lsu_addr_d[pt.DCCM_BITS-1:2] == lsu_addr_r[pt.DCCM_BITS-1:2]) | (end_addr_d[pt.DCCM_BITS-1:2] == lsu_addr_r[pt.DCCM_BITS-1:2])) & lsu_pkt_d.valid & lsu_pkt_d.store & lsu_pkt_d.dma & addr_in_dccm_d) |

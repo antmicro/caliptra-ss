@@ -365,7 +365,7 @@ import css_mcu0_el2_pkg::*;
    logic lsu_i0_rfnpc_r;
    logic dec_tlu_br0_error_r, dec_tlu_br0_start_error_r, dec_tlu_br0_v_r;
    logic lsu_i0_exc_r, lsu_i0_exc_r_raw, lsu_exc_ma_r, lsu_exc_acc_r, lsu_exc_st_r,
-         lsu_exc_valid_r, lsu_exc_valid_r_raw, lsu_exc_valid_r_d1, lsu_i0_exc_r_d1, block_interrupts;
+         lsu_exc_valid_r, lsu_exc_valid_r_raw, unused_lsu_exc_valid_r_d1, lsu_i0_exc_r_d1, block_interrupts;
    logic i0_trigger_eval_r;
 
    logic request_debug_mode_r, request_debug_mode_r_d1, request_debug_mode_done, request_debug_mode_done_f;
@@ -499,6 +499,10 @@ import css_mcu0_el2_pkg::*;
 
    `include "css_mcu0_el2_dec_csr_equ_m.svh"
 
+   // To avoid lint violation
+   logic unused_signals;
+   assign unused_signals = ^{dec_csr_rdaddr_r};
+
 `endif
 
    css_mcu0_el2_dec_timer_ctl  #(.pt(pt)) int_timers(.*);
@@ -619,7 +623,9 @@ localparam MSECCFG_MML   = 0;
    // [31:0] : Lower Cycle count
 
    localparam MCYCLEL       = 12'hb00;
+`ifdef css_mcu0_RV_USER_MODE
    localparam logic [11:0] CYCLEL  = 12'hc00;
+`endif
 
    // ----------------------------------------------------------------------
    // MCYCLEH (RW)
@@ -627,7 +633,9 @@ localparam MSECCFG_MML   = 0;
    // Chained with mcyclel. Note: mcyclel overflow due to a mcycleh write gets ignored.
 
    localparam MCYCLEH       = 12'hb80;
+`ifdef css_mcu0_RV_USER_MODE
    localparam logic [11:0] CYCLEH  = 12'hc80;
+`endif
 
    // ----------------------------------------------------------------------
    // MINSTRETL (RW)
@@ -639,7 +647,9 @@ localparam MSECCFG_MML   = 0;
    // one instruction will be the value read by the following instruction (i.e., the increment of instret
    // caused by the first instruction retiring happens before the write of the new value)."
    localparam MINSTRETL     = 12'hb02;
+`ifdef css_mcu0_RV_USER_MODE
    localparam logic [11:0] INSTRETL  = 12'hc02;
+`endif
 
    // ----------------------------------------------------------------------
    // MINSTRETH (RW)
@@ -647,7 +657,9 @@ localparam MSECCFG_MML   = 0;
    // Chained with minstretl. Note: minstretl overflow due to a minstreth write gets ignored.
 
    localparam MINSTRETH     = 12'hb82;
+`ifdef css_mcu0_RV_USER_MODE
    localparam logic [11:0] INSTRETH  = 12'hc82;
+`endif
 
    // ----------------------------------------------------------------------
    // MSCRATCH (RW)
@@ -2639,7 +2651,7 @@ else
                                    minstret_enable, minstretl_cout_ns, fw_halted_ns,
                                    meicidpl_ns[3:0], icache_rd_valid, icache_wr_valid, mhpmc_inc_r[3:0], perfcnt_halted,
                                    mstatus_ns[3:0]}),
-                             .dout({mdseac_locked_f, lsu_single_ecc_error_r_d1, lsu_exc_valid_r_d1, lsu_i0_exc_r_d1,
+                             .dout({mdseac_locked_f, lsu_single_ecc_error_r_d1, unused_lsu_exc_valid_r_d1, lsu_i0_exc_r_d1,
                                     take_ext_int_start_d1, take_ext_int_start_d2, take_ext_int_start_d3, ext_int_freeze_d1,
                                     mip[5:0], mcyclel_cout_f, minstret_enable_f, minstretl_cout_f,
                                     fw_halted, meicidpl[3:0], icache_rd_valid_f, icache_wr_valid_f,
@@ -2653,7 +2665,7 @@ else
                                    minstret_enable, minstretl_cout_ns, fw_halted_ns,
                                    meicidpl_ns[3:0], icache_rd_valid, icache_wr_valid, mhpmc_inc_r[3:0], perfcnt_halted,
                                    mstatus_ns[1:0]}),
-                             .dout({mdseac_locked_f, lsu_single_ecc_error_r_d1, lsu_exc_valid_r_d1, lsu_i0_exc_r_d1,
+                             .dout({mdseac_locked_f, lsu_single_ecc_error_r_d1, unused_lsu_exc_valid_r_d1, lsu_i0_exc_r_d1,
                                     take_ext_int_start_d1, take_ext_int_start_d2, take_ext_int_start_d3, ext_int_freeze_d1,
                                     mip[5:0], mcyclel_cout_f, minstret_enable_f, minstretl_cout_f,
                                     fw_halted, meicidpl[3:0], icache_rd_valid_f, icache_wr_valid_f,
@@ -2671,7 +2683,7 @@ else
                                    minstret_enable, minstretl_cout_ns, fw_halted_ns,
                                    meicidpl_ns[3:0], icache_rd_valid, icache_wr_valid, mhpmc_inc_r[3:0], perfcnt_halted,
                                    mstatus_ns[3:0]}),
-                             .dout({mdseac_locked_f, lsu_single_ecc_error_r_d1, lsu_exc_valid_r_d1, lsu_i0_exc_r_d1,
+                             .dout({mdseac_locked_f, lsu_single_ecc_error_r_d1, unused_lsu_exc_valid_r_d1, lsu_i0_exc_r_d1,
                                     mip[5:0], mcyclel_cout_f, minstret_enable_f, minstretl_cout_f,
                                     fw_halted, meicidpl[3:0], icache_rd_valid_f, icache_wr_valid_f,
                                     mhpmc_inc_r_d1[3:0], perfcnt_halted_d1,
@@ -2683,7 +2695,7 @@ else
                                    minstret_enable, minstretl_cout_ns, fw_halted_ns,
                                    meicidpl_ns[3:0], icache_rd_valid, icache_wr_valid, mhpmc_inc_r[3:0], perfcnt_halted,
                                    mstatus_ns[1:0]}),
-                             .dout({mdseac_locked_f, lsu_single_ecc_error_r_d1, lsu_exc_valid_r_d1, lsu_i0_exc_r_d1,
+                             .dout({mdseac_locked_f, lsu_single_ecc_error_r_d1, unused_lsu_exc_valid_r_d1, lsu_i0_exc_r_d1,
                                     mip[5:0], mcyclel_cout_f, minstret_enable_f, minstretl_cout_f,
                                     fw_halted, meicidpl[3:0], icache_rd_valid_f, icache_wr_valid_f,
                                     mhpmc_inc_r_d1[3:0], perfcnt_halted_d1,

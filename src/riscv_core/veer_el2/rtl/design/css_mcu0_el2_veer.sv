@@ -1099,8 +1099,6 @@ import css_mcu0_el2_pkg::*;
       .PMP_CHANNELS(3),
       .pt(pt)
   ) pmp (
-      .clk  (active_l2clk),
-      .rst_l(core_rst_l),
       .*
   );
 
@@ -1437,6 +1435,20 @@ import css_mcu0_el2_pkg::*;
    assign dma_axi_arburst_int[1:0]             = pt.BUILD_AHB_LITE ? dma_axi_arburst_ahb[1:0] : dma_axi_arburst[1:0];
    assign dma_axi_rready_int                   = pt.BUILD_AHB_LITE ? dma_axi_rready_ahb : dma_axi_rready;
 
+   // Mark unused signals for lint
+   /*pragma coverage off*/
+   logic unused_signals;
+   assign unused_signals = ^{
+`ifdef css_mcu0_RV_USER_MODE
+      priv_mode,
+`endif
+      dec_tlu_bus_clk_override, // used only in Gen_AXI_To_AHB case
+      dec_tlu_ifu_clk_override,
+      ifu_axi_awready_int, ifu_axi_bid_int, ifu_axi_bresp_int, ifu_axi_bvalid_int, ifu_axi_rlast_int, ifu_axi_wready_int,
+      sb_axi_bid_int, sb_axi_rid_int, sb_axi_rlast_int,
+      dma_axi_arburst_int, dma_axi_arlen_int, dma_axi_arprot_int, dma_axi_awburst_int, dma_axi_awlen_int, dma_axi_awprot_int, dma_axi_wlast_int
+   };
+   /*pragma coverage on*/
 
 if  (pt.BUILD_AHB_LITE == 1) begin
 `ifdef RV_ASSERT_ON

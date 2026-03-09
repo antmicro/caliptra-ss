@@ -169,6 +169,9 @@ import css_mcu0_el2_pkg::*;
       css_mcu0_rvdffe #(.WIDTH(pt.DCCM_DATA_WIDTH)) sec_data_hi_rff (.din(sec_data_hi_m[pt.DCCM_DATA_WIDTH-1:0]), .dout(sec_data_hi_r[pt.DCCM_DATA_WIDTH-1:0]), .en(lsu_single_ecc_error_m | clk_override), .*);
       css_mcu0_rvdffe #(.WIDTH(pt.DCCM_DATA_WIDTH)) sec_data_lo_rff (.din(sec_data_lo_m[pt.DCCM_DATA_WIDTH-1:0]), .dout(sec_data_lo_r[pt.DCCM_DATA_WIDTH-1:0]), .en(lsu_single_ecc_error_m | clk_override), .*);
 
+      // Used only with LOAD_TO_USE_PLUS1
+      logic unused_signals;
+      assign unused_signals = ^{addr_in_dccm_r, lsu_dccm_rden_r, lsu_addr_r, end_addr_r, lsu_pkt_r};
    end
 
    // Logic for ECC generation during write

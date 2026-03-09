@@ -277,7 +277,6 @@ import css_mcu0_el2_pkg::*;
    logic [pt.DCCM_DATA_WIDTH-1:0] sec_data_lo_r_ff, sec_data_hi_r_ff;
    logic [pt.DCCM_ECC_WIDTH-1:0]  sec_data_ecc_hi_r_ff, sec_data_ecc_lo_r_ff;
 
-   logic                          lsu_cmpen_m;
    logic [pt.DCCM_DATA_WIDTH-1:0] stbuf_fwddata_hi_m;
    logic [pt.DCCM_DATA_WIDTH-1:0] stbuf_fwddata_lo_m;
    logic [pt.DCCM_BYTE_WIDTH-1:0] stbuf_fwdbyteen_hi_m;
@@ -358,9 +357,6 @@ import css_mcu0_el2_pkg::*;
    // Instantiate the store buffer
    assign store_stbuf_reqvld_r = lsu_pkt_r.valid & lsu_pkt_r.store & addr_in_dccm_r & ~flush_r & (~lsu_pkt_r.dma | ((lsu_pkt_r.by | lsu_pkt_r.half) & ~lsu_double_ecc_error_r));
 
-   // Disable Forwarding for now
-   assign lsu_cmpen_m = lsu_pkt_m.valid & (lsu_pkt_m.load | lsu_pkt_m.store) & (addr_in_dccm_m | addr_in_pic_m);
-
    // Bus signals
    assign lsu_busreq_m = lsu_pkt_m.valid & ((lsu_pkt_m.load | lsu_pkt_m.store) & addr_external_m) & ~flush_m_up & ~lsu_exc_m & ~lsu_pkt_m.fast_int;
 
@@ -385,13 +381,7 @@ import css_mcu0_el2_pkg::*;
       .*
    );
 
-   css_mcu0_el2_lsu_stbuf #(.pt(pt)) stbuf (
-      .lsu_addr_d(lsu_addr_d[pt.LSU_SB_BITS-1:0]),
-      .end_addr_d(end_addr_d[pt.LSU_SB_BITS-1:0]),
-
-      .*
-
-   );
+   css_mcu0_el2_lsu_stbuf #(.pt(pt)) stbuf (.*);
 
    css_mcu0_el2_lsu_ecc #(.pt(pt)) ecc (
       .lsu_addr_r(lsu_addr_r[pt.DCCM_BITS-1:0]),

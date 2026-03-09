@@ -121,7 +121,6 @@ import css_mcu0_el2_pkg::*;
 
    logic [DEPTH-1:0]        fifo_valid;
    logic [DEPTH-1:0][1:0]   fifo_error;
-   logic [DEPTH-1:0]        fifo_error_bus;
    logic [DEPTH-1:0]        fifo_rpend;
    logic [DEPTH-1:0]        fifo_done;      // DMA trxn is done in core
    logic [DEPTH-1:0]        fifo_done_bus;  // DMA trxn is done in core but synced to bus clock
@@ -129,12 +128,9 @@ import css_mcu0_el2_pkg::*;
    logic [DEPTH-1:0][2:0]   fifo_sz;
    logic [DEPTH-1:0][7:0]   fifo_byteen;
    logic [DEPTH-1:0]        fifo_write;
-   logic [DEPTH-1:0]        fifo_posted_write;
    logic [DEPTH-1:0]        fifo_dbg;
    logic [DEPTH-1:0][63:0]  fifo_data;
    logic [DEPTH-1:0][pt.DMA_BUS_TAG-1:0]  fifo_tag;
-   logic [DEPTH-1:0][pt.DMA_BUS_ID-1:0]   fifo_mid;
-   logic [DEPTH-1:0][pt.DMA_BUS_PRTY-1:0] fifo_prty;
 
    logic [DEPTH-1:0]        fifo_cmd_en;
    logic [DEPTH-1:0]        fifo_data_en;
@@ -142,13 +138,11 @@ import css_mcu0_el2_pkg::*;
    logic [DEPTH-1:0]        fifo_done_en;
    logic [DEPTH-1:0]        fifo_done_bus_en;
    logic [DEPTH-1:0]        fifo_error_en;
-   logic [DEPTH-1:0]        fifo_error_bus_en;
    logic [DEPTH-1:0]        fifo_reset;
    logic [DEPTH-1:0][1:0]   fifo_error_in;
    logic [DEPTH-1:0][63:0]  fifo_data_in;
 
    logic                    fifo_write_in;
-   logic                    fifo_posted_write_in;
    logic                    fifo_dbg_in;
    logic [31:0]             fifo_addr_in;
    logic [2:0]              fifo_sz_in;
@@ -190,14 +184,12 @@ import css_mcu0_el2_pkg::*;
 
    logic                    bus_rsp_valid, bus_rsp_sent;
    logic                    bus_cmd_valid, bus_cmd_sent;
-   logic                    bus_cmd_write, bus_cmd_posted_write;
+   logic                    bus_cmd_write;
    logic [7:0]              bus_cmd_byteen;
    logic [2:0]              bus_cmd_sz;
    logic [31:0]             bus_cmd_addr;
    logic [63:0]             bus_cmd_wdata;
    logic [pt.DMA_BUS_TAG-1:0]  bus_cmd_tag;
-   logic [pt.DMA_BUS_ID-1:0]   bus_cmd_mid;
-   logic [pt.DMA_BUS_PRTY-1:0] bus_cmd_prty;
    logic                    bus_posted_write_done;
 
    logic                    fifo_full_spec_bus;
@@ -238,7 +230,6 @@ import css_mcu0_el2_pkg::*;
    assign fifo_byteen_in[7:0]   = {8{~dbg_cmd_valid}} & bus_cmd_byteen[7:0];    // Byte enable is used only for bus requests
    assign fifo_sz_in[2:0]       = dbg_cmd_valid ? {1'b0,dbg_cmd_size[1:0]} : bus_cmd_sz[2:0];
    assign fifo_write_in         = dbg_cmd_valid ? dbg_cmd_write : bus_cmd_write;
-   assign fifo_posted_write_in  = ~dbg_cmd_valid & bus_cmd_posted_write;
    assign fifo_dbg_in           = dbg_cmd_valid;
 
    for (genvar i=0 ;i<DEPTH; i++) begin: GenFifo
@@ -251,7 +242,6 @@ import css_mcu0_el2_pkg::*;
       assign fifo_error_en[i] = ((dma_address_error | dma_alignment_error | dma_dbg_cmd_error) & (i == RdPtr[DEPTH_PTR-1:0])) |
                                 ((dccm_dma_rvalid & dccm_dma_ecc_error) & (i == DEPTH_PTR'(dccm_dma_rtag[2:0]))) |
                                 ((iccm_dma_rvalid & iccm_dma_ecc_error) & (i == DEPTH_PTR'(iccm_dma_rtag[2:0])));
-      assign fifo_error_bus_en[i] = (((|fifo_error_in[i][1:0]) & fifo_error_en[i]) | (|fifo_error[i])) & dma_bus_clk_en;
       assign fifo_done_en[i] = ((|fifo_error[i] | fifo_error_en[i] | ((dma_dccm_req | dma_iccm_req) & dma_mem_write)) & (i == RdPtr[DEPTH_PTR-1:0])) |
                                (dccm_dma_rvalid & (i == DEPTH_PTR'(dccm_dma_rtag[2:0]))) |
                                (iccm_dma_rvalid & (i == DEPTH_PTR'(iccm_dma_rtag[2:0])));
@@ -265,7 +255,6 @@ import css_mcu0_el2_pkg::*;
 
       css_mcu0_rvdffsc #(1) fifo_valid_dff (.din(1'b1), .dout(fifo_valid[i]), .en(fifo_cmd_en[i]), .clear(fifo_reset[i]), .clk(dma_free_clk), .*);
       css_mcu0_rvdffsc #(2) fifo_error_dff (.din(fifo_error_in[i]), .dout(fifo_error[i]), .en(fifo_error_en[i]), .clear(fifo_reset[i]), .clk(dma_free_clk), .*);
-      css_mcu0_rvdffsc #(1) fifo_error_bus_dff (.din(1'b1), .dout(fifo_error_bus[i]), .en(fifo_error_bus_en[i]), .clear(fifo_reset[i]), .clk(dma_free_clk), .*);
       css_mcu0_rvdffsc #(1) fifo_rpend_dff (.din(1'b1), .dout(fifo_rpend[i]), .en(fifo_pend_en[i]), .clear(fifo_reset[i]), .clk(dma_free_clk), .*);
       css_mcu0_rvdffsc #(1) fifo_done_dff (.din(1'b1), .dout(fifo_done[i]), .en(fifo_done_en[i]), .clear(fifo_reset[i]), .clk(dma_free_clk), .*);
       css_mcu0_rvdffsc #(1) fifo_done_bus_dff (.din(1'b1), .dout(fifo_done_bus[i]), .en(fifo_done_bus_en[i]), .clear(fifo_reset[i]), .clk(dma_free_clk), .*);
@@ -273,12 +262,9 @@ import css_mcu0_el2_pkg::*;
       css_mcu0_rvdffs  #(3) fifo_sz_dff (.din(fifo_sz_in[2:0]), .dout(fifo_sz[i]), .en(fifo_cmd_en[i]), .clk(dma_buffer_c1_clk), .*);
       css_mcu0_rvdffs  #(8) fifo_byteen_dff (.din(fifo_byteen_in[7:0]), .dout(fifo_byteen[i]), .en(fifo_cmd_en[i]), .clk(dma_buffer_c1_clk), .*);
       css_mcu0_rvdffs  #(1) fifo_write_dff (.din(fifo_write_in), .dout(fifo_write[i]), .en(fifo_cmd_en[i]), .clk(dma_buffer_c1_clk), .*);
-      css_mcu0_rvdffs  #(1) fifo_posted_write_dff (.din(fifo_posted_write_in), .dout(fifo_posted_write[i]), .en(fifo_cmd_en[i]), .clk(dma_buffer_c1_clk), .*);
       css_mcu0_rvdffs  #(1) fifo_dbg_dff (.din(fifo_dbg_in), .dout(fifo_dbg[i]), .en(fifo_cmd_en[i]), .clk(dma_buffer_c1_clk), .*);
       css_mcu0_rvdffe  #(64) fifo_data_dff (.din(fifo_data_in[i]), .dout(fifo_data[i]), .en(fifo_data_en[i]), .*);
       css_mcu0_rvdffs  #(pt.DMA_BUS_TAG) fifo_tag_dff(.din(bus_cmd_tag[pt.DMA_BUS_TAG-1:0]), .dout(fifo_tag[i][pt.DMA_BUS_TAG-1:0]), .en(fifo_cmd_en[i]), .clk(dma_buffer_c1_clk), .*);
-      css_mcu0_rvdffs  #(pt.DMA_BUS_ID) fifo_mid_dff(.din(bus_cmd_mid[pt.DMA_BUS_ID-1:0]), .dout(fifo_mid[i][pt.DMA_BUS_ID-1:0]), .en(fifo_cmd_en[i]), .clk(dma_buffer_c1_clk), .*);
-      css_mcu0_rvdffs  #(pt.DMA_BUS_PRTY) fifo_prty_dff(.din(bus_cmd_prty[pt.DMA_BUS_PRTY-1:0]), .dout(fifo_prty[i][pt.DMA_BUS_PRTY-1:0]), .en(fifo_cmd_en[i]), .clk(dma_buffer_c1_clk), .*);
    end
 
    // Pointer logic
@@ -459,14 +445,11 @@ import css_mcu0_el2_pkg::*;
    assign bus_cmd_valid                     = (wrbuf_vld & wrbuf_data_vld) | rdbuf_vld;
    assign bus_cmd_sent                      = bus_cmd_valid & dma_fifo_ready;
    assign bus_cmd_write                     = axi_mstr_sel;
-   assign bus_cmd_posted_write              = '0;
    assign bus_cmd_addr[31:0]                = axi_mstr_sel ? wrbuf_addr[31:0] : rdbuf_addr[31:0];
    assign bus_cmd_sz[2:0]                   = axi_mstr_sel ? wrbuf_sz[2:0] : rdbuf_sz[2:0];
    assign bus_cmd_wdata[63:0]               = wrbuf_data[63:0];
    assign bus_cmd_byteen[7:0]               = wrbuf_byteen[7:0];
    assign bus_cmd_tag[pt.DMA_BUS_TAG-1:0]   = axi_mstr_sel ? wrbuf_tag[pt.DMA_BUS_TAG-1:0] : rdbuf_tag[pt.DMA_BUS_TAG-1:0];
-   assign bus_cmd_mid[pt.DMA_BUS_ID-1:0]    = '0;
-   assign bus_cmd_prty[pt.DMA_BUS_PRTY-1:0] = '0;
 
    // Sel=1 -> write has higher priority
    assign axi_mstr_sel     = (wrbuf_vld & wrbuf_data_vld & rdbuf_vld) ? axi_mstr_priority : (wrbuf_vld & wrbuf_data_vld);

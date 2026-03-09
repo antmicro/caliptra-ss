@@ -176,7 +176,6 @@ import css_mcu0_el2_pkg::*;
    logic                       slvbuf_error_in;
    logic                       slvbuf_wr_en;
    logic                       bypass_en;
-   logic                       rd_bypass_idle;
 
    logic                       last_addr_en;
    logic [31:0]                last_bus_addr;
@@ -286,7 +285,6 @@ import css_mcu0_el2_pkg::*;
       ahb_htrans[1:0]  = 2'b0;
       slvbuf_wr_en     = 1'b0;
       bypass_en        = 1'b0;
-      rd_bypass_idle   = 1'b0;
 
       case (buf_state)
          IDLE: begin
@@ -299,7 +297,6 @@ import css_mcu0_el2_pkg::*;
                   buf_cmd_byte_ptr_en   = buf_state_en;
                   buf_cmd_byte_ptr[2:0] = buf_write_in ? get_nxtbyte_ptr(3'b0,buf_byteen_in[7:0],1'b0) : master_addr[2:0];
                   bypass_en       = buf_state_en;
-                  rd_bypass_idle  = bypass_en & (buf_nxtstate == CMD_RD);
                   ahb_htrans[1:0] = {2{bypass_en}} & 2'b10;
           end
          CMD_RD: begin

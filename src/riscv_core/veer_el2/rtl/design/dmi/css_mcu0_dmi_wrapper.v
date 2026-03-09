@@ -51,7 +51,7 @@ module css_mcu0_dmi_wrapper #(
   //Wire Declaration
   wire                     rd_en;
   wire                     wr_en;
-  wire                     dmireset;
+  wire                     dmireset_nc;
 
  
   //jtag_tap instantiation
@@ -72,7 +72,7 @@ module css_mcu0_dmi_wrapper #(
    .dmi_stat(2'b0),                     // no need to wait or error possible
    .version(4'h1),                      // debug spec 0.13 compliant
    .dmi_hard_reset(dmi_hard_reset),
-   .dmi_reset(dmireset)
+   .dmi_reset(dmireset_nc)
 );
 
 

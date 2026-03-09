@@ -57,11 +57,9 @@ logic[3:0] state, nstate;
 logic [4:0] ir;
 wire jtag_reset;
 wire shift_dr;
-wire pause_dr;
 wire update_dr;
 wire capture_dr;
 wire shift_ir;
-wire pause_ir ;
 wire update_ir ;
 wire capture_ir;
 wire[2:0] dr_en;
@@ -117,11 +115,9 @@ end
 
 assign jtag_reset = state == TEST_LOGIC_RESET_STATE;
 assign shift_dr   = state == SHIFT_DR_STATE;
-assign pause_dr   = state == PAUSE_DR_STATE;
 assign update_dr  = state == UPDATE_DR_STATE;
 assign capture_dr = state == CAPTURE_DR_STATE;
 assign shift_ir   = state == SHIFT_IR_STATE;
-assign pause_ir   = state == PAUSE_IR_STATE;
 assign update_ir  = state == UPDATE_IR_STATE;
 assign capture_ir = state == CAPTURE_IR_STATE;
 

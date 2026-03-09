@@ -35,7 +35,6 @@ csr_mscause =       [011111111111]
 csr_mtval =         [001101000011]
 csr_mrac =          [011111000000]
 csr_dmst =          [011111000100]
-csr_mdeau =         [101111000000]
 csr_mdseac =        [111111000000]
 csr_meivt =         [101111001000]
 csr_meihap =        [111111001000]
@@ -70,7 +69,6 @@ csr_miccmect =      [011111110001]
 csr_mdccmect =      [011111110010]
 csr_mpmc =          [011111000110]
 csr_mcgc =          [011111111000]
-csr_mcpc =          [011111000010]
 csr_mfdc =          [011111111001]
 csr_mitctl0 =       [011111010100]
 csr_mitctl1 =       [011111010111]
@@ -78,15 +76,6 @@ csr_mitb0 =         [011111010011]
 csr_mitb1 =         [011111010110]
 csr_mitcnt0 =       [011111010010]
 csr_mitcnt1 =       [011111010101]
-csr_perfva =        [101100000111]
-csr_perfvb =        [101100001...]
-csr_perfvc =        [10110001....]
-csr_perfvd =        [101110000111]
-csr_perfve =        [101110001...]
-csr_perfvf =        [10111001....]
-csr_perfvg =        [001100100111]
-csr_perfvh =        [001100101...]
-csr_perfvi =        [00110011....]
 csr_mcounteren =    [001100000110]
 csr_mcountinhibit = [001100100000]
 csr_mfdht =         [011111001110]
@@ -186,19 +175,8 @@ csr = {
      csr_mitb1
      csr_mitcnt0
      csr_mitcnt1
-csr_perfva
-csr_perfvb
-csr_perfvc
-csr_perfvd
-csr_perfve
-csr_perfvf
-csr_perfvg
-csr_perfvh
-csr_perfvi
      csr_mpmc
-     csr_mcpc
      csr_meicpct
-     csr_mdeau
      csr_micect
      csr_miccmect
      csr_mdccmect
@@ -230,7 +208,6 @@ csr_dicago
      csr_hpmc6h
      csr_mseccfgl
      csr_mseccfgh
-     valid_only
      presync
      postsync
 }
@@ -262,10 +239,8 @@ csr[ csr_meipt     ] = {  csr_meipt     }
 csr[ csr_meihap    ] = {  csr_meihap    }
 csr[ csr_meivt     ] = {  csr_meivt     }
 csr[ csr_meicurpl  ] = {  csr_meicurpl  }
-csr[ csr_mdeau     ] = {  csr_mdeau    }
 csr[ csr_meicpct   ] = {  csr_meicpct   }
 csr[ csr_mpmc      ] = {  csr_mpmc      }
-csr[ csr_mcpc      ] = {  csr_mcpc presync postsync }
 csr[ csr_meicidpl  ] = {  csr_meicidpl  }
 csr[ csr_mcgc      ] = {  csr_mcgc      }
 csr[ csr_mcountinhibit] = {  csr_mcountinhibit presync postsync }
@@ -307,16 +282,6 @@ csr[ csr_menvcfg   ] = {  csr_menvcfg }
 csr[ csr_menvcfgh  ] = {  csr_menvcfgh }
 csr[ csr_mcounteren ] = { csr_mcounteren }
 csr[ csr_mcountinhibit] = {  csr_mcountinhibit presync postsync }
-
-csr[ csr_perfva    ] = { valid_only }
-csr[ csr_perfvb    ] = { valid_only }
-csr[ csr_perfvc    ] = { valid_only }
-csr[ csr_perfvd    ] = { valid_only }
-csr[ csr_perfve    ] = { valid_only }
-csr[ csr_perfvf    ] = { valid_only }
-csr[ csr_perfvg    ] = { valid_only }
-csr[ csr_perfvh    ] = { valid_only }
-csr[ csr_perfvi    ] = { valid_only }
 
 csr[ csr_pmpcfg    ] = { csr_pmpcfg    }
 csr[ csr_pmpaddr0  ] = { csr_pmpaddr0  }

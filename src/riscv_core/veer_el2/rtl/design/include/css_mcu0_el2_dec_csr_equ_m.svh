@@ -50,22 +50,8 @@ logic csr_mitb0;
 logic csr_mitb1;
 logic csr_mitcnt0;
 logic csr_mitcnt1;
-/* exclude signals that are tied to constant value in this file */
-/*pragma coverage off*/
-logic csr_perfva;
-logic csr_perfvb;
-logic csr_perfvc;
-logic csr_perfvd;
-logic csr_perfve;
-logic csr_perfvf;
-logic csr_perfvg;
-logic csr_perfvh;
-logic csr_perfvi;
-/*pragma coverage on*/
 logic csr_mpmc;
-logic csr_mcpc;
 logic csr_meicpct;
-logic csr_mdeau;
 logic csr_micect;
 logic csr_miccmect;
 logic csr_mdccmect;
@@ -81,7 +67,6 @@ logic csr_pmpaddr0;
 logic csr_pmpaddr16;
 logic csr_pmpaddr32;
 logic csr_pmpaddr48;
-logic valid_only;
 logic presync;
 logic postsync;
 assign csr_misa = (!dec_csr_rdaddr_d[11]&!dec_csr_rdaddr_d[6]
@@ -260,35 +245,11 @@ assign csr_mitcnt0 = (dec_csr_rdaddr_d[10]&dec_csr_rdaddr_d[6]
 assign csr_mitcnt1 = (dec_csr_rdaddr_d[10]&dec_csr_rdaddr_d[2]
     &!dec_csr_rdaddr_d[1]&dec_csr_rdaddr_d[0]);
 
-assign csr_perfva  = 1'b0;
-
-assign csr_perfvb  = 1'b0;
-
-assign csr_perfvc  = 1'b0;
-
-assign csr_perfvd  = 1'b0;
-
-assign csr_perfve  = 1'b0;
-
-assign csr_perfvf  = 1'b0;
-
-assign csr_perfvg  = 1'b0;
-
-assign csr_perfvh  = 1'b0;
-
-assign csr_perfvi  = 1'b0;
-
 assign csr_mpmc = (dec_csr_rdaddr_d[10]&!dec_csr_rdaddr_d[4]&!dec_csr_rdaddr_d[3]
     &dec_csr_rdaddr_d[2]&dec_csr_rdaddr_d[1]);
 
-assign csr_mcpc = (dec_csr_rdaddr_d[10]&!dec_csr_rdaddr_d[5]&!dec_csr_rdaddr_d[4]
-    &!dec_csr_rdaddr_d[3]&!dec_csr_rdaddr_d[2]&dec_csr_rdaddr_d[1]);
-
 assign csr_meicpct = (dec_csr_rdaddr_d[11]&dec_csr_rdaddr_d[6]
     &dec_csr_rdaddr_d[1]&!dec_csr_rdaddr_d[0]);
-
-assign csr_mdeau = (dec_csr_rdaddr_d[11]&!dec_csr_rdaddr_d[10]
-    &dec_csr_rdaddr_d[6]&!dec_csr_rdaddr_d[3]);
 
 assign csr_micect = (dec_csr_rdaddr_d[6]&dec_csr_rdaddr_d[5]&dec_csr_rdaddr_d[4]
     &!dec_csr_rdaddr_d[3]&!dec_csr_rdaddr_d[1]&!dec_csr_rdaddr_d[0]);
@@ -335,14 +296,6 @@ assign csr_pmpaddr32 = (!dec_csr_rdaddr_d[10]&dec_csr_rdaddr_d[6]
 
 assign csr_pmpaddr48 = (dec_csr_rdaddr_d[6]&dec_csr_rdaddr_d[5]
     &!dec_csr_rdaddr_d[4]);
-
-assign valid_only = (dec_csr_rdaddr_d[11]&dec_csr_rdaddr_d[2]
-    &dec_csr_rdaddr_d[1]&dec_csr_rdaddr_d[0]) | (dec_csr_rdaddr_d[7]
-    &!dec_csr_rdaddr_d[6]&!dec_csr_rdaddr_d[5]&dec_csr_rdaddr_d[4]) | (
-    !dec_csr_rdaddr_d[10]&!dec_csr_rdaddr_d[7]&dec_csr_rdaddr_d[4]) | (
-    !dec_csr_rdaddr_d[6]&!dec_csr_rdaddr_d[5]&dec_csr_rdaddr_d[3]) | (
-    !dec_csr_rdaddr_d[7]&dec_csr_rdaddr_d[2]&dec_csr_rdaddr_d[1]
-    &dec_csr_rdaddr_d[0]) | (!dec_csr_rdaddr_d[7]&dec_csr_rdaddr_d[3]);
 
 assign presync = (dec_csr_rdaddr_d[10]&dec_csr_rdaddr_d[4]&dec_csr_rdaddr_d[3]
     &!dec_csr_rdaddr_d[1]&dec_csr_rdaddr_d[0]) | (dec_csr_rdaddr_d[10]

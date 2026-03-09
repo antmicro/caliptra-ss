@@ -19,9 +19,7 @@ module axi_mem #(
               BC = DW/8,       // Byte Count
               BW = $clog2(BC), // Byte count Width
     parameter UW = 32,         // User Width
-    parameter IW = 1,          // ID Width
-
-    parameter EX_EN = 0    // Enable exclusive access tracking w/ AxLOCK
+    parameter IW = 1           // ID Width
 )
 (
     input clk,
@@ -51,7 +49,6 @@ axi_sub #(
     .DW   (DW   ),
     .UW   (UW   ),
     .IW   (IW   ),
-    .EX_EN(EX_EN),
     .C_LAT(1    )
 ) i_axi_sub (
     .clk  (clk     ),

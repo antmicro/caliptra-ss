@@ -23,8 +23,6 @@ module css_mcu0_el2_pmp
     parameter PMP_GRANULARITY = 0,  // TODO: Move to veer.config
     `include "css_mcu0_el2_param.vh"
 ) (
-    input logic clk,       // Top level clock
-    input logic rst_l,     // Reset
     /* pragma coverage off */
     input logic scan_mode, // Scan mode
     /* pragma coverage on */

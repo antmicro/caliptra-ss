@@ -445,7 +445,7 @@ import css_mcu0_el2_pkg::*;
 );
 
    logic                             active_l2clk;
-   logic                             free_l2clk;
+   logic                             unused_free_l2clk;
 
    // DCCM ports
    logic         dccm_wren;
@@ -598,6 +598,13 @@ import css_mcu0_el2_pkg::*;
    assign  dma_hwdata[63:0]                       = '0;
    assign  dma_hreadyin                           = '0;
 
+   logic unused_signals;
+   assign unused_signals = ^{
+          haddr,     hburst,     hmastlock,     hprot,     hsize,     htrans,     hwrite,
+      lsu_haddr, lsu_hburst, lsu_hmastlock, lsu_hprot, lsu_hsize, lsu_htrans, lsu_hwrite, lsu_hwdata,
+       sb_haddr,  sb_hburst,  sb_hmastlock,  sb_hprot,  sb_hsize,  sb_htrans,  sb_hwrite, sb_hwdata,
+      dma_hrdata, dma_hreadyout, dma_hresp
+   };
    /*pragma coverage on*/
 
 `endif //  `ifdef css_mcu0_RV_BUILD_AXI4
@@ -846,6 +853,39 @@ import css_mcu0_el2_pkg::*;
    wire                         dma_axi_rlast;
 
    assign                       dma_axi_rready = 1'b0;
+
+   //----------------- Gather unused signals for lint ------------------
+   logic unused_signals;
+   assign unused_signals = ^{
+      // LSU AXI Write Channels
+      lsu_axi_awvalid, lsu_axi_awid, lsu_axi_awaddr, lsu_axi_awregion, lsu_axi_awlen, lsu_axi_awsize,
+      lsu_axi_awburst, lsu_axi_awlock, lsu_axi_awcache, lsu_axi_awprot, lsu_axi_awqos,
+      lsu_axi_wvalid, lsu_axi_wdata, lsu_axi_wstrb, lsu_axi_wlast, lsu_axi_bready,
+      // LSU AXI Read Channels
+      lsu_axi_arvalid, lsu_axi_arid, lsu_axi_araddr, lsu_axi_arregion, lsu_axi_arlen,
+      lsu_axi_arsize, lsu_axi_arburst, lsu_axi_arlock, lsu_axi_arcache, lsu_axi_arprot, lsu_axi_arqos,
+      lsu_axi_rready,
+      // IFU AXI Write Channels
+      ifu_axi_awvalid, ifu_axi_awid, ifu_axi_awaddr, ifu_axi_awregion, ifu_axi_awlen, ifu_axi_awsize,
+      ifu_axi_awburst, ifu_axi_awlock, ifu_axi_awcache, ifu_axi_awprot, ifu_axi_awqos,
+      ifu_axi_wvalid, ifu_axi_wdata, ifu_axi_wstrb, ifu_axi_wlast, ifu_axi_bready,
+      // IFU AXI Read Channels
+      ifu_axi_arvalid, ifu_axi_arid, ifu_axi_araddr, ifu_axi_arregion, ifu_axi_arlen, ifu_axi_arsize,
+      ifu_axi_arburst, ifu_axi_arlock, ifu_axi_arcache, ifu_axi_arprot, ifu_axi_arqos,
+      ifu_axi_rready,
+      // SB AXI Write Channels
+      sb_axi_awvalid, sb_axi_awid, sb_axi_awaddr, sb_axi_awregion, sb_axi_awlen, sb_axi_awsize,
+      sb_axi_awburst, sb_axi_awlock, sb_axi_awcache, sb_axi_awprot, sb_axi_awqos,
+      sb_axi_wvalid, sb_axi_wdata, sb_axi_wstrb, sb_axi_wlast, sb_axi_bready,
+      // SB AXI Read Channels
+      sb_axi_arvalid, sb_axi_arid, sb_axi_araddr, sb_axi_arregion, sb_axi_arlen, sb_axi_arsize,
+      sb_axi_arburst, sb_axi_arlock, sb_axi_arcache, sb_axi_arprot, sb_axi_arqos,
+      sb_axi_rready,
+      // DMA AXI Write Channels
+      dma_axi_awready, dma_axi_wready, dma_axi_bvalid, dma_axi_bresp, dma_axi_bid,
+      // DMA AXI Read Channels
+      dma_axi_arready, dma_axi_rready, dma_axi_rvalid, dma_axi_rresp, dma_axi_rid, dma_axi_rdata, dma_axi_rlast
+   };
    /*pragma coverage on*/
 
 `endif //  `ifdef RV_BUILD_AHB_LITE
@@ -867,6 +907,7 @@ import css_mcu0_el2_pkg::*;
    // Instantiate the css_mcu0_el2_veer core
    css_mcu0_el2_veer #(.pt(pt)) veer (
                                 .clk(clk),
+                                .free_l2clk(unused_free_l2clk),
                                 .*
                                 );
 

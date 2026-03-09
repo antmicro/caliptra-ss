@@ -90,7 +90,6 @@ axi_sub #(
     .DW   (AXI_DATA_WIDTH),
     .UW   (AXI_USER_WIDTH),
     .IW   (AXI_ID_WIDTH  ),
-    .EX_EN(0             ),
     .C_LAT(0             )
 ) i_axi_sub (
     .clk,

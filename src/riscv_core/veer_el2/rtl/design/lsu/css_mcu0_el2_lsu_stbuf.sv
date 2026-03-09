@@ -59,11 +59,9 @@ import css_mcu0_el2_pkg::*;
    output logic                          lsu_stbuf_empty_any,         // stbuf is empty
    output logic                          ldst_stbuf_reqvld_r,         // needed for clocking
 
-   input logic [pt.LSU_SB_BITS-1:0]      lsu_addr_d,                  // lsu address D-stage
    input logic [31:0]                    lsu_addr_m,                  // lsu address M-stage
    input logic [31:0]                    lsu_addr_r,                  // lsu address R-stage
 
-   input logic [pt.LSU_SB_BITS-1:0]      end_addr_d,                  // lsu end address D-stage - needed to check unaligned
    input logic [31:0]                    end_addr_m,                  // lsu end address M-stage - needed to check unaligned
    input logic [31:0]                    end_addr_r,                  // lsu end address R-stage - needed to check unaligned
 
@@ -72,7 +70,6 @@ import css_mcu0_el2_pkg::*;
    input logic                           addr_in_dccm_r,              // address is in dccm
 
    // Forwarding signals
-   input logic                           lsu_cmpen_m,                 // needed for forwarding stbuf - load
    input el2_lsu_pkt_t                  lsu_pkt_m,                   // LSU packet M-stage
    input el2_lsu_pkt_t                  lsu_pkt_r,                   // LSU packet R-stage
 

@@ -266,7 +266,6 @@ import css_mcu0_el2_pkg::*;
    logic              sb_abmem_cmd_arvalid, sb_abmem_cmd_awvalid, sb_abmem_cmd_wvalid;
    logic              sb_abmem_read_pend;
    logic              sb_cmd_awvalid, sb_cmd_wvalid, sb_cmd_arvalid;
-   logic              sb_read_pend;
    logic [31:0]       sb_axi_addr;
    logic [63:0]       sb_axi_wrdata;
    logic [2:0]        sb_axi_size;
@@ -717,7 +716,6 @@ import css_mcu0_el2_pkg::*;
    assign sb_cmd_awvalid     = ((sb_state == CMD_WR) | (sb_state == CMD_WR_ADDR));
    assign sb_cmd_wvalid      = ((sb_state == CMD_WR) | (sb_state == CMD_WR_DATA));
    assign sb_cmd_arvalid     = (sb_state == CMD_RD);
-   assign sb_read_pend       = (sb_state == RSP_RD);
 
    assign sb_axi_size[2:0]    = (sb_abmem_cmd_awvalid | sb_abmem_cmd_wvalid | sb_abmem_cmd_arvalid | sb_abmem_read_pend) ? sb_abmem_cmd_size[2:0] : sb_cmd_size[2:0];
    assign sb_axi_addr[31:0]   = (sb_abmem_cmd_awvalid | sb_abmem_cmd_wvalid | sb_abmem_cmd_arvalid | sb_abmem_read_pend) ? sb_abmem_cmd_addr[31:0] : sb_cmd_addr[31:0];

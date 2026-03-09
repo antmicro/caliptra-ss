@@ -105,6 +105,9 @@ else begin : gen_ff
     css_mcu0_rvdffs #(WIDTH) dffs (.clk(rawclk), .en(clken), .*);
 `else
     css_mcu0_rvdff #(WIDTH)  dff (.*);
+    // Create unloaded flop (removed during synthesis) to avoid lint violation
+    logic [WIDTH-1:0] unused_dout;
+    css_mcu0_rvdffs #(WIDTH) dffs_unused (.clk(rawclk), .en(clken), .dout(unused_dout), .*);
 `endif
 end
 endmodule
@@ -130,6 +133,9 @@ else begin : gen_ff
    css_mcu0_rvdffs #(WIDTH)   dffs (.clk(rawclk), .en(clken & en), .*);
 `else
    css_mcu0_rvdffs #(WIDTH)   dffs (.*);
+    // Create unloaded flop (removed during synthesis) to avoid lint violation
+    logic [WIDTH-1:0] unused_dout;
+    css_mcu0_rvdffs #(WIDTH) dffs_unused (.clk(rawclk), .en(clken), .dout(unused_dout), .*);
 `endif
 end
 
@@ -158,6 +164,9 @@ else begin : gen_ff
    css_mcu0_rvdffs  #(WIDTH)   dffs  (.clk(rawclk), .din(din[WIDTH-1:0] & {WIDTH{~clear}}),.en((en | clear) & clken), .*);
 `else
    css_mcu0_rvdffsc #(WIDTH)   dffsc (.*);
+    // Create unloaded flop (removed during synthesis) to avoid lint violation
+    logic [WIDTH-1:0] unused_dout;
+    css_mcu0_rvdffs #(WIDTH) dffs_unused (.clk(rawclk), .en(clken), .dout(unused_dout), .*);
 `endif
 end
 endmodule

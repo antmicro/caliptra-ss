@@ -123,6 +123,9 @@ import css_mcu0_el2_pkg::*;
 
 );
 
+   logic unused_signals;
+   assign unused_signals = ^{clk_override, axi_wready, axi_bvalid, axi_bresp, axi_bid, axi_rid};
+
    logic [7:0]       master_wstrb;
 
  typedef enum logic [1:0] {   IDLE   = 2'b00,    // Nothing in the buffer. No commands yet recieved
@@ -207,7 +210,7 @@ import css_mcu0_el2_pkg::*;
 
    if (CHECK_RANGES) begin : GenChkRanges
        // Miscellaneous signals
-       logic                    ahb_addr_in_dccm, ahb_addr_in_iccm, ahb_addr_in_pic;
+       logic                    ahb_addr_in_dccm, ahb_addr_in_iccm, ahb_addr_in_pic_nc;
        logic                    ahb_addr_in_dccm_region_nc, ahb_addr_in_iccm_region_nc, ahb_addr_in_pic_region_nc;
 
        assign ahb_hresp    = ((ahb_htrans_q[1:0] != 2'b0) & (buf_state != IDLE)  &
@@ -244,7 +247,7 @@ import css_mcu0_el2_pkg::*;
       css_mcu0_rvrangecheck #(.CCM_SADR(pt.PIC_BASE_ADDR),
                      .CCM_SIZE(pt.PIC_SIZE)) addr_pic_rangecheck (
          .addr(ahb_haddr_q[31:0]),
-         .in_range(ahb_addr_in_pic),
+         .in_range(ahb_addr_in_pic_nc),
          .in_region(ahb_addr_in_pic_region_nc)
       );
    end else begin // !CHECK_RANGES
