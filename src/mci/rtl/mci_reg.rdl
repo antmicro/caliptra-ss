@@ -163,7 +163,7 @@ addrmap mci_reg {
         name = "Flow Status";
         desc = "Reports the status of HW FSMs and other flows.
                 [br]TAP Access [with debug intent set]: RO";
-        field {desc="MCI Boot FSM State";                                            sw=r;                  hw=rw ; /* no storage, no reset */} boot_fsm[4];
+        field {desc="MCI Boot FSM State"; sw=r; hw=rw; resetsignal = mci_pwrgood;} boot_fsm[4]=0;
     } HW_FLOW_STATUS;
 
 
