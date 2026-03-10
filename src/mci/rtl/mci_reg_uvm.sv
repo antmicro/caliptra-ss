@@ -395,7 +395,7 @@ package mci_reg_uvm;
 
         virtual function void build();
             this.boot_fsm = new("boot_fsm");
-            this.boot_fsm.configure(this, 4, 0, "RO", 1, 'h0, 0, 1, 0);
+            this.boot_fsm.configure(this, 4, 0, "RO", 1, 'h0, 1, 1, 0);
             if (has_coverage(UVM_CVR_REG_BITS)) begin
                 foreach(boot_fsm_bit_cg[bt]) boot_fsm_bit_cg[bt] = new();
             end

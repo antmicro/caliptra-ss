@@ -6427,9 +6427,10 @@ module mci_reg (
         field_combo.HW_FLOW_STATUS.boot_fsm.next = next_c;
         field_combo.HW_FLOW_STATUS.boot_fsm.load_next = load_next_c;
     end
-
-    always_ff @(posedge clk) begin
-        if(field_combo.HW_FLOW_STATUS.boot_fsm.load_next) begin
+    always_ff @(posedge clk or negedge hwif_in.mci_pwrgood) begin
+        if(~hwif_in.mci_pwrgood) begin
+            field_storage.HW_FLOW_STATUS.boot_fsm.value <= 4'h0;
+        end else if(field_combo.HW_FLOW_STATUS.boot_fsm.load_next) begin
             field_storage.HW_FLOW_STATUS.boot_fsm.value <= field_combo.HW_FLOW_STATUS.boot_fsm.next;
         end
     end
