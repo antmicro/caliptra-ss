@@ -205,6 +205,17 @@ module caliptra_ss_top_tb
         end
     end
 
+    // Set DAT and DCT memory
+    initial begin
+      for(int i=0; i<`DAT_DEPTH; i++) begin
+        caliptra_ss_dut.i3c.dat_memory.u_mem.gen_generic.u_impl_generic.mem[i] = 'd0;
+      end
+      caliptra_ss_dut.i3c.dat_memory.u_mem.gen_generic.u_impl_generic.rdata_o = 'd0;
+      for(int i=0; i<`DCT_DEPTH; i++) begin
+        caliptra_ss_dut.i3c.dct_memory.u_mem.gen_generic.u_impl_generic.mem[i] = 'd0;
+      end
+      caliptra_ss_dut.i3c.dct_memory.u_mem.gen_generic.u_impl_generic.rdata_o = 'd0;
+    end
 
    //=========================================================================
    // AXI Interconnect
