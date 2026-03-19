@@ -941,30 +941,33 @@ void update_cptra_fuse_cfg(void) {
     // Add fuse values
     // SOC_SOC_IFC_REG_FUSE_VENDOR_PK_HASH_0..11
     // ROM11 : 8af1e8fbb74c19b9d6b234fe4dfc403a378cb4d5dd5cf4f375fb4ecc1d03f40071a3c8471c27f02db1b296f2cb3fb923
-    reg_data_32 = 0x8af1e8fb; lsu_write_32(SOC_SOC_IFC_REG_FUSE_VENDOR_PK_HASH_0, reg_data_32);
-    reg_data_32 = 0xb74c19b9; lsu_write_32(SOC_SOC_IFC_REG_FUSE_VENDOR_PK_HASH_1, reg_data_32);
-    reg_data_32 = 0xd6b234fe; lsu_write_32(SOC_SOC_IFC_REG_FUSE_VENDOR_PK_HASH_2, reg_data_32);
-    reg_data_32 = 0x4dfc403a; lsu_write_32(SOC_SOC_IFC_REG_FUSE_VENDOR_PK_HASH_6, reg_data_32);
-    reg_data_32 = 0x1d03f400; lsu_write_32(SOC_SOC_IFC_REG_FUSE_VENDOR_PK_HASH_7, reg_data_32);
-    reg_data_32 = 0x71a3c847; lsu_write_32(SOC_SOC_IFC_REG_FUSE_VENDOR_PK_HASH_8, reg_data_32);
-    reg_data_32 = 0x1c27f02d; lsu_write_32(SOC_SOC_IFC_REG_FUSE_VENDOR_PK_HASH_9, reg_data_32);
-    reg_data_32 = 0xb1b296f2; lsu_write_32(SOC_SOC_IFC_REG_FUSE_VENDOR_PK_HASH_10, reg_data_32);
-    reg_data_32 = 0xcb3fb923; lsu_write_32(SOC_SOC_IFC_REG_FUSE_VENDOR_PK_HASH_11, reg_data_32);
+    reg_data_32 = 0xb17ca877; lsu_write_32(SOC_SOC_IFC_REG_FUSE_VENDOR_PK_HASH_0, reg_data_32);
+    reg_data_32 = 0x666657cc; lsu_write_32(SOC_SOC_IFC_REG_FUSE_VENDOR_PK_HASH_1, reg_data_32);
+    reg_data_32 = 0xd100e692; lsu_write_32(SOC_SOC_IFC_REG_FUSE_VENDOR_PK_HASH_2, reg_data_32);
+    reg_data_32 = 0x6c7206b6; lsu_write_32(SOC_SOC_IFC_REG_FUSE_VENDOR_PK_HASH_3, reg_data_32);
+    reg_data_32 = 0xc995cb6 ; lsu_write_32(SOC_SOC_IFC_REG_FUSE_VENDOR_PK_HASH_4, reg_data_32);
+    reg_data_32 = 0x8992c6c9; lsu_write_32(SOC_SOC_IFC_REG_FUSE_VENDOR_PK_HASH_5, reg_data_32);
+    reg_data_32 = 0xbaefce72; lsu_write_32(SOC_SOC_IFC_REG_FUSE_VENDOR_PK_HASH_6, reg_data_32);
+    reg_data_32 = 0x8af05441; lsu_write_32(SOC_SOC_IFC_REG_FUSE_VENDOR_PK_HASH_7, reg_data_32);
+    reg_data_32 = 0xdee1ff41; lsu_write_32(SOC_SOC_IFC_REG_FUSE_VENDOR_PK_HASH_8, reg_data_32);
+    reg_data_32 = 0x5adfc187; lsu_write_32(SOC_SOC_IFC_REG_FUSE_VENDOR_PK_HASH_9, reg_data_32);
+    reg_data_32 = 0xe1e4edb4; lsu_write_32(SOC_SOC_IFC_REG_FUSE_VENDOR_PK_HASH_10, reg_data_32);
+    reg_data_32 = 0xd3b2d909; lsu_write_32(SOC_SOC_IFC_REG_FUSE_VENDOR_PK_HASH_11, reg_data_32);
 
     // SOC_SOC_IFC_REG_CPTRA_OWNER_PK_HASH_0..11 
     // ROM11 : 18211dda96dc39ae5782ef97408cad8da81915087739d3eeda8581a4d4a72c16df1e4144cbf6423e1bb98990153def5b
-    reg_data_32 = 0x18211dda; lsu_write_32(SOC_SOC_IFC_REG_CPTRA_OWNER_PK_HASH_0, reg_data_32);
-    reg_data_32 = 0x96dc39ae; lsu_write_32(SOC_SOC_IFC_REG_CPTRA_OWNER_PK_HASH_1, reg_data_32);
-    reg_data_32 = 0x5782ef97; lsu_write_32(SOC_SOC_IFC_REG_CPTRA_OWNER_PK_HASH_2, reg_data_32);
-    reg_data_32 = 0x408cad8d; lsu_write_32(SOC_SOC_IFC_REG_CPTRA_OWNER_PK_HASH_3, reg_data_32);
-    reg_data_32 = 0xa8191508; lsu_write_32(SOC_SOC_IFC_REG_CPTRA_OWNER_PK_HASH_4, reg_data_32);
-    reg_data_32 = 0x7739d3ee; lsu_write_32(SOC_SOC_IFC_REG_CPTRA_OWNER_PK_HASH_5, reg_data_32);
-    reg_data_32 = 0xda8581a4; lsu_write_32(SOC_SOC_IFC_REG_CPTRA_OWNER_PK_HASH_6, reg_data_32);
-    reg_data_32 = 0xd4a72c16; lsu_write_32(SOC_SOC_IFC_REG_CPTRA_OWNER_PK_HASH_7, reg_data_32);
-    reg_data_32 = 0xdf1e4144; lsu_write_32(SOC_SOC_IFC_REG_CPTRA_OWNER_PK_HASH_8, reg_data_32);
-    reg_data_32 = 0xcbf6423e; lsu_write_32(SOC_SOC_IFC_REG_CPTRA_OWNER_PK_HASH_9, reg_data_32);
-    reg_data_32 = 0x1bb98990; lsu_write_32(SOC_SOC_IFC_REG_CPTRA_OWNER_PK_HASH_10, reg_data_32);
-    reg_data_32 = 0x153def5b; lsu_write_32(SOC_SOC_IFC_REG_CPTRA_OWNER_PK_HASH_11, reg_data_32);
+    reg_data_32 = 0x1b179390; lsu_write_32(SOC_SOC_IFC_REG_CPTRA_OWNER_PK_HASH_0, reg_data_32);
+    reg_data_32 = 0xe4e6c444; lsu_write_32(SOC_SOC_IFC_REG_CPTRA_OWNER_PK_HASH_1, reg_data_32);
+    reg_data_32 = 0x22ed553e; lsu_write_32(SOC_SOC_IFC_REG_CPTRA_OWNER_PK_HASH_2, reg_data_32);
+    reg_data_32 = 0x256c7d67; lsu_write_32(SOC_SOC_IFC_REG_CPTRA_OWNER_PK_HASH_3, reg_data_32);
+    reg_data_32 = 0x5cd93190; lsu_write_32(SOC_SOC_IFC_REG_CPTRA_OWNER_PK_HASH_4, reg_data_32);
+    reg_data_32 = 0xcb49d88d; lsu_write_32(SOC_SOC_IFC_REG_CPTRA_OWNER_PK_HASH_5, reg_data_32);
+    reg_data_32 = 0x485aa4ef; lsu_write_32(SOC_SOC_IFC_REG_CPTRA_OWNER_PK_HASH_6, reg_data_32);
+    reg_data_32 = 0x3906cd49; lsu_write_32(SOC_SOC_IFC_REG_CPTRA_OWNER_PK_HASH_7, reg_data_32);
+    reg_data_32 = 0x2ab3ee3d; lsu_write_32(SOC_SOC_IFC_REG_CPTRA_OWNER_PK_HASH_8, reg_data_32);
+    reg_data_32 = 0x3ba5f2c9; lsu_write_32(SOC_SOC_IFC_REG_CPTRA_OWNER_PK_HASH_9, reg_data_32);
+    reg_data_32 = 0x90ad1339; lsu_write_32(SOC_SOC_IFC_REG_CPTRA_OWNER_PK_HASH_10, reg_data_32);
+    reg_data_32 = 0xfed4de5 ; lsu_write_32(SOC_SOC_IFC_REG_CPTRA_OWNER_PK_HASH_11, reg_data_32);
 
     // SOC_SOC_IFC_REG_FUSE_IDEVID_CERT_ATTR_0..23
     reg_data_32 = 0x0;        lsu_write_32(SOC_SOC_IFC_REG_FUSE_IDEVID_CERT_ATTR_0,      reg_data_32);
@@ -984,7 +987,7 @@ void update_pqc_key_type(void){
     // Update PQC Key Type
     VPRINTF(LOW, "MCU: Update PQC Key Type.. Started\n");
     // SOC_IFC_REG_FUSE_PQC_KEY_TYPE
-    reg_data_32 = 0x1;        
+    reg_data_32 = 0x3;
     lsu_write_32(SOC_SOC_IFC_REG_FUSE_PQC_KEY_TYPE,        reg_data_32);
     VPRINTF(LOW, "MCU: Update PQC Key Type.. Completed\n");
 }
@@ -1008,32 +1011,35 @@ void boot_mcu(){
     // Old : 53845724676e5e2f649d2c018e25c4fb80c2c28fcb6d6e93fb7cf908930a9953a9c69c3383aea9fd5573cb3db1ae0c3b
     // ROM7 : 9edb99809108c53f602883fe691943210445970d3d3d7eda4d320cc94113df3ab9d8a9741f7231851b866a64f75108e8
     // ROM11 : 8af1e8fbb74c19b9d6b234fe4dfc403a378cb4d5dd5cf4f375fb4ecc1d03f40071a3c8471c27f02db1b296f2cb3fb923
-    reg_data_32 = 0x8af1e8fb; lsu_write_32(SOC_SOC_IFC_REG_FUSE_VENDOR_PK_HASH_0, reg_data_32);
-    reg_data_32 = 0xb74c19b9; lsu_write_32(SOC_SOC_IFC_REG_FUSE_VENDOR_PK_HASH_1, reg_data_32);
-    reg_data_32 = 0xd6b234fe; lsu_write_32(SOC_SOC_IFC_REG_FUSE_VENDOR_PK_HASH_2, reg_data_32);
-    reg_data_32 = 0x4dfc403a; lsu_write_32(SOC_SOC_IFC_REG_FUSE_VENDOR_PK_HASH_6, reg_data_32);
-    reg_data_32 = 0x1d03f400; lsu_write_32(SOC_SOC_IFC_REG_FUSE_VENDOR_PK_HASH_7, reg_data_32);
-    reg_data_32 = 0x71a3c847; lsu_write_32(SOC_SOC_IFC_REG_FUSE_VENDOR_PK_HASH_8, reg_data_32);
-    reg_data_32 = 0x1c27f02d; lsu_write_32(SOC_SOC_IFC_REG_FUSE_VENDOR_PK_HASH_9, reg_data_32);
-    reg_data_32 = 0xb1b296f2; lsu_write_32(SOC_SOC_IFC_REG_FUSE_VENDOR_PK_HASH_10, reg_data_32);
-    reg_data_32 = 0xcb3fb923; lsu_write_32(SOC_SOC_IFC_REG_FUSE_VENDOR_PK_HASH_11, reg_data_32);
+    reg_data_32 = 0xb17ca877; lsu_write_32(SOC_SOC_IFC_REG_FUSE_VENDOR_PK_HASH_0, reg_data_32);
+    reg_data_32 = 0x666657cc; lsu_write_32(SOC_SOC_IFC_REG_FUSE_VENDOR_PK_HASH_1, reg_data_32);
+    reg_data_32 = 0xd100e692; lsu_write_32(SOC_SOC_IFC_REG_FUSE_VENDOR_PK_HASH_2, reg_data_32);
+    reg_data_32 = 0x6c7206b6; lsu_write_32(SOC_SOC_IFC_REG_FUSE_VENDOR_PK_HASH_3, reg_data_32);
+    reg_data_32 = 0xc995cb6 ; lsu_write_32(SOC_SOC_IFC_REG_FUSE_VENDOR_PK_HASH_4, reg_data_32);
+    reg_data_32 = 0x8992c6c9; lsu_write_32(SOC_SOC_IFC_REG_FUSE_VENDOR_PK_HASH_5, reg_data_32);
+    reg_data_32 = 0xbaefce72; lsu_write_32(SOC_SOC_IFC_REG_FUSE_VENDOR_PK_HASH_6, reg_data_32);
+    reg_data_32 = 0x8af05441; lsu_write_32(SOC_SOC_IFC_REG_FUSE_VENDOR_PK_HASH_7, reg_data_32);
+    reg_data_32 = 0xdee1ff41; lsu_write_32(SOC_SOC_IFC_REG_FUSE_VENDOR_PK_HASH_8, reg_data_32);
+    reg_data_32 = 0x5adfc187; lsu_write_32(SOC_SOC_IFC_REG_FUSE_VENDOR_PK_HASH_9, reg_data_32);
+    reg_data_32 = 0xe1e4edb4; lsu_write_32(SOC_SOC_IFC_REG_FUSE_VENDOR_PK_HASH_10, reg_data_32);
+    reg_data_32 = 0xd3b2d909; lsu_write_32(SOC_SOC_IFC_REG_FUSE_VENDOR_PK_HASH_11, reg_data_32);
 
     // SOC_SOC_IFC_REG_CPTRA_OWNER_PK_HASH_0..11 
     // Old : 421275a87a71acf434b4f1076acdd68377d0a315f9e2a29b26b398913e89ff33006c10dcc4f1bd7467f1e2c41b0a893a
     // ROM7 : 879d4deca00dbddc5755ebc2ba1f40fa2626c033f5b2a02ac8ac032074baebc8adcbbc0c96d9d14061ea01aaa4902e75
     // ROM11 : 18211dda96dc39ae5782ef97408cad8da81915087739d3eeda8581a4d4a72c16df1e4144cbf6423e1bb98990153def5b
-    reg_data_32 = 0x18211dda; lsu_write_32(SOC_SOC_IFC_REG_CPTRA_OWNER_PK_HASH_0, reg_data_32);
-    reg_data_32 = 0x96dc39ae; lsu_write_32(SOC_SOC_IFC_REG_CPTRA_OWNER_PK_HASH_1, reg_data_32);
-    reg_data_32 = 0x5782ef97; lsu_write_32(SOC_SOC_IFC_REG_CPTRA_OWNER_PK_HASH_2, reg_data_32);
-    reg_data_32 = 0x408cad8d; lsu_write_32(SOC_SOC_IFC_REG_CPTRA_OWNER_PK_HASH_3, reg_data_32);
-    reg_data_32 = 0xa8191508; lsu_write_32(SOC_SOC_IFC_REG_CPTRA_OWNER_PK_HASH_4, reg_data_32);
-    reg_data_32 = 0x7739d3ee; lsu_write_32(SOC_SOC_IFC_REG_CPTRA_OWNER_PK_HASH_5, reg_data_32);
-    reg_data_32 = 0xda8581a4; lsu_write_32(SOC_SOC_IFC_REG_CPTRA_OWNER_PK_HASH_6, reg_data_32);
-    reg_data_32 = 0xd4a72c16; lsu_write_32(SOC_SOC_IFC_REG_CPTRA_OWNER_PK_HASH_7, reg_data_32);
-    reg_data_32 = 0xdf1e4144; lsu_write_32(SOC_SOC_IFC_REG_CPTRA_OWNER_PK_HASH_8, reg_data_32);
-    reg_data_32 = 0xcbf6423e; lsu_write_32(SOC_SOC_IFC_REG_CPTRA_OWNER_PK_HASH_9, reg_data_32);
-    reg_data_32 = 0x1bb98990; lsu_write_32(SOC_SOC_IFC_REG_CPTRA_OWNER_PK_HASH_10, reg_data_32);
-    reg_data_32 = 0x153def5b; lsu_write_32(SOC_SOC_IFC_REG_CPTRA_OWNER_PK_HASH_11, reg_data_32);
+    reg_data_32 = 0x1b179390; lsu_write_32(SOC_SOC_IFC_REG_CPTRA_OWNER_PK_HASH_0, reg_data_32);
+    reg_data_32 = 0xe4e6c444; lsu_write_32(SOC_SOC_IFC_REG_CPTRA_OWNER_PK_HASH_1, reg_data_32);
+    reg_data_32 = 0x22ed553e; lsu_write_32(SOC_SOC_IFC_REG_CPTRA_OWNER_PK_HASH_2, reg_data_32);
+    reg_data_32 = 0x256c7d67; lsu_write_32(SOC_SOC_IFC_REG_CPTRA_OWNER_PK_HASH_3, reg_data_32);
+    reg_data_32 = 0x5cd93190; lsu_write_32(SOC_SOC_IFC_REG_CPTRA_OWNER_PK_HASH_4, reg_data_32);
+    reg_data_32 = 0xcb49d88d; lsu_write_32(SOC_SOC_IFC_REG_CPTRA_OWNER_PK_HASH_5, reg_data_32);
+    reg_data_32 = 0x485aa4ef; lsu_write_32(SOC_SOC_IFC_REG_CPTRA_OWNER_PK_HASH_6, reg_data_32);
+    reg_data_32 = 0x3906cd49; lsu_write_32(SOC_SOC_IFC_REG_CPTRA_OWNER_PK_HASH_7, reg_data_32);
+    reg_data_32 = 0x2ab3ee3d; lsu_write_32(SOC_SOC_IFC_REG_CPTRA_OWNER_PK_HASH_8, reg_data_32);
+    reg_data_32 = 0x3ba5f2c9; lsu_write_32(SOC_SOC_IFC_REG_CPTRA_OWNER_PK_HASH_9, reg_data_32);
+    reg_data_32 = 0x90ad1339; lsu_write_32(SOC_SOC_IFC_REG_CPTRA_OWNER_PK_HASH_10, reg_data_32);
+    reg_data_32 = 0xfed4de5 ; lsu_write_32(SOC_SOC_IFC_REG_CPTRA_OWNER_PK_HASH_11, reg_data_32);
 
     // SOC_SOC_IFC_REG_FUSE_IDEVID_CERT_ATTR_0..23
     reg_data_32 = 0x0;        lsu_write_32(SOC_SOC_IFC_REG_FUSE_IDEVID_CERT_ATTR_0,      reg_data_32);
@@ -1049,7 +1055,7 @@ void boot_mcu(){
     reg_data_32 = 0x0;        lsu_write_32(SOC_SOC_IFC_REG_FUSE_ECC_REVOCATION,          reg_data_32);
 
     // SOC_IFC_REG_FUSE_PQC_KEY_TYPE
-    reg_data_32 = 0x1;        lsu_write_32(SOC_SOC_IFC_REG_FUSE_PQC_KEY_TYPE,        reg_data_32);
+    reg_data_32 = 0x3;        lsu_write_32(SOC_SOC_IFC_REG_FUSE_PQC_KEY_TYPE,        reg_data_32);
 
     //-- update the Caliptra WDT Config
     update_cptra_wdt_cfg(1000, 250, 1);
