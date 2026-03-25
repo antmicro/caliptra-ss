@@ -121,11 +121,11 @@ addrmap otp_ctrl {
         field {
             sw = r;
             desc = "Set to 1 if an error occurred in this partition. If set to 1, SW should check the !!ERR_CODE register at the corresponding index.";
-        } SVN_PARTITION_ERROR[9:9];
+        } VENDOR_HASHES_MANUF_PARTITION_ERROR[9:9];
         field {
             sw = r;
             desc = "Set to 1 if an error occurred in this partition. If set to 1, SW should check the !!ERR_CODE register at the corresponding index.";
-        } VENDOR_HASHES_MANUF_PARTITION_ERROR[10:10];
+        } VENDOR_HASHES_OWNER_PROD_PARTITION_ERROR[10:10];
         field {
             sw = r;
             desc = "Set to 1 if an error occurred in this partition. If set to 1, SW should check the !!ERR_CODE register at the corresponding index.";
@@ -487,20 +487,6 @@ addrmap otp_ctrl {
     SW_MANUF_PARTITION_READ_LOCK.READ_LOCK -> swwe = DIRECT_ACCESS_REGWEN.REGWEN;
 
     reg {
-    desc = "Runtime read lock for the SVN_PARTITION partition.";
-        default sw = rw;
-        default onwrite = wzc;
-        default hw = r;
-        //default swwe = DIRECT_ACCESS_REGWEN;
-        field {
-            desc = "When cleared to 0, read access to the SVN_PARTITION partition is locked.Write 0 to clear this bit.";
-            reset = 0x1;
-        } READ_LOCK [0:0];
-    } SVN_PARTITION_READ_LOCK @0x90;
-
-    SVN_PARTITION_READ_LOCK.READ_LOCK -> swwe = DIRECT_ACCESS_REGWEN.REGWEN;
-
-    reg {
     desc = "Runtime read lock for the VENDOR_HASHES_MANUF_PARTITION partition.";
         default sw = rw;
         default onwrite = wzc;
@@ -510,9 +496,23 @@ addrmap otp_ctrl {
             desc = "When cleared to 0, read access to the VENDOR_HASHES_MANUF_PARTITION partition is locked.Write 0 to clear this bit.";
             reset = 0x1;
         } READ_LOCK [0:0];
-    } VENDOR_HASHES_MANUF_PARTITION_READ_LOCK @0x94;
+    } VENDOR_HASHES_MANUF_PARTITION_READ_LOCK @0x90;
 
     VENDOR_HASHES_MANUF_PARTITION_READ_LOCK.READ_LOCK -> swwe = DIRECT_ACCESS_REGWEN.REGWEN;
+
+    reg {
+    desc = "Runtime read lock for the VENDOR_HASHES_OWNER_PROD_PARTITION partition.";
+        default sw = rw;
+        default onwrite = wzc;
+        default hw = r;
+        //default swwe = DIRECT_ACCESS_REGWEN;
+        field {
+            desc = "When cleared to 0, read access to the VENDOR_HASHES_OWNER_PROD_PARTITION partition is locked.Write 0 to clear this bit.";
+            reset = 0x1;
+        } READ_LOCK [0:0];
+    } VENDOR_HASHES_OWNER_PROD_PARTITION_READ_LOCK @0x94;
+
+    VENDOR_HASHES_OWNER_PROD_PARTITION_READ_LOCK.READ_LOCK -> swwe = DIRECT_ACCESS_REGWEN.REGWEN;
 
     reg {
     desc = "Runtime read lock for the VENDOR_HASHES_PROD_PARTITION partition.";
@@ -610,8 +610,9 @@ addrmap otp_ctrl {
     digest_t SW_MANUF_PARTITION_DIGEST @ 0xD8;
     digest_t SECRET_LC_TRANSITION_PARTITION_DIGEST @ 0xE0;
     digest_t VENDOR_HASHES_MANUF_PARTITION_DIGEST @ 0xE8;
-    digest_t VENDOR_HASHES_PROD_PARTITION_DIGEST @ 0xF0;
-    digest_t VENDOR_REVOCATIONS_PROD_PARTITION_DIGEST @ 0xF8;
+    digest_t VENDOR_HASHES_OWNER_PROD_PARTITION_DIGEST @ 0xF0;
+    digest_t VENDOR_HASHES_PROD_PARTITION_DIGEST @ 0xF8;
+    digest_t VENDOR_REVOCATIONS_PROD_PARTITION_DIGEST @ 0x100;
 
     reg {
         field {
@@ -639,7 +640,7 @@ addrmap otp_ctrl {
             sw = rw;
             hw = r;
         } field4[26:16] = 0x0;
-    } CSR0 @ 0x100;
+    } CSR0 @ 0x108;
 
     reg {
         field {
@@ -667,7 +668,7 @@ addrmap otp_ctrl {
             sw = rw;
             hw = r;
         } field4[31:16] = 0x0;
-    } CSR1 @ 0x104;
+    } CSR1 @ 0x10C;
 
     reg {
         field {
@@ -675,7 +676,7 @@ addrmap otp_ctrl {
             sw = rw;
             hw = r;
         } field0[0:0] = 0x0;
-    } CSR2 @ 0x108;
+    } CSR2 @ 0x110;
 
     reg {
         field {
@@ -725,7 +726,7 @@ addrmap otp_ctrl {
             sw = r;
             hw = rw;
         } field8[22:22] = 0x0;
-    } CSR3 @ 0x10C;
+    } CSR3 @ 0x114;
 
     reg {
         field {
@@ -748,7 +749,7 @@ addrmap otp_ctrl {
             sw = rw;
             hw = r;
         } field3[14:14] = 0x0;
-    } CSR4 @ 0x110;
+    } CSR4 @ 0x118;
 
     reg {
         field {
@@ -786,7 +787,7 @@ addrmap otp_ctrl {
             sw = rw;
             hw = rw;
         } field6[31:16] = 0x0;
-    } CSR5 @ 0x114;
+    } CSR5 @ 0x11C;
 
     reg {
         field {
@@ -809,7 +810,7 @@ addrmap otp_ctrl {
             sw = rw;
             hw = rw;
         } field3[31:16] = 0x0;
-    } CSR6 @ 0x118;
+    } CSR6 @ 0x120;
 
     reg {
         field {
@@ -832,5 +833,5 @@ addrmap otp_ctrl {
             sw = r;
             hw = rw;
         } field3[15:15] = 0x0;
-    } CSR7 @ 0x11C;
+    } CSR7 @ 0x124;
 };
