@@ -939,7 +939,7 @@ void reset_exp_reg_data(mci_reg_exp_dict_t *dict, reset_type_t reset_type, mci_r
 
     if (group_index == REG_GROUP_INTERRUPT_TRIGGER_PULSE_RW1S) {
         intr_sts_reg = get_register_info(REG_GROUP_INTERRUPT_STATUS_RW1C, reg_index);
-        read_intr_sts = mci_reg_read(intr_sts_reg->address);
+        read_intr_sts = mci_reg_read(intr_sts_reg->address) | (value & mask);
         intr_sts_mask = get_register_mask(intr_sts_reg->address);
     
         if (reg_index == 0 || reg_index == 1) {
@@ -1383,7 +1383,7 @@ int read_register_group_and_verify(mci_register_group_t group, mci_reg_exp_dict_
                                     } 
                                 }
                             } else if (reg->address == SOC_MCI_TOP_MCI_REG_INTR_BLOCK_RF_NOTIF0_INTERNAL_INTR_R) {
-                                exp_data |= MCI_REG_INTR_BLOCK_RF_NOTIF0_INTERNAL_INTR_R_NOTIF_DEBUG_LOCKED_STS_MASK; // debug_locked_en_sts is set on Warm Reset
+                                exp_data = MCI_REG_INTR_BLOCK_RF_NOTIF0_INTERNAL_INTR_R_NOTIF_DEBUG_LOCKED_STS_MASK; // debug_locked_en_sts is set on Warm Reset
                                 if (read_data == exp_data) {
                                     VPRINTF(MEDIUM,"  Match: %s (0x%08x): Read 0x%08x, Expected 0x%08x\n",reg->name, reg->address, read_data, exp_data);
                                 } else {
