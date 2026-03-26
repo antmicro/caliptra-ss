@@ -50,7 +50,7 @@ volatile char* stdout = (char *)SOC_MCI_TOP_MCI_REG_DEBUG_OUT;
  *  5. Check that a read now results in an error.
  */
 void register_accesses() {
-    const uint32_t fuse_address = CPTRA_CORE_ECC_REVOCATION_0;
+    const uint32_t fuse_address = CPTRA_CORE_ECC_REVOCATION_1;
 
     const uint32_t data = 0xdeadbeef;
     uint32_t read_data;

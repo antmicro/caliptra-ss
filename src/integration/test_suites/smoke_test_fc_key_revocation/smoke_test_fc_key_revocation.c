@@ -56,7 +56,7 @@ volatile char* stdout = (char *)SOC_MCI_TOP_MCI_REG_DEBUG_OUT;
  */
 void vendor_revocations_prod_partition() {
 
-    const uint32_t base_address = CPTRA_CORE_ECC_REVOCATION_0;
+    const uint32_t base_address = CPTRA_CORE_ECC_REVOCATION_1;
     const uint32_t digest_address = partitions[VENDOR_REVOCATIONS_PROD_PARTITION].digest_address;
     const uint32_t fuse_address = base_address;
 
