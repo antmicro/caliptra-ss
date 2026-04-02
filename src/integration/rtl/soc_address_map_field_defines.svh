@@ -8757,10 +8757,10 @@
 `define OTP_CTRL_STATUS_SECRET_LC_TRANSITION_PARTITION_ERROR_MASK                                   (32'h80)
 `define OTP_CTRL_STATUS_LIFE_CYCLE_ERROR_LOW                                                        (8)
 `define OTP_CTRL_STATUS_LIFE_CYCLE_ERROR_MASK                                                       (32'h100)
-`define OTP_CTRL_STATUS_SVN_PARTITION_ERROR_LOW                                                     (9)
-`define OTP_CTRL_STATUS_SVN_PARTITION_ERROR_MASK                                                    (32'h200)
-`define OTP_CTRL_STATUS_VENDOR_HASHES_MANUF_PARTITION_ERROR_LOW                                     (10)
-`define OTP_CTRL_STATUS_VENDOR_HASHES_MANUF_PARTITION_ERROR_MASK                                    (32'h400)
+`define OTP_CTRL_STATUS_VENDOR_HASHES_MANUF_PARTITION_ERROR_LOW                                     (9)
+`define OTP_CTRL_STATUS_VENDOR_HASHES_MANUF_PARTITION_ERROR_MASK                                    (32'h200)
+`define OTP_CTRL_STATUS_VENDOR_HASHES_OWNER_PROD_PARTITION_ERROR_LOW                                (10)
+`define OTP_CTRL_STATUS_VENDOR_HASHES_OWNER_PROD_PARTITION_ERROR_MASK                               (32'h400)
 `define OTP_CTRL_STATUS_VENDOR_HASHES_PROD_PARTITION_ERROR_LOW                                      (11)
 `define OTP_CTRL_STATUS_VENDOR_HASHES_PROD_PARTITION_ERROR_MASK                                     (32'h800)
 `define OTP_CTRL_STATUS_VENDOR_REVOCATIONS_PROD_PARTITION_ERROR_LOW                                 (12)
@@ -8933,15 +8933,15 @@
 `define OTP_CTRL_SW_MANUF_PARTITION_READ_LOCK_READ_LOCK_LOW                                         (0)
 `define OTP_CTRL_SW_MANUF_PARTITION_READ_LOCK_READ_LOCK_MASK                                        (32'h1)
 `endif
-`ifndef OTP_CTRL_SVN_PARTITION_READ_LOCK
-`define OTP_CTRL_SVN_PARTITION_READ_LOCK                                                            (32'h90)
-`define OTP_CTRL_SVN_PARTITION_READ_LOCK_READ_LOCK_LOW                                              (0)
-`define OTP_CTRL_SVN_PARTITION_READ_LOCK_READ_LOCK_MASK                                             (32'h1)
-`endif
 `ifndef OTP_CTRL_VENDOR_HASHES_MANUF_PARTITION_READ_LOCK
-`define OTP_CTRL_VENDOR_HASHES_MANUF_PARTITION_READ_LOCK                                            (32'h94)
+`define OTP_CTRL_VENDOR_HASHES_MANUF_PARTITION_READ_LOCK                                            (32'h90)
 `define OTP_CTRL_VENDOR_HASHES_MANUF_PARTITION_READ_LOCK_READ_LOCK_LOW                              (0)
 `define OTP_CTRL_VENDOR_HASHES_MANUF_PARTITION_READ_LOCK_READ_LOCK_MASK                             (32'h1)
+`endif
+`ifndef OTP_CTRL_VENDOR_HASHES_OWNER_PROD_PARTITION_READ_LOCK
+`define OTP_CTRL_VENDOR_HASHES_OWNER_PROD_PARTITION_READ_LOCK                                       (32'h94)
+`define OTP_CTRL_VENDOR_HASHES_OWNER_PROD_PARTITION_READ_LOCK_READ_LOCK_LOW                         (0)
+`define OTP_CTRL_VENDOR_HASHES_OWNER_PROD_PARTITION_READ_LOCK_READ_LOCK_MASK                        (32'h1)
 `endif
 `ifndef OTP_CTRL_VENDOR_HASHES_PROD_PARTITION_READ_LOCK
 `define OTP_CTRL_VENDOR_HASHES_PROD_PARTITION_READ_LOCK                                             (32'h98)
@@ -9015,20 +9015,26 @@
 `ifndef OTP_CTRL_VENDOR_HASHES_MANUF_PARTITION_DIGEST_DIGEST_1
 `define OTP_CTRL_VENDOR_HASHES_MANUF_PARTITION_DIGEST_DIGEST_1                                      (32'hec)
 `endif
+`ifndef OTP_CTRL_VENDOR_HASHES_OWNER_PROD_PARTITION_DIGEST_DIGEST_0
+`define OTP_CTRL_VENDOR_HASHES_OWNER_PROD_PARTITION_DIGEST_DIGEST_0                                 (32'hf0)
+`endif
+`ifndef OTP_CTRL_VENDOR_HASHES_OWNER_PROD_PARTITION_DIGEST_DIGEST_1
+`define OTP_CTRL_VENDOR_HASHES_OWNER_PROD_PARTITION_DIGEST_DIGEST_1                                 (32'hf4)
+`endif
 `ifndef OTP_CTRL_VENDOR_HASHES_PROD_PARTITION_DIGEST_DIGEST_0
-`define OTP_CTRL_VENDOR_HASHES_PROD_PARTITION_DIGEST_DIGEST_0                                       (32'hf0)
+`define OTP_CTRL_VENDOR_HASHES_PROD_PARTITION_DIGEST_DIGEST_0                                       (32'hf8)
 `endif
 `ifndef OTP_CTRL_VENDOR_HASHES_PROD_PARTITION_DIGEST_DIGEST_1
-`define OTP_CTRL_VENDOR_HASHES_PROD_PARTITION_DIGEST_DIGEST_1                                       (32'hf4)
+`define OTP_CTRL_VENDOR_HASHES_PROD_PARTITION_DIGEST_DIGEST_1                                       (32'hfc)
 `endif
 `ifndef OTP_CTRL_VENDOR_REVOCATIONS_PROD_PARTITION_DIGEST_DIGEST_0
-`define OTP_CTRL_VENDOR_REVOCATIONS_PROD_PARTITION_DIGEST_DIGEST_0                                  (32'hf8)
+`define OTP_CTRL_VENDOR_REVOCATIONS_PROD_PARTITION_DIGEST_DIGEST_0                                  (32'h100)
 `endif
 `ifndef OTP_CTRL_VENDOR_REVOCATIONS_PROD_PARTITION_DIGEST_DIGEST_1
-`define OTP_CTRL_VENDOR_REVOCATIONS_PROD_PARTITION_DIGEST_DIGEST_1                                  (32'hfc)
+`define OTP_CTRL_VENDOR_REVOCATIONS_PROD_PARTITION_DIGEST_DIGEST_1                                  (32'h104)
 `endif
 `ifndef OTP_CTRL_CSR0
-`define OTP_CTRL_CSR0                                                                               (32'h100)
+`define OTP_CTRL_CSR0                                                                               (32'h108)
 `define OTP_CTRL_CSR0_FIELD0_LOW                                                                    (0)
 `define OTP_CTRL_CSR0_FIELD0_MASK                                                                   (32'h1)
 `define OTP_CTRL_CSR0_FIELD1_LOW                                                                    (1)
@@ -9041,7 +9047,7 @@
 `define OTP_CTRL_CSR0_FIELD4_MASK                                                                   (32'h7ff0000)
 `endif
 `ifndef OTP_CTRL_CSR1
-`define OTP_CTRL_CSR1                                                                               (32'h104)
+`define OTP_CTRL_CSR1                                                                               (32'h10c)
 `define OTP_CTRL_CSR1_FIELD0_LOW                                                                    (0)
 `define OTP_CTRL_CSR1_FIELD0_MASK                                                                   (32'h7f)
 `define OTP_CTRL_CSR1_FIELD1_LOW                                                                    (7)
@@ -9054,12 +9060,12 @@
 `define OTP_CTRL_CSR1_FIELD4_MASK                                                                   (32'hffff0000)
 `endif
 `ifndef OTP_CTRL_CSR2
-`define OTP_CTRL_CSR2                                                                               (32'h108)
+`define OTP_CTRL_CSR2                                                                               (32'h110)
 `define OTP_CTRL_CSR2_FIELD0_LOW                                                                    (0)
 `define OTP_CTRL_CSR2_FIELD0_MASK                                                                   (32'h1)
 `endif
 `ifndef OTP_CTRL_CSR3
-`define OTP_CTRL_CSR3                                                                               (32'h10c)
+`define OTP_CTRL_CSR3                                                                               (32'h114)
 `define OTP_CTRL_CSR3_FIELD0_LOW                                                                    (0)
 `define OTP_CTRL_CSR3_FIELD0_MASK                                                                   (32'h7)
 `define OTP_CTRL_CSR3_FIELD1_LOW                                                                    (4)
@@ -9080,7 +9086,7 @@
 `define OTP_CTRL_CSR3_FIELD8_MASK                                                                   (32'h400000)
 `endif
 `ifndef OTP_CTRL_CSR4
-`define OTP_CTRL_CSR4                                                                               (32'h110)
+`define OTP_CTRL_CSR4                                                                               (32'h118)
 `define OTP_CTRL_CSR4_FIELD0_LOW                                                                    (0)
 `define OTP_CTRL_CSR4_FIELD0_MASK                                                                   (32'h3ff)
 `define OTP_CTRL_CSR4_FIELD1_LOW                                                                    (12)
@@ -9091,7 +9097,7 @@
 `define OTP_CTRL_CSR4_FIELD3_MASK                                                                   (32'h4000)
 `endif
 `ifndef OTP_CTRL_CSR5
-`define OTP_CTRL_CSR5                                                                               (32'h114)
+`define OTP_CTRL_CSR5                                                                               (32'h11c)
 `define OTP_CTRL_CSR5_FIELD0_LOW                                                                    (0)
 `define OTP_CTRL_CSR5_FIELD0_MASK                                                                   (32'h3f)
 `define OTP_CTRL_CSR5_FIELD1_LOW                                                                    (6)
@@ -9108,7 +9114,7 @@
 `define OTP_CTRL_CSR5_FIELD6_MASK                                                                   (32'hffff0000)
 `endif
 `ifndef OTP_CTRL_CSR6
-`define OTP_CTRL_CSR6                                                                               (32'h118)
+`define OTP_CTRL_CSR6                                                                               (32'h120)
 `define OTP_CTRL_CSR6_FIELD0_LOW                                                                    (0)
 `define OTP_CTRL_CSR6_FIELD0_MASK                                                                   (32'h3ff)
 `define OTP_CTRL_CSR6_FIELD1_LOW                                                                    (11)
@@ -9119,7 +9125,7 @@
 `define OTP_CTRL_CSR6_FIELD3_MASK                                                                   (32'hffff0000)
 `endif
 `ifndef OTP_CTRL_CSR7
-`define OTP_CTRL_CSR7                                                                               (32'h11c)
+`define OTP_CTRL_CSR7                                                                               (32'h124)
 `define OTP_CTRL_CSR7_FIELD0_LOW                                                                    (0)
 `define OTP_CTRL_CSR7_FIELD0_MASK                                                                   (32'h3f)
 `define OTP_CTRL_CSR7_FIELD1_LOW                                                                    (8)
