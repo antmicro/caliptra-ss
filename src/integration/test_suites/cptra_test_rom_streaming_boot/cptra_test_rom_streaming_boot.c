@@ -301,9 +301,6 @@ void recovery_sequence() {
     i3c_reg_data = 0x00000000;
     i3c_reg_data = 0x5 | i3c_reg_data;
     update_device_status(i3c_reg_data); // 0x5: Running Recovery Image
-
-        
-    SEND_STDOUT_CTRL(0xff);
 }
 
 void main(void) {
@@ -311,7 +308,6 @@ void main(void) {
     int argc=0;
     char *argv[1];
     uint32_t reg;
-    uint8_t fail = 0;
 
     uint32_t send_payload[4] = {0xabadface, 0xba5eba11, 0xcafebabe, 0xdeadbeef};
     uint32_t read_payload[16];
@@ -320,7 +316,6 @@ void main(void) {
 
     // Setup the interrupt CSR configuration
     // init_interrupts();
-    fail = 0;
 
     // Send data through AHB interface to AXI_DMA, target the AXI SRAM
     VPRINTF(LOW, "Sending payload via AHB i/f\n");
@@ -336,11 +331,12 @@ void main(void) {
 
     VPRINTF(LOW, "Initiating Recovery Sequence\n");
     recovery_sequence();
+
+    // Wait for MCU to acknowledge the recovery sequence and end the test
     wait(10000);
 
-    if (fail) {
-        VPRINTF(FATAL, " cptra_ss_test_rom failed!\n");
-        SEND_STDOUT_CTRL(0x1);
-        while(1);
-    }
+    // If MCU didn't finish the test yet, mark it as a failure
+    VPRINTF(FATAL, " cptra_ss_test_rom failed!\n");
+    SEND_STDOUT_CTRL(0x1);
+    while(1);
 }
