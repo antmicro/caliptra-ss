@@ -44,15 +44,15 @@ volatile char* stdout = (char *)SOC_MCI_TOP_MCI_REG_DEBUG_OUT;
  *   2. Read back the value and verify it is equal to the value written in Step 1.
  *   3. Make sure that incremental (no bit flipped from 1 to 0) writes are possible.
  *   4. Read back the value and verify it is equal to the value written in Step 3.
- *   4. Write a dummy digest into the partition's digest field, which locks the
+ *   5. Write a dummy digest into the partition's digest field, which locks the
  *      partition. This works since it is an unbuffered software partition.
  *   6. Reset the RTL.
  *   7. Read back the fuse again and verify that the value has not changed, i.e.,
- *      is equal to the value written in Step 1.
- *   7. Try to write a value into the fuse and verify that it results in an error
- *      as the partition has been locked in Step 3.
- *   8. Read back the digest from the partition's digest register and verify it
- *      is equal to the dummy digest written in Step 3.
+ *      is equal to the value written in Step 3.
+ *   8. Try to write a value into the fuse and verify that it results in an error
+ *      as the partition has been locked in Step 5.
+ *   9. Read back the digest from the partition's digest register and verify it
+ *      is equal to the dummy digest written in Step 5.
  */
 void vendor_revocations_prod_partition() {
 
