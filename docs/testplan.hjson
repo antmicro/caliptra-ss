@@ -336,6 +336,81 @@
       ]
     }
     {
+      name: mci_sram_axi_jtag_access_collision
+      desc: '''
+Perform simultaneous accesses to the MCI sram controller from AXI and JTAG interfaces.
+This test should trigger `dmi_axi_collision_error`.
+            '''
+      stage: ""
+      tests: []
+    }
+    {
+      name: mci_sram_error
+      desc: '''
+Perform a write through the MCI SRAM controller, followed by the double ECC error injection and RMW command.
+Test should result in ECC error being raised and data inside SRAM should not be modified.
+            '''
+      stage: ""
+      tests: []
+    }
+    {
+      name: mci_trace_buffer_axi_access
+      desc: '''
+Perform AXI access to the trace buffer CSR.
+Verify that CPU can access, read all trace buffer registers, and modify only read pointer register.
+            '''
+      stage: ""
+      tests: []
+    }
+    {
+      name: mci_lcc_state_error
+      desc: '''
+Move OTP into unlocked state and check that Caliptra-ss is unlocked.
+Inject invalid state into `otp_static_state` and verify that caliptra-ss becomes locked.
+Release error injection and check that caliptra-ss is once more in unlocked state.
+            '''
+      stage: ""
+      tests: []
+    }
+    {
+      name: mci_lcc_state_error_to_locked
+      desc: '''
+Move OTP into unlocked state and check that Caliptra-ss is unlocked.
+Inject invalid state into `otp_static_state`.
+Request scrap transition or inject state_error, release error injection and check that
+caliptra-ss is no longer unlocked and in the `DEVICE_PRODUCTION`.
+            '''
+      stage: ""
+      tests: []
+    }
+    {
+      name: mci_lcc_manuf_to_non_debug
+      desc: '''
+Move life cycle state to `TRANSLATOR_MANUF_NON_DEBUG` or `TRANSLATOR_MANUF_DEBUG` state.
+Either issue SCRAP request or inject a state error, then verify that device lifecycle moved to
+`DEVICE_PRODUCTION`.
+            '''
+      stage: ""
+      tests: []
+    }
+    {
+      name: mci_lcc_no_zeroization
+      desc: '''
+Set one of the `cptra_ss_FIPS_ZEROIZATION_PPD_i` or `ss_soc_MCU_ROM_zeroization_mask_reg` and make sure that
+OTP was not zeroized.
+            '''
+      stage: ""
+      tests: []
+    }
+    {
+      name: mci_read_all_regs_test
+      desc: '''
+Perform random read accesses to all registers in the MCI address space.
+            '''
+      stage: ""
+      tests: []
+    }
+    {
       name: mcu_axi_streaming_boot_test_rom
       desc: "This test instantiates AXI memory perihperal and initializes it with a production MCU firmware binary. Software running on the MCU configures the I3C to the bypass mode and performs the recovery flow over AXI, reading data from AXI memory and feeding it to the I3C core. The test checks if the recovery process is performed correctly and new image gets activated"
       stage: ""
