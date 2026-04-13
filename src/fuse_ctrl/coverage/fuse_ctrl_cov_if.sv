@@ -66,11 +66,11 @@ interface fuse_ctrl_cov_if
      * Verify that all fuses are provisioned alongside their digest fields if available.
      */
 
-    covergroup fuse_ctrl_fuses_cg @(posedge clk_i);                                        
+    covergroup fuse_ctrl_fuses_cg @(posedge clk_i);
       option.per_instance = 1;
-      // SECRET_TEST_UNLOCK_PARTITION                                                         
+      // SECRET_TEST_UNLOCK_PARTITION
       CptraCoreManufDebugUnlockToken_cp:  coverpoint `FC_MEM[CptraSsManufDebugUnlockTokenOffset/2] { bins Fuse = { [1:$] }; }
-      SecretTestUnlockPartitionDigest_cp: coverpoint `FC_MEM[SwTestUnlockPartitionDigestOffset/2]    { bins Fuse = { [1:$] }; }  
+      SecretTestUnlockPartitionDigest_cp: coverpoint `FC_MEM[SwTestUnlockPartitionDigestOffset/2]   { bins Fuse = { [1:$] }; }
       // SECRET_MANUF_PARTITION
       CptraCoreUdsSeed_cp:           coverpoint `FC_MEM[CptraCoreUdsSeedOffset/2]           { bins Fuse = { [1:$] }; }
       SecretManufPartitionDigest_cp: coverpoint `FC_MEM[SecretManufPartitionDigestOffset/2] { bins Fuse = { [1:$] }; }
@@ -88,7 +88,7 @@ interface fuse_ctrl_cov_if
       SecretProdPartition3Digest_cp: coverpoint `FC_MEM[SecretProdPartition3DigestOffset/2] { bins Fuse = { [1:$] }; }
       // SW_MANUF_PARTITION
       CptraCoreAntiRollbackDisable_cp:      coverpoint `FC_MEM[CptraCoreAntiRollbackDisableOffset/2]      { bins Fuse = { [1:$] }; }
-      CptraSsProdDebugUnlockPks0_cp:        coverpoint `FC_MEM[CptraSsProdDebugUnlockPks0Offset/2]        { bins Fuse = { [1:$] }; }
+      CptraCoreIdevidCertIdevidAttr_cp:     coverpoint `FC_MEM[CptraCoreIdevidCertIdevidAttrOffset/2]     { bins Fuse = { [1:$] }; }
       SwManufPartitionDigest_cp:            coverpoint `FC_MEM[SwManufPartitionDigestOffset/2]            { bins Fuse = { [1:$] }; }
       // SECRET_LC_TRANSITION_PARTITION
       CptraSsTestUnlockToken1_cp:           coverpoint `FC_MEM[CptraSsTestUnlockToken1Offset/2]           { bins Fuse = { [1:$] }; }
@@ -103,38 +103,45 @@ interface fuse_ctrl_cov_if
       CptraSsProdToProdEndToken_cp:         coverpoint `FC_MEM[CptraSsProdToProdEndTokenOffset/2]         { bins Fuse = { [1:$] }; }
       CptraSsRmaToken_cp:                   coverpoint `FC_MEM[CptraSsRmaTokenOffset/2]                   { bins Fuse = { [1:$] }; }
       SecretLcTransitionPartitionDigest_cp: coverpoint `FC_MEM[SecretLcTransitionPartitionDigestOffset/2] { bins Fuse = { [1:$] }; }
-      // SVN_PARTITION
-      CptraCoreFmcKeyManifestSvn_cp: coverpoint `FC_MEM[CptraCoreFmcKeyManifestSvnOffset/2] { bins Fuse = { [1:$] }; }
-      CptraCoreRuntimeSvn_cp:        coverpoint `FC_MEM[CptraCoreRuntimeSvnOffset/2]        { bins Fuse = { [1:$] }; }
-      CptraCoreSocManifestSvn_cp:    coverpoint `FC_MEM[CptraCoreSocManifestSvnOffset/2]    { bins Fuse = { [1:$] }; }
-      CptraCoreSocManifestMaxSvn_cp: coverpoint `FC_MEM[CptraCoreSocManifestMaxSvnOffset/2] { bins Fuse = { [1:$] }; }
-      // VENDOR_HASHES_MANUF_PARTITION
-      CptraCoreVendorPkHash0_cp:           coverpoint `FC_MEM[CptraCoreVendorPkHash0Offset/2]           { bins Fuse = { [1:$] }; }
-      CptraCorePqcKeyType0_cp:             coverpoint `FC_MEM[CptraCorePqcKeyType0Offset/2]             { bins Fuse = { [1:$] }; }
-      VendorHashesManufPartitionDigest_cp: coverpoint `FC_MEM[VendorHashesManufPartitionDigestOffset/2] { bins Fuse = { [1:$] }; }
-      // VENDOR_HASHES_PROD_PARTITION
-      CptraCoreVendorPkHash1_cp:          coverpoint `FC_MEM[CptraCoreVendorPkHash1Offset/2]          { bins Fuse = { [1:$] }; }
-      CptraCorePqcKeyType1_cp:            coverpoint `FC_MEM[CptraCorePqcKeyType1Offset/2]            { bins Fuse = { [1:$] }; }
-      CptraCoreVendorPkHashValid_cp:      coverpoint `FC_MEM[CptraCoreVendorPkHashValidOffset/2]      { bins Fuse = { [1:$] }; }
-      VendorHashesProdPartitionDigest_cp: coverpoint `FC_MEM[VendorHashesProdPartitionDigestOffset/2] { bins Fuse = { [1:$] }; }
-      // VENDOR_REVOCATIONS_PROD_PARTITION
-      CptraCoreEccRevocation0_cp:              coverpoint `FC_MEM[CptraCoreEccRevocation0Offset/2]              { bins Fuse = { [1:$] }; }
-      CptraCoreLmsRevocation0_cp:              coverpoint `FC_MEM[CptraCoreLmsRevocation0Offset/2]              { bins Fuse = { [1:$] }; }
-      CptraCoreMldsaRevocation0_cp:            coverpoint `FC_MEM[CptraCoreMldsaRevocation0Offset/2]            { bins Fuse = { [1:$] }; }
-      CptraCoreEccRevocation1_cp:              coverpoint `FC_MEM[CptraCoreEccRevocation1Offset/2]              { bins Fuse = { [1:$] }; }
-      CptraCoreLmsRevocation1_cp:              coverpoint `FC_MEM[CptraCoreLmsRevocation1Offset/2]              { bins Fuse = { [1:$] }; }
-      CptraCoreMldsaRevocation1_cp:            coverpoint `FC_MEM[CptraCoreMldsaRevocation1Offset/2]            { bins Fuse = { [1:$] }; }
-      VendorRevocationsProdPartitionDigest_cp: coverpoint `FC_MEM[VendorRevocationsProdPartitionDigestOffset/2] { bins Fuse = { [1:$] }; }
-      // VENDOR_NON_SECRET_PROD_PARTITION
-      CptraSsVendorSpecificNonSecretFuse0_cp:  coverpoint `FC_MEM[CptraSsVendorSpecificNonSecretFuse0Offset/2]  { bins Fuse = { [1:$] }; }
-      CptraSsVendorSpecificNonSecretFuse1_cp:  coverpoint `FC_MEM[CptraSsVendorSpecificNonSecretFuse1Offset/2]  { bins Fuse = { [1:$] }; }
-      CptraSsVendorSpecificNonSecretFuse2_cp:  coverpoint `FC_MEM[CptraSsVendorSpecificNonSecretFuse2Offset/2]  { bins Fuse = { [1:$] }; }
-      CptraSsVendorSpecificNonSecretFuse3_cp:  coverpoint `FC_MEM[CptraSsVendorSpecificNonSecretFuse3Offset/2]  { bins Fuse = { [1:$] }; }
-      CptraSsVendorSpecificNonSecretFuse4_cp:  coverpoint `FC_MEM[CptraSsVendorSpecificNonSecretFuse4Offset/2]  { bins Fuse = { [1:$] }; }
       // LIFE_CYCLE
       LcTransitionCnt_cp: coverpoint `FC_MEM[LcTransitionCntOffset/2] { bins Fuse = { [1:$] }; }
       LcState_cp:         coverpoint `FC_MEM[LcStateOffset/2]         { bins Fuse = { [1:$] }; }
-    endgroup 
+      // VENDOR_HASHES_MANUF_PARTITION
+      CptraCoreVendorPkHash2_cp:           coverpoint `FC_MEM[CptraCoreVendorPkHash2Offset/2]           { bins Fuse = { [1:$] }; }
+      CptraCoreVendorPkHash2Valid_cp:      coverpoint `FC_MEM[CptraCoreVendorPkHash2ValidOffset/2]      { bins Fuse = { [1:$] }; }
+      CptraCoreVendorPkHash3_cp:           coverpoint `FC_MEM[CptraCoreVendorPkHash3Offset/2]           { bins Fuse = { [1:$] }; }
+      CptraCoreVendorPkHash3Valid_cp:      coverpoint `FC_MEM[CptraCoreVendorPkHash3ValidOffset/2]      { bins Fuse = { [1:$] }; }
+      CptraCoreVendorPkHash4_cp:           coverpoint `FC_MEM[CptraCoreVendorPkHash4Offset/2]           { bins Fuse = { [1:$] }; }
+      CptraCoreVendorPkHash4Valid_cp:      coverpoint `FC_MEM[CptraCoreVendorPkHash4ValidOffset/2]      { bins Fuse = { [1:$] }; }
+      CptraCoreVendorPkHashPad_cp:         coverpoint `FC_MEM[CptraCoreVendorPkHashPadOffset/2]         { bins Fuse = { [1:$] }; }
+      VendorHashesManufPartitionDigest_cp: coverpoint `FC_MEM[VendorHashesManufPartitionDigestOffset/2] { bins Fuse = { [1:$] }; }
+      // VENDOR_HASHES_OWNER_PROD_PARTITION
+      CptraSsOwnerPkHash_cp:                   coverpoint `FC_MEM[CptraSsOwnerPkHashOffset/2]                   { bins Fuse = { [1:$] }; }
+      CptraSsOwnerPqcKeyType_cp:               coverpoint `FC_MEM[CptraSsOwnerPqcKeyTypeOffset/2]               { bins Fuse = { [1:$] }; }
+      CptraSsOwnerPkHashValid_cp:              coverpoint `FC_MEM[CptraSsOwnerPkHashValidOffset/2]              { bins Fuse = { [1:$] }; }
+      VendorHashesOwnerProdPartitionDigest_cp: coverpoint `FC_MEM[VendorHashesOwnerProdPartitionDigestOffset/2] { bins Fuse = { [1:$] }; }
+      // VENDOR_HASHES_PROD_PARTITION
+      CptraCoreVendorPkHash1_cp:          coverpoint `FC_MEM[CptraCoreVendorPkHash1Offset/2]          { bins Fuse = { [1:$] }; }
+      CptraCorePqcKeyType1_cp:            coverpoint `FC_MEM[CptraCorePqcKeyType1Offset/2]            { bins Fuse = { [1:$] }; }
+      CptraCoreVendorPkHash1Valid_cp:     coverpoint `FC_MEM[CptraCoreVendorPkHash1ValidOffset/2]     { bins Fuse = { [1:$] }; }
+      VendorHashesProdPartitionDigest_cp: coverpoint `FC_MEM[VendorHashesProdPartitionDigestOffset/2] { bins Fuse = { [1:$] }; }
+      // VENDOR_REVOCATIONS_PROD_PARTITION
+      CptraSsOwnerEccRevocation_cp:            coverpoint `FC_MEM[CptraSsOwnerEccRevocationOffset/2]            { bins Fuse = { [1:$] }; }
+      CptraSsOwnerMldsaRevocation_cp:          coverpoint `FC_MEM[CptraSsOwnerMldsaRevocationOffset/2]          { bins Fuse = { [1:$] }; }
+      CptraCoreEccRevocation1_cp:              coverpoint `FC_MEM[CptraCoreEccRevocation1Offset/2]              { bins Fuse = { [1:$] }; }
+      CptraCoreMldsaRevocation1_cp:            coverpoint `FC_MEM[CptraCoreMldsaRevocation1Offset/2]            { bins Fuse = { [1:$] }; }
+      CptraCoreEccRevocation2_cp:              coverpoint `FC_MEM[CptraCoreEccRevocation2Offset/2]              { bins Fuse = { [1:$] }; }
+      CptraCoreMldsaRevocation2_cp:            coverpoint `FC_MEM[CptraCoreMldsaRevocation2Offset/2]            { bins Fuse = { [1:$] }; }
+      CptraCoreEccRevocation3_cp:              coverpoint `FC_MEM[CptraCoreEccRevocation3Offset/2]              { bins Fuse = { [1:$] }; }
+      CptraCoreMldsaRevocation3_cp:            coverpoint `FC_MEM[CptraCoreMldsaRevocation3Offset/2]            { bins Fuse = { [1:$] }; }
+      CptraCoreEccRevocation4_cp:              coverpoint `FC_MEM[CptraCoreEccRevocation4Offset/2]              { bins Fuse = { [1:$] }; }
+      CptraCoreMldsaRevocation4_cp:            coverpoint `FC_MEM[CptraCoreMldsaRevocation4Offset/2]            { bins Fuse = { [1:$] }; }
+      VendorRevocationsProdPartitionDigest_cp: coverpoint `FC_MEM[VendorRevocationsProdPartitionDigestOffset/2] { bins Fuse = { [1:$] }; }
+      // VENDOR_NON_SECRET_PROD_PARTITION
+      CptraSsVendorSpecificNonSecretFuse0_cp: coverpoint `FC_MEM[CptraSsVendorSpecificNonSecretFuse0Offset/2] { bins Fuse = { [1:$] }; }
+      // CSR_PARTITION
+      CsrRegion_cp: coverpoint `FC_MEM[CsrRegionOffset/2] { bins Fuse = { [1:$] }; }
+    endgroup
 
     initial begin
       fuse_ctrl_fuses_cg fuse_ctrl_fuses = new();
@@ -225,7 +232,7 @@ interface fuse_ctrl_cov_if
                 OTP_CTRL_DIRECT_ACCESS_WDATA_0_OFFSET, OTP_CTRL_DIRECT_ACCESS_WDATA_1_OFFSET, OTP_CTRL_DIRECT_ACCESS_RDATA_0_OFFSET, OTP_CTRL_DIRECT_ACCESS_RDATA_1_OFFSET,
                 OTP_CTRL_CHECK_TRIGGER_REGWEN_OFFSET, OTP_CTRL_CHECK_TRIGGER_OFFSET, OTP_CTRL_CHECK_REGWEN_OFFSET, OTP_CTRL_CHECK_TIMEOUT_OFFSET,
                 OTP_CTRL_INTEGRITY_CHECK_PERIOD_OFFSET, OTP_CTRL_CONSISTENCY_CHECK_PERIOD_OFFSET, OTP_CTRL_SW_MANUF_PARTITION_READ_LOCK_OFFSET,
-                OTP_CTRL_SVN_PARTITION_READ_LOCK_OFFSET, OTP_CTRL_VENDOR_HASHES_MANUF_PARTITION_READ_LOCK_OFFSET,
+                OTP_CTRL_VENDOR_HASHES_MANUF_PARTITION_READ_LOCK_OFFSET, OTP_CTRL_VENDOR_HASHES_OWNER_PROD_PARTITION_READ_LOCK_OFFSET,
                 OTP_CTRL_VENDOR_HASHES_PROD_PARTITION_READ_LOCK_OFFSET, OTP_CTRL_VENDOR_REVOCATIONS_PROD_PARTITION_READ_LOCK_OFFSET,
                 OTP_CTRL_VENDOR_NON_SECRET_PROD_PARTITION_READ_LOCK_OFFSET, OTP_CTRL_VENDOR_PK_HASH_VOLATILE_LOCK_OFFSET,
                 OTP_CTRL_SW_TEST_UNLOCK_PARTITION_DIGEST_0_OFFSET, OTP_CTRL_SW_TEST_UNLOCK_PARTITION_DIGEST_1_OFFSET,
@@ -237,6 +244,7 @@ interface fuse_ctrl_cov_if
                 OTP_CTRL_SW_MANUF_PARTITION_DIGEST_0_OFFSET, OTP_CTRL_SW_MANUF_PARTITION_DIGEST_1_OFFSET,
                 OTP_CTRL_SECRET_LC_TRANSITION_PARTITION_DIGEST_0_OFFSET, OTP_CTRL_SECRET_LC_TRANSITION_PARTITION_DIGEST_1_OFFSET,
                 OTP_CTRL_VENDOR_HASHES_MANUF_PARTITION_DIGEST_0_OFFSET, OTP_CTRL_VENDOR_HASHES_MANUF_PARTITION_DIGEST_1_OFFSET,
+                OTP_CTRL_VENDOR_HASHES_OWNER_PROD_PARTITION_DIGEST_0_OFFSET, OTP_CTRL_VENDOR_HASHES_OWNER_PROD_PARTITION_DIGEST_1_OFFSET,
                 OTP_CTRL_VENDOR_HASHES_PROD_PARTITION_DIGEST_0_OFFSET, OTP_CTRL_VENDOR_HASHES_PROD_PARTITION_DIGEST_1_OFFSET,
                 OTP_CTRL_VENDOR_REVOCATIONS_PROD_PARTITION_DIGEST_0_OFFSET, OTP_CTRL_VENDOR_REVOCATIONS_PROD_PARTITION_DIGEST_1_OFFSET
             };
@@ -250,7 +258,7 @@ interface fuse_ctrl_cov_if
                 OTP_CTRL_DIRECT_ACCESS_WDATA_0_OFFSET, OTP_CTRL_DIRECT_ACCESS_WDATA_1_OFFSET,
                 OTP_CTRL_CHECK_TRIGGER_REGWEN_OFFSET, OTP_CTRL_CHECK_TRIGGER_OFFSET, OTP_CTRL_CHECK_REGWEN_OFFSET, OTP_CTRL_CHECK_TIMEOUT_OFFSET,
                 OTP_CTRL_INTEGRITY_CHECK_PERIOD_OFFSET, OTP_CTRL_CONSISTENCY_CHECK_PERIOD_OFFSET, OTP_CTRL_SW_MANUF_PARTITION_READ_LOCK_OFFSET,
-                OTP_CTRL_SVN_PARTITION_READ_LOCK_OFFSET, OTP_CTRL_VENDOR_HASHES_MANUF_PARTITION_READ_LOCK_OFFSET,
+                OTP_CTRL_VENDOR_HASHES_MANUF_PARTITION_READ_LOCK_OFFSET, OTP_CTRL_VENDOR_HASHES_OWNER_PROD_PARTITION_READ_LOCK_OFFSET,
                 OTP_CTRL_VENDOR_HASHES_PROD_PARTITION_READ_LOCK_OFFSET, OTP_CTRL_VENDOR_REVOCATIONS_PROD_PARTITION_READ_LOCK_OFFSET,
                 OTP_CTRL_VENDOR_NON_SECRET_PROD_PARTITION_READ_LOCK_OFFSET, OTP_CTRL_VENDOR_PK_HASH_VOLATILE_LOCK_OFFSET
             };
