@@ -300,24 +300,6 @@
       ]
     }
     {
-      name: cptra_ss_i3c_recovery
-      desc: ""
-      stage: ""
-      tests:
-      [
-        cptra_ss_i3c_recovery
-      ]
-    }
-    {
-      name: i3c_smoke
-      desc: ""
-      stage: ""
-      tests:
-      [
-        i3c_smoke
-      ]
-    }
-    {
       name: mci_err_intr_reg_rand_test
       desc: ""
       stage: ""
@@ -423,8 +405,8 @@
       stage: ""
       tests:
       [
-        mcu_mbox1_rand_rdwr
         mcu_mbox0_rand_rdwr
+        mcu_mbox1_rand_rdwr
       ]
     }
     {
@@ -437,21 +419,21 @@
       ]
     }
     {
+      name: mcu_prod_rom_axi_streaming_boot
+      desc: ""
+      stage: ""
+      tests:
+      [
+        mcu_prod_rom_axi_streaming_boot
+      ]
+    }
+    {
       name: mcu_prod_rom_i3c_streaming_boot
       desc: ""
       stage: ""
       tests:
       [
         mcu_prod_rom_i3c_streaming_boot
-      ]
-    }
-    {
-      name: mcu_prod_rom_to_sram_streaming_boot
-      desc: ""
-      stage: ""
-      tests:
-      [
-        mcu_prod_rom_to_sram_streaming_boot
       ]
     }
     {
@@ -569,6 +551,15 @@
       tests:
       [
         smoke_test_fc_registers
+      ]
+    }
+    {
+      name: smoke_test_fc_secret_prog_in_dbg
+      desc: ""
+      stage: ""
+      tests:
+      [
+        smoke_test_fc_secret_prog_in_dbg
       ]
     }
     {
@@ -991,9 +982,9 @@
       stage: ""
       tests:
       [
+        smoke_test_mcu_sram_execution_region_random_sram_config_axi_user
         smoke_test_mcu_sram_execution_region_max_size
         smoke_test_mcu_sram_execution_region
-        smoke_test_mcu_sram_execution_region_random_sram_config_axi_user
       ]
     }
     {
@@ -1011,11 +1002,11 @@
       stage: ""
       tests:
       [
-        smoke_test_mcu_trace_buffer_63
-        smoke_test_mcu_trace_buffer_64
         smoke_test_mcu_trace_buffer
-        smoke_test_mcu_trace_buffer_single
         smoke_test_mcu_trace_buffer_random
+        smoke_test_mcu_trace_buffer_64
+        smoke_test_mcu_trace_buffer_63
+        smoke_test_mcu_trace_buffer_single
       ]
     }
     {
