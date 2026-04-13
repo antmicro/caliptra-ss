@@ -1111,5 +1111,69 @@ Perform random read accesses to all registers in the MCI address space.
         smoke_test_wdt_rst
       ]
     }
+
+    {
+      name: caliptra_ss_lcc_st_trans_cnt
+      desc: "Exercise 2nd or following LC state transition from LcStRaw to LcStTestUnlocked0. This test requires injecting LC transition counter for LcStRaw to simulated OTP memory followed by the request for transition to LcStTestUnlocked0"
+      stage: ""
+      tests:
+      [
+        caliptra_ss_lcc_st_trans_cnt
+      ]
+    }
+    {
+      name: caliptra_ss_lc_st_trans_dummy
+      desc: "Allow LCC state transitions by writing 1 to TRANSITION_REGWEN followed by writing 0 to TRANSITION_CMD"
+      stage: ""
+      tests:
+      [
+        caliptra_ss_lc_st_trans_dummy
+      ]
+    }
+    {
+      name: caliptra_ss_lc_st_trans_tap_dummy
+      desc: "Allow LCC state transitions by writing 1 through TAP to TRANSITION_REGWEN followed by writing 0 to TRANSITION_CMD"
+      stage: ""
+      tests:
+      [
+        caliptra_ss_lc_st_trans_tap_dummy
+      ]
+    }
+    {
+      name: caliptra_ss_lc_part_error
+      desc: "Test if LCC OTP partition error bit is sticky. Inject otp_lc_data_i.error asserted for at least two consecutive clock cycles"
+      stage: ""
+      tests:
+      [
+        caliptra_ss_lc_part_error
+      ]
+    }
+    {
+      name: caliptra_ss_lc_fatal_bus_integ_error
+      desc: "Test if fatal bus integrity error flag is sticky. Trigger CSR/TAP bus integrity error twice. Do this in all possible combinations (randomized)"
+      stage: ""
+      tests:
+      [
+        caliptra_ss_lc_fatal_bus_integ_error
+      ]
+    }
+    {
+      name: caliptra_ss_lcc_alert_tap_dummy
+      desc: "Dummy alert injection. Write 0s to all fields of ALERT_TEST via TAP with one write command"
+      stage: ""
+      tests:
+      [
+        caliptra_ss_lcc_alert_tap_dummy
+      ]
+    }
+    {
+      name: caliptra_ss_lcc_token_hash_error
+      desc: "Test LCC reaction to transition token hashing error (KMAC error). Instruct LCC to perform state transitions while injecting (app_rsp[1].error = 1)"
+      stage: ""
+      tests:
+      [
+        caliptra_ss_lcc_token_hash_error
+      ]
+    }
   ]
 }
