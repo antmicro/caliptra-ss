@@ -186,6 +186,9 @@ void sw_transition_req(uint32_t next_lc_state,
         lsu_write_32(LC_CTRL_TRANSITION_TOKEN_3_OFFSET, token_127_96);
     }
 
+    // This write eliminates coverage gap, it has no other function
+    lsu_write_32(LC_CTRL_TRANSITION_CMD_OFFSET, 0x0);
+
     // Step 6: Trigger the Transition Command
     VPRINTF(LOW, "Triggering transition command [0x%08x]: 0x1\n", LC_CTRL_TRANSITION_CMD_OFFSET);
     lsu_write_32(LC_CTRL_TRANSITION_CMD_OFFSET, 0x1);

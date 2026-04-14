@@ -147,6 +147,9 @@ proc sw_transition_req {next_lc_state token_31_0 token_63_32 token_95_64 token_1
         riscv dmi_write $LC_CTRL_TRANSITION_TOKEN_3_OFFSET $token_127_96
     }
 
+    # this write eliminates coverage gap, it has no other function
+    riscv dmi_write $LC_CTRL_TRANSITION_CMD_OFFSET 0x0
+
     # trigger the transition
     riscv dmi_write $LC_CTRL_TRANSITION_CMD_OFFSET 0x1
 
