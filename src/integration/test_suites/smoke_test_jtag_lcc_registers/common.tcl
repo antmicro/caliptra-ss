@@ -402,6 +402,10 @@ proc test_write_only_registers {} {
         exit 1
     }
 
+    # Write 0 to cover additional cases
+    set reg_write_value 0
+    riscv dmi_write $LC_CTRL_ALERT_TEST_OFFSET $reg_write_value
+
     puts "============"
     puts "MCU: TESTING WO LCC REGISTERS FINISHED"
     puts "============\n"
