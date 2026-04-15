@@ -25,6 +25,10 @@ set CPTRA_SECURITY_STATE_REG            0x7D
 set CPTRA_DEBUG_INTENT_REG              0x7F
 set DMI_REG_BOOTFSM_GO_ADDR             0x61
 
+proc kill_sim {} {
+    write_memory 0x21000414 32 0x01 phys
+}
+
 
 # Req Payload
 array set REQ_PAYLOAD {
@@ -129,9 +133,11 @@ if {$success} {
     puts "TAP: PROD DEBUG UNLOCK SUCCESS."
 } elseif {$failure} {
     puts "TAP: PROD DEBUG UNLOCK FAIL."
+    kill_sim
     shutdown error
 } else {
     puts "TAP: Unexpected unlock result. Status: $rsp"
+    kill_sim
     shutdown error
 }
 
