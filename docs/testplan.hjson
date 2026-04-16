@@ -13,7 +13,7 @@
     }
     {
       name: caliptra_ss_fuse_ctrl_bus_ecc_error
-      desc: "This test injects ECC error on DAI write and validates ECC error reporting."
+      desc: "This test injects an ECC error on DAI write and validates ECC error reporting."
       stage: ""
       tests:
       [
@@ -348,7 +348,7 @@
       name: mci_sram_axi_jtag_access_collision
       desc: '''
 Perform simultaneous accesses to the MCI sram controller from AXI and JTAG interfaces.
-This test should trigger `dmi_axi_collision_error`.
+This test should trigger a `dmi_axi_collision_error`.
             '''
       stage: ""
       tests: []
@@ -396,32 +396,26 @@ caliptra-ss is no longer unlocked and in the `DEVICE_PRODUCTION`.
       name: mci_lcc_manuf_to_non_debug
       desc: '''
 Move life cycle state to `TRANSLATOR_MANUF_NON_DEBUG` or `TRANSLATOR_MANUF_DEBUG` state.
-Either issue SCRAP request or inject a state error, then verify that device lifecycle moved to
-`DEVICE_PRODUCTION`.
+Either issue a SCRAP request or inject a state error, then verify that device lifecycle moved to `DEVICE_PRODUCTION`.
             '''
       stage: ""
       tests: []
     }
     {
       name: mci_lcc_no_zeroization
-      desc: '''
-Set one of the `cptra_ss_FIPS_ZEROIZATION_PPD_i` or `ss_soc_MCU_ROM_zeroization_mask_reg` and make sure that
-OTP was not zeroized.
-            '''
+      desc: "Set one of the `cptra_ss_FIPS_ZEROIZATION_PPD_i` or `ss_soc_MCU_ROM_zeroization_mask_reg` and make sure that OTP was not zeroized."
       stage: ""
       tests: []
     }
     {
       name: mci_read_all_regs_test
-      desc: '''
-Perform random read accesses to all registers in the MCI address space.
-            '''
+      desc: "Perform random read accesses to all registers in the MCI address space."
       stage: ""
       tests: []
     }
     {
       name: mcu_axi_streaming_boot_test_rom
-      desc: "This test instantiates AXI memory perihperal and initializes it with a production MCU firmware binary. Software running on the MCU configures the I3C to the bypass mode and performs the recovery flow over AXI, reading data from AXI memory and feeding it to the I3C core. The test checks if the recovery process is performed correctly and new image gets activated"
+      desc: "This test instantiates an AXI memory perihperal and initializes it with a production MCU firmware binary. Software running on the MCU configures the I3C core to bypass mode and performs the recovery flow over AXI, reading data from the AXI memory and feeding it to the I3C core. The test checks if the recovery process is performed correctly and the new image gets activated"
       stage: ""
       tests:
       [
@@ -1144,7 +1138,7 @@ Perform 64-bit access to MCI SRAM using JTAG to system bus path.
 
     {
       name: caliptra_ss_lcc_st_trans_cnt
-      desc: "Exercise 2nd or following LC state transition from LcStRaw to LcStTestUnlocked0. This test requires injecting LC transition counter for LcStRaw to simulated OTP memory followed by the request for transition to LcStTestUnlocked0"
+      desc: "Exercise the second or following LCC state transition from LcStRaw to LcStTestUnlocked0. This test requires injecting an LCC transition counter for LcStRaw to simulated OTP memory followed by the request for a transition to LcStTestUnlocked0"
       stage: ""
       tests:
       [
@@ -1171,7 +1165,7 @@ Perform 64-bit access to MCI SRAM using JTAG to system bus path.
     }
     {
       name: caliptra_ss_lc_part_error
-      desc: "Test if LCC OTP partition error bit is sticky. Inject otp_lc_data_i.error asserted for at least two consecutive clock cycles"
+      desc: "Test if the LCC OTP partition error bit is sticky. Inject otp_lc_data_i.error asserted for at least two consecutive clock cycles"
       stage: ""
       tests:
       [
@@ -1180,7 +1174,7 @@ Perform 64-bit access to MCI SRAM using JTAG to system bus path.
     }
     {
       name: caliptra_ss_lc_fatal_bus_integ_error
-      desc: "Test if fatal bus integrity error flag is sticky. Trigger CSR/TAP bus integrity error twice. Do this in all possible combinations (randomized)"
+      desc: "Test if the fatal bus integrity error flag is sticky. Trigger a CSR/TAP bus integrity error twice. Do this in all possible combinations (randomized)"
       stage: ""
       tests:
       [
@@ -1198,7 +1192,7 @@ Perform 64-bit access to MCI SRAM using JTAG to system bus path.
     }
     {
       name: caliptra_ss_lcc_token_hash_error
-      desc: "Test LCC reaction to transition token hashing error (KMAC error). Instruct LCC to perform state transitions while injecting (app_rsp[1].error = 1)"
+      desc: "Test the LCC reaction to a transition token hashing error (KMAC error). Instruct LCC to perform state transitions while injecting (app_rsp[1].error = 1)"
       stage: ""
       tests:
       [
