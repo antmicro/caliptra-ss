@@ -66,6 +66,15 @@
       ]
     }
     {
+      name: caliptra_ss_fuse_ctrl_invalid_register
+      desc: ""
+      stage: ""
+      tests:
+      [
+        caliptra_ss_fuse_ctrl_invalid_register
+      ]
+    }
+    {
       name: caliptra_ss_fuse_ctrl_manuf_prod_prov
       desc: ""
       stage: ""
@@ -743,6 +752,15 @@ Perform random read accesses to all registers in the MCI address space.
       tests:
       [
         smoke_test_lcc_RMA
+      ]
+    }
+    {
+      name: smoke_test_lcc_invalid_register
+      desc: ""
+      stage: ""
+      tests:
+      [
+        smoke_test_lcc_invalid_register
       ]
     }
     {
