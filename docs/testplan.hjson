@@ -13,7 +13,7 @@
     }
     {
       name: caliptra_ss_fuse_ctrl_bus_ecc_error
-      desc: "This test injects ECC error on DAI write and validates ECC error reporting."
+      desc: "This test injects an ECC error on DAI write and validates ECC error reporting."
       stage: ""
       tests:
       [
@@ -63,6 +63,15 @@
       tests:
       [
         caliptra_ss_fuse_ctrl_interrupts
+      ]
+    }
+    {
+      name: caliptra_ss_fuse_ctrl_invalid_register
+      desc: ""
+      stage: ""
+      tests:
+      [
+        caliptra_ss_fuse_ctrl_invalid_register
       ]
     }
     {
@@ -300,24 +309,6 @@
       ]
     }
     {
-      name: cptra_ss_i3c_recovery
-      desc: ""
-      stage: ""
-      tests:
-      [
-        cptra_ss_i3c_recovery
-      ]
-    }
-    {
-      name: i3c_smoke
-      desc: ""
-      stage: ""
-      tests:
-      [
-        i3c_smoke
-      ]
-    }
-    {
       name: mci_err_intr_reg_rand_test
       desc: ""
       stage: ""
@@ -354,8 +345,77 @@
       ]
     }
     {
+      name: mci_sram_axi_jtag_access_collision
+      desc: '''
+Perform simultaneous accesses to the MCI sram controller from AXI and JTAG interfaces.
+This test should trigger a `dmi_axi_collision_error`.
+            '''
+      stage: ""
+      tests: []
+    }
+    {
+      name: mci_sram_error
+      desc: '''
+Perform a write through the MCI SRAM controller, followed by the double ECC error injection and RMW command.
+Test should result in ECC error being raised and data inside SRAM should not be modified.
+            '''
+      stage: ""
+      tests: []
+    }
+    {
+      name: mci_trace_buffer_axi_access
+      desc: '''
+Perform AXI access to the trace buffer CSR.
+Verify that CPU can access, read all trace buffer registers, and modify only read pointer register.
+            '''
+      stage: ""
+      tests: []
+    }
+    {
+      name: mci_lcc_state_error
+      desc: '''
+Move OTP into unlocked state and check that Caliptra-ss is unlocked.
+Inject invalid state into `otp_static_state` and verify that caliptra-ss becomes locked.
+Release error injection and check that caliptra-ss is once more in unlocked state.
+            '''
+      stage: ""
+      tests: []
+    }
+    {
+      name: mci_lcc_state_error_to_locked
+      desc: '''
+Move OTP into unlocked state and check that Caliptra-ss is unlocked.
+Inject invalid state into `otp_static_state`.
+Request scrap transition or inject state_error, release error injection and check that
+caliptra-ss is no longer unlocked and in the `DEVICE_PRODUCTION`.
+            '''
+      stage: ""
+      tests: []
+    }
+    {
+      name: mci_lcc_manuf_to_non_debug
+      desc: '''
+Move life cycle state to `TRANSLATOR_MANUF_NON_DEBUG` or `TRANSLATOR_MANUF_DEBUG` state.
+Either issue a SCRAP request or inject a state error, then verify that device lifecycle moved to `DEVICE_PRODUCTION`.
+            '''
+      stage: ""
+      tests: []
+    }
+    {
+      name: mci_lcc_no_zeroization
+      desc: "Set one of the `cptra_ss_FIPS_ZEROIZATION_PPD_i` or `ss_soc_MCU_ROM_zeroization_mask_reg` and make sure that OTP was not zeroized."
+      stage: ""
+      tests: []
+    }
+    {
+      name: mci_read_all_regs_test
+      desc: "Perform random read accesses to all registers in the MCI address space."
+      stage: ""
+      tests: []
+    }
+    {
       name: mcu_axi_streaming_boot_test_rom
-      desc: "This test instantiates AXI memory perihperal and initializes it with a production MCU firmware binary. Software running on the MCU configures the I3C to the bypass mode and performs the recovery flow over AXI, reading data from AXI memory and feeding it to the I3C core. The test checks if the recovery process is performed correctly and new image gets activated"
+      desc: "This test instantiates an AXI memory perihperal and initializes it with a production MCU firmware binary. Software running on the MCU configures the I3C core to bypass mode and performs the recovery flow over AXI, reading data from the AXI memory and feeding it to the I3C core. The test checks if the recovery process is performed correctly and the new image gets activated"
       stage: ""
       tests:
       [
@@ -423,8 +483,8 @@
       stage: ""
       tests:
       [
-        mcu_mbox1_rand_rdwr
         mcu_mbox0_rand_rdwr
+        mcu_mbox1_rand_rdwr
       ]
     }
     {
@@ -437,21 +497,21 @@
       ]
     }
     {
+      name: mcu_prod_rom_axi_streaming_boot
+      desc: ""
+      stage: ""
+      tests:
+      [
+        mcu_prod_rom_axi_streaming_boot
+      ]
+    }
+    {
       name: mcu_prod_rom_i3c_streaming_boot
       desc: ""
       stage: ""
       tests:
       [
         mcu_prod_rom_i3c_streaming_boot
-      ]
-    }
-    {
-      name: mcu_prod_rom_to_sram_streaming_boot
-      desc: ""
-      stage: ""
-      tests:
-      [
-        mcu_prod_rom_to_sram_streaming_boot
       ]
     }
     {
@@ -572,6 +632,15 @@
       ]
     }
     {
+      name: smoke_test_fc_secret_prog_in_dbg
+      desc: ""
+      stage: ""
+      tests:
+      [
+        smoke_test_fc_secret_prog_in_dbg
+      ]
+    }
+    {
       name: smoke_test_fc_unlock_transitions
       desc: ""
       stage: ""
@@ -662,6 +731,18 @@
       ]
     }
     {
+      name: smoke_test_jtag_mcu_system_bus_access
+      desc: '''
+Perform 32-bit access to MCI DEBUG_[IN|OUT] registers using JTAG to system bus path.
+Perform 64-bit access to MCI SRAM using JTAG to system bus path.
+            '''
+      stage: ""
+      tests:
+      [
+        smoke_test_jtag_mcu_system_bus_access
+      ]
+    }
+    {
       name: smoke_test_jtag_uds_prog
       desc: ""
       stage: ""
@@ -677,6 +758,15 @@
       tests:
       [
         smoke_test_lcc_RMA
+      ]
+    }
+    {
+      name: smoke_test_lcc_invalid_register
+      desc: ""
+      stage: ""
+      tests:
+      [
+        smoke_test_lcc_invalid_register
       ]
     }
     {
@@ -991,9 +1081,9 @@
       stage: ""
       tests:
       [
+        smoke_test_mcu_sram_execution_region_random_sram_config_axi_user
         smoke_test_mcu_sram_execution_region_max_size
         smoke_test_mcu_sram_execution_region
-        smoke_test_mcu_sram_execution_region_random_sram_config_axi_user
       ]
     }
     {
@@ -1011,11 +1101,11 @@
       stage: ""
       tests:
       [
-        smoke_test_mcu_trace_buffer_63
-        smoke_test_mcu_trace_buffer_64
         smoke_test_mcu_trace_buffer
-        smoke_test_mcu_trace_buffer_single
         smoke_test_mcu_trace_buffer_random
+        smoke_test_mcu_trace_buffer_64
+        smoke_test_mcu_trace_buffer_63
+        smoke_test_mcu_trace_buffer_single
       ]
     }
     {
@@ -1043,6 +1133,70 @@
       tests:
       [
         smoke_test_wdt_rst
+      ]
+    }
+
+    {
+      name: caliptra_ss_lcc_st_trans_cnt
+      desc: "Exercise the second or following LCC state transition from LcStRaw to LcStTestUnlocked0. This test requires injecting an LCC transition counter for LcStRaw to simulated OTP memory followed by the request for a transition to LcStTestUnlocked0"
+      stage: ""
+      tests:
+      [
+        caliptra_ss_lcc_st_trans_cnt
+      ]
+    }
+    {
+      name: caliptra_ss_lc_st_trans_dummy
+      desc: "Allow LCC state transitions by writing 1 to TRANSITION_REGWEN followed by writing 0 to TRANSITION_CMD"
+      stage: ""
+      tests:
+      [
+        caliptra_ss_lc_st_trans_dummy
+      ]
+    }
+    {
+      name: caliptra_ss_lc_st_trans_tap_dummy
+      desc: "Allow LCC state transitions by writing 1 through TAP to TRANSITION_REGWEN followed by writing 0 to TRANSITION_CMD"
+      stage: ""
+      tests:
+      [
+        caliptra_ss_lc_st_trans_tap_dummy
+      ]
+    }
+    {
+      name: caliptra_ss_lc_part_error
+      desc: "Test if the LCC OTP partition error bit is sticky. Inject otp_lc_data_i.error asserted for at least two consecutive clock cycles"
+      stage: ""
+      tests:
+      [
+        caliptra_ss_lc_part_error
+      ]
+    }
+    {
+      name: caliptra_ss_lc_fatal_bus_integ_error
+      desc: "Test if the fatal bus integrity error flag is sticky. Trigger a CSR/TAP bus integrity error twice. Do this in all possible combinations (randomized)"
+      stage: ""
+      tests:
+      [
+        caliptra_ss_lc_fatal_bus_integ_error
+      ]
+    }
+    {
+      name: caliptra_ss_lcc_alert_tap_dummy
+      desc: "Dummy alert injection. Write 0s to all fields of ALERT_TEST via TAP with one write command"
+      stage: ""
+      tests:
+      [
+        caliptra_ss_lcc_alert_tap_dummy
+      ]
+    }
+    {
+      name: caliptra_ss_lcc_token_hash_error
+      desc: "Test the LCC reaction to a transition token hashing error (KMAC error). Instruct LCC to perform state transitions while injecting (app_rsp[1].error = 1)"
+      stage: ""
+      tests:
+      [
+        caliptra_ss_lcc_token_hash_error
       ]
     }
   ]
