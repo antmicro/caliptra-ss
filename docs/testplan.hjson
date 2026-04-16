@@ -737,6 +737,18 @@ Perform random read accesses to all registers in the MCI address space.
       ]
     }
     {
+      name: smoke_test_jtag_mcu_system_bus_access
+      desc: '''
+Perform 32-bit access to MCI DEBUG_[IN|OUT] registers using JTAG to system bus path.
+Perform 64-bit access to MCI SRAM using JTAG to system bus path.
+            '''
+      stage: ""
+      tests:
+      [
+        smoke_test_jtag_mcu_system_bus_access
+      ]
+    }
+    {
       name: smoke_test_jtag_uds_prog
       desc: ""
       stage: ""
