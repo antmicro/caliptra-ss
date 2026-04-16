@@ -55,6 +55,7 @@ void main (void) {
 
     /*
      * 1: An ordinary, successful DAI operation must result in an `otp_operation_done` interrupt.
+     * Register is W1C
      */
 
     dai_wr(CPTRA_SS_MANUF_DEBUG_UNLOCK_TOKEN, 0x1, 0, 32, 0);
@@ -65,7 +66,7 @@ void main (void) {
         VPRINTF(LOW, "ERROR: wrong interrupt signaled\n");
         goto epilogue;
     }
-    lsu_write_32(SOC_OTP_CTRL_INTERRUPT_STATE, 0x0);
+    lsu_write_32(SOC_OTP_CTRL_INTERRUPT_STATE, alert_state);
 
     /*
      * 2: An invalid DAI operation must result in an `otp_error` interrupt.
@@ -80,7 +81,7 @@ void main (void) {
         VPRINTF(LOW, "ERROR: wrong interrupt signaled\n");
         goto epilogue;
     }
-    lsu_write_32(SOC_OTP_CTRL_INTERRUPT_STATE, 0x0);
+    lsu_write_32(SOC_OTP_CTRL_INTERRUPT_STATE, alert_state);
 
 
     /*
