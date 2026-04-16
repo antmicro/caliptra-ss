@@ -41,14 +41,17 @@ puts ""
 #enabling system bus for mem accesses
 riscv set_mem_access sysbus
 
+#Access MCU SRAM
+write_read_access "SRAM" 0x21c00000 8 {0x5a 0xa5}
+write_read_access "SRAM" 0x21c00000 16 {0x5a5a 0xa5a5}
+write_read_access "SRAM" 0x21c00000 32 {0x5a5a5a5a 0xa5a5a5a5}
+write_read_access "SRAM" 0x21c00000 64 {0x5a5a5a5a5a5a5a5a 0xa5a5a5a5a5a5a5a5}
+
 #Access DEBUG_OUT register
 write_read_access "DEBUG_OUT" 0x21000414 32 {0x7a7a7a7a 0x85858585}
 
 #Access DEBUG_IN register
 write_read_access "DEBUG_IN" 0x21000410 32 {0x7a7a7a7a 0x85858585}
-
-#Access MCU SRAM
-write_read_access "SRAM" 0x21c00000 64 {0x5a5a5a5a5a5a5a5a 0xa5a5a5a5a5a5a5a5}
 
 #test boot from MCI SRAM
 puts "Write HW override for sram execution"
