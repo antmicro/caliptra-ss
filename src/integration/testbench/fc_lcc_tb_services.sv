@@ -157,6 +157,14 @@ module fc_lcc_tb_services (
             $display("fc_lcc_tb_services: releasing esc_scrap_state1 escalation");
             release `CPTRA_SS_TB_TOP_NAME.cptra_ss_lc_esclate_scrap_state1_i;
           end
+          CMD_LC_KMAC_ERR_INJECTION: begin
+            $display("fc_lcc_tb_services: triggering KMAC error");
+            force `LCC_PATH.kmac.sha3_err.valid = 1'b1;
+          end
+          CMD_LC_KMAC_ERR_INJECTION_DIS: begin
+            $display("fc_lcc_tb_services: releasing KMAC error injection");
+            release `LCC_PATH.kmac.sha3_err.valid;
+          end
           default: begin
             // No action for unrecognized commands.
           end
