@@ -118,11 +118,46 @@ void main (void) {
         while(1);
     }
 
+    VPRINTF(LOW, "MCU: Mbox%x clear byte next to TARGET_USER_VALID with STRBW\n", mbox_num);
+    lsu_write_8(SOC_MCI_TOP_MCU_MBOX0_CSR_MBOX_TARGET_USER_VALID + 1 + MCU_MBOX_NUM_STRIDE * mbox_num, 0x0);
+
+    if (mcu_mbox_read_target_user_valid(mbox_num) != 0x1) {
+        VPRINTF(FATAL, "MCU: Mbox%x TARGET_USER_VALID cleared improperly with STRBW\n", mbox_num);
+        SEND_STDOUT_CTRL(0x1);
+        while(1);
+    }
+
+    VPRINTF(LOW, "MCU: Mbox%x clear TARGET_USER_VALID with STRBW\n", mbox_num);
+    lsu_write_8(SOC_MCI_TOP_MCU_MBOX0_CSR_MBOX_TARGET_USER_VALID + MCU_MBOX_NUM_STRIDE * mbox_num, 0x0);
+
+    if (mcu_mbox_read_target_user_valid(mbox_num) != 0x0) {
+        VPRINTF(FATAL, "MCU: Mbox%x TARGET_USER_VALID not written properly with STRBW\n", mbox_num);
+        SEND_STDOUT_CTRL(0x1);
+        while(1);
+    }
     // MBOX: Write and check TARGET_STATUS with STRBW
     VPRINTF(LOW, "MCU: Mbox%x write TARGET_STATUS with STRBW\n", mbox_num);
-    lsu_write_8(SOC_MCI_TOP_MCU_MBOX0_CSR_MBOX_TARGET_STATUS + MCU_MBOX_NUM_STRIDE * mbox_num, 0x3);
+    lsu_write_8(SOC_MCI_TOP_MCU_MBOX0_CSR_MBOX_TARGET_STATUS + MCU_MBOX_NUM_STRIDE * mbox_num, 0x1f);
 
-    if (mcu_mbox_read_target_status(mbox_num) != 0x3) {
+    if (mcu_mbox_read_target_status(mbox_num) != 0x1f) {
+        VPRINTF(FATAL, "MCU: Mbox%x TARGET_STATUS not written properly with STRBW\n", mbox_num);
+        SEND_STDOUT_CTRL(0x1);
+        while(1);
+    }
+
+    VPRINTF(LOW, "MCU: Mbox%x clear byte next to TARGET_STATUS with STRBW\n", mbox_num);
+    lsu_write_8(SOC_MCI_TOP_MCU_MBOX0_CSR_MBOX_TARGET_STATUS + 1 + MCU_MBOX_NUM_STRIDE * mbox_num, 0x0);
+
+    if (mcu_mbox_read_target_status(mbox_num) != 0x1f) {
+        VPRINTF(FATAL, "MCU: Mbox%x TARGET_STATUS cleared improperly with STRBW\n", mbox_num);
+        SEND_STDOUT_CTRL(0x1);
+        while(1);
+    }
+
+    VPRINTF(LOW, "MCU: Mbox%x clear TARGET_STATUS with STRBW\n", mbox_num);
+    lsu_write_8(SOC_MCI_TOP_MCU_MBOX0_CSR_MBOX_TARGET_STATUS + MCU_MBOX_NUM_STRIDE * mbox_num, 0x0);
+
+    if (mcu_mbox_read_target_status(mbox_num) != 0x0) {
         VPRINTF(FATAL, "MCU: Mbox%x TARGET_STATUS not written properly with STRBW\n", mbox_num);
         SEND_STDOUT_CTRL(0x1);
         while(1);
