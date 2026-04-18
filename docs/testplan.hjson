@@ -390,7 +390,7 @@ Either issue a SCRAP request or inject a state error, then verify that device li
       name: mci_lcc_no_zeroization
       desc: "Set one of the `cptra_ss_FIPS_ZEROIZATION_PPD_i` or `ss_soc_MCU_ROM_zeroization_mask_reg` and make sure that OTP was not zeroized."
       stage: ""
-      tests: []
+      tests: [mci_lcc_no_zeroization]
     }
     {
       name: mci_read_all_regs_test
