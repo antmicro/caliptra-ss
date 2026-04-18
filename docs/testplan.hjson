@@ -382,7 +382,7 @@ Inject invalid state into `otp_static_state` and verify that caliptra-ss becomes
 Release error injection and check that caliptra-ss is once more in unlocked state.
             '''
       stage: ""
-      tests: []
+      tests: [mci_lcc_state_error]
     }
     {
       name: mci_lcc_state_error_to_locked
