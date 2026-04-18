@@ -363,7 +363,7 @@ Perform a write through the MCI SRAM controller, followed by the double ECC erro
 Test should result in ECC error being raised and data inside SRAM should not be modified.
             '''
       stage: ""
-      tests: []
+      tests: [mci_sram_error]
     }
     {
       name: mci_trace_buffer_axi_access
