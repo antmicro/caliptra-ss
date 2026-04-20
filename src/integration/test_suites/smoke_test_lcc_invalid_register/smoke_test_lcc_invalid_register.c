@@ -69,7 +69,7 @@ void test_read_invalid_register(void) {
 void test_write_invalid_register(void) {
     VPRINTF(LOW, "============\nMCU: TESTING INVALID LCC REGISTER WRITE\n============\n\n");
 
-    lsu_write_32(SOC_LC_CTRL_MANUF_STATE_7_OFFSET + 4, 0xdeadbeef);
+    lsu_write_32(SOC_LC_CTRL_MANUF_STATE_7 + 4, 0xdeadbeef);
     for (uint8_t ii = 0; ii < 160; ii++) {
         __asm__ volatile ("nop"); // Sleep loop as "nop"
     }
