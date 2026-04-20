@@ -406,6 +406,18 @@ import tb_top_pkg::*;
             endcase
         end
 
+        if(mailbox_write && (mailbox_data[7:0] == CMD_MCI_SRAM_DMI_ACCESS)) begin
+            force `MCU_PATH.dmi_uncore_en = 1'b1;
+            force `MCU_PATH.dmi_uncore_wr_en = 1'b1;
+            force `MCU_PATH.dmi_uncore_addr = 7'h58;
+            force `MCU_PATH.dmi_uncore_wdata = 32'h0;
+        end else if(mailbox_write && (mailbox_data[7:0] == CMD_MCI_SRAM_DMI_ACCESS_DIS)) begin
+            release `MCU_PATH.dmi_uncore_en;
+            release `MCU_PATH.dmi_uncore_wr_en;
+            release `MCU_PATH.dmi_uncore_addr;
+            release `MCU_PATH.dmi_uncore_wdata;
+        end
+
         // Disable MCU_SRAM assertions
         if(mailbox_write && (mailbox_data[7:0] == TB_DISABLE_MCU_SRAM_PROT_ASSERTS)) begin
             $assertoff(0, `MCI_PATH.i_mci_mcu_sram_ctrl.ERR_MCU_SRAM_PROT_REGION_FILTER_ERROR);
