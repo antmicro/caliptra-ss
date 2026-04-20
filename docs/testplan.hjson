@@ -375,7 +375,7 @@ Request scrap transition or inject state_error, release error injection and chec
 caliptra-ss is no longer unlocked and in the `DEVICE_PRODUCTION`.
             '''
       stage: ""
-      tests: []
+      tests: [mci_lcc_state_error_to_locked]
     }
     {
       name: mci_lcc_manuf_to_non_debug
