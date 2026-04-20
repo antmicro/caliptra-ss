@@ -351,7 +351,10 @@ Perform simultaneous accesses to the MCI sram controller from AXI and JTAG inter
 This test should trigger a `dmi_axi_collision_error`.
             '''
       stage: ""
-      tests: []
+      tests:
+      [
+        mci_sram_axi_jtag_access_collision
+      ]
     }
     {
       name: mci_sram_error
