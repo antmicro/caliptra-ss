@@ -1079,23 +1079,13 @@ Perform 64-bit access to MCI SRAM using JTAG to system bus path.
         smoke_test_wdt_rst
       ]
     }
-
     {
-      name: caliptra_ss_lcc_st_trans_cnt
+      name: caliptra_ss_lcc_volatile_unlock_cnt
       desc: "Exercise the second or following LCC state transition from LcStRaw to LcStTestUnlocked0. This test requires injecting an LCC transition counter for LcStRaw to simulated OTP memory followed by the request for a transition to LcStTestUnlocked0"
       stage: ""
       tests:
       [
         caliptra_ss_lcc_st_trans_cnt
-      ]
-    }
-    {
-      name: caliptra_ss_lc_st_trans_dummy
-      desc: "Allow LCC state transitions by writing 1 to TRANSITION_REGWEN followed by writing 0 to TRANSITION_CMD"
-      stage: ""
-      tests:
-      [
-        caliptra_ss_lc_st_trans_dummy
       ]
     }
     {
@@ -1126,21 +1116,12 @@ Perform 64-bit access to MCI SRAM using JTAG to system bus path.
       ]
     }
     {
-      name: caliptra_ss_lcc_alert_tap_dummy
-      desc: "Dummy alert injection. Write 0s to all fields of ALERT_TEST via TAP with one write command"
-      stage: ""
-      tests:
-      [
-        caliptra_ss_lcc_alert_tap_dummy
-      ]
-    }
-    {
-      name: caliptra_ss_lcc_token_hash_error
+      name: caliptra_ss_lcc_st_trans_kmac_err
       desc: "Test the LCC reaction to a transition token hashing error (KMAC error). Instruct LCC to perform state transitions while injecting (app_rsp[1].error = 1)"
       stage: ""
       tests:
       [
-        caliptra_ss_lcc_token_hash_error
+        caliptra_ss_lcc_st_trans_kmac_err
       ]
     }
   ]

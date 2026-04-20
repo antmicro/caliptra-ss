@@ -1,8 +1,8 @@
 ---
 seed: 1
-testname: caliptra_ss_lcc_volatile_unlock
+testname: caliptra_ss_lcc_volatile_unlock_cnt
 pre-exec: |
-  echo "Running pre_exec for [caliptra_ss_lcc_volatile_unlock]"
+  echo "Running pre_exec for [caliptra_ss_lcc_volatile_unlock_cnt]"
   echo "Generate predefined LC start state and LC counter value."
   rm -rf otp-img.2048.vmem
   # Raw with non-0 count, to cover a corner case
