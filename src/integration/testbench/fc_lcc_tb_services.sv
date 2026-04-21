@@ -165,11 +165,11 @@ module fc_lcc_tb_services (
             $display("fc_lcc_tb_services: releasing KMAC error injection");
             release `LCC_PATH.kmac.sha3_err.valid;
           end
-          CMD_MCI_INJECT_STATE_ERROR: begin
+          CMD_LC_INJECT_STATE_ERROR: begin
             $display("fc_lcc_tb_services: injecting state_error into MCI LCC state translator");
             force `MCI_PATH.lc_fatal_state_error_i = 1'b1;
           end
-          CMD_MCI_RELEASE_STATE_ERROR: begin
+          CMD_LC_RELEASE_STATE_ERROR: begin
             $display("fc_lcc_tb_services: releasing state_error injection in MCI LCC state translator");
             release `MCI_PATH.lc_fatal_state_error_i;
           end

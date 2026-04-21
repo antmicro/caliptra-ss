@@ -65,7 +65,7 @@ void main(void) {
 
     // Force state_error high via the testbench service.
     VPRINTF(LOW, "INFO: injecting state_error into MCI LCC state translator\n");
-    lsu_write_32(SOC_MCI_TOP_MCI_REG_DEBUG_OUT, CMD_MCI_INJECT_STATE_ERROR);
+    lsu_write_32(SOC_MCI_TOP_MCI_REG_DEBUG_OUT, CMD_LC_INJECT_STATE_ERROR);
 
     // Poll until debug_locked == 1.
     uint32_t locked = 0;
@@ -85,7 +85,7 @@ void main(void) {
 
     // Release the injected state_error.
     VPRINTF(LOW, "INFO: releasing state_error injection\n");
-    lsu_write_32(SOC_MCI_TOP_MCI_REG_DEBUG_OUT, CMD_MCI_RELEASE_STATE_ERROR);
+    lsu_write_32(SOC_MCI_TOP_MCI_REG_DEBUG_OUT, CMD_LC_RELEASE_STATE_ERROR);
 
     // Reset FC/LCC/MCI to recover the unlocked state.
     // After reset the translator will re-evaluate OTP state (still TEST_UNLOCKED0)
