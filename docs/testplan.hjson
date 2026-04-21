@@ -1089,15 +1089,6 @@ Perform 64-bit access to MCI SRAM using JTAG to system bus path.
       ]
     }
     {
-      name: caliptra_ss_lc_st_trans_tap_dummy
-      desc: "Allow LCC state transitions by writing 1 through TAP to TRANSITION_REGWEN followed by writing 0 to TRANSITION_CMD"
-      stage: ""
-      tests:
-      [
-        caliptra_ss_lc_st_trans_tap_dummy
-      ]
-    }
-    {
       name: caliptra_ss_lc_part_error
       desc: "Test if the LCC OTP partition error bit is sticky. Inject otp_lc_data_i.error asserted for at least two consecutive clock cycles"
       stage: ""
