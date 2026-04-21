@@ -1085,7 +1085,7 @@ Perform 64-bit access to MCI SRAM using JTAG to system bus path.
       stage: ""
       tests:
       [
-        caliptra_ss_lcc_st_trans_cnt
+        caliptra_ss_lcc_volatile_unlock_cnt
       ]
     }
     {
