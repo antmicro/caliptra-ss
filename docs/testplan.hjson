@@ -362,15 +362,6 @@ Test should result in ECC error being raised and data inside SRAM should not be 
       ]
     }
     {
-      name: mci_trace_buffer_axi_access
-      desc: '''
-Perform AXI access to the trace buffer CSR.
-Verify that CPU can access, read all trace buffer registers, and modify only read pointer register.
-            '''
-      stage: ""
-      tests: []
-    }
-    {
       name: mci_lcc_state_error
       desc: '''
 Move OTP into unlocked state and check that Caliptra-ss is unlocked.

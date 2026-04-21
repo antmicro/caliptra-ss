@@ -16,19 +16,19 @@
 
 task smoke_test_mcu_trace_buffer();
     if($test$plusargs("MCU_TRACE_BUFFER_ONLY_ONE_ENTRY")) begin
-        $display("[%s] Anly allowing a single trace entry in the trace buffer", $time);
+        $display("[%s] Only allowing a single trace entry in the trace buffer", $time);
         fork
             mcu_trace_buffer_force_num_entires(1); 
         join_none;
     end
     if($test$plusargs("MCU_TRACE_BUFFER_ONLY_64_ENTRY")) begin
-        $display("[%s] Anly allowing a single trace entry in the trace buffer", $time);
+        $display("[%s] Only allowing 64 trace entries in the trace buffer", $time);
         fork
             mcu_trace_buffer_force_num_entires(64); 
         join_none;
     end
     if($test$plusargs("MCU_TRACE_BUFFER_ONLY_63_ENTRY")) begin
-        $display("[%s] Anly allowing a single trace entry in the trace buffer", $time);
+        $display("[%s] Anly allowing 63 trace entries in the trace buffer", $time);
         fork
             mcu_trace_buffer_force_num_entires(63); 
         join_none;
@@ -44,9 +44,13 @@ task smoke_test_mcu_trace_buffer();
 
     halt_mcu_core(40000);
 
+    // Write to RO registers remove coverage gap
+    bfm_axi_write_single(`SOC_MCI_TOP_MCU_TRACE_BUFFER_CSR_STATUS, $random(), $random());
+    bfm_axi_write_single(`SOC_MCI_TOP_MCU_TRACE_BUFFER_CSR_CONFIG, $random(), $random());
+    bfm_axi_write_single(`SOC_MCI_TOP_MCU_TRACE_BUFFER_CSR_DATA, $random(), $random());
+    bfm_axi_write_single(`SOC_MCI_TOP_MCU_TRACE_BUFFER_CSR_WRITE_PTR, $random(), $random());
+
     bfm_axi_read_check(`SOC_MCI_TOP_MCU_TRACE_BUFFER_CSR_CONFIG, $random(), 32'd256);
-
-
 
     if($test$plusargs("MCU_TRACE_BUFFER_ONLY_ONE_ENTRY")) begin
         bfm_axi_read_check(`SOC_MCI_TOP_MCU_TRACE_BUFFER_CSR_WRITE_PTR, $random(), 32'h4);
@@ -63,6 +67,10 @@ task smoke_test_mcu_trace_buffer();
 
     check_mcu_trace_buffer();
 
+    // Read READ_PTR register, remove coverage gap
+    bfm_axi_read_check(`SOC_MCI_TOP_MCU_TRACE_BUFFER_CSR_READ_PTR, $random(), 32'hff);
+    bfm_axi_write_single(`SOC_MCI_TOP_MCU_TRACE_BUFFER_CSR_READ_PTR, $random(), 32'h0);
+    bfm_axi_read_check(`SOC_MCI_TOP_MCU_TRACE_BUFFER_CSR_READ_PTR, $random(), 32'h0);
 
     end_test_successful_req();
 
