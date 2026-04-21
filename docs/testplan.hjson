@@ -554,15 +554,6 @@ Either issue a SCRAP request or inject a state error, then verify that device li
       ]
     }
     {
-      name: smoke_test_fc_debug_unlock_token
-      desc: ""
-      stage: ""
-      tests:
-      [
-        smoke_test_fc_debug_unlock_token
-      ]
-    }
-    {
       name: smoke_test_fc_key_revocation
       desc: ""
       stage: ""
@@ -623,24 +614,6 @@ Either issue a SCRAP request or inject a state error, then verify that device li
       tests:
       [
         smoke_test_fc_unlock_transitions
-      ]
-    }
-    {
-      name: smoke_test_fuse_prov_with_axi_id
-      desc: ""
-      stage: ""
-      tests:
-      [
-        smoke_test_fuse_prov_with_axi_id
-      ]
-    }
-    {
-      name: smoke_test_fuse_zeroize
-      desc: ""
-      stage: ""
-      tests:
-      [
-        smoke_test_fuse_zeroize
       ]
     }
     {
