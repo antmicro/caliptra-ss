@@ -41,6 +41,7 @@ void main (void) {
     uint32_t i3c_reg_data;
     uint32_t image_size, it;
     int err_count = 0;
+    uint32_t step, next_log;
 
     // Initialize the printf library
     VPRINTF(LOW, "=== MCU boot.. started == \n");
@@ -115,10 +116,11 @@ void main (void) {
     lsu_write_32(SOC_I3CCSR_I3C_EC_SECFWRECOVERYIF_INDIRECT_FIFO_CTRL_1, i3c_reg_data);
     VPRINTF(LOW, "I3C core indirect FIFO control register 1 is set to %x\n", image_size);
 
+    step = image_size / 100;
+    next_log = step;
     //-- writing INDIRECT_FIFO_DATA Register
     for (it = 0; it < image_size; ++it) {
         i3c_reg_data = lsu_read_32(SOC_I3CCSR_I3C_EC_SECFWRECOVERYIF_INDIRECT_FIFO_STATUS_0);
-        VPRINTF(LOW, "I3C core indirect FIFO status %x\n", i3c_reg_data);
         while ((i3c_reg_data & I3CCSR_I3C_EC_SECFWRECOVERYIF_INDIRECT_FIFO_STATUS_0_FULL_MASK) != 0) {
             i3c_reg_data = lsu_read_32(SOC_I3CCSR_I3C_EC_SECFWRECOVERYIF_INDIRECT_FIFO_STATUS_0);
             VPRINTF(LOW, "I3C core indirect FIFO status %x\n", i3c_reg_data);
@@ -126,7 +128,13 @@ void main (void) {
         }
         i3c_reg_data = lsu_read_32(0x10000004 + 4*it);
         lsu_write_32(SOC_I3CCSR_I3C_EC_TTI_TX_DATA_PORT, i3c_reg_data);
+        if (it+1 == next_log) {
+            VPRINTF(LOW, "Sent %d bytes out of %d\n", it+1, image_size);
+            next_log += step;
+        }
+        mcu_sleep(50);
     }
+    VPRINTF(LOW, "Sent %d bytes out of %d\n", image_size, image_size);
 
     //-- writing RECOVERY_CTRL Register
     i3c_reg_data = 0x00000F00;
