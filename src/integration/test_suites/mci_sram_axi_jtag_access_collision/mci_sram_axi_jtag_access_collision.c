@@ -28,6 +28,7 @@
 #include "soc_ifc.h"
 #include "mci.h"
 #include "caliptra_ss_lib.h"
+#include "lc_ctrl.h"
 
 volatile char* stdout = (char *)SOC_MCI_TOP_MCI_REG_DEBUG_OUT;
 #ifdef CPT_VERBOSITY
@@ -36,32 +37,17 @@ volatile char* stdout = (char *)SOC_MCI_TOP_MCI_REG_DEBUG_OUT;
     enum printf_verbosity verbosity_g = LOW;
 #endif
 
-void nmi_handler(void);
-
-void nmi_handler(void) {
-    VPRINTF(LOW, "*** Entering NMI Handler ***\n");
-
-    uint32_t fatal = lsu_read_32(SOC_MCI_TOP_MCI_REG_HW_ERROR_FATAL);
-    if (!(fatal & MCI_REG_INTERNAL_HW_ERROR_FATAL_MASK_MASK_MCU_SRAM_DMI_AXI_COLLISION_MASK)) {
-        handle_error("Unexpected NMI: HW_ERROR_FATAL=0x%08x, expected MCU_SRAM_DMI_AXI_COLLISION\n", fatal);
-    }
-
-    // Clear the fatal error.
-    lsu_write_32(SOC_MCI_TOP_MCI_REG_HW_ERROR_FATAL, MCI_REG_INTERNAL_HW_ERROR_FATAL_MASK_MASK_MCU_SRAM_DMI_AXI_COLLISION_MASK);
-    if (lsu_read_32(SOC_MCI_TOP_MCI_REG_HW_ERROR_FATAL) & MCI_REG_INTERNAL_HW_ERROR_FATAL_MASK_MASK_MCU_SRAM_DMI_AXI_COLLISION_MASK) {
-        handle_error("Unable to clear MCU SRAM DMI AXI COLLISION fatal error\n");
-    }
-    SEND_STDOUT_CTRL(CMD_MCI_SRAM_DMI_ACCESS_DIS);
-
-    VPRINTF(LOW, "INFO: MCU SRAM DMI AXI COLLISION error raised and cleared as expected\n");
-    SEND_STDOUT_CTRL(TB_CMD_TEST_PASS);
-}
-
 void main(void) {
+    uint32_t cptra_boot_go, fatal;
     VPRINTF(LOW, "=================\nMCU mci_sram_axi_jtag_access_collision\n=================\n\n");
+    mcu_cptra_init_d();
 
-    // Register NMI handler so the CPU can catch the fatal ECC error.
-    lsu_write_32(SOC_MCI_TOP_MCI_REG_MCU_NMI_VECTOR, (uint32_t)(nmi_handler));
+    lcc_initialization();
+    transition_state(TEST_UNLOCKED0, raw_unlock_token[0], raw_unlock_token[1], raw_unlock_token[2], raw_unlock_token[3], 1);
+    reset_fc_lcc_rtl();
+
+    // Wait for the SRAM to be unlocked
+    while(!(lsu_read_32(SOC_SOC_IFC_REG_CPTRA_FLOW_STATUS) & 0x1));
 
     // Unmask the AXI COLLISION uncorrectable fatal interrupt.
     uint32_t mask = lsu_read_32(SOC_MCI_TOP_MCI_REG_INTERNAL_HW_ERROR_FATAL_MASK);
@@ -73,13 +59,27 @@ void main(void) {
 
     // Issue a byte write to the MCU SRAM address.
     VPRINTF(LOW, "INFO: issuing access to trigger AXI-DMI collision error\n");
-    *((volatile uint8_t*)(uintptr_t)SOC_MCI_TOP_MCU_SRAM_BASE_ADDR) = 0xAA;
+    *((volatile uint32_t*)(uintptr_t)SOC_MCI_TOP_MCU_SRAM_BASE_ADDR) = 0xAA;
 
     // Wait for the interrupt to propagate
     for (uint8_t ii = 0; ii < 160; ii++) {
         __asm__ volatile ("nop"); // Sleep loop as "nop"
     }
 
-    handle_error("Test did not receive expected NMI for MCU SRAM AXI-DMI collision\n");
+    SEND_STDOUT_CTRL(CMD_MCI_SRAM_DMI_ACCESS_DIS);
+    fatal = lsu_read_32(SOC_MCI_TOP_MCI_REG_HW_ERROR_FATAL);
+    if (!(fatal & MCI_REG_HW_ERROR_FATAL_MCU_SRAM_DMI_AXI_COLLISION_MASK)) {
+        VPRINTF(LOW, "Unexpected HW_ERROR_FATAL=0x%08x, expected MCU_SRAM_DMI_AXI_COLLISION\n", fatal);
+        SEND_STDOUT_CTRL(TB_CMD_TEST_FAIL);
+    }
+
+    // Clear the fatal error.
+    lsu_write_32(SOC_MCI_TOP_MCI_REG_HW_ERROR_FATAL, MCI_REG_HW_ERROR_FATAL_MCU_SRAM_DMI_AXI_COLLISION_MASK);
+    if (lsu_read_32(SOC_MCI_TOP_MCI_REG_HW_ERROR_FATAL) & MCI_REG_HW_ERROR_FATAL_MCU_SRAM_DMI_AXI_COLLISION_MASK) {
+        VPRINTF(LOW, "Unable to clear MCU SRAM DMI AXI COLLISION fatal error\n");
+        SEND_STDOUT_CTRL(TB_CMD_TEST_FAIL);
+    }
+    VPRINTF(LOW, "INFO: MCU SRAM DMI AXI COLLISION error raised and cleared as expected\n");
+    SEND_STDOUT_CTRL(TB_CMD_TEST_PASS);
 }
 
