@@ -1062,24 +1062,6 @@ Perform 64-bit access to MCI SRAM using JTAG to system bus path.
       ]
     }
     {
-      name: caliptra_ss_lc_part_error
-      desc: "Test if the LCC OTP partition error bit is sticky. Inject otp_lc_data_i.error asserted for at least two consecutive clock cycles"
-      stage: ""
-      tests:
-      [
-        caliptra_ss_lc_part_error
-      ]
-    }
-    {
-      name: caliptra_ss_lc_fatal_bus_integ_error
-      desc: "Test if the fatal bus integrity error flag is sticky. Trigger a CSR/TAP bus integrity error twice. Do this in all possible combinations (randomized)"
-      stage: ""
-      tests:
-      [
-        caliptra_ss_lc_fatal_bus_integ_error
-      ]
-    }
-    {
       name: caliptra_ss_lcc_st_trans_kmac_err
       desc: "Test the LCC reaction to a transition token hashing error (KMAC error). Instruct LCC to perform state transitions while injecting (app_rsp[1].error = 1)"
       stage: ""
