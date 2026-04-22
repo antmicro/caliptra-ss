@@ -34,7 +34,7 @@ volatile int rst_count  = 0;
 #endif
 
 void main(void) {
-    
+
     rst_count++;
     VPRINTF(LOW, "----------------\nrst count = %d\n----------------\n", rst_count);
 
@@ -61,35 +61,27 @@ void main(void) {
 
         for (int i = 0; i < num_groups; i++) {
             mci_register_group_t group = err_intr_groups[i];
-                
+
             // Write random values to all PK Hash registers
-            if (group == REG_GROUP_INTERRUPT_GLOBAL_STATUS_RO){
-                continue;
-            } else {
-                write_random_to_register_group_and_track(group, &g_expected_data_dict);
-            }
-                
+            write_random_to_register_group_and_track(group, &g_expected_data_dict);
+
             // Read registers and verify data matches
             error_count += read_register_group_and_verify(group, &g_expected_data_dict, false, COLD_RESET);
         }
 
         // Lock registers with SS_CONFIG_DONE_STICKY and SS_CONFIG_DONE registers by writing 0x1 to them
-        write_to_register_group_and_track(REG_GROUP_SS, 0x1, &g_expected_data_dict); 
+        write_to_register_group_and_track(REG_GROUP_SS, 0x1, &g_expected_data_dict);
 
-        read_register_group_and_verify(REG_GROUP_SS, &g_expected_data_dict, false, COLD_RESET); 
+        read_register_group_and_verify(REG_GROUP_SS, &g_expected_data_dict, false, COLD_RESET);
 
         // Loop through register groups and write/read random values
         // Registers that are sticky, new value should not be written
         for (int i = 0; i < num_groups; i++) {
             mci_register_group_t group = err_intr_groups[i];
-                
+
             // Write random values to all interrupt registers
-            if (group == REG_GROUP_INTERRUPT_GLOBAL_STATUS_RO){
-                continue;
-            } else {
-                write_random_to_register_group_and_track(group, &g_expected_data_dict);
-            }
-                
+            write_random_to_register_group_and_track(group, &g_expected_data_dict);
+
             // Read registers and verify data matches
             error_count += read_register_group_and_verify(group, &g_expected_data_dict, false, COLD_RESET);
 
@@ -106,17 +98,13 @@ void main(void) {
         // Read all registers, expect register values to be retained for sticky registers
         for (int i = 0; i < num_groups; i++) {
             mci_register_group_t group = err_intr_groups[i];
-                
+
             // Read registers and verify data matches
             error_count += read_register_group_and_verify(group, &g_expected_data_dict, true, WARM_RESET);
 
             // Write random values to all interrupt registers
-            if (group == REG_GROUP_INTERRUPT_GLOBAL_STATUS_RO){
-                continue;
-            } else {
-                write_random_to_register_group_and_track(group, &g_expected_data_dict);
-            }
-                
+            write_random_to_register_group_and_track(group, &g_expected_data_dict);
+
             // Read registers and verify data matches
             error_count += read_register_group_and_verify(group, &g_expected_data_dict, false, WARM_RESET);
         }
@@ -132,13 +120,13 @@ void main(void) {
         // Read all registers, expect register values to be reset
         for (int i = 0; i < num_groups; i++) {
             mci_register_group_t group = err_intr_groups[i];
-                
+
             // Read registers and verify data matches
             error_count += read_register_group_and_verify(group, &g_expected_data_dict, true, COLD_RESET);
 
         }
     }
- 
+
     VPRINTF(LOW, "\nMCI Err/Interrupt Register Access Tests Completed\n");
 
     for (uint8_t ii = 0; ii < 160; ii++) {

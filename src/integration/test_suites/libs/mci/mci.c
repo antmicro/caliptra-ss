@@ -52,7 +52,7 @@ uint32_t get_mcu_sram_execution_region_end() {
     uint32_t fw_exec_region;
 
     fw_exec_region = lsu_read_32(SOC_MCI_TOP_MCI_REG_FW_SRAM_EXEC_REGION_SIZE) + 1; // BASE 0 so add 1 for any calculations
-    
+
     return get_mcu_sram_execution_region_start() + (fw_exec_region * 4 * 1024) -1;
 
 }
@@ -91,7 +91,7 @@ static register_mask_dict_t g_mask_dict;
 
 /**
  * Read a 32-bit MCI register value
- * 
+ *
  * @param reg_addr Register address
  * @return The register value
  */
@@ -101,7 +101,7 @@ uint32_t mci_reg_read(uint32_t reg_addr) {
 
 /**
  * Write a 32-bit value to an MCI register
- * 
+ *
  * @param reg_addr Register address
  * @param value Value to write
  */
@@ -137,7 +137,7 @@ const mci_register_info_t register_groups[][MAX_REGISTERS_PER_GROUP] = {
         { 0, NULL, NULL, REG_NOT_STICKY, false }  // End marker
     },
 
-  
+
     // REG_GROUP_CAPABILITIES
     {
         { SOC_MCI_TOP_MCI_REG_HW_CAPABILITIES, "HW_CAPABILITIES", "Hardware Capabilities", REG_NOT_STICKY, false },
@@ -145,7 +145,7 @@ const mci_register_info_t register_groups[][MAX_REGISTERS_PER_GROUP] = {
         { SOC_MCI_TOP_MCI_REG_CAP_LOCK, "CAP_LOCK", "Capability Lock", REG_NOT_STICKY, false },
         { SOC_MCI_TOP_MCI_REG_FW_REV_ID_0, "FW_REV_ID_0", "Firmware Revision ID 0", REG_NOT_STICKY, false },
         { SOC_MCI_TOP_MCI_REG_FW_REV_ID_1, "FW_REV_ID_1", "Firmware Revision ID 1", REG_NOT_STICKY, false },
-        { 0, NULL, NULL, REG_NOT_STICKY, false }  // End marker  
+        { 0, NULL, NULL, REG_NOT_STICKY, false }  // End marker
     },
 
     // REG_GROUP_CAPABILITIES_RO
@@ -163,7 +163,7 @@ const mci_register_info_t register_groups[][MAX_REGISTERS_PER_GROUP] = {
         { SOC_MCI_TOP_MCI_REG_MCI_SOC_CONFIG_AXI_USER, "MCI_SOC_CONFIG_AXI_USER", "MCI SOC Config AXI User", REG_NOT_STICKY, false },
         { 0, NULL, NULL, REG_NOT_STICKY, false }  // End marker
     },
-    
+
     // REG_GROUP_STATUS
     {
         { SOC_MCI_TOP_MCI_REG_FW_FLOW_STATUS, "FW_FLOW_STATUS", "Firmware Flow Status", REG_NOT_STICKY, false },
@@ -192,7 +192,7 @@ const mci_register_info_t register_groups[][MAX_REGISTERS_PER_GROUP] = {
         { SOC_MCI_TOP_MCI_REG_AGG_ERROR_NON_FATAL, "AGG_ERROR_NON_FATAL", "Aggregated Non-Ftl Err", REG_STICKY, false },
         { 0, NULL, NULL, REG_NOT_STICKY, false }  // End marker
     },
-    
+
     // REG_GROUP_ERROR
     {
         { SOC_MCI_TOP_MCI_REG_FW_ERROR_FATAL, "FW_ERROR_FATAL", "Firmware Ftl Err", REG_STICKY, false },
@@ -209,7 +209,7 @@ const mci_register_info_t register_groups[][MAX_REGISTERS_PER_GROUP] = {
         { SOC_MCI_TOP_MCI_REG_FW_EXTENDED_ERROR_INFO_7, "FW_EXTENDED_ERROR_INFO_7", "Firmware Extended ErrInfo 7", REG_STICKY, false },
         { 0, NULL, NULL, REG_NOT_STICKY, false }  // End marker
     },
-    
+
     // REG_GROUP_INTERNAL_ERROR_MASK
     {
         { SOC_MCI_TOP_MCI_REG_INTERNAL_HW_ERROR_FATAL_MASK, "INTERNAL_HW_ERROR_FATAL_MASK", "Internal Hardware ErrFtl Mask", REG_STICKY, false },
@@ -220,7 +220,7 @@ const mci_register_info_t register_groups[][MAX_REGISTERS_PER_GROUP] = {
         { SOC_MCI_TOP_MCI_REG_INTERNAL_FW_ERROR_NON_FATAL_MASK, "INTERNAL_FW_ERROR_NON_FATAL_MASK", "Internal Firmware ErrNon-Ftl Mask", REG_STICKY, false },
         { 0, NULL, NULL, REG_NOT_STICKY, false }  // End marker
     },
-    
+
     // REG_GROUP_WATCHDOG
     {
         { SOC_MCI_TOP_MCI_REG_WDT_TIMER1_EN, "WDT_TIMER1_EN", "Watchdog Timer 1 Enable", REG_NOT_STICKY, false },
@@ -248,7 +248,7 @@ const mci_register_info_t register_groups[][MAX_REGISTERS_PER_GROUP] = {
         { SOC_MCI_TOP_MCI_REG_MCU_RV_MTIME_L, "MCU_RV_MTIME_L", "MCU RiscV MTime Low", REG_STICKY, false },
         { SOC_MCI_TOP_MCI_REG_MCU_RV_MTIME_H, "MCU_RV_MTIME_H", "MCU RiscV MTime High", REG_STICKY, false },
         { SOC_MCI_TOP_MCI_REG_MCU_RV_MTIMECMP_L, "MCU_RV_MTIMECMP_L", "MCU RiscV MTimeCmp Low", REG_STICKY, false },
-        { SOC_MCI_TOP_MCI_REG_MCU_RV_MTIMECMP_H, "MCU_RV_MTIMECMP_H", "MCU RiscV MTimeCmp High", REG_STICKY, false }, 
+        { SOC_MCI_TOP_MCI_REG_MCU_RV_MTIMECMP_H, "MCU_RV_MTIMECMP_H", "MCU RiscV MTimeCmp High", REG_STICKY, false },
         { 0, NULL, NULL, REG_NOT_STICKY, false }  // End marker
     },
 
@@ -258,16 +258,16 @@ const mci_register_info_t register_groups[][MAX_REGISTERS_PER_GROUP] = {
         { SOC_MCI_TOP_MCI_REG_MCI_BOOTFSM_GO, "MCI_BOOTFSM_GO", "MCI BootFSM Go", REG_NOT_STICKY, false },
         { SOC_MCI_TOP_MCI_REG_CPTRA_BOOT_GO, "CPTRA_BOOT_GO", "Caliptra Boot Go", REG_NOT_STICKY, false },
         { 0, NULL, NULL, REG_NOT_STICKY, false }  // End marker
-    }, 
+    },
 
     // REG_GROUP_CONTROL_RO (RW Tap Access in Debug mode)
     {
-        { SOC_MCI_TOP_MCI_REG_FW_SRAM_EXEC_REGION_SIZE, "FW_SRAM_EXEC_REGION_SIZE", "Firmware SRAM Execution Size", REG_NOT_STICKY, false },
-        { SOC_MCI_TOP_MCI_REG_MCU_NMI_VECTOR, "MCU_NMI_VECTOR", "MCI Non Maskable Interrupt Vector", REG_NOT_STICKY, false }, 
-        { SOC_MCI_TOP_MCI_REG_MCU_RESET_VECTOR, "MCU_RESET_VECTOR", "MCI Reset Vector", REG_NOT_STICKY, true }, 
+        { SOC_MCI_TOP_MCI_REG_FW_SRAM_EXEC_REGION_SIZE, "FW_SRAM_EXEC_REGION_SIZE", "Firmware SRAM Execution Size", REG_CONFIG_DONE, false },
+        { SOC_MCI_TOP_MCI_REG_MCU_NMI_VECTOR, "MCU_NMI_VECTOR", "MCI Non Maskable Interrupt Vector", REG_CONFIG_DONE, false },
+        { SOC_MCI_TOP_MCI_REG_MCU_RESET_VECTOR, "MCU_RESET_VECTOR", "MCI Reset Vector", REG_CONFIG_DONE, true },
         { 0, NULL, NULL, REG_NOT_STICKY, false }  // End marker
     },
-    
+
     // REG_GROUP_MCI_MBOX0
     {
         { SOC_MCI_TOP_MCI_REG_MBOX0_VALID_AXI_USER_0, "MBOX0_VALID_AXI_USER_0", "Mailbox 0 Valid AXI User 0", REG_NOT_STICKY, true },
@@ -276,7 +276,7 @@ const mci_register_info_t register_groups[][MAX_REGISTERS_PER_GROUP] = {
         { SOC_MCI_TOP_MCI_REG_MBOX0_VALID_AXI_USER_3, "MBOX0_VALID_AXI_USER_3", "Mailbox 0 Valid AXI User 3", REG_NOT_STICKY, true },
         { SOC_MCI_TOP_MCI_REG_MBOX0_VALID_AXI_USER_4, "MBOX0_VALID_AXI_USER_4", "Mailbox 0 Valid AXI User 4", REG_NOT_STICKY, true },
         { 0, NULL, NULL, REG_NOT_STICKY, false }  // End marker
-    }, 
+    },
 
     // REG_GROUP_MCI_MBOX0_RW1S
     {
@@ -307,7 +307,7 @@ const mci_register_info_t register_groups[][MAX_REGISTERS_PER_GROUP] = {
         { SOC_MCI_TOP_MCU_MBOX0_CSR_MBOX_HW_STATUS, "MBOX0_HW_STATUS", "Mailbox 0 Hardware Status", REG_NOT_STICKY, false },
         { 0, NULL, NULL, REG_NOT_STICKY, false }  // End marker
     },
-    
+
     // REG_GROUP_MCI_MBOX1
     {
         { SOC_MCI_TOP_MCI_REG_MBOX1_VALID_AXI_USER_0, "MBOX1_VALID_AXI_USER_0", "Mailbox 1 Valid AXI User 0", REG_NOT_STICKY, true },
@@ -366,32 +366,32 @@ const mci_register_info_t register_groups[][MAX_REGISTERS_PER_GROUP] = {
     },
 
     // REG_GROUP_GENERIC_WIRES
-    { 
+    {
         { SOC_MCI_TOP_MCI_REG_GENERIC_OUTPUT_WIRES_0, "GENERIC_OUTPUT_WIRES_0", "Generic Output Wires 0", REG_NOT_STICKY, false },
         { SOC_MCI_TOP_MCI_REG_GENERIC_OUTPUT_WIRES_1, "GENERIC_OUTPUT_WIRES_1", "Generic Output Wires 1", REG_NOT_STICKY, false },
         { 0, NULL, NULL, REG_NOT_STICKY, false }  // End marker
     },
 
     // REG_GROUP_GENERIC_WIRES_RO
-    { 
+    {
         { SOC_MCI_TOP_MCI_REG_GENERIC_INPUT_WIRES_0, "GENERIC_INPUT_WIRES_0", "Generic Input Wires 0", REG_NOT_STICKY, false },
         { SOC_MCI_TOP_MCI_REG_GENERIC_INPUT_WIRES_1, "GENERIC_INPUT_WIRES_1", "Generic Input Wires 1", REG_NOT_STICKY, false },
         { 0, NULL, NULL, REG_NOT_STICKY, false }  // End marker
     },
 
     // REG_GROUP_SS
-    { 
+    {
         { SOC_MCI_TOP_MCI_REG_SS_CONFIG_DONE_STICKY, "SS_DCONFIG_DONE_STICKY", "Subsystem Config done sticky", REG_STICKY, false },
         { SOC_MCI_TOP_MCI_REG_SS_CONFIG_DONE, "SS_CONFIG_DONE", "Subsystem Config Done", REG_NOT_STICKY, false },
         { 0, NULL, NULL, REG_NOT_STICKY, false }  // End marker
     },
 
     // REG_GROUP_SS_RO
-    { 
+    {
         { SOC_MCI_TOP_MCI_REG_SS_DEBUG_INTENT, "SS_DEBUG_INTENT", "Subsystem Debug Intent", REG_STICKY, false },
         { 0, NULL, NULL, REG_NOT_STICKY, false }  // End marker
     },
-    
+
     // REG_GROUP_DEBUG_UNLOCK_PK_HASH_0
     {
         { SOC_MCI_TOP_MCI_REG_PROD_DEBUG_UNLOCK_PK_HASH_REG_0_0, "PROD_DEBUG_UNLOCK_PK_HASH_REG_0_0", "Debug Unlock PK Hash 0_0", REG_CONFIG_DONE_STICKY, false },
@@ -527,7 +527,7 @@ const mci_register_info_t register_groups[][MAX_REGISTERS_PER_GROUP] = {
         { SOC_MCI_TOP_MCI_REG_PROD_DEBUG_UNLOCK_PK_HASH_REG_7_11, "PROD_DEBUG_UNLOCK_PK_HASH_REG_7_11", "Debug Unlock PK Hash 7_11", REG_CONFIG_DONE_STICKY, false },
         { 0, NULL, NULL, REG_NOT_STICKY, false }  // End marker
     },
-        
+
     // REG_GROUP_INTERRUPT_EN
     {
         { SOC_MCI_TOP_MCI_REG_INTR_BLOCK_RF_GLOBAL_INTR_EN_R, "GLOBAL_INTR_EN_R", "Global Intrpt Enable", REG_NOT_STICKY, false },
@@ -681,15 +681,15 @@ const char* get_group_name(mci_register_group_t group) {
 /* Get the number of registers in a group */
 int get_register_count(mci_register_group_t group) {
     int count = 0;
-    
+
     if (group >= REG_GROUP_COUNT) {
         return 0;
     }
-    
+
     while (register_groups[group][count].address != 0) {
         count++;
     }
-    
+
     return count;
 }
 
@@ -698,35 +698,35 @@ const mci_register_info_t* get_register_info(mci_register_group_t group, int ind
     if (group >= REG_GROUP_COUNT) {
         return NULL;
     }
-    
+
     if (index < 0 || index >= MAX_REGISTERS_PER_GROUP) {
         return NULL;
     }
-    
+
     if (register_groups[group][index].address == 0) {
         return NULL;
     }
-    
+
     return &register_groups[group][index];
 }
 
 /**
  * Function to find a register by address (across all groups)
- * 
+ *
  * @param address Register address
  * @param group_index Pointer to store group index
  * @param reg_index Pointer to store register index
  * @return Register info pointer, or NULL if not found
  */
-const mci_register_info_t* find_register_by_address(uint32_t address, 
-                                                   mci_register_group_t *group_index, 
+const mci_register_info_t* find_register_by_address(uint32_t address,
+                                                   mci_register_group_t *group_index,
                                                    int *reg_index) {
     for (int group = 0; group < REG_GROUP_COUNT; group++) {
         int count = get_register_count((mci_register_group_t)group);
-        
+
         for (int i = 0; i < count; i++) {
             const mci_register_info_t *reg = get_register_info((mci_register_group_t)group, i);
-            
+
             if (reg && reg->address == address) {
                 if (group_index) *group_index = (mci_register_group_t)group;
                 if (reg_index) *reg_index = i;
@@ -734,14 +734,14 @@ const mci_register_info_t* find_register_by_address(uint32_t address,
             }
         }
     }
-    
+
     return NULL;
 
 }
 
 /**
  * Function to calculate the total number of registers across all groups
- * 
+ *
  * @return Total number of registers
  */
 int get_total_register_count(void) {
@@ -754,7 +754,7 @@ int get_total_register_count(void) {
 
 /**
  * Initialize the register expected data dictionary
- * 
+ *
  * @param dict Pointer to dictionary to initialize
  */
 void init_reg_exp_dict(mci_reg_exp_dict_t *dict) {
@@ -813,16 +813,16 @@ void reset_exp_reg_data(mci_reg_exp_dict_t *dict, reset_type_t reset_type, mci_r
 
     for (int i = 0; i < dict->count; i++) {
         value = 0;
-        reg_info = find_register_by_address(dict->entries[i].address, 
-                                           &group_index, 
+        reg_info = find_register_by_address(dict->entries[i].address,
+                                           &group_index,
                                            &reg_index);
-        
+
         if (reg_info) {
             VPRINTF(MEDIUM, "Found reg in dictionary\n");
 
             // Check if group is in the list
             bool group_in_list = (group_mask & (1 << group_index)) != 0;
-            
+
             // Skip if the register group is not in the list
             if (!group_in_list) {
                 continue;
@@ -846,8 +846,8 @@ void reset_exp_reg_data(mci_reg_exp_dict_t *dict, reset_type_t reset_type, mci_r
                     }
                 } else {
                     dict->entries[i].expected_data = 0;
-                }   
-            } 
+                }
+            }
             // For warm reset, only clear non-sticky registers
             else if (reset_type == WARM_RESET && reg_info->is_sticky == REG_NOT_STICKY) {
                 if (group_index == REG_GROUP_INTERRUPT_GLOBAL_STATUS_RO) {
@@ -877,18 +877,18 @@ void reset_exp_reg_data(mci_reg_exp_dict_t *dict, reset_type_t reset_type, mci_r
                         }
                         dict->entries[i].expected_data = value;
                     }
-                } else {      
+                } else {
                     dict->entries[i].expected_data = 0;
                 }
             }
-        } 
+        }
     }
 }
 */
 
 /**
  * Add or update an entry in the register expected data dictionary
- * 
+ *
  * @param dict Pointer to dictionary
  * @param address Register address (key)
  * @param name Register name
@@ -928,7 +928,7 @@ void reset_exp_reg_data(mci_reg_exp_dict_t *dict, reset_type_t reset_type, mci_r
 
     reg_info = find_register_by_address(address, &group_index, &reg_index);
     VPRINTF(MEDIUM, "Register Name = %s\n", reg_info->name);
-    
+
     if (group_index == REG_GROUP_ERROR_RW1C || group_index == REG_GROUP_INTERRUPT_STATUS_RW1C) {
         err_data = mci_reg_read(address);
         if (reg_write) {
@@ -941,7 +941,7 @@ void reset_exp_reg_data(mci_reg_exp_dict_t *dict, reset_type_t reset_type, mci_r
         intr_sts_reg = get_register_info(REG_GROUP_INTERRUPT_STATUS_RW1C, reg_index);
         read_intr_sts = mci_reg_read(intr_sts_reg->address) | (value & mask);
         intr_sts_mask = get_register_mask(intr_sts_reg->address);
-    
+
         if (reg_index == 0 || reg_index == 1) {
             intr_glb_sts_reg = get_register_info(REG_GROUP_INTERRUPT_GLOBAL_STATUS_RO, 0);
             if (reg_index == 0) {
@@ -978,9 +978,12 @@ void reset_exp_reg_data(mci_reg_exp_dict_t *dict, reset_type_t reset_type, mci_r
     }
 
     bool force_update = (address == SOC_MCI_TOP_MCI_REG_SS_CONFIG_DONE_STICKY);
-    
+
     // Standard update condition
-    if (ss_config_done_sticky == 0 || reg_info->is_sticky != REG_CONFIG_DONE_STICKY || force_update || update_axi_user) {
+    if ((reg_info->is_sticky == REG_CONFIG_DONE_STICKY && ss_config_done_sticky == 0) ||
+        (reg_info->is_sticky == REG_CONFIG_DONE && ss_config_done == 0) ||
+        (reg_info->is_sticky != REG_CONFIG_DONE_STICKY && reg_info->is_sticky != REG_CONFIG_DONE) ||
+        force_update || update_axi_user) {
         update_exp_data = true;
     }
 
@@ -996,7 +999,7 @@ void reset_exp_reg_data(mci_reg_exp_dict_t *dict, reset_type_t reset_type, mci_r
 
     bool pulse_timer_reg = (address == SOC_MCI_TOP_MCI_REG_WDT_TIMER1_CTRL || address == SOC_MCI_TOP_MCI_REG_WDT_TIMER2_CTRL);
     bool pulse_intr_reg = (group_index == REG_GROUP_INTERRUPT_TRIGGER_PULSE_RW1S);
-    
+
     // First check if entry already exists
     for (int i = 0; i < dict->count; i++) {
         if (dict->entries[i].address == address) {
@@ -1017,14 +1020,14 @@ void reset_exp_reg_data(mci_reg_exp_dict_t *dict, reset_type_t reset_type, mci_r
                     set_reg_exp_data(dict, intr_sts_reg->address, read_intr_sts, intr_sts_mask, false);
                     // Update global interrupt status register
                     set_reg_exp_data(dict, intr_glb_sts_reg->address, (1U << (glb_sts_mask - 1)), glb_sts_mask, false);
-                } 
+                }
             }
             // If sticky bit is set, retain previous expected value (do nothing)
-            
+
             return 0; // Return after handling existing entry
         }
     }
-    
+
     // Add new entry if space available
     if (dict->count < MAX_REGISTER_ENTRIES) {
         dict->entries[dict->count].address = address;
@@ -1046,13 +1049,13 @@ void reset_exp_reg_data(mci_reg_exp_dict_t *dict, reset_type_t reset_type, mci_r
         dict->count++;
         return 0;
     }
-    
+
     return -1; // Dictionary full
 }
 
 /**
  * Get expected data for a register
- * 
+ *
  * @param dict Pointer to dictionary
  * @param address Register address to lookup
  * @param value Pointer to store expected value
@@ -1067,7 +1070,7 @@ int get_reg_exp_data(mci_reg_exp_dict_t *dict, uint32_t address, uint32_t *value
             return 0;
         }
     }
-    
+
     return -1; // Not found
 }
 
@@ -1078,7 +1081,7 @@ uint32_t get_known_register_value(uint32_t reg_addr) {
     switch (reg_addr) {
         case SOC_MCI_TOP_MCI_REG_HW_REV_ID:
             return 0x00002002;  // SS Version 2.0.2
-            
+
         default:
             return 0x00000000;
     }
@@ -1086,7 +1089,7 @@ uint32_t get_known_register_value(uint32_t reg_addr) {
 
 /**
  * Convert a register address to a bitmap index and bit position
- * 
+ *
  * @param reg_addr Register address
  * @param word_index Pointer to store the word index in the bitmap
  * @param bit_position Pointer to store the bit position in the word
@@ -1095,32 +1098,32 @@ static void address_to_bitmap_position(uint32_t reg_addr, uint32_t *word_index, 
     // Use the lower bits of the address as a simple hash
     // This works because register addresses are typically aligned and spaced apart
     uint32_t hash_value = reg_addr & ((1 << ADDRESS_BITS_FOR_INDEXING) - 1);
-    
+
     *word_index = hash_value / 32;
     *bit_position = hash_value % 32;
 }
 
 /**
  * Exclude a register by its address with collision handling
- * 
+ *
  * @param reg_addr Register address to exclude
  * @return 0 on success, -1 if collision table is full
  */
 int exclude_register(uint32_t reg_addr) {
     uint32_t word_index, bit_position;
-    
+
     // Compute position in bitmap
     address_to_bitmap_position(reg_addr, &word_index, &bit_position);
-    
+
     // Set the bit in the bitmap
     excluded_registers_bitmap[word_index] |= (1UL << bit_position);
-    
+
     // Add to collision table
     if (collision_count < MAX_EXCLUDED_REGISTERS) {
         collision_table[collision_count++] = reg_addr;
         return 0;
     }
-    
+
     // Collision table is full
     printf("WARNING: Collision table full, cannot add register 0x%08x\n", reg_addr);
     return -1;
@@ -1128,16 +1131,16 @@ int exclude_register(uint32_t reg_addr) {
 
 /**
  * Check if a register is excluded with collision handling
- * 
+ *
  * @param reg_addr Register address to check
  * @return 1 if excluded, 0 otherwise
  */
 int is_register_excluded(uint32_t reg_addr) {
     uint32_t word_index, bit_position;
-    
+
     // Compute position in bitmap
     address_to_bitmap_position(reg_addr, &word_index, &bit_position);
-    
+
     // First, check the bit in the bitmap
     if (excluded_registers_bitmap[word_index] & (1UL << bit_position)) {
         // Potential match, verify in collision table to handle hash collisions
@@ -1147,7 +1150,7 @@ int is_register_excluded(uint32_t reg_addr) {
             }
         }
     }
-    
+
     return 0;  // Not excluded
 }
 
@@ -1161,13 +1164,13 @@ void init_excluded_registers(void) {
     memset(excluded_registers_bitmap, 0, sizeof(excluded_registers_bitmap));
     memset(collision_table, 0, sizeof(collision_table));
     collision_count = 0;
-    
+
     // Define the excluded registers
     //exclude_register(SOC_MCI_TOP_MCI_REG_MCI_BOOTFSM_GO);
     //exclude_register(SOC_MCI_TOP_MCI_REG_CPTRA_BOOT_GO);
     //exclude_register(SOC_MBOX_CSR_MBOX_LOCK);
     //exclude_register(SOC_MBOX_CSR_MBOX_USER);
-    
+
     // Add any other registers that should be excluded
     // exclude_register(...);
 }
@@ -1187,13 +1190,14 @@ void write_random_to_register_group_and_track(mci_register_group_t group, mci_re
         group == REG_GROUP_MCU_MBOX0_RO ||
         group == REG_GROUP_MCU_MBOX1_RO ||
         group == REG_GROUP_GENERIC_WIRES_RO ||
-        group == REG_GROUP_SS_RO) {
+        group == REG_GROUP_SS_RO ||
+        group == REG_GROUP_INTERRUPT_GLOBAL_STATUS_RO) {
             ro_reg = true;
         }
-    
+
     for (int i = 0; i < count; i++) {
         const mci_register_info_t *reg = get_register_info(group, i);
-        
+
         if (reg) {
             // Check if this register should be excluded using our efficient method
             if (!is_register_excluded(reg->address)) {
@@ -1222,20 +1226,20 @@ void write_random_to_register_group_and_track(mci_register_group_t group, mci_re
 void write_to_register_group_and_track(mci_register_group_t group, uint32_t write_data, mci_reg_exp_dict_t *dict) {
     int count = get_register_count(group);
     VPRINTF(LOW, "Writing fixed value to all %s registers (%d total):\n", get_group_name(group), count);
-    
+
     for (int i = 0; i < count; i++) {
         const mci_register_info_t *reg = get_register_info(group, i);
-        
+
         if (reg) {
             // Check if this register should be excluded using our efficient method
             if (!is_register_excluded(reg->address)) {
-                           
+
                 VPRINTF(MEDIUM, "  Writing 0x%08x to %s (0x%08x)\n", write_data, reg->name, reg->address);
                 mci_reg_write(reg->address, write_data);
-                
+
                 /* Get mask for this register */
                 uint32_t mask = get_register_mask(reg->address);
-                
+
                 // Store in dictionary
                 if (set_reg_exp_data(dict, reg->address, write_data, mask, true) != 0) {
                     VPRINTF(MEDIUM, "  WARNING: Could not store expected data for %s\n", reg->name);
@@ -1249,7 +1253,7 @@ void write_to_register_group_and_track(mci_register_group_t group, uint32_t writ
 
 /**
  * Function to read all registers in a group and verify their values against expected data
- * 
+ *
  * @param group Register group
  * @param dict Dictionary containing expected register values
  * @return Number of registers that failed verification
@@ -1278,15 +1282,16 @@ int read_register_group_and_verify(mci_register_group_t group, mci_reg_exp_dict_
         group == REG_GROUP_MCU_MBOX0_RO ||
         group == REG_GROUP_MCU_MBOX1_RO ||
         group == REG_GROUP_GENERIC_WIRES_RO ||
-        group == REG_GROUP_SS_RO) {
+        group == REG_GROUP_SS_RO ||
+        group == REG_GROUP_INTERRUPT_GLOBAL_STATUS_RO) {
             ro_reg = true;
         }
-    
+
     VPRINTF(LOW, "Reading and verifying %s registers (%d total):\n", get_group_name(group), count);
-    
+
     for (int i = 0; i < count; i++) {
         const mci_register_info_t *reg = get_register_info(group, i);
-        
+
         if (reg) {
             // Skip excluded registers with collision-aware check
             if (is_register_excluded(reg->address)) {
@@ -1297,14 +1302,14 @@ int read_register_group_and_verify(mci_register_group_t group, mci_reg_exp_dict_
 
             // Read the register value
             read_data = mci_reg_read(reg->address);
-            
+
             // Get expected data from dictionary
             if (reset) {
                 if (reset_type == COLD_RESET) {
                     if (reg->has_init_value == false && ro_reg == false) {
                         exp_data  = 0;
                         if (reg->address == SOC_MCI_TOP_MCI_REG_MCU_RV_MTIME_H || reg->address == SOC_MCI_TOP_MCI_REG_MCU_RV_MTIME_L && read_data >= exp_data) {
-                            VPRINTF(MEDIUM, "  Expect reg increment: %s (0x%08x): Read 0x%08x, Expected 0x%08x\n", reg->name, reg->address, read_data, exp_data); 
+                            VPRINTF(MEDIUM, "  Expect reg increment: %s (0x%08x): Read 0x%08x, Expected 0x%08x\n", reg->name, reg->address, read_data, exp_data);
                         } else if (read_data == exp_data) {
                             VPRINTF(MEDIUM,"  Match: %s (0x%08x): Read 0x%08x, Expected 0x%08x\n", reg->name, reg->address, read_data, exp_data);
                         } else if (reg->address == SOC_MCI_TOP_MCI_REG_INTR_BLOCK_RF_NOTIF0_INTERNAL_INTR_R) {
@@ -1337,15 +1342,63 @@ int read_register_group_and_verify(mci_register_group_t group, mci_reg_exp_dict_
                     } else if (reg->has_init_value == false && ro_reg == true) {
                         if (get_reg_exp_data(&g_expected_data_dict, reg->address, &exp_data) == 0) {
                             if (read_data == exp_data) {
-                                VPRINTF(MEDIUM,"  Match: %s (0x%08x): Read 0x%08x, Expected 0x%08x\n", 
+                                VPRINTF(MEDIUM,"  Match: %s (0x%08x): Read 0x%08x, Expected 0x%08x\n",
                                        reg->name, reg->address, read_data, exp_data);
+                            } else if (group == REG_GROUP_INTERRUPT_GLOBAL_STATUS_RO) {
+                                exp_data = 0;
+                                if (i == 0) {
+                                    // ERROR global status = ERROR status & ERROR enable
+                                    intr0_reg = get_register_info(REG_GROUP_INTERRUPT_STATUS_RW1C, 0);
+                                    intr1_reg = get_register_info(REG_GROUP_INTERRUPT_STATUS_RW1C, 1);
+                                    intr0_en_reg = get_register_info(REG_GROUP_INTERRUPT_EN, 1); // ERROR0_INTR_EN_R
+                                    intr1_en_reg = get_register_info(REG_GROUP_INTERRUPT_EN, 2); // ERROR1_INTR_EN_R
+
+                                    read_intr0_sts = mci_reg_read(intr0_reg->address);
+                                    read_intr1_sts = mci_reg_read(intr1_reg->address);
+                                    read_intr0_en = mci_reg_read(intr0_en_reg->address);
+                                    read_intr1_en = mci_reg_read(intr1_en_reg->address);
+
+                                    // Global status bit is set only if (status & enable) != 0
+                                    if ((read_intr0_sts & read_intr0_en) != 0) {
+                                        exp_data |= MCI_REG_INTR_BLOCK_RF_ERROR_GLOBAL_INTR_R_AGG_STS0_MASK;
+                                    }
+                                    if ((read_intr1_sts & read_intr1_en) != 0) {
+                                        exp_data |= MCI_REG_INTR_BLOCK_RF_ERROR_GLOBAL_INTR_R_AGG_STS1_MASK;
+                                    }
+                                } else {
+                                    // NOTIF global status = NOTIF status & NOTIF enable
+                                    intr0_reg = get_register_info(REG_GROUP_INTERRUPT_STATUS_RW1C, 2);
+                                    intr1_reg = get_register_info(REG_GROUP_INTERRUPT_STATUS_RW1C, 3);
+                                    intr0_en_reg = get_register_info(REG_GROUP_INTERRUPT_EN, 3); // NOTIF0_INTR_EN_R
+                                    intr1_en_reg = get_register_info(REG_GROUP_INTERRUPT_EN, 4); // NOTIF1_INTR_EN_R
+
+                                    read_intr0_sts = mci_reg_read(intr0_reg->address);
+                                    read_intr1_sts = mci_reg_read(intr1_reg->address);
+                                    read_intr0_en = mci_reg_read(intr0_en_reg->address);
+                                    read_intr1_en = mci_reg_read(intr1_en_reg->address);
+
+                                    // Global status bit is set only if (status & enable) != 0
+                                    if ((read_intr0_sts & read_intr0_en) != 0) {
+                                        exp_data |= MCI_REG_INTR_BLOCK_RF_NOTIF_GLOBAL_INTR_R_AGG_STS0_MASK;
+                                    }
+                                    if ((read_intr1_sts & read_intr1_en) != 0) {
+                                        exp_data |= MCI_REG_INTR_BLOCK_RF_NOTIF_GLOBAL_INTR_R_AGG_STS1_MASK;
+                                    }
+                                }
+                                if (read_data == exp_data) {
+                                    VPRINTF(MEDIUM,"  Match: %s (0x%08x): Read 0x%08x, Expected 0x%08x\n", reg->name, reg->address, read_data, exp_data);
+                                }
+                                else {
+                                    VPRINTF(LOW, "  No match: %s (0x%08x): Read 0x%08x, Expected 0x%08x\n", reg->name, reg->address, read_data, exp_data);
+                                    mismatch_count++;
+                                }
                             } else {
-                                VPRINTF(LOW, "  No match: %s (0x%08x): Read 0x%08x, Expected 0x%08x\n", 
+                                VPRINTF(LOW, "  No match: %s (0x%08x): Read 0x%08x, Expected 0x%08x\n",
                                        reg->name, reg->address, read_data, exp_data);
                                 mismatch_count++;
                             }
                         } else {
-                            VPRINTF(LOW, "  ! %s (0x%08x): Read 0x%08x, No expected data in dictionary\n", 
+                            VPRINTF(LOW, "  ! %s (0x%08x): Read 0x%08x, No expected data in dictionary\n",
                                    reg->name, reg->address, read_data);
                         }
                     } else {
@@ -1380,7 +1433,7 @@ int read_register_group_and_verify(mci_register_group_t group, mci_reg_exp_dict_
                                     } else {
                                         VPRINTF(LOW, "  No match: %s (0x%08x): Read 0x%08x, Expected 0x%08x\n", reg->name, reg->address, read_data, exp_data);
                                         mismatch_count++;
-                                    } 
+                                    }
                                 }
                             } else if (reg->address == SOC_MCI_TOP_MCI_REG_INTR_BLOCK_RF_NOTIF0_INTERNAL_INTR_R) {
                                 exp_data = MCI_REG_INTR_BLOCK_RF_NOTIF0_INTERNAL_INTR_R_NOTIF_DEBUG_LOCKED_STS_MASK; // debug_locked_en_sts is set on Warm Reset
@@ -1401,79 +1454,32 @@ int read_register_group_and_verify(mci_register_group_t group, mci_reg_exp_dict_
                             } else if (reg->address == SOC_MCI_TOP_MCI_REG_RESET_REASON) {
                                 exp_data = exp_data & ~(MCI_REG_RESET_REASON_FW_BOOT_UPD_RESET_MASK | MCI_REG_RESET_REASON_FW_HITLESS_UPD_RESET_MASK) | MCI_REG_RESET_REASON_WARM_RESET_MASK; // bits 0 & 1 are not sticky
                                 if (read_data == exp_data) {
-                                    VPRINTF(MEDIUM,"  Match: %s (0x%08x): Read 0x%08x, Expected 0x%08x\n",reg->name, reg->address, read_data, exp_data); 
+                                    VPRINTF(MEDIUM,"  Match: %s (0x%08x): Read 0x%08x, Expected 0x%08x\n",reg->name, reg->address, read_data, exp_data);
                                 } else {
                                     VPRINTF(LOW, "  No match: %s (0x%08x): Read 0x%08x, Expected 0x%08x\n", reg->name, reg->address, read_data, exp_data);
                                     mismatch_count++;
                                 }
                             } else if (read_data == exp_data) {
-                                VPRINTF(MEDIUM,"  Match: %s (0x%08x): Read 0x%08x, Expected 0x%08x\n", 
+                                VPRINTF(MEDIUM,"  Match: %s (0x%08x): Read 0x%08x, Expected 0x%08x\n",
                                        reg->name, reg->address, read_data, exp_data);
-                            } else if (read_data > exp_data && reg->address == SOC_MCI_TOP_MCI_REG_MCU_RV_MTIME_H || reg->address == SOC_MCI_TOP_MCI_REG_MCU_RV_MTIME_L) { 
-                                VPRINTF(MEDIUM, "  Expect reg increment: %s (0x%08x): Read 0x%08x, Expected 0x%08x\n", 
-                                        reg->name, reg->address, read_data, exp_data); 
+                            } else if (read_data > exp_data && reg->address == SOC_MCI_TOP_MCI_REG_MCU_RV_MTIME_H || reg->address == SOC_MCI_TOP_MCI_REG_MCU_RV_MTIME_L) {
+                                VPRINTF(MEDIUM, "  Expect reg increment: %s (0x%08x): Read 0x%08x, Expected 0x%08x\n",
+                                        reg->name, reg->address, read_data, exp_data);
                             } else {
-                                VPRINTF(LOW, "  No match: %s (0x%08x): Read 0x%08x, Expected 0x%08x\n", 
+                                VPRINTF(LOW, "  No match: %s (0x%08x): Read 0x%08x, Expected 0x%08x\n",
                                        reg->name, reg->address, read_data, exp_data);
                                 mismatch_count++;
                             }
                         } else {
-                            VPRINTF(LOW, "  ! %s (0x%08x): Read 0x%08x, No expected data in dictionary\n", 
+                            VPRINTF(LOW, "  ! %s (0x%08x): Read 0x%08x, No expected data in dictionary\n",
                                    reg->name, reg->address, read_data);
                         }
                     } else {
                         if (reg->has_init_value == false && ro_reg == false) {
                             exp_data  = 0;
-                            
+
                             if (read_data == exp_data) {
                                 VPRINTF(MEDIUM,"  Match: %s (0x%08x): Read 0x%08x, Expected 0x%08x\n", reg->name, reg->address, read_data, exp_data);
-                            } else if (group == REG_GROUP_INTERRUPT_GLOBAL_STATUS_RO) {
-                                if (i == 0) {
-                                    // ERROR global status = ERROR status & ERROR enable
-                                    intr0_reg = get_register_info(REG_GROUP_INTERRUPT_STATUS_RW1C, 0);
-                                    intr1_reg = get_register_info(REG_GROUP_INTERRUPT_STATUS_RW1C, 1);
-                                    intr0_en_reg = get_register_info(REG_GROUP_INTERRUPT_EN, 1); // ERROR0_INTR_EN_R
-                                    intr1_en_reg = get_register_info(REG_GROUP_INTERRUPT_EN, 2); // ERROR1_INTR_EN_R
-                                    
-                                    read_intr0_sts = mci_reg_read(intr0_reg->address);
-                                    read_intr1_sts = mci_reg_read(intr1_reg->address);
-                                    read_intr0_en = mci_reg_read(intr0_en_reg->address);
-                                    read_intr1_en = mci_reg_read(intr1_en_reg->address);
-                                    
-                                    // Global status bit is set only if (status & enable) != 0
-                                    if ((read_intr0_sts & read_intr0_en) != 0) {
-                                        exp_data |= MCI_REG_INTR_BLOCK_RF_ERROR_GLOBAL_INTR_R_AGG_STS0_MASK;
-                                    }
-                                    if ((read_intr1_sts & read_intr1_en) != 0) {
-                                        exp_data |= MCI_REG_INTR_BLOCK_RF_ERROR_GLOBAL_INTR_R_AGG_STS1_MASK;
-                                    }
-                                } else {
-                                    // NOTIF global status = NOTIF status & NOTIF enable
-                                    intr0_reg = get_register_info(REG_GROUP_INTERRUPT_STATUS_RW1C, 2);
-                                    intr1_reg = get_register_info(REG_GROUP_INTERRUPT_STATUS_RW1C, 3);
-                                    intr0_en_reg = get_register_info(REG_GROUP_INTERRUPT_EN, 3); // NOTIF0_INTR_EN_R
-                                    intr1_en_reg = get_register_info(REG_GROUP_INTERRUPT_EN, 4); // NOTIF1_INTR_EN_R
-                                    
-                                    read_intr0_sts = mci_reg_read(intr0_reg->address);
-                                    read_intr1_sts = mci_reg_read(intr1_reg->address);
-                                    read_intr0_en = mci_reg_read(intr0_en_reg->address);
-                                    read_intr1_en = mci_reg_read(intr1_en_reg->address);
-                                    
-                                    // Global status bit is set only if (status & enable) != 0
-                                    if ((read_intr0_sts & read_intr0_en) != 0) {
-                                        exp_data |= MCI_REG_INTR_BLOCK_RF_NOTIF_GLOBAL_INTR_R_AGG_STS0_MASK;
-                                    }
-                                    if ((read_intr1_sts & read_intr1_en) != 0) {
-                                        exp_data |= MCI_REG_INTR_BLOCK_RF_NOTIF_GLOBAL_INTR_R_AGG_STS1_MASK;
-                                    }
-                                }
-                                if (read_data == exp_data) {
-                                    VPRINTF(MEDIUM,"  Match: %s (0x%08x): Read 0x%08x, Expected 0x%08x\n", reg->name, reg->address, read_data, exp_data);
-                                }
-                                else {
-                                    VPRINTF(LOW, "  No match: %s (0x%08x): Read 0x%08x, Expected 0x%08x\n", reg->name, reg->address, read_data, exp_data);
-                                    mismatch_count++;
-                                }
                             } else if (group == REG_GROUP_INTERRUPT_NOTIF0_COUNTERS) {
                                 if ((i == 0 && (mci_reg_read(SOC_MCI_TOP_MCI_REG_INTR_BLOCK_RF_NOTIF0_INTERNAL_INTR_R) & MCI_REG_INTR_BLOCK_RF_NOTIF0_INTERNAL_INTR_R_NOTIF_MCU_SRAM_ECC_COR_STS_MASK)) ||
                                     (i == 1 && (mci_reg_read(SOC_MCI_TOP_MCI_REG_INTR_BLOCK_RF_NOTIF0_INTERNAL_INTR_R) & MCI_REG_INTR_BLOCK_RF_NOTIF0_INTERNAL_INTR_R_NOTIF_CPTRA_MCU_RESET_REQ_STS_MASK)) ||
@@ -1496,7 +1502,7 @@ int read_register_group_and_verify(mci_register_group_t group, mci_reg_exp_dict_
                                         VPRINTF(LOW, "  No match: %s (0x%08x): Read 0x%08x, Expected 0x%08x\n", reg->name, reg->address, read_data, exp_data);
                                     mismatch_count++;
                                     }
-                                } 
+                                }
                             } else {
                                 VPRINTF(LOW, "  No match: %s (0x%08x): Read 0x%08x, Expected 0x%08x\n", reg->name, reg->address, read_data, exp_data);
                                 mismatch_count++;
@@ -1504,15 +1510,63 @@ int read_register_group_and_verify(mci_register_group_t group, mci_reg_exp_dict_
                         } else if (reg->has_init_value == false && ro_reg == true) {
                             if (get_reg_exp_data(&g_expected_data_dict, reg->address, &exp_data) == 0) {
                                 if (read_data == exp_data) {
-                                    VPRINTF(MEDIUM,"  Match: %s (0x%08x): Read 0x%08x, Expected 0x%08x\n", 
+                                    VPRINTF(MEDIUM,"  Match: %s (0x%08x): Read 0x%08x, Expected 0x%08x\n",
                                            reg->name, reg->address, read_data, exp_data);
+                                } else if (group == REG_GROUP_INTERRUPT_GLOBAL_STATUS_RO) {
+                                    exp_data = 0;
+                                    if (i == 0) {
+                                        // ERROR global status = ERROR status & ERROR enable
+                                        intr0_reg = get_register_info(REG_GROUP_INTERRUPT_STATUS_RW1C, 0);
+                                        intr1_reg = get_register_info(REG_GROUP_INTERRUPT_STATUS_RW1C, 1);
+                                        intr0_en_reg = get_register_info(REG_GROUP_INTERRUPT_EN, 1); // ERROR0_INTR_EN_R
+                                        intr1_en_reg = get_register_info(REG_GROUP_INTERRUPT_EN, 2); // ERROR1_INTR_EN_R
+
+                                        read_intr0_sts = mci_reg_read(intr0_reg->address);
+                                        read_intr1_sts = mci_reg_read(intr1_reg->address);
+                                        read_intr0_en = mci_reg_read(intr0_en_reg->address);
+                                        read_intr1_en = mci_reg_read(intr1_en_reg->address);
+
+                                        // Global status bit is set only if (status & enable) != 0
+                                        if ((read_intr0_sts & read_intr0_en) != 0) {
+                                            exp_data |= MCI_REG_INTR_BLOCK_RF_ERROR_GLOBAL_INTR_R_AGG_STS0_MASK;
+                                        }
+                                        if ((read_intr1_sts & read_intr1_en) != 0) {
+                                            exp_data |= MCI_REG_INTR_BLOCK_RF_ERROR_GLOBAL_INTR_R_AGG_STS1_MASK;
+                                        }
+                                    } else {
+                                        // NOTIF global status = NOTIF status & NOTIF enable
+                                        intr0_reg = get_register_info(REG_GROUP_INTERRUPT_STATUS_RW1C, 2);
+                                        intr1_reg = get_register_info(REG_GROUP_INTERRUPT_STATUS_RW1C, 3);
+                                        intr0_en_reg = get_register_info(REG_GROUP_INTERRUPT_EN, 3); // NOTIF0_INTR_EN_R
+                                        intr1_en_reg = get_register_info(REG_GROUP_INTERRUPT_EN, 4); // NOTIF1_INTR_EN_R
+
+                                        read_intr0_sts = mci_reg_read(intr0_reg->address);
+                                        read_intr1_sts = mci_reg_read(intr1_reg->address);
+                                        read_intr0_en = mci_reg_read(intr0_en_reg->address);
+                                        read_intr1_en = mci_reg_read(intr1_en_reg->address);
+
+                                        // Global status bit is set only if (status & enable) != 0
+                                        if ((read_intr0_sts & read_intr0_en) != 0) {
+                                            exp_data |= MCI_REG_INTR_BLOCK_RF_NOTIF_GLOBAL_INTR_R_AGG_STS0_MASK;
+                                        }
+                                        if ((read_intr1_sts & read_intr1_en) != 0) {
+                                            exp_data |= MCI_REG_INTR_BLOCK_RF_NOTIF_GLOBAL_INTR_R_AGG_STS1_MASK;
+                                        }
+                                    }
+                                    if (read_data == exp_data) {
+                                        VPRINTF(MEDIUM,"  Match: %s (0x%08x): Read 0x%08x, Expected 0x%08x\n", reg->name, reg->address, read_data, exp_data);
+                                    }
+                                    else {
+                                        VPRINTF(LOW, "  No match: %s (0x%08x): Read 0x%08x, Expected 0x%08x\n", reg->name, reg->address, read_data, exp_data);
+                                        mismatch_count++;
+                                    }
                                 } else {
-                                    VPRINTF(LOW, "  No match: %s (0x%08x): Read 0x%08x, Expected 0x%08x\n", 
+                                    VPRINTF(LOW, "  No match: %s (0x%08x): Read 0x%08x, Expected 0x%08x\n",
                                            reg->name, reg->address, read_data, exp_data);
                                     mismatch_count++;
                                 }
                             } else {
-                                VPRINTF(LOW, "  ! %s (0x%08x): Read 0x%08x, No expected data in dictionary\n", 
+                                VPRINTF(LOW, "  ! %s (0x%08x): Read 0x%08x, No expected data in dictionary\n",
                                        reg->name, reg->address, read_data);
                             }
                         } else {
@@ -1531,63 +1585,111 @@ int read_register_group_and_verify(mci_register_group_t group, mci_reg_exp_dict_
                             }
                         }
                     }
-                } 
+                }
             } else { // Verifying after a write operation
                 if (get_reg_exp_data(&g_expected_data_dict, reg->address, &exp_data) == 0) {
                     // Compare and report
                     if (read_data == exp_data) {
-                        VPRINTF(MEDIUM,"  Match: %s (0x%08x): Read 0x%08x, Expected 0x%08x\n", 
+                        VPRINTF(MEDIUM,"  Match: %s (0x%08x): Read 0x%08x, Expected 0x%08x\n",
                             reg->name, reg->address, read_data, exp_data);
-                    } else if (read_data > exp_data && reg->address == SOC_MCI_TOP_MCI_REG_MCU_RV_MTIME_H || reg->address == SOC_MCI_TOP_MCI_REG_MCU_RV_MTIME_L) { 
-                        VPRINTF(MEDIUM, "  Expect reg increment: %s (0x%08x): Read 0x%08x, Expected 0x%08x\n", 
-                                reg->name, reg->address, read_data, exp_data); 
+                    } else if (read_data > exp_data && reg->address == SOC_MCI_TOP_MCI_REG_MCU_RV_MTIME_H || reg->address == SOC_MCI_TOP_MCI_REG_MCU_RV_MTIME_L) {
+                        VPRINTF(MEDIUM, "  Expect reg increment: %s (0x%08x): Read 0x%08x, Expected 0x%08x\n",
+                                reg->name, reg->address, read_data, exp_data);
+                    } else if (group == REG_GROUP_INTERRUPT_GLOBAL_STATUS_RO) {
+                        exp_data = 0;
+                        if (i == 0) {
+                            // ERROR global status = ERROR status & ERROR enable
+                            intr0_reg = get_register_info(REG_GROUP_INTERRUPT_STATUS_RW1C, 0);
+                            intr1_reg = get_register_info(REG_GROUP_INTERRUPT_STATUS_RW1C, 1);
+                            intr0_en_reg = get_register_info(REG_GROUP_INTERRUPT_EN, 1); // ERROR0_INTR_EN_R
+                            intr1_en_reg = get_register_info(REG_GROUP_INTERRUPT_EN, 2); // ERROR1_INTR_EN_R
+
+                            read_intr0_sts = mci_reg_read(intr0_reg->address);
+                            read_intr1_sts = mci_reg_read(intr1_reg->address);
+                            read_intr0_en = mci_reg_read(intr0_en_reg->address);
+                            read_intr1_en = mci_reg_read(intr1_en_reg->address);
+
+                            // Global status bit is set only if (status & enable) != 0
+                            if ((read_intr0_sts & read_intr0_en) != 0) {
+                                exp_data |= MCI_REG_INTR_BLOCK_RF_ERROR_GLOBAL_INTR_R_AGG_STS0_MASK;
+                            }
+                            if ((read_intr1_sts & read_intr1_en) != 0) {
+                                exp_data |= MCI_REG_INTR_BLOCK_RF_ERROR_GLOBAL_INTR_R_AGG_STS1_MASK;
+                            }
+                        } else {
+                            // NOTIF global status = NOTIF status & NOTIF enable
+                            intr0_reg = get_register_info(REG_GROUP_INTERRUPT_STATUS_RW1C, 2);
+                            intr1_reg = get_register_info(REG_GROUP_INTERRUPT_STATUS_RW1C, 3);
+                            intr0_en_reg = get_register_info(REG_GROUP_INTERRUPT_EN, 3); // NOTIF0_INTR_EN_R
+                            intr1_en_reg = get_register_info(REG_GROUP_INTERRUPT_EN, 4); // NOTIF1_INTR_EN_R
+
+                            read_intr0_sts = mci_reg_read(intr0_reg->address);
+                            read_intr1_sts = mci_reg_read(intr1_reg->address);
+                            read_intr0_en = mci_reg_read(intr0_en_reg->address);
+                            read_intr1_en = mci_reg_read(intr1_en_reg->address);
+
+                            // Global status bit is set only if (status & enable) != 0
+                            if ((read_intr0_sts & read_intr0_en) != 0) {
+                                exp_data |= MCI_REG_INTR_BLOCK_RF_NOTIF_GLOBAL_INTR_R_AGG_STS0_MASK;
+                            }
+                            if ((read_intr1_sts & read_intr1_en) != 0) {
+                                exp_data |= MCI_REG_INTR_BLOCK_RF_NOTIF_GLOBAL_INTR_R_AGG_STS1_MASK;
+                            }
+                        }
+                        if (read_data == exp_data) {
+                            VPRINTF(MEDIUM,"  Match: %s (0x%08x): Read 0x%08x, Expected 0x%08x\n", reg->name, reg->address, read_data, exp_data);
+                        }
+                        else {
+                            VPRINTF(LOW, "  No match: %s (0x%08x): Read 0x%08x, Expected 0x%08x\n", reg->name, reg->address, read_data, exp_data);
+                            mismatch_count++;
+                        }
                     } else {
-                        VPRINTF(LOW, "  No match: %s (0x%08x): Read 0x%08x, Expected 0x%08x\n", 
+                        VPRINTF(LOW, "  No match: %s (0x%08x): Read 0x%08x, Expected 0x%08x\n",
                             reg->name, reg->address, read_data, exp_data);
                         mismatch_count++;
                     }
                 } else {
-                    VPRINTF(LOW, "  ! %s (0x%08x): Read 0x%08x, No expected data in dictionary\n", 
+                    VPRINTF(LOW, "  ! %s (0x%08x): Read 0x%08x, No expected data in dictionary\n",
                         reg->name, reg->address, read_data);
                 }
-            } 
+            }
         } else {
             VPRINTF(LOW, "  ! Register index %d not found in group\n", i);
         }
     }
-    
-    VPRINTF(LOW, "Verification complete: %d register(s) matched, %d register(s) mismatched\n", 
+
+    VPRINTF(LOW, "Verification complete: %d register(s) matched, %d register(s) mismatched\n",
            count - mismatch_count, mismatch_count);
-    
+
     return mismatch_count;
 }
 
 /**
  * Function to read all registers in a group and track their values in a dictionary
- * 
+ *
  * @param group Register group
  * @param dict Dictionary to store register values
  */
 void read_register_group_and_track(mci_register_group_t group, mci_reg_exp_dict_t *dict) {
     uint32_t read_data;
     int count = get_register_count(group);
-    
+
     VPRINTF(LOW, "Reading and tracking %s registers (%d total):\n", get_group_name(group), count);
-    
+
     for (int i = 0; i < count; i++) {
         const mci_register_info_t *reg = get_register_info(group, i);
-        
+
         if (reg) {
             // Check if this register should be excluded
             if (!is_register_excluded(reg->address)) {
                 // Read the register value
                 read_data = mci_reg_read(reg->address);
-                
+
                 VPRINTF(MEDIUM, "  Reading 0x%08x from %s (0x%08x)\n", read_data, reg->name, reg->address);
-                
+
                 /* Get mask for this register */
                 uint32_t mask = get_register_mask(reg->address);
-                
+
                 // Store in dictionary
                 if (set_reg_exp_data(dict, reg->address, read_data, mask, false) != 0) {
                     VPRINTF(LOW, "  WARNING: Could not store read data for %s\n", reg->name);
@@ -1597,7 +1699,7 @@ void read_register_group_and_track(mci_register_group_t group, mci_reg_exp_dict_
             }
         }
     }
-    
+
     VPRINTF(LOW, "Register tracking complete: %d register(s) read and tracked\n", count);
 }
 
@@ -1605,13 +1707,13 @@ void read_register_group_and_track(mci_register_group_t group, mci_reg_exp_dict_
 void init_mask_dict(void) {
     VPRINTF(LOW, "Initializing mask dict\n");
     g_mask_dict.count = 0;
-    
+
     // SOC_MCI_TOP_MCI_REG_CAP_LOCK
     add_mask_entry(SOC_MCI_TOP_MCI_REG_CAP_LOCK,
                    MCI_REG_CAP_LOCK_LOCK_MASK);
 
     /* HW_REV_ID - has a mask for the MC_GENERATION field */
-    add_mask_entry(SOC_MCI_TOP_MCI_REG_HW_REV_ID, 
+    add_mask_entry(SOC_MCI_TOP_MCI_REG_HW_REV_ID,
                    MCI_REG_HW_REV_ID_MC_GENERATION_MASK);
 
     /* FW_REV_ID_0 - no masks defined, assume all bits can be used */
@@ -1621,13 +1723,13 @@ void init_mask_dict(void) {
     //add_mask_entry(SOC_MCI_TOP_MCI_REG_FW_REV_ID_1, 0xFFFFFFFF);
 
     // HW_CONFIG0
-    add_mask_entry(SOC_MCI_TOP_MCI_REG_HW_CONFIG0, 
-                   MCI_REG_HW_CONFIG0_MCU_MBOX1_SRAM_SIZE_MASK | 
+    add_mask_entry(SOC_MCI_TOP_MCI_REG_HW_CONFIG0,
+                   MCI_REG_HW_CONFIG0_MCU_MBOX1_SRAM_SIZE_MASK |
                    MCI_REG_HW_CONFIG0_MCU_MBOX0_SRAM_SIZE_MASK);
 
     // HW_CONFIG1
-    add_mask_entry(SOC_MCI_TOP_MCI_REG_HW_CONFIG1, 
-                   MCI_REG_HW_CONFIG1_MIN_MCU_RST_COUNTER_WIDTH_MASK | 
+    add_mask_entry(SOC_MCI_TOP_MCI_REG_HW_CONFIG1,
+                   MCI_REG_HW_CONFIG1_MIN_MCU_RST_COUNTER_WIDTH_MASK |
                    MCI_REG_HW_CONFIG1_MCU_SRAM_SIZE_MASK);
 
     // HW_FLOW_STATUS
@@ -1655,7 +1757,7 @@ void init_mask_dict(void) {
     add_mask_entry(SOC_MCI_TOP_MCI_REG_HW_ERROR_FATAL,
                    MCI_REG_HW_ERROR_FATAL_MCU_SRAM_ECC_UNC_MASK |
                    MCI_REG_HW_ERROR_FATAL_NMI_PIN_MASK |
-                   MCI_REG_HW_ERROR_FATAL_MCU_SRAM_DMI_AXI_COLLISION_MASK);               
+                   MCI_REG_HW_ERROR_FATAL_MCU_SRAM_DMI_AXI_COLLISION_MASK);
 
     // AGG_ERROR_FATAL
     add_mask_entry(SOC_MCI_TOP_MCI_REG_AGG_ERROR_FATAL,
@@ -1871,7 +1973,7 @@ void init_mask_dict(void) {
     // WDT_STATUS
     add_mask_entry(SOC_MCI_TOP_MCI_REG_WDT_STATUS,
                 MCI_REG_WDT_STATUS_T1_TIMEOUT_MASK |
-                MCI_REG_WDT_STATUS_T2_TIMEOUT_MASK); 
+                MCI_REG_WDT_STATUS_T2_TIMEOUT_MASK);
 
     // RESET_REQUEST
     add_mask_entry(SOC_MCI_TOP_MCI_REG_RESET_REQUEST,
@@ -1887,7 +1989,7 @@ void init_mask_dict(void) {
 
     // FW_SRAM_EXEC_REGION_SIZE
     add_mask_entry(SOC_MCI_TOP_MCI_REG_FW_SRAM_EXEC_REGION_SIZE,
-                MCI_REG_FW_SRAM_EXEC_REGION_SIZE_SIZE_MASK); 
+                MCI_REG_FW_SRAM_EXEC_REGION_SIZE_SIZE_MASK);
 
     // MBOX0_AXI_USER_LOCK_0
     add_mask_entry(SOC_MCI_TOP_MCI_REG_MBOX0_AXI_USER_LOCK_0,
@@ -1907,7 +2009,7 @@ void init_mask_dict(void) {
 
     // MBOX0_AXI_USER_LOCK_4
     add_mask_entry(SOC_MCI_TOP_MCI_REG_MBOX0_AXI_USER_LOCK_4,
-                MCI_REG_MBOX0_AXI_USER_LOCK_4_LOCK_MASK);   
+                MCI_REG_MBOX0_AXI_USER_LOCK_4_LOCK_MASK);
 
     // MBOX1_AXI_USER_LOCK_0
     add_mask_entry(SOC_MCI_TOP_MCI_REG_MBOX1_AXI_USER_LOCK_0,
@@ -1927,7 +2029,7 @@ void init_mask_dict(void) {
 
     // MBOX1_AXI_USER_LOCK_4
     add_mask_entry(SOC_MCI_TOP_MCI_REG_MBOX1_AXI_USER_LOCK_4,
-                MCI_REG_MBOX1_AXI_USER_LOCK_4_LOCK_MASK); 
+                MCI_REG_MBOX1_AXI_USER_LOCK_4_LOCK_MASK);
 
     // SS_DEBUG_INTENT
     add_mask_entry(SOC_MCI_TOP_MCI_REG_SS_DEBUG_INTENT,
@@ -1939,7 +2041,7 @@ void init_mask_dict(void) {
 
     // SS_CONFIG_DONE
     add_mask_entry(SOC_MCI_TOP_MCI_REG_SS_CONFIG_DONE,
-                MCI_REG_SS_CONFIG_DONE_DONE_MASK);   
+                MCI_REG_SS_CONFIG_DONE_DONE_MASK);
 
     // INTR_BLOCK_RF_GLOBAL_INTR_EN_R
     add_mask_entry(SOC_MCI_TOP_MCI_REG_INTR_BLOCK_RF_GLOBAL_INTR_EN_R,
@@ -2060,8 +2162,8 @@ void init_mask_dict(void) {
 
     // NOTIF1_INTR_TRIG_R (includes all 32 bits of AGG_ERROR_NON_FATAL trigger flags)
     add_mask_entry(SOC_MCI_TOP_MCI_REG_INTR_BLOCK_RF_NOTIF1_INTR_TRIG_R,
-                0xFFFFFFFF); // All bits are used   
-    
+                0xFFFFFFFF); // All bits are used
+
     // ERROR_INTERNAL_INTR_COUNT_INCR_R
     add_mask_entry(SOC_MCI_TOP_MCI_REG_INTR_BLOCK_RF_ERROR_INTERNAL_INTR_COUNT_INCR_R,
                 MCI_REG_INTR_BLOCK_RF_ERROR_INTERNAL_INTR_COUNT_INCR_R_PULSE_MASK);
@@ -2172,7 +2274,7 @@ void init_mask_dict(void) {
 
 /**
  * Add an entry to the register mask dictionary
- * 
+ *
  * @param address Register address
  * @param mask Combined mask for the register
  * @return 0 on success, -1 if dictionary is full
@@ -2189,7 +2291,7 @@ int add_mask_entry(uint32_t address, uint32_t mask) {
 
 /**
  * Get the combined mask for a register
- * 
+ *
  * @param address Register address
  * @return Combined mask, or 0xFFFFFFFF if not found
  */
@@ -2199,7 +2301,7 @@ uint32_t get_register_mask(uint32_t address) {
             return g_mask_dict.entries[i].combined_mask;
         }
     }
-    
+
     /* Default mask for unknown registers */
     return 0xFFFFFFFF;
 }
@@ -2216,14 +2318,14 @@ void mci_init(void) {
         init_mask_dict();
         masks_initialized = 1;
     }
-    
+
     // Initialize expected data dictionary
     init_reg_exp_dict(&g_expected_data_dict);
 
     // Initialize excluded registers
     init_excluded_registers();
-    
+
     // Perform other MCI initialization
     VPRINTF(LOW, "MCI module initialized\n");
-    
+
 }

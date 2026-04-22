@@ -47,6 +47,7 @@ void main(void) {
         REG_GROUP_WATCHDOG,
         REG_GROUP_MCU,
         REG_GROUP_CONTROL,
+        REG_GROUP_CONTROL_RO,
         REG_GROUP_MCI_MBOX0,
         REG_GROUP_MCI_MBOX1,
         REG_GROUP_DFT,

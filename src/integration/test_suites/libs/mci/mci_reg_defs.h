@@ -24,7 +24,8 @@
 typedef enum {
     REG_NOT_STICKY = 0,
     REG_STICKY = 1,
-    REG_CONFIG_DONE_STICKY = 2
+    REG_CONFIG_DONE_STICKY = 2,
+    REG_CONFIG_DONE = 3
 } register_sticky_t;
 
 
