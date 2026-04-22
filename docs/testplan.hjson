@@ -357,7 +357,9 @@ Perform a write through the MCI SRAM controller, followed by the double ECC erro
 Test should result in ECC error being raised and data inside SRAM should not be modified.
             '''
       stage: ""
-      tests: [mci_sram_error]
+      tests: [
+        mci_sram_error
+      ]
     }
     {
       name: mci_trace_buffer_axi_access
@@ -376,7 +378,9 @@ Inject invalid state into `otp_static_state` and verify that caliptra-ss becomes
 Release error injection and check that caliptra-ss is once more in unlocked state.
             '''
       stage: ""
-      tests: [mci_lcc_state_error]
+      tests: [
+        mci_lcc_state_error
+      ]
     }
     {
       name: mci_lcc_state_error_to_locked
@@ -387,7 +391,9 @@ Request scrap transition or inject state_error, release error injection and chec
 caliptra-ss is no longer unlocked and in the `DEVICE_PRODUCTION`.
             '''
       stage: ""
-      tests: [mci_lcc_state_error_to_locked]
+      tests: [
+        mci_lcc_state_error_to_locked
+      ]
     }
     {
       name: mci_lcc_manuf_to_non_debug
@@ -402,7 +408,9 @@ Either issue a SCRAP request or inject a state error, then verify that device li
       name: mci_lcc_no_zeroization
       desc: "Set one of the `cptra_ss_FIPS_ZEROIZATION_PPD_i` or `ss_soc_MCU_ROM_zeroization_mask_reg` and make sure that OTP was not zeroized."
       stage: ""
-      tests: [mci_lcc_no_zeroization]
+      tests: [
+        mci_lcc_no_zeroization
+      ]
     }
     {
       name: mci_read_all_regs_test
