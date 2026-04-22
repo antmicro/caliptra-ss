@@ -402,7 +402,7 @@ Move life cycle state to `TRANSLATOR_MANUF_NON_DEBUG` or `TRANSLATOR_MANUF_DEBUG
 Either issue a SCRAP request or inject a state error, then verify that device lifecycle moved to `DEVICE_PRODUCTION`.
             '''
       stage: ""
-      tests: []
+      tests: [mci_lcc_manuf_to_non_debug]
     }
     {
       name: mci_lcc_no_zeroization
