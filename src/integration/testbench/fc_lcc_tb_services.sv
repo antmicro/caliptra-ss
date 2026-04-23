@@ -168,11 +168,13 @@ module fc_lcc_tb_services (
           CMD_LC_INJECT_STATE_ERROR: begin
             $display("fc_lcc_tb_services: injecting state_error into MCI LCC state translator");
             $assertoff(0, `MCI_PATH.LCC_state_translator.ProdSIGNAL_Decoding_A);
-            force `MCI_PATH.lc_fatal_state_error_i = 1'b1;
+            // Use lc_ctrl_fsm error signal that is propagated to MCI.
+            // Doing so also exercises LC FSM InvalidSt handling.
+            force `LCC_PATH.u_lc_ctrl_fsm.token_if_fsm_err_i = 1'b1;
           end
           CMD_LC_RELEASE_STATE_ERROR: begin
             $display("fc_lcc_tb_services: releasing state_error injection in MCI LCC state translator");
-            release `MCI_PATH.lc_fatal_state_error_i;
+            release `LCC_PATH.u_lc_ctrl_fsm.token_if_fsm_err_i;
             $asserton(0, `MCI_PATH.LCC_state_translator.ProdSIGNAL_Decoding_A);
           end
           default: begin
