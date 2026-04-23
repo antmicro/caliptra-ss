@@ -156,6 +156,18 @@
       ]
     }
     {
+      name: caliptra_ss_jtag_lcc_st_trans_all_states
+      desc: '''
+Perform transitions through all possible states.
+This is done to not depend on randomization to toggle all state bits.
+            '''
+      stage: ""
+      tests:
+      [
+        caliptra_ss_jtag_lcc_st_trans_all_states
+      ]
+    }
+    {
       name: caliptra_ss_lcc_alert
       desc: ""
       stage: ""
