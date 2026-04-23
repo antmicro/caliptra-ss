@@ -119,8 +119,22 @@ void main (void) {
                 VPRINTF(LOW, "ERROR: incorrect state: exp: %d, act: %d\n", lc_state_curr, lc_state_after_transition);
                 goto epilogue;
             } else {
-                VPRINTF(LOW, "Info: Test OK\n");
-                goto epilogue;
+                VPRINTF(LOW, "INFO: trying to transition past max state\n");
+
+                transition_state_req_with_expec_error((uint32_t)-1,
+                                 0, 0, 0, 0,
+                                 0);
+
+                wait_dai_op_idle(0);
+                uint32_t lc_state_after_transition = read_lc_state();
+                // Check if we are still in the starting state.
+                if (lc_state_curr != lc_state_after_transition) {
+                    VPRINTF(LOW, "ERROR: incorrect state: exp: %d, act: %d\n", lc_state_curr, lc_state_after_transition);
+                    goto epilogue;
+                } else {
+                    VPRINTF(LOW, "Info: Test OK\n");
+                    goto epilogue;
+                }
             }
             
         }
