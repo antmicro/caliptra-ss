@@ -98,6 +98,9 @@ void main (void) {
     // SCRAP (20) is the last state.
     if (lc_state_curr == 18 || lc_state_curr == 20) {
         VPRINTF(LOW, "Info: Cannot increment state from current %d state. Exit test\n", lc_state_curr);
+        // XXX: there is no way of requesting "any state except PROD_END" from gen_fuse_ctrl_vmem.py.
+        // We shouldn't fail since this is not a problem with implementation, but with test's starting point.
+        // Return success and hope that other iterations will have more luck.
         SEND_STDOUT_CTRL(0xff);
     }
 
@@ -119,7 +122,7 @@ void main (void) {
     // Check if we are in the ESCALATE state.
     if (lc_state_curr != 22) {
         VPRINTF(LOW, "ERROR: incorrect state: exp: %d, act: %d\n", 22, lc_state_curr);
-        exit(1);
+        SEND_STDOUT_CTRL(0x01);
     }
 
 
@@ -153,10 +156,14 @@ void main (void) {
 
     deassert_escalation();
 
+    // Exercise SEC_CM: MAIN.FSM.LOCAL_ESC in LC FSM to improve coverage
+    lsu_write_32(SOC_MCI_TOP_MCI_REG_DEBUG_OUT, CMD_LC_INJECT_STATE_ERROR);
+    lsu_write_32(SOC_MCI_TOP_MCI_REG_DEBUG_OUT, CMD_LC_RELEASE_STATE_ERROR);
+
     // Check if we are still in the ESCALATE state.
     if (lc_state_curr != 22) {
         VPRINTF(LOW, "ERROR: incorrect state: exp: %d, act: %d\n", 22, lc_state_curr);
-        exit(1);
+        SEND_STDOUT_CTRL(0x01);
     }
 
     // After a reset the escalation should be cleared and the lc state back at the
@@ -166,6 +173,7 @@ void main (void) {
     lc_state_curr = read_lc_state();
     if (lc_state_curr != lc_state_init) {
         VPRINTF(LOW, "ERROR: lc state has not reverted back to pre-reset value\n");
+        SEND_STDOUT_CTRL(0x01);
     }
 
     SEND_STDOUT_CTRL(0xff);
