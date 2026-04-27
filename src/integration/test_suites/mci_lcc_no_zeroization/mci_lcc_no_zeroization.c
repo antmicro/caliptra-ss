@@ -70,21 +70,24 @@ void main(void) {
     VPRINTF(LOW, "INFO: debug_locked=0 confirmed before test (SECURITY_STATE=0x%08x)\n", sec_state);
 
     // Randomly choose between two no-zeroization paths (PPD is always 0 in testbench).
-    // FIPS_ZEROIZATION_CMD_o = mask & PPD_i — with PPD=0 the result is 0 in both cases.
+    // FIPS_ZEROIZATION_CMD_o = mask & PPD_i - with PPD=0 the result is 0 in both cases.
     uint32_t rand_val = xorshift32();
     uint32_t mask_val;
     const char *path_name;
     if (rand_val & 1) {
-        // FIPS-mask path: random non-zero mask, PPD=0 → cmd=0
-        mask_val = rand_val | 0x1;
+        // FIPS-mask path: all 1s mask, PPD=0 -> cmd=0
+        mask_val = 0xffffffff;
         path_name = "FIPS mask";
     } else {
-        // PPD path: mask=0, PPD=0 → cmd=0 regardless of mask
+        // PPD path: mask=0, PPD=1 -> cmd=0 regardless of mask
         mask_val = 0x0;
-        path_name = "PPD (mask=0)";
+        path_name = "PPD (mask=1)";
     }
-    VPRINTF(LOW, "INFO: writing 0x%08x to FC_FIPS_ZEROZATION (%s path, PPD=0)\n", mask_val, path_name);
+    VPRINTF(LOW, "INFO: writing 0x%08x to FC_FIPS_ZEROZATION (%s path)\n", mask_val, path_name);
     lsu_write_32(SOC_MCI_TOP_MCI_REG_FC_FIPS_ZEROZATION, mask_val);
+    if (mask_val == 0) {
+        lsu_write_32(SOC_MCI_TOP_MCI_REG_DEBUG_OUT, CMD_FC_FORCE_PPD);
+    }
 
     // Allow a few cycles for any unintended side-effects to propagate.
     for (uint8_t i = 0; i < 32; i++) {
@@ -103,14 +106,15 @@ void main(void) {
     // Verify that OTP was NOT zeroized: debug_locked must still be 0.
     sec_state = lsu_read_32(SOC_MCI_TOP_MCI_REG_SECURITY_STATE);
     if (sec_state & MCI_REG_SECURITY_STATE_DEBUG_LOCKED_MASK) {
-        VPRINTF(LOW, "ERROR: debug_locked=1 after mask-only write — unexpected zeroization! SECURITY_STATE=0x%08x\n", sec_state);
+        VPRINTF(LOW, "ERROR: debug_locked=1 after mask-only write - unexpected zeroization! SECURITY_STATE=0x%08x\n", sec_state);
         SEND_STDOUT_CTRL(0x01);
         return;
     }
-    VPRINTF(LOW, "INFO: debug_locked=0 confirmed — OTP was NOT zeroized as expected (SECURITY_STATE=0x%08x)\n", sec_state);
+    VPRINTF(LOW, "INFO: debug_locked=0 confirmed - OTP was NOT zeroized as expected (SECURITY_STATE=0x%08x)\n", sec_state);
 
     // Clean up: clear the mask register.
     lsu_write_32(SOC_MCI_TOP_MCI_REG_FC_FIPS_ZEROZATION, 0x0);
+    lsu_write_32(SOC_MCI_TOP_MCI_REG_DEBUG_OUT, CMD_RELEASE_PPD);
 
     for (uint8_t i = 0; i < 160; i++) {
         __asm__ volatile ("nop");

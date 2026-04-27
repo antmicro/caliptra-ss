@@ -117,6 +117,8 @@ localparam CMD_OTP_PROG_ERROR_DELAYED       = FC_LCC_CMD_OFFSET + 8'h24;
 localparam CMD_UNSTABLE_CLK_BYP_ACK         = FC_LCC_CMD_OFFSET + 8'h25;
 localparam CMD_DISABLE_CPTR_DEBUG           = FC_LCC_CMD_OFFSET + 8'h26;
 localparam CMD_RELEASE_CPTR_DEBUG           = FC_LCC_CMD_OFFSET + 8'h27;
+localparam CMD_FC_FORCE_PPD                 = FC_LCC_CMD_OFFSET + 8'h28;
+localparam CMD_RELEASE_PPD                  = FC_LCC_CMD_OFFSET + 8'h29;
 
 localparam TB_DISABLE_MCU_SRAM_PROT_ASSERTS = 8'hc0;
 
