@@ -45,6 +45,7 @@ void trans_cnt_oflw_error(void) {
     uint32_t status = lsu_read_32(SOC_LC_CTRL_STATUS);
     if (!((status  >> LC_CTRL_STATUS_TRANSITION_COUNT_ERROR_LOW) & 0x1)) {
         VPRINTF(LOW, "ERROR: lc transition count error is not signaled\n");
+        SEND_STDOUT_CTRL(TB_CMD_TEST_FAIL);
     }
 }
 
@@ -56,6 +57,7 @@ void trans_invalid_error(void) {
     uint32_t status = lsu_read_32(SOC_LC_CTRL_STATUS);
     if (!((status  >> LC_CTRL_STATUS_TRANSITION_ERROR_LOW) & 0x1)) {
         VPRINTF(LOW, "ERROR: lc transition error is not signaled\n");
+        SEND_STDOUT_CTRL(TB_CMD_TEST_FAIL);
     }
 }
 
@@ -70,6 +72,7 @@ void token_invalid_error(void) {
     uint32_t status = lsu_read_32(SOC_LC_CTRL_STATUS);
     if (!((status  >> LC_CTRL_STATUS_TOKEN_ERROR_LOW) & 0x1)) {
         VPRINTF(LOW, "ERROR: lc token error is not signaled\n");
+        SEND_STDOUT_CTRL(TB_CMD_TEST_FAIL);
     }
 }
 
@@ -81,6 +84,7 @@ void flash_rma_error(void) {
     uint32_t status = lsu_read_32(SOC_LC_CTRL_STATUS);
     if (!((status  >> LC_CTRL_STATUS_FLASH_RMA_ERROR_LOW) & 0x1)) {
         VPRINTF(LOW, "ERROR: lc flash rma is not signaled %08X\n", status);
+        SEND_STDOUT_CTRL(TB_CMD_TEST_FAIL);
     }
 }
 
@@ -94,6 +98,7 @@ void otp_prog_error(void) {
     uint32_t status = lsu_read_32(SOC_LC_CTRL_STATUS);
     if (!((status  >> LC_CTRL_STATUS_OTP_ERROR_LOW) & 0x1)) {
         VPRINTF(LOW, "ERROR: lc otp error is not signaled %08X\n", status);
+        SEND_STDOUT_CTRL(TB_CMD_TEST_FAIL);
     }
 }
 
@@ -105,6 +110,51 @@ void state_invalid_error(void) {
     uint32_t status = lsu_read_32(SOC_LC_CTRL_STATUS);
     if (!((status  >> LC_CTRL_STATUS_STATE_ERROR_LOW) & 0x1)) {
         VPRINTF(LOW, "ERROR: lc state error is not signaled %08X\n", status);
+        SEND_STDOUT_CTRL(TB_CMD_TEST_FAIL);
+    }
+}
+
+void flash_rma_error_delayed(void) {
+    // Inject error in TransProgSt state to test signal stability tests.
+    lsu_write_32(SOC_MCI_TOP_MCI_REG_DEBUG_OUT, CMD_FLASH_RMA_ERROR_DELAYED);
+    lsu_write_32(LC_CTRL_TRANSITION_CTRL_OFFSET, 0x1);
+
+    force_PPD_pin();
+    sw_transition_req_with_expec_error(calc_lc_state_mnemonic(RMA), 0, 0, 0, 0, 0);
+
+    uint32_t status = lsu_read_32(SOC_LC_CTRL_STATUS);
+    if (!((status  >> LC_CTRL_STATUS_FLASH_RMA_ERROR_LOW) & 0x1)) {
+        VPRINTF(LOW, "ERROR: lc flash rma is not signaled %08X\n", status);
+        SEND_STDOUT_CTRL(TB_CMD_TEST_FAIL);
+    }
+}
+
+void otp_prog_error_delayed(void) {
+    // Inject error in TransProgSt state to test signal stability tests.
+    lsu_write_32(SOC_MCI_TOP_MCI_REG_DEBUG_OUT, CMD_OTP_PROG_ERROR_DELAYED);
+    lsu_write_32(LC_CTRL_TRANSITION_CTRL_OFFSET, 0x1);
+    sw_transition_req_with_expec_error(calc_lc_state_mnemonic(TEST_LOCKED0), 0, 0, 0, 0, 0);
+
+    uint32_t status = lsu_read_32(SOC_LC_CTRL_STATUS);
+    if (!((status  >> LC_CTRL_STATUS_OTP_ERROR_LOW) & 0x1)) {
+        VPRINTF(LOW, "ERROR: lc otp error is not signaled %08X\n", status);
+        SEND_STDOUT_CTRL(TB_CMD_TEST_FAIL);
+    }
+}
+
+void otp_prog_error_clk_mux(void) {
+    // Make clock bypass signal unstable in ClkMuxSt state.
+    lsu_write_32(SOC_MCI_TOP_MCI_REG_DEBUG_OUT, CMD_UNSTABLE_CLK_BYP_ACK);
+    lsu_write_32(LC_CTRL_TRANSITION_CTRL_OFFSET, 0x1);
+
+    // Contrary to other tests in this file, this is not a hard error,
+    // but effectively just a delay. The transition is expected to succeed.
+    transition_state_check(TEST_LOCKED0, 0, 0, 0, 0, 0);
+
+    uint32_t status = lsu_read_32(SOC_LC_CTRL_STATUS);
+    if (!((status  >> LC_CTRL_STATUS_TRANSITION_SUCCESSFUL_LOW) & 0x1)) {
+        VPRINTF(LOW, "ERROR: lc transition did not succeed %08X\n", status);
+        SEND_STDOUT_CTRL(TB_CMD_TEST_FAIL);
     }
 }
 
@@ -120,7 +170,7 @@ void main (void) {
     transition_state_check(TEST_UNLOCKED0, raw_unlock_token[0], raw_unlock_token[1], raw_unlock_token[2], raw_unlock_token[3], 1);
 
     initialize_otp_controller();
-    uint16_t i = xorshift32() % 6; // Randomly pick one of the 6 errors to trigger.
+    uint16_t i = xorshift32() % 9; // Randomly pick one of the 9 errors to trigger.
     
     switch (i) {
         case 0: {
@@ -148,10 +198,24 @@ void main (void) {
             otp_prog_error();
             break;
         }
-        default: {
+        case 5: {
             VPRINTF(LOW, "INFO: triggering state_invalid_error\n");
             state_invalid_error();
             break;
+        }
+        case 6: {
+            VPRINTF(LOW, "INFO: triggering delayed flash_rma_error\n");
+            flash_rma_error_delayed();
+            break;
+        }
+        case 7: {
+            VPRINTF(LOW, "INFO: triggering delayed otp_prog_error\n");
+            otp_prog_error_delayed();
+            break;
+        }
+        default: {
+            VPRINTF(LOW, "INFO: triggering otp_prog_error due to unstable bypass signal\n");
+            otp_prog_error_clk_mux();
         }
     }
 
@@ -160,5 +224,5 @@ epilogue:
         __asm__ volatile ("nop"); // Sleep loop as "nop"
     }
 
-    SEND_STDOUT_CTRL(0xff);
+    SEND_STDOUT_CTRL(TB_CMD_TEST_PASS);
 }

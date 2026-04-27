@@ -35,6 +35,10 @@ module fc_lcc_tb_services (
   logic ecc_fault_en = 1'b0;
   logic lcc_bus_error_en = 1'b0;
   logic lcc_external_clk_req;
+  logic lcc_delayed_flash_rma_err_en = 1'b0;
+  logic lcc_delayed_otp_prog_err_en = 1'b0;
+  logic lcc_delayed_clk_byp = 1'b0;
+  logic lcc_clk_mux_state_seen;
  
   always_ff @(posedge clk or negedge cptra_rst_b) begin
     if (!cptra_rst_b) begin
@@ -177,6 +181,18 @@ module fc_lcc_tb_services (
             release `LCC_PATH.u_lc_ctrl_fsm.token_if_fsm_err_i;
             $asserton(0, `MCI_PATH.LCC_state_translator.ProdSIGNAL_Decoding_A);
           end
+          CMD_FLASH_RMA_ERROR_DELAYED: begin
+            $display("fc_lcc_tb_services: injecting flash RMA error in TransProgSt");
+            force lcc_delayed_flash_rma_err_en = 1'b1;
+          end
+          CMD_OTP_PROG_ERROR_DELAYED: begin
+            $display("fc_lcc_tb_services: injecting OTP prog error in TransProgSt");
+            force lcc_delayed_otp_prog_err_en = 1'b1;
+          end
+          CMD_UNSTABLE_CLK_BYP_ACK: begin
+            $display("fc_lcc_tb_services: simulate unstable clk_byp_ack in ClkMuxSt");
+            force lcc_delayed_clk_byp = 1'b1;
+          end
           default: begin
             // No action for unrecognized commands.
           end
@@ -195,10 +211,40 @@ module fc_lcc_tb_services (
   end
 
   always_comb begin
-  if (lcc_bus_error_en == 1'b1 && `LCC_PATH.u_lc_axi2tlul.i_sub2tlul.write == 1'b1 && `LCC_PATH.u_lc_axi2tlul.i_sub2tlul.addr == `SOC_LC_CTRL_ALERT_TEST) begin
+    if (lcc_bus_error_en == 1'b1 && `LCC_PATH.u_lc_axi2tlul.i_sub2tlul.write == 1'b1 && `LCC_PATH.u_lc_axi2tlul.i_sub2tlul.addr == `SOC_LC_CTRL_ALERT_TEST) begin
       force `LCC_PATH.u_lc_axi2tlul.i_sub2tlul.tl_o.a_data[0] = `LCC_PATH.u_lc_axi2tlul.i_sub2tlul.wdata ^ 1;
     end else begin
       release `LCC_PATH.u_lc_axi2tlul.i_sub2tlul.tl_o.a_data;
+    end
+  end
+
+  always_comb begin
+    if (lcc_delayed_flash_rma_err_en == 1'b1 && `LCC_PATH.u_lc_ctrl_fsm.fsm_state_q == lc_ctrl_pkg::TransProgSt) begin
+      $assertoff(0, `LCC_PATH.u_lc_ctrl_fsm.FlashRmaStaysOnOnceAsserted_A);
+      force `LCC_PATH.u_lc_ctrl_fsm.lc_flash_rma_req_o = '0;
+    end else begin
+      release `LCC_PATH.u_lc_ctrl_fsm.lc_flash_rma_req_o;
+      $asserton(0, `LCC_PATH.u_lc_ctrl_fsm.FlashRmaStaysOnOnceAsserted_A);
+    end
+  end
+
+  always_comb begin
+    if (lcc_delayed_otp_prog_err_en == 1'b1 && `LCC_PATH.u_lc_ctrl_fsm.fsm_state_q == lc_ctrl_pkg::TransProgSt) begin
+      force `LCC_PATH.u_lc_ctrl_fsm.lc_clk_byp_req_o = '0;
+    end else begin
+      release `LCC_PATH.u_lc_ctrl_fsm.lc_clk_byp_req_o;
+    end
+  end
+
+  always_ff @(posedge clk or negedge lcc_delayed_clk_byp) begin
+    if (!lcc_delayed_clk_byp) begin
+      lcc_clk_mux_state_seen <= 1'b0;
+    end else if (`LCC_PATH.u_lc_ctrl_fsm.fsm_state_q == lc_ctrl_pkg::ClkMuxSt && !lcc_clk_mux_state_seen) begin
+      force `LCC_PATH.u_lc_ctrl_fsm.lc_clk_byp_ack[0] = '0;
+      // Don't stay in the loop forever
+      lcc_clk_mux_state_seen <= 1'b1;
+    end else begin
+      release `LCC_PATH.u_lc_ctrl_fsm.lc_clk_byp_ack[0];
     end
   end
 
