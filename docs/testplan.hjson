@@ -406,12 +406,6 @@ Either issue a SCRAP request or inject a state error, then verify that device li
       ]
     }
     {
-      name: mci_read_all_regs_test
-      desc: "Perform random read accesses to all registers in the MCI address space."
-      stage: ""
-      tests: []
-    }
-    {
       name: mcu_axi_streaming_boot_test_rom
       desc: "This test instantiates an AXI memory perihperal and initializes it with a production MCU firmware binary. Software running on the MCU configures the I3C core to bypass mode and performs the recovery flow over AXI, reading data from the AXI memory and feeding it to the I3C core. The test checks if the recovery process is performed correctly and the new image gets activated"
       stage: ""
