@@ -382,6 +382,22 @@ Test should result in ECC error being raised and data inside SRAM should not be 
       ]
     }
     {
+      name: mci_lcc_invalid_state
+      desc: '''
+Move OTP to TEST_UNLOCKED0 state. Inject invalid OTP state into lcc_st_trans' otp_static_state
+and reset lcc_st_trans. Check that device is locked. Randomly select between state_error injection
+and transition to SCRAP.
+* If state_error injection was selected, check that device will be locked after releasing otp_static_state.
+Release state_error signal and confirm that device remains locked and unlocks after lcc_st_trans reset.
+* If SCRAP state was selected, check that after transitioning to SCRAP and releasing otp_static_state devices
+remains locked.
+            '''
+      stage: ""
+      tests: [
+        mci_lcc_invalid_state
+      ]
+    }
+    {
       name: mci_lcc_state_error
       desc: '''
 Move OTP into unlocked state and check that Caliptra-ss is unlocked.
@@ -423,6 +439,17 @@ Either issue a SCRAP request or inject a state error, then verify that device li
       stage: ""
       tests: [
         mci_lcc_no_zeroization
+      ]
+    }
+    {
+      name: mci_lcc_volatile_unlock_with_state_error
+      desc: '''
+Start from RAW state, wait for the lcc_st_trans to enter TRANSLATOR_NON_DEBUG state and inject state_error.
+Issue raw volatile unlock request and check that devices remains locked
+            '''
+      stage: ""
+      tests: [
+        mci_lcc_volatile_unlock_with_state_error
       ]
     }
     {

@@ -119,6 +119,10 @@ localparam CMD_DISABLE_CPTR_DEBUG           = FC_LCC_CMD_OFFSET + 8'h26;
 localparam CMD_RELEASE_CPTR_DEBUG           = FC_LCC_CMD_OFFSET + 8'h27;
 localparam CMD_FC_FORCE_PPD                 = FC_LCC_CMD_OFFSET + 8'h28;
 localparam CMD_RELEASE_PPD                  = FC_LCC_CMD_OFFSET + 8'h29;
+localparam CMD_LC_INJECT_INVALID_OTP_STATE  = FC_LCC_CMD_OFFSET + 8'h2A;
+localparam CMD_LC_RELEASE_OTP_STATE         = FC_LCC_CMD_OFFSET + 8'h2B;
+localparam CMD_MCI_INJECT_STATE_ERROR       = FC_LCC_CMD_OFFSET + 8'h2C;
+localparam CMD_MCI_RELEASE_STATE_ERROR      = FC_LCC_CMD_OFFSET + 8'h2D;
 
 localparam TB_DISABLE_MCU_SRAM_PROT_ASSERTS = 8'hc0;
 
