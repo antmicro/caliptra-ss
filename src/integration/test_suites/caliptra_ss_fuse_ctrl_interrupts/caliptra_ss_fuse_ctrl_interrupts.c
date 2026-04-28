@@ -96,6 +96,9 @@ void main (void) {
         VPRINTF(LOW, "ERROR: wrong interrupt signaled\n");
     }
 
+    // For improving coverage
+    lsu_write_32(SOC_OTP_CTRL_INTERRUPT_TEST, 0);
+
 epilogue:
     for (uint8_t i = 0; i < 160; i++) {
         __asm__ volatile ("nop"); // Sleep loop as "nop"
