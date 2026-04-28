@@ -219,12 +219,14 @@ module fc_lcc_tb_services (
   end
 
   always_comb begin
-    if (lcc_delayed_flash_rma_err_en == 1'b1 && `LCC_PATH.u_lc_ctrl_fsm.fsm_state_q == lc_ctrl_pkg::TransProgSt) begin
-      $assertoff(0, `LCC_PATH.u_lc_ctrl_fsm.FlashRmaStaysOnOnceAsserted_A);
-      force `LCC_PATH.u_lc_ctrl_fsm.lc_flash_rma_req_o = '0;
-    end else begin
-      release `LCC_PATH.u_lc_ctrl_fsm.lc_flash_rma_req_o;
-      $asserton(0, `LCC_PATH.u_lc_ctrl_fsm.FlashRmaStaysOnOnceAsserted_A);
+    if (lcc_delayed_flash_rma_err_en == 1'b1) begin
+      if (`LCC_PATH.u_lc_ctrl_fsm.fsm_state_q == lc_ctrl_pkg::TransProgSt) begin
+        $assertoff(0, `LCC_PATH.u_lc_ctrl_fsm.FlashRmaStaysOnOnceAsserted_A);
+        force `LCC_PATH.u_lc_ctrl_fsm.lc_flash_rma_req_o = '0;
+      end else begin
+        release `LCC_PATH.u_lc_ctrl_fsm.lc_flash_rma_req_o;
+        $asserton(0, `LCC_PATH.u_lc_ctrl_fsm.FlashRmaStaysOnOnceAsserted_A);
+      end
     end
   end
 
