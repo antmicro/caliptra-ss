@@ -179,6 +179,7 @@ void main (void) {
     // Misc. writes
     lsu_write_32(SOC_OTP_CTRL_ALERT_TEST, 0x1);
     lsu_write_32(SOC_OTP_CTRL_CHECK_TRIGGER, 0x1);
+    lsu_write_32(SOC_OTP_CTRL_CHECK_TRIGGER, 0x2);
     lsu_write_32(SOC_OTP_CTRL_CHECK_TRIGGER_REGWEN, 0x0);
     lsu_write_32(SOC_OTP_CTRL_DIRECT_ACCESS_REGWEN, 0x0);
 
