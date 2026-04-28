@@ -159,7 +159,7 @@
       name: caliptra_ss_jtag_lcc_st_trans_all_states
       desc: '''
 Perform transitions through all possible states.
-This is done to not depend on randomization to toggle all state bits.
+This is done to not depend on randomization to toggle all tap_hw2reg bits.
             '''
       stage: ""
       tests:
