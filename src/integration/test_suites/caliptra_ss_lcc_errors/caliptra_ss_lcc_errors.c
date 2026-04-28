@@ -142,22 +142,6 @@ void otp_prog_error_delayed(void) {
     }
 }
 
-void otp_prog_error_clk_mux(void) {
-    // Make clock bypass signal unstable in ClkMuxSt state.
-    lsu_write_32(SOC_MCI_TOP_MCI_REG_DEBUG_OUT, CMD_UNSTABLE_CLK_BYP_ACK);
-    lsu_write_32(LC_CTRL_TRANSITION_CTRL_OFFSET, 0x1);
-
-    // Contrary to other tests in this file, this is not a hard error,
-    // but effectively just a delay. The transition is expected to succeed.
-    transition_state_check(TEST_LOCKED0, 0, 0, 0, 0, 0);
-
-    uint32_t status = lsu_read_32(SOC_LC_CTRL_STATUS);
-    if (!((status  >> LC_CTRL_STATUS_TRANSITION_SUCCESSFUL_LOW) & 0x1)) {
-        VPRINTF(LOW, "ERROR: lc transition did not succeed %08X\n", status);
-        SEND_STDOUT_CTRL(TB_CMD_TEST_FAIL);
-    }
-}
-
 void main (void) {
     VPRINTF(LOW, "=================\nMCU Caliptra Boot Go\n=================\n\n")
     
@@ -170,7 +154,7 @@ void main (void) {
     transition_state_check(TEST_UNLOCKED0, raw_unlock_token[0], raw_unlock_token[1], raw_unlock_token[2], raw_unlock_token[3], 1);
 
     initialize_otp_controller();
-    uint16_t i = xorshift32() % 9; // Randomly pick one of the 9 errors to trigger.
+    uint16_t i = xorshift32() % 8; // Randomly pick one of the 8 errors to trigger.
     
     switch (i) {
         case 0: {
@@ -208,14 +192,10 @@ void main (void) {
             flash_rma_error_delayed();
             break;
         }
-        case 7: {
+        default: {
             VPRINTF(LOW, "INFO: triggering delayed otp_prog_error\n");
             otp_prog_error_delayed();
             break;
-        }
-        default: {
-            VPRINTF(LOW, "INFO: triggering otp_prog_error due to unstable bypass signal\n");
-            otp_prog_error_clk_mux();
         }
     }
 

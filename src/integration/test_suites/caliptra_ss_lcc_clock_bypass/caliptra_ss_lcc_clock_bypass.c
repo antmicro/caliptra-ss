@@ -55,6 +55,11 @@ void clock_bypass() {
         loop_ctrl = reg_value & claim_trans_val;
     }
 
+    if (xorshift32() & 1) {
+        // Make clock bypass signal unstable in ClkMuxSt state.
+        lsu_write_32(SOC_MCI_TOP_MCI_REG_DEBUG_OUT, CMD_UNSTABLE_CLK_BYP_ACK);
+    }
+
     // Set TRANSITION_CTRL.VOLATILE_RAW_UNLOCK
     lsu_write_32(LC_CTRL_TRANSITION_CTRL_OFFSET, 0x1);
     wait_dai_op_idle(0);
