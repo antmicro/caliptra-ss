@@ -56,7 +56,7 @@ volatile char* stdout = (char *)SOC_MCI_TOP_MCI_REG_DEBUG_OUT;
 #define LIFECYCLE_MANUFACTURING  (0x1u)
 #define LIFECYCLE_PRODUCTION     (0x3u)
 
-// TEX (TEST_EXIT -> MANUF) token — must match test_unlock_token.hjson
+// TEX (TEST_EXIT -> MANUF) token - must match test_unlock_token.hjson
 static const uint32_t tex_token[4] = {
     0x2f533ae9, 0x341d2478, 0x5f066362, 0xb5fe1577
 };
@@ -182,15 +182,15 @@ void main(void) {
         SEND_STDOUT_CTRL(0x01);
         return;
     }
-    VPRINTF(LOW, "INFO: MANUF state OK — lifecycle=MANUFACTURING(0x%x), debug_locked=%u [%s] (SECURITY_STATE=0x%08x)\n",
+    VPRINTF(LOW, "INFO: MANUF state OK - lifecycle=MANUFACTURING(0x%x), debug_locked=%u [%s] (SECURITY_STATE=0x%08x)\n",
             lifecycle, act_locked, use_debug ? "MANUF_DEBUG" : "MANUF_NON_DEBUG", sec_state);
 
     if (use_scrap) {
-        VPRINTF(LOW, "INFO: SCRAP path — issuing SCRAP transition from MANUF\n");
+        VPRINTF(LOW, "INFO: SCRAP path - issuing SCRAP transition from MANUF\n");
         transition_state(SCRAP, 0, 0, 0, 0, 0);
         wait_dai_op_idle(0);
     } else {
-        VPRINTF(LOW, "INFO: state_error path — injecting state_error into MCI LCC translator\n");
+        VPRINTF(LOW, "INFO: state_error path - injecting state_error into MCI LCC translator\n");
         lsu_write_32(SOC_MCI_TOP_MCI_REG_DEBUG_OUT, CMD_LC_INJECT_STATE_ERROR);
 
         uint32_t locked = 0;
@@ -219,11 +219,11 @@ void main(void) {
     }
     if (!(sec_state & MCI_REG_SECURITY_STATE_DEBUG_LOCKED_MASK)) {
         VPRINTF(LOW, "ERROR: expected debug_locked=1 after %s, SECURITY_STATE=0x%08x\n",
-                use_scrap ? "SCRAP" : "state_error", sec_state);
+                use_scrap ? "SCRAP\n" : "state_error\n", sec_state);
         SEND_STDOUT_CTRL(0x01);
         return;
     }
-    VPRINTF(LOW, "INFO: DEVICE_PRODUCTION confirmed — lifecycle=0x%x, debug_locked=1 (SECURITY_STATE=0x%08x)\n",
+    VPRINTF(LOW, "INFO: DEVICE_PRODUCTION confirmed - lifecycle=0x%x, debug_locked=1 (SECURITY_STATE=0x%08x)\n",
             lifecycle, sec_state);
 
     if (!use_scrap) {
