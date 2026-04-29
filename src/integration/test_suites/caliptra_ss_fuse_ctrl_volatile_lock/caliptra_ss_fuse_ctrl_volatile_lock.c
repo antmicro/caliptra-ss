@@ -44,6 +44,9 @@ void pk_volatile_lock(void) {
         lsu_write_32(SOC_OTP_CTRL_VENDOR_PK_HASH_VOLATILE_LOCK, 0);
         dai_wr(CPTRA_CORE_VENDOR_PK_HASH_1 + i*49, 0xFF, 0, 32, 0);
     }
+    // Make sure that lock doesn't block other partitions
+    lsu_write_32(SOC_OTP_CTRL_VENDOR_PK_HASH_VOLATILE_LOCK, 14);
+    dai_wr(CPTRA_CORE_UDS_SEED, 0xFFFFFFFF, 0xFFFFFFFF, 64, 0);
 }
 
 void main (void) {
