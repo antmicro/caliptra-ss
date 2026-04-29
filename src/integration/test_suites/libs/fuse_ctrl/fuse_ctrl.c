@@ -109,7 +109,7 @@ void initialize_otp_controller(void) {
         for (uint16_t ii = 0; ii < 160; ii++) {
             __asm__ volatile ("nop"); // Sleep loop as "nop"
         }
-    } while (status & 0x80000000);
+    } while (status & OTP_CTRL_STATUS_CHECK_PENDING_MASK);
 }
 
 #define FUSE_CTRL_CMD_DAI_WRITE 0x2

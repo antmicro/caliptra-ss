@@ -315,6 +315,14 @@ This is done to not depend on randomization to toggle all state bits.
       ]
     }
     {
+      name: lcc_check_timeout
+      desc: "Set check timeout to 1 and force consistency or integrity checks to generate error condition."
+      stage: ""
+      tests: [
+        lcc_check_timeout
+      ]
+    }
+    {
       name: mci_err_intr_reg_rand_test
       desc: ""
       stage: ""
