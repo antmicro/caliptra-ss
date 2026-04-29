@@ -20,7 +20,7 @@
 #include <string.h>
 #include <stdint.h>
 #include "printf.h"
-
+#include "soc_address_map.h"
 
 
 /*
@@ -63,15 +63,15 @@ volatile uint32_t* stdout           = (uint32_t *)STDOUT;
 volatile uint32_t  intr_count;
 volatile caliptra_intr_received_s cptra_intr_rcv = {0};
 
-#define FUSE_CTRL_BASE_ADDR (0x70000000)
-#define FUSE_CTRL_STATUS                                                      (FUSE_CTRL_BASE_ADDR + 0x010)
-#define FUSE_CTRL_DIRECT_ACCESS_CMD                                           (FUSE_CTRL_BASE_ADDR + 0x060)
-#define FUSE_CTRL_DIRECT_ACCESS_ADDRESS                                       (FUSE_CTRL_BASE_ADDR + 0x064)
-#define FUSE_CTRL_DIRECT_ACCESS_WDATA_0                                       (FUSE_CTRL_BASE_ADDR + 0x068)
-#define FUSE_CTRL_DIRECT_ACCESS_WDATA_1                                       (FUSE_CTRL_BASE_ADDR + 0x06C)
-#define FUSE_CTRL_DIRECT_ACCESS_RDATA_0                                       (FUSE_CTRL_BASE_ADDR + 0x070)
-#define FUSE_CTRL_DIRECT_ACCESS_RDATA_1                                       (FUSE_CTRL_BASE_ADDR + 0x074)
-#define FUSE_CTRL_STATUS_DAI_IDLE_OFFSET (22)
+#define FUSE_CTRL_BASE_ADDR              (SOC_OTP_CTRL_BASE_ADDR)
+#define FUSE_CTRL_STATUS                 (SOC_OTP_CTRL_STATUS)
+#define FUSE_CTRL_DIRECT_ACCESS_CMD      (SOC_OTP_CTRL_DIRECT_ACCESS_CMD)
+#define FUSE_CTRL_DIRECT_ACCESS_ADDRESS  (SOC_OTP_CTRL_DIRECT_ACCESS_ADDRESS)
+#define FUSE_CTRL_DIRECT_ACCESS_WDATA_0  (SOC_OTP_CTRL_DAI_WDATA_RF_DIRECT_ACCESS_WDATA_0)
+#define FUSE_CTRL_DIRECT_ACCESS_WDATA_1  (SOC_OTP_CTRL_DAI_WDATA_RF_DIRECT_ACCESS_WDATA_1)
+#define FUSE_CTRL_DIRECT_ACCESS_RDATA_0  (SOC_OTP_CTRL_DAI_RDATA_RF_DIRECT_ACCESS_RDATA_0)
+#define FUSE_CTRL_DIRECT_ACCESS_RDATA_1  (SOC_OTP_CTRL_DAI_RDATA_RF_DIRECT_ACCESS_RDATA_1)
+#define FUSE_CTRL_STATUS_DAI_IDLE_OFFSET (OTP_CTRL_STATUS_DAI_IDLE_LOW)
 
 uint32_t dma_read_from_lsu(uint32_t address){
     uint32_t read_data;
@@ -144,9 +144,14 @@ void UDS_provision(uint32_t base_address) {
 
     // 0x580: CPTRA_SS_TEST_EXIT_TO_MANUF_TOKEN
     int i;
+    int data [] = {0xffffffff, 0xffffffff, 0x00000000, 0x00000000,
+                   0x5a5a5a5a, 0x5a5a5a5a, 0xa5a5a5a5, 0xa5a5a5a5,
+                   0x01234567, 0x89abcdef, 0xbeadbeef, 0xbaadf00d,
+                   0x78aef80b, 0x96E4BD00, 0x3AB7DB4E, 0x404D8094,
+    };
     for (i=0;i<8;i++){
-        dai_wr(base_address+i*8, i*2, i*2+1, 64, 0);
-        VPRINTF(LOW, "CLP_CORE: programming %02d item in UDS partition with 0x%08X and 0x%08X...\n",i, i*2, i*2+1);
+        dai_wr(base_address+i*8, data[i*2], data[i*2+1], 64, 0);
+        VPRINTF(LOW, "CLP_CORE: programming %02d item in UDS partition with 0x%08X and 0x%08X...\n",i, data[i*2], data[i*2+1]);
     }
 
     calculate_digest(base_address);
