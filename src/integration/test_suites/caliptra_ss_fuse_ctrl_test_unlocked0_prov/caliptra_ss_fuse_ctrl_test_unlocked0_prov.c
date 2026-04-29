@@ -37,6 +37,8 @@ volatile char* stdout = (char *)SOC_MCI_TOP_MCI_REG_DEBUG_OUT;
     enum printf_verbosity verbosity_g = LOW;
 #endif
 
+volatile int rst_count  = 0;
+
 void test_unlocked0_provision() {
     const uint32_t sentinel = 0xA5;
 
@@ -47,13 +49,15 @@ void test_unlocked0_provision() {
         exit(1);
     }
 
-    uint32_t read_value, zero;
+    uint32_t write_value0, write_value1;
+    uint32_t read_value0, read_value1;
     // Exclude life-cycle partition as it is not writable and
-    // CSR partition as it doesn't contain fuses
-    uint32_t rnd_fuse_addresses[NUM_PARTITIONS-2];
+    // CSR and VENDOR_NON_SECRET_PROD_PARTITION partitions as they don't contain fuses
+    uint32_t rnd_fuse_addresses[NUM_PARTITIONS-3];
+    uint32_t written_value[NUM_PARTITIONS][2];
     uint32_t part_idx;
 
-    for (uint32_t i = 0; i < (NUM_PARTITIONS-2); i++) {
+    for (uint32_t i = 0; i < (NUM_PARTITIONS-3); i++) {
         part_idx = i;
         if (i >= LIFE_CYCLE) part_idx++;
         if (i >= CSR_PARTITION) part_idx++;
@@ -67,24 +71,33 @@ void test_unlocked0_provision() {
         if (partitions[part_idx].address > 0x40 && partitions[part_idx].address < 0xD0) {
             grant_caliptra_core_for_fc_writes();
         } else {
-            grant_mcu_for_fc_writes(); 
+            grant_mcu_for_fc_writes();
         }
 
         rnd_fuse_addresses[i] = partitions[part_idx].fuses[xorshift32() % partitions[part_idx].num_fuses];
-        
-        dai_wr(rnd_fuse_addresses[i], sentinel, 0, partitions[part_idx].granularity, 0);
-        
-        dai_rd(rnd_fuse_addresses[i], &read_value, &zero, partitions[part_idx].granularity, 0);
-        if ((read_value & 0xFF) != sentinel) {
-            VPRINTF(LOW, "ERROR: incorrect value: exp: %08X act: %08X\n", read_value, sentinel);
+
+        write_value0 = xorshift32();
+        write_value1 = xorshift32();
+        dai_wr(rnd_fuse_addresses[i], write_value0, write_value1, partitions[part_idx].granularity, 0);
+        written_value[part_idx][0] = write_value0;
+        written_value[part_idx][1] = write_value1;
+
+        dai_rd(rnd_fuse_addresses[i], &read_value0, &read_value1, partitions[part_idx].granularity, 0);
+        if (read_value0  != write_value0 ||
+            (partitions[part_idx].granularity == 64 && read_value1 != write_value1)
+           ) {
+            VPRINTF(LOW, "ERROR: incorrect value: exp: %08X act: %08X\n", write_value0, read_value0);
+            if (partitions[part_idx].granularity == 64) {
+                VPRINTF(LOW, "ERROR: incorrect value: exp: %08X act: %08X\n", write_value1, read_value1);
+            }
         }
 
         if (partitions[part_idx].sw_digest) {
-            dai_wr(partitions[part_idx].digest_address, sentinel, 0, 64, 0);
+            dai_wr(partitions[part_idx].digest_address, xorshift32();, xorshift32(), 64, 0);
         } else if (partitions[part_idx].hw_digest) {
             calculate_digest(partitions[part_idx].address);
         }
-    } 
+    }
 
     reset_fc_lcc_rtl();
     wait_dai_op_idle(0);
@@ -97,40 +110,53 @@ void test_unlocked0_provision() {
         if (partitions[part_idx].address > 0x40 && partitions[part_idx].address < 0xD0) {
             grant_caliptra_core_for_fc_writes();
         } else {
-            grant_mcu_for_fc_writes(); 
+            grant_mcu_for_fc_writes();
         }
 
         if (partitions[part_idx].sw_digest || partitions[part_idx].hw_digest) {
-            dai_wr(rnd_fuse_addresses[i], sentinel, 0, partitions[part_idx].granularity, OTP_CTRL_STATUS_DAI_ERROR_MASK);
+            dai_wr(rnd_fuse_addresses[i], xorshift32(), xorshift32(), partitions[part_idx].granularity, OTP_CTRL_STATUS_DAI_ERROR_MASK);
         }
-        
+
         if (partitions[part_idx].sw_digest) {
-            dai_rd(rnd_fuse_addresses[i], &read_value, &zero, partitions[part_idx].granularity, 0);
-            if ((read_value & 0xFF) != sentinel) {
-                VPRINTF(LOW, "ERROR: incorrect value: exp: %08X act: %08X\n", read_value, sentinel);
+            dai_rd(rnd_fuse_addresses[i], &read_value0, &read_value1, partitions[part_idx].granularity, 0);
+            if (read_value0 != written_value[part_idx][0] ||
+                (partitions[part_idx].granularity == 64 && read_value1 != written_value[part_idx][1])
+               ) {
+                VPRINTF(LOW, "ERROR: incorrect value: exp: %08X act: %08X\n", written_value[part_idx][0], read_value0);
+                written_value[part_idx][0] {
+                    VPRINTF(LOW, "ERROR: incorrect value: exp: %08X act: %08X\n", written_value[part_idx][1], read_value1);
+                }
             }
         }
-    } 
+    }
 }
 
 void main (void) {
-    VPRINTF(LOW, "=================\nMCU Caliptra Boot Go\n=================\n\n")
-    
-    mcu_cptra_init_d();
-    wait_dai_op_idle(0);
-      
-    lcc_initialization();
-    grant_mcu_for_fc_writes(); 
+    if (rst_count == 0) {
+        rst_count += 1;
+        VPRINTF(LOW, "=================\nMCU Caliptra Boot Go\n=================\n\n")
 
-    transition_state_check(TEST_UNLOCKED0, raw_unlock_token[0], raw_unlock_token[1], raw_unlock_token[2], raw_unlock_token[3], 1);
+        mcu_cptra_init_d();
+        wait_dai_op_idle(0);
 
-    initialize_otp_controller();
+        lcc_initialization();
+        grant_mcu_for_fc_writes();
 
-    test_unlocked0_provision();
+        transition_state_check(TEST_UNLOCKED0, raw_unlock_token[0], raw_unlock_token[1], raw_unlock_token[2], raw_unlock_token[3], 1);
 
-    for (uint8_t ii = 0; ii < 160; ii++) {
-        __asm__ volatile ("nop"); // Sleep loop as "nop"
+        initialize_otp_controller();
+
+        test_unlocked0_provision();
+
+        SEND_STDOUT_CTRL(TB_CMD_COLD_RESET);
+        for (uint8_t ii = 0; ii < 160; ii++) {
+            __asm__ volatile ("nop"); // Sleep loop as "nop"
+        }
+    } else if (rst_count == 1) {
+        SEND_STDOUT_CTRL(0xff);
+
+        for (uint8_t ii = 0; ii < 160; ii++) {
+            __asm__ volatile ("nop"); // Sleep loop as "nop"
+        }
     }
-
-    SEND_STDOUT_CTRL(0xff);
 }

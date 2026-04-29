@@ -36,6 +36,8 @@ volatile char* stdout = (char *)SOC_MCI_TOP_MCI_REG_DEBUG_OUT;
     enum printf_verbosity verbosity_g = LOW;
 #endif
 
+volatile int rst_count  = 0;
+
 void read_lock(void) {
     // Collect all read-lockable partitions.
     partition_t part_sel[NUM_PARTITIONS];
@@ -45,7 +47,7 @@ void read_lock(void) {
         if (partitions[i].has_read_lock) {
             part_sel[count++] = partitions[i];
         }
-    } 
+    }
 
     const uint32_t register_addresses[] = {
         SOC_OTP_CTRL_SW_MANUF_PARTITION_READ_LOCK,
@@ -66,21 +68,30 @@ void read_lock(void) {
 }
 
 void main (void) {
-    VPRINTF(LOW, "=================\nMCU Caliptra Boot Go\n=================\n\n")
-    
-    mcu_cptra_init_d();
-    wait_dai_op_idle(0);
-      
-    lcc_initialization();
-    grant_mcu_for_fc_writes(); 
+    if (rst_count == 0) {
+        rst_count += 1;
+        VPRINTF(LOW, "=================\nMCU Caliptra Boot Go\n=================\n\n")
 
-    initialize_otp_controller();
+        mcu_cptra_init_d();
+        wait_dai_op_idle(0);
 
-    read_lock();
+        lcc_initialization();
+        grant_mcu_for_fc_writes();
 
-    for (uint8_t ii = 0; ii < 160; ii++) {
-        __asm__ volatile ("nop"); // Sleep loop as "nop"
+        initialize_otp_controller();
+
+        read_lock();
+
+        SEND_STDOUT_CTRL(TB_CMD_COLD_RESET);
+
+        for (uint8_t ii = 0; ii < 160; ii++) {
+            __asm__ volatile ("nop"); // Sleep loop as "nop"
+        }
+    } else if (rst_count == 1) {
+        SEND_STDOUT_CTRL(0xff);
+
+        for (uint8_t ii = 0; ii < 160; ii++) {
+            __asm__ volatile ("nop"); // Sleep loop as "nop"
+        }
     }
-
-    SEND_STDOUT_CTRL(0xff);
 }
