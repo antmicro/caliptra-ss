@@ -70,8 +70,10 @@ void test_unlocked0_provision() {
 
         if (partitions[part_idx].address > 0x40 && partitions[part_idx].address < 0xD0) {
             grant_caliptra_core_for_fc_writes();
+            SEND_STDOUT_CTRL(CMD_DISABLE_CPTR_DEBUG);
         } else {
             grant_mcu_for_fc_writes();
+            SEND_STDOUT_CTRL(CMD_RELEASE_CPTR_DEBUG);
         }
 
         rnd_fuse_addresses[i] = partitions[part_idx].fuses[xorshift32() % partitions[part_idx].num_fuses];
@@ -109,8 +111,10 @@ void test_unlocked0_provision() {
 
         if (partitions[part_idx].address > 0x40 && partitions[part_idx].address < 0xD0) {
             grant_caliptra_core_for_fc_writes();
+            SEND_STDOUT_CTRL(CMD_DISABLE_CPTR_DEBUG);
         } else {
             grant_mcu_for_fc_writes();
+            SEND_STDOUT_CTRL(CMD_RELEASE_CPTR_DEBUG);
         }
 
         if (partitions[part_idx].sw_digest || partitions[part_idx].hw_digest) {
