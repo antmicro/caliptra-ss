@@ -60,12 +60,12 @@ array set trans_matrix {
    20,0 13   20,1 13   20,2 13   20,3 13   20,4 13   20,5 13   20,6 13   20,7 13   20,8 13   20,9 13   20,10 13    20,11 13   20,12 13   20,13 13   20,14 13   20,15 13   20,16 13   20,17 13   20,18 13   20,19 13   20,20 13
 }
 
-# Number of LC states.
-set num_lc_states 21
+proc kill_sim {} {
+    write_memory 0x21000414 32 0x01 phys
+    shutdown error
+}
 
-# Randomly choose the next LC state among the all valid ones
-# based on the current state and repeat this until the SCRAP
-# state is reached.
+# Iterate over all LC states in order until the SCRAP state is reached.
 set end 0
 while {$end != 1} {
     lcc_initialization
@@ -75,60 +75,76 @@ while {$end != 1} {
     set lc_cnt_curr   [read_lc_counter]
     set lc_cnt_next   [expr {$lc_cnt_curr + 1}]
 
-    # Transition from PROD_END to RMA not possible, skip it
-    if {$lc_cnt_curr == 18} {
-        set lc_cnt_next   [expr {$lc_cnt_next + 1}]
+    # Transition from PROD_END (18) to RMA (19) isn't possible, choose one of
+    # them at random when transitioning from PROD (17)
+    if {$lc_state_curr == 17} {
+        set lc_state_next   [expr {$lc_state_curr + 1 + int(rand()*2)}]
+    }
+    # PROD_END (18) -> SCRAP (20), skipping RMA (19)
+    if {$lc_state_curr == 18} {
+        set lc_state_next   [expr {$lc_state_curr + 2}]
+    }
+
+    # If we unexpectedly reached SCRAP (20), end test.
+    if {$lc_state_curr >= 20} {
+        puts "ERROR: ended up in unexpected state: $lc_cnt_curr"
+        kill_sim
     }
 
     # If we reached the max state counter (24), end test.
-    if {$lc_cnt_curr != 24} {
-        puts "current_state $lc_state_curr current_cntn $lc_cnt_curr"
+    if {$lc_cnt_curr >= 24} {
+        puts "ERROR: hit the max state counter before reaching SCRAP"
+        kill_sim
+    }
 
-        set token_type $trans_matrix($lc_state_curr,$lc_state_next)
-        # Check if we need an unlock token.
-        # If token_type == ZER (12) then do not use a token.
-        set use_token [expr {$token_type == 12 ? 0 : 1}]
-        # Get unlock token, 0 token of no token is needed.
-        set t0   $tokens($token_type,0)
-        set t1   $tokens($token_type,1)
-        set t2   $tokens($token_type,2)
-        set t3   $tokens($token_type,3)
-        # Print the token.
-        puts "Using table tokens for state $lc_state_next: \
-            [format 0x%08X $t0] [format 0x%08X $t1] \
-            [format 0x%08X $t2] [format 0x%08X $t3] (cond=$use_token)"
-        # Now conduct the state transition.
-        transition_state $lc_state_next $t0 $t1 $t2 $t3 $use_token
-        while {1} {
-            # Wait until we got a different state that the current one that is not
-            # POST_TRANSITION (21) or INVALID (23).
-            after 1000
-            set lc_state_tmp [read_lc_state]
-            if {($lc_state_tmp != $lc_state_curr) && ($lc_state_tmp != 21) && ($lc_state_tmp != 23)} {
-                break
-            }
+    puts "current_state $lc_state_curr current_cnt $lc_cnt_curr"
+
+    set token_type $trans_matrix($lc_state_curr,$lc_state_next)
+    if {$token_type >= 13} {
+        # This shouldn't happen, it indicates a bug in the test
+        puts "ERROR: invalid transition from $lc_state_curr to $lc_state_next, fix test code"
+        kill_sim
+    }
+
+    # Check if we need an unlock token.
+    # If token_type == ZER (12) then do not use a token.
+    set use_token [expr {$token_type == 12 ? 0 : 1}]
+    # Get unlock token, 0 token of no token is needed.
+    set t0   $tokens($token_type,0)
+    set t1   $tokens($token_type,1)
+    set t2   $tokens($token_type,2)
+    set t3   $tokens($token_type,3)
+    # Print the token.
+    puts "Using table tokens for state $lc_state_next: \
+        [format 0x%08X $t0] [format 0x%08X $t1] \
+        [format 0x%08X $t2] [format 0x%08X $t3] (cond=$use_token)"
+    # Now conduct the state transition.
+    transition_state $lc_state_next $t0 $t1 $t2 $t3 $use_token
+    while {1} {
+        # Wait until we got a different state that the current one that is not
+        # POST_TRANSITION (21) or INVALID (23).
+        after 1000
+        set lc_state_tmp [read_lc_state]
+        if {($lc_state_tmp != $lc_state_curr) && ($lc_state_tmp != 21) && ($lc_state_tmp != 23)} {
+            break
         }
-        # If lc_state_next != SCRAP (20).
-        if {$lc_state_next != 20} {
-            # Check if we are in the right state.
-            set lc_state_curr [read_lc_state]
-            if {$lc_state_curr != $lc_state_next} {
-                puts "ERROR: incorrect state: exp: $lc_state_next, act: $lc_state_curr"
-                exit 1
-            }
-            # Check if we reached the expected lc counter.
-            set lc_cnt_curr   [read_lc_counter]
-            if {$lc_cnt_curr != $lc_cnt_next} {
-                puts "ERROR: incorrect counter: exp: $lc_cnt_next, act: $lc_cnt_curr"
-                exit 1
-            }
-        } else {
-            # We reached the final SCRAP state, end test.
-            puts "Info: Reached the final SCRAP state."
-            set end 1
-        }
-    } else {
-        # Reached the max state counter (24), end test.
+    }
+    # Check if we are in the right state.
+    set lc_state_curr [read_lc_state]
+    if {$lc_state_curr != $lc_state_next} {
+        puts "ERROR: incorrect state: exp: $lc_state_next, act: $lc_state_curr"
+        kill_sim
+    }
+    # Check if we reached the expected lc counter.
+    set lc_cnt_curr   [read_lc_counter]
+    if {$lc_cnt_curr != $lc_cnt_next} {
+        puts "ERROR: incorrect counter: exp: $lc_cnt_next, act: $lc_cnt_curr"
+        kill_sim
+    }
+    # If lc_state_next == SCRAP (20).
+    if {$lc_state_next == 20} {
+        # We reached the final SCRAP state, end test.
+        puts "Info: Reached the final SCRAP state."
         set end 1
     }
 }
