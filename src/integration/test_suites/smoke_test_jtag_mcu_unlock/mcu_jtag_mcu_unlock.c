@@ -42,37 +42,44 @@ volatile char* stdout = (char *)SOC_MCI_TOP_MCI_REG_DEBUG_OUT;
     enum printf_verbosity verbosity_g = LOW;
 #endif
 
+volatile int rst_count  = 0;
+
 void main (void) {
 
-    uint32_t cptra_boot_go;
+    if (rst_count == 0) {
+        rst_count += 1;
+        uint32_t cptra_boot_go;
 
-    // Writing to Caliptra Boot GO register of MCI for CSS BootFSM to bring Caliptra out of reset 
-    // This is just to see CSSBootFSM running correctly
-    lsu_write_32(SOC_MCI_TOP_MCI_REG_CPTRA_BOOT_GO, 1);
-    VPRINTF(LOW, "MCU: Writing MCI SOC_MCI_TOP_MCI_REG_CALIPTRA_BOOT_GO\n");
+        // Writing to Caliptra Boot GO register of MCI for CSS BootFSM to bring Caliptra out of reset
+        // This is just to see CSSBootFSM running correctly
+        lsu_write_32(SOC_MCI_TOP_MCI_REG_CPTRA_BOOT_GO, 1);
+        VPRINTF(LOW, "MCU: Writing MCI SOC_MCI_TOP_MCI_REG_CALIPTRA_BOOT_GO\n");
 
-    cptra_boot_go = lsu_read_32(SOC_MCI_TOP_MCI_REG_CPTRA_BOOT_GO);
-    VPRINTF(LOW, "MCU: Reading SOC_MCI_TOP_MCI_REG_CALIPTRA_BOOT_GO %x\n", cptra_boot_go);
+        cptra_boot_go = lsu_read_32(SOC_MCI_TOP_MCI_REG_CPTRA_BOOT_GO);
+        VPRINTF(LOW, "MCU: Reading SOC_MCI_TOP_MCI_REG_CALIPTRA_BOOT_GO %x\n", cptra_boot_go);
 
-    // Wait for ready_for_fuses
-    while(!(lsu_read_32(SOC_SOC_IFC_REG_CPTRA_FLOW_STATUS) & SOC_IFC_REG_CPTRA_FLOW_STATUS_READY_FOR_FUSES_MASK));
+        // Wait for ready_for_fuses
+        while(!(lsu_read_32(SOC_SOC_IFC_REG_CPTRA_FLOW_STATUS) & SOC_IFC_REG_CPTRA_FLOW_STATUS_READY_FOR_FUSES_MASK));
 
-    lcc_initialization();
-    transition_state(TEST_UNLOCKED0, raw_unlock_token[0], raw_unlock_token[1], raw_unlock_token[2], raw_unlock_token[3], 1);
-    reset_fc_lcc_rtl();
+        lcc_initialization();
+        transition_state(TEST_UNLOCKED0, raw_unlock_token[0], raw_unlock_token[1], raw_unlock_token[2], raw_unlock_token[3], 1);
+        reset_fc_lcc_rtl();
 
-    // Initialize fuses
-    lsu_write_32(SOC_SOC_IFC_REG_CPTRA_FUSE_WR_DONE, SOC_IFC_REG_CPTRA_FUSE_WR_DONE_DONE_MASK);
-    VPRINTF(LOW, "MCU: Set fuse wr done\n");
+        // Initialize fuses
+        lsu_write_32(SOC_SOC_IFC_REG_CPTRA_FUSE_WR_DONE, SOC_IFC_REG_CPTRA_FUSE_WR_DONE_DONE_MASK);
+        VPRINTF(LOW, "MCU: Set fuse wr done\n");
 
-    for (uint16_t ii = 0; ii < 1000; ii++) {
-        __asm__ volatile ("nop"); // Sleep loop as "nop"
+        for (uint16_t ii = 0; ii < 1000; ii++) {
+            __asm__ volatile ("nop"); // Sleep loop as "nop"
+        }
+
+        //Sync phrase for JTAG
+        VPRINTF(LOW, "=================\n CALIPTRA_SS JTAG MCU Smoke Test with ROM \n=================\n\n");
+
+        VPRINTF(LOW, "MCU: waits until JTAG done\n");
+        while(1);
+    } else if (rst_count == 1) {
+        SEND_STDOUT_CTRL(0xff);
+        while(1);
     }
-
-    //Sync phrase for JTAG
-    VPRINTF(LOW, "=================\n CALIPTRA_SS JTAG MCU Smoke Test with ROM \n=================\n\n");
-    
-    VPRINTF(LOW, "MCU: waits until JTAG done\n");
-    while(1);
-    
 }

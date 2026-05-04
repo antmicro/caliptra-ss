@@ -19,6 +19,7 @@
 #include "riscv_hw_if.h"
 #include "soc_ifc.h"
 #include "caliptra_ss_lc_ctrl_address_map.h"
+#include "caliptra_ss_lib.h"
 #include <string.h>
 #include <stdint.h>
 #include <time.h>
@@ -37,8 +38,8 @@ void main (void) {
     VPRINTF(LOW, "=================\nHello World from MCU SRAM\n=================\n");
 
     VPRINTF(LOW, "MCU: JTAG work is done\n");
-    
-    SEND_STDOUT_CTRL(0xff);
+    VPRINTF(LOW, "MCU: Trigger cold reset\n");
+    SEND_STDOUT_CTRL(TB_CMD_COLD_RESET);
 
     while(1);
 
