@@ -95,7 +95,7 @@ void test_unlocked0_provision() {
         }
 
         if (partitions[part_idx].sw_digest) {
-            dai_wr(partitions[part_idx].digest_address, xorshift32();, xorshift32(), 64, 0);
+            dai_wr(partitions[part_idx].digest_address, xorshift32(), xorshift32(), 64, 0);
         } else if (partitions[part_idx].hw_digest) {
             calculate_digest(partitions[part_idx].address);
         }
@@ -127,7 +127,7 @@ void test_unlocked0_provision() {
                 (partitions[part_idx].granularity == 64 && read_value1 != written_value[part_idx][1])
                ) {
                 VPRINTF(LOW, "ERROR: incorrect value: exp: %08X act: %08X\n", written_value[part_idx][0], read_value0);
-                written_value[part_idx][0] {
+                if (partitions[part_idx].granularity == 64) {
                     VPRINTF(LOW, "ERROR: incorrect value: exp: %08X act: %08X\n", written_value[part_idx][1], read_value1);
                 }
             }
