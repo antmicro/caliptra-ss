@@ -93,8 +93,8 @@ void main (void) {
         0x8db3e5ea, 0x8d489c51, 0x90e26b42, 0xaf9369e
     };
     // VPRINTF(LOW, "=================\nMCU Caliptra Boot Go\n=================\n\n")
-    
-    // Writing to Caliptra Boot GO register of MCI for CSS BootFSM to bring Caliptra out of reset 
+
+    // Writing to Caliptra Boot GO register of MCI for CSS BootFSM to bring Caliptra out of reset
     // This is just to see CSSBootFSM running correctly
     mcu_mci_boot_go();
     ////////////////////////////////////
@@ -123,10 +123,18 @@ void main (void) {
         VPRINTF(LOW, "MCU: writing PROD_dbg_pk[%02d] to address 0x%08X = 0x%08X\n", i, addr, PROD_dbg_pk[i]);
         lsu_write_32(addr, PROD_dbg_pk[i]);
     }
-     
+
+    // Enable all debug levels
+    lsu_write_32(SOC_MCI_TOP_MCI_REG_SOC_DFT_EN_0, 0xFFFFFFFF);
+    lsu_write_32(SOC_MCI_TOP_MCI_REG_SOC_DFT_EN_1, 0xFFFFFFFF);
+    lsu_write_32(SOC_MCI_TOP_MCI_REG_SOC_HW_DEBUG_EN_0, 0xFFFFFFFF);
+    lsu_write_32(SOC_MCI_TOP_MCI_REG_SOC_HW_DEBUG_EN_1, 0xFFFFFFFF);
+    lsu_write_32(SOC_MCI_TOP_MCI_REG_SOC_PROD_DEBUG_STATE_0, 0xFFFFFFFF);
+    lsu_write_32(SOC_MCI_TOP_MCI_REG_SOC_PROD_DEBUG_STATE_1, 0xFFFFFFFF);
+
     // Initialize fuses
     lsu_write_32(SOC_SOC_IFC_REG_CPTRA_FUSE_WR_DONE, SOC_IFC_REG_CPTRA_FUSE_WR_DONE_DONE_MASK);
-    VPRINTF(LOW, "MCU: Set fuse wr done\n");  
+    VPRINTF(LOW, "MCU: Set fuse wr done\n");
 
     cptra_boot_go = 0;
     VPRINTF(LOW, "MCU: waits in success loop\n");
@@ -142,6 +150,14 @@ void main (void) {
     for (uint32_t ii = 0; ii < 5000; ii++) {
         __asm__ volatile ("nop"); // Sleep loop as "nop"
     }
+
+    // Disable all debug levels
+    lsu_write_32(SOC_MCI_TOP_MCI_REG_SOC_DFT_EN_0, 0);
+    lsu_write_32(SOC_MCI_TOP_MCI_REG_SOC_DFT_EN_1, 0);
+    lsu_write_32(SOC_MCI_TOP_MCI_REG_SOC_HW_DEBUG_EN_0, 0);
+    lsu_write_32(SOC_MCI_TOP_MCI_REG_SOC_HW_DEBUG_EN_1, 0);
+    lsu_write_32(SOC_MCI_TOP_MCI_REG_SOC_PROD_DEBUG_STATE_0, 0);
+    lsu_write_32(SOC_MCI_TOP_MCI_REG_SOC_PROD_DEBUG_STATE_1, 0);
 
 
     SEND_STDOUT_CTRL(0xff);
