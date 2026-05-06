@@ -262137,10 +262137,8 @@ module fc_lcc_tb_services (
     end
     always_comb begin
       if (fault_active_q) begin
-        force caliptra_ss_top_tb.u_otp.u_prim_ram_1p_adv.u_mem.mem[PartitionOffsetsAndDigests[i][0] / 2][15:0] = (before_fault_q[i] ^
-                                                                     fault_mask_q[i]);
       end else begin
-        release caliptra_ss_top_tb.u_otp.u_prim_ram_1p_adv.u_mem.mem[PartitionOffsetsAndDigests[i][0] / 2][15:0];
+
       end
     end
   end
