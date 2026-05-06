@@ -223,14 +223,14 @@ module fc_lcc_tb_services (
           end
           CMD_LC_INJECT_INVALID_OTP_STATE: begin
             $display("fc_lcc_tb_services: injecting invalid otp_static_state into MCI LCC state translator");
-            $assertoff(0, `MCI_PATH.LCC_state_translator.NonDebugUnlockedCheck_A);
+            //$assertoff(0, `MCI_PATH.LCC_state_translator.NonDebugUnlockedCheck_A);
             $assertoff(0, `MCI_PATH.LCC_state_translator.DebugLockedCheck_A);
             force `MCI_PATH.LCC_state_translator.otp_static_state = {10{32'hFFFF_FFFF}};
           end
           CMD_LC_RELEASE_OTP_STATE: begin
             $display("fc_lcc_tb_services: releasing otp_static_state injection in MCI LCC state translator");
             release `MCI_PATH.LCC_state_translator.otp_static_state;
-            $asserton(0, `MCI_PATH.LCC_state_translator.NonDebugUnlockedCheck_A);
+            //$asserton(0, `MCI_PATH.LCC_state_translator.NonDebugUnlockedCheck_A);
             $asserton(0, `MCI_PATH.LCC_state_translator.DebugLockedCheck_A);
           end
           default: begin
