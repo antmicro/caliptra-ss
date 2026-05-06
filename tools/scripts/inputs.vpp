@@ -20902,7 +20902,6 @@ module axi_sub_rd import axi_pkg::*; #(
 ) (
     input clk,
     input rst_n,
-    axi_if.r_sub s_axi_if,
     output logic          dv,
     output logic [AW-1:0] addr,  
     output logic [UW-1:0] user,
@@ -20942,7 +20941,7 @@ module axi_sub_rd import axi_pkg::*; #(
     xfer_ctx_t [C_LAT+1:0]          dp_xfer_ctx;
     logic      [C_LAT+1:0]          dp_rvalid;
     logic      [C_LAT+1:0]          dp_rready;
-    assign s_axi_if.arready = axi_out_of_rst && (!txn_active || txn_final_beat);
+
     always_ff@(posedge clk or negedge rst_n) begin
         if (!rst_n) begin
             axi_out_of_rst <= 1'b0;
@@ -20955,9 +20954,6 @@ module axi_sub_rd import axi_pkg::*; #(
         if (!rst_n) begin
             txn_active <= 1'b0;
         end
-        else if (s_axi_if.arvalid && s_axi_if.arready) begin
-            txn_active <= 1'b1;
-        end
         else if (txn_final_beat) begin
             txn_active <= 1'b0;
         end
@@ -20969,26 +20965,6 @@ module axi_sub_rd import axi_pkg::*; #(
         if (!rst_n) begin
             txn_ctx <= '{default:0, burst:AXI_BURST_FIXED};
             txn_cnt <= '0;
-        end
-        else if (s_axi_if.arvalid && s_axi_if.arready) begin
-            txn_ctx.addr  <= s_axi_if.araddr[AW-1:0];
-            txn_ctx.burst <= axi_burst_e'(s_axi_if.arburst);
-            txn_ctx.size  <= s_axi_if.arsize;
-            txn_ctx.len   <= s_axi_if.arlen ;
-            txn_ctx.user  <= s_axi_if.aruser;
-            txn_ctx.id    <= s_axi_if.arid  ;
-            txn_ctx.lock  <= s_axi_if.arlock;
-            txn_cnt       <= s_axi_if.arlen ;
-        end
-        else if (txn_rvalid[0]) begin
-            txn_ctx.addr  <= txn_addr_nxt;
-            txn_ctx.burst <= txn_ctx.burst;
-            txn_ctx.size  <= txn_ctx.size;
-            txn_ctx.len   <= txn_ctx.len ;
-            txn_ctx.user  <= txn_ctx.user;
-            txn_ctx.id    <= txn_ctx.id  ;
-            txn_ctx.lock  <= txn_ctx.lock;
-            txn_cnt       <= |txn_cnt ? txn_cnt - 1 : txn_cnt;  
         end
     end
     assign dv = txn_active && &dp_rready[C_LAT:0];
@@ -21059,13 +21035,6 @@ module axi_sub_rd import axi_pkg::*; #(
             );
         end: DATA_PIPELINE
     endgenerate
-    assign dp_rready[C_LAT+1] = s_axi_if.rready;
-    assign s_axi_if.rvalid = dp_rvalid[C_LAT+1];
-    assign s_axi_if.rlast  = dp_xfer_ctx[C_LAT+1].last;
-    assign s_axi_if.rdata  = dp_rdata[C_LAT+1];
-    assign s_axi_if.rid    = dp_xfer_ctx[C_LAT+1].id;
-    assign s_axi_if.ruser  = '0;
-    assign s_axi_if.rresp  = dp_xfer_ctx[C_LAT+1].resp;
     genvar sva_ii;
     generate
         if (C_LAT > 0) begin
@@ -21086,7 +21055,6 @@ module axi_sub_wr import axi_pkg::*; #(
 ) (
     input clk,
     input rst_n,
-    axi_if.w_sub s_axi_if,
     output logic          dv,
     output logic [AW-1:0] addr,  
     output logic [UW-1:0] user,
@@ -21136,15 +21104,6 @@ module axi_sub_wr import axi_pkg::*; #(
             axi_out_of_rst <= 1'b1;
         end
     end
-    assign axi_awvalid_q    = s_axi_if.awvalid & axi_out_of_rst;
-    assign s_axi_if.awready = axi_awready_q    & axi_out_of_rst;
-    assign s_axi_if_ctx.addr  = s_axi_if.awaddr[AW-1:0] ;
-    assign s_axi_if_ctx.burst = axi_burst_e'(s_axi_if.awburst);
-    assign s_axi_if_ctx.size  = s_axi_if.awsize ;
-    assign s_axi_if_ctx.len   = s_axi_if.awlen  ;
-    assign s_axi_if_ctx.user  = s_axi_if.awuser ;
-    assign s_axi_if_ctx.id    = s_axi_if.awid   ;
-    assign s_axi_if_ctx.lock  = 1'b0;
     skidbuffer #(
         .OPT_LOWPOWER   (0   ),
         .OPT_OUTREG     (0   ),
@@ -21160,7 +21119,7 @@ module axi_sub_wr import axi_pkg::*; #(
         .i_ready(req_ready       ),
         .o_data (req_ctx         )
     );
-    assign req_ready = (!txn_active || (txn_final_beat && !s_axi_if.bvalid)) && rp_ready;
+
     always_ff@(posedge clk or negedge rst_n) begin
         if (!rst_n) begin
             txn_active <= 1'b0;
@@ -21221,51 +21180,13 @@ module axi_sub_wr import axi_pkg::*; #(
         .i_len      (txn_ctx.len  ),
         .o_next_addr(txn_addr_nxt )
     );
-    assign txn_wvalid = s_axi_if.wvalid && txn_active;
-    assign s_axi_if.wready = txn_wready && txn_active;
-    skidbuffer #(
-        .OPT_LOWPOWER   (0   ),
-        .OPT_OUTREG     (0   ),
-        .OPT_PASSTHROUGH(0   ),
-        .DW             (DW + BC + 1)
-    ) i_dp_skd (
-        .i_clk  (clk             ),
-        .i_reset(rst_n           ),
-        .i_valid(txn_wvalid      ),
-        .o_ready(txn_wready      ),
-        .i_data ({s_axi_if.wdata,
-                  s_axi_if.wstrb,
-                  s_axi_if.wlast}),
-        .o_valid(dv_pre          ),
-        .i_ready(!hld            ),
-        .o_data ({wdata,
-                  wstrb,
-                  last }         )
-    );
     assign dv = dv_pre && txn_allow;
     assign rp_valid = txn_final_beat;
     assign rp_resp  = txn_allow && (txn_err || err) ? AXI_RESP_SLVERR :
                       txn_allow && txn_ctx.lock     ? AXI_RESP_EXOKAY :
                                                       AXI_RESP_OKAY;
     assign rp_id    = txn_ctx.id;
-    skidbuffer #(
-        .OPT_LOWPOWER   (0   ),
-        .OPT_OUTREG     (1   ),
-        .OPT_PASSTHROUGH(0   ),
-        .DW             (IW + $bits(axi_resp_e))
-    ) i_rsp_skd (
-        .i_clk  (clk             ),
-        .i_reset(rst_n           ),
-        .i_valid(rp_valid        ),
-        .o_ready(rp_ready        ),
-        .i_data ({rp_resp,
-                  rp_id}         ),
-        .o_valid(s_axi_if.bvalid ),
-        .i_ready(s_axi_if.bready ),
-        .o_data ({s_axi_if.bresp,
-                  s_axi_if.bid}  )
-    );
-    assign s_axi_if.buser = '0;
+
 endmodule
 `begin_keywords "1800-2023"
 module axi_sub_arb import axi_pkg::*; #(
@@ -21362,8 +21283,6 @@ module axi_sub import axi_pkg::*; #(
 ) (
     input clk,
     input rst_n,
-    axi_if.w_sub s_axi_w_if,
-    axi_if.r_sub s_axi_r_if,
     output logic          dv,
     output logic [AW-1:0] addr,  
     output logic          write,
@@ -21405,7 +21324,6 @@ module axi_sub import axi_pkg::*; #(
     ) i_axi_sub_wr (
         .clk  (clk  ),
         .rst_n(rst_n),
-        .s_axi_if(s_axi_w_if),
         .dv   (w_dv   ),
         .addr (w_addr ),
         .user (w_user ),
@@ -21426,7 +21344,6 @@ module axi_sub import axi_pkg::*; #(
     ) i_axi_sub_rd (
         .clk  (clk  ),
         .rst_n(rst_n),
-        .s_axi_if(s_axi_r_if),
         .dv   (r_dv   ),
         .addr (r_addr ),
         .user (r_user ),
@@ -21493,9 +21410,7 @@ module caliptra_axi_sram #(
 )
 (
     input clk,
-    input rst_n,
-    axi_if.w_sub s_axi_w_if,
-    axi_if.r_sub s_axi_r_if
+    input rst_n
 );
 logic          dv;
 logic [AW-1:0] addr;  
@@ -21515,8 +21430,6 @@ axi_sub #(
 ) i_axi_sub (
     .clk  (clk     ),
     .rst_n(rst_n   ),
-    .s_axi_w_if(s_axi_w_if),
-    .s_axi_r_if(s_axi_r_if),
     .dv      (dv      ),
     .addr    (addr    ),  
     .write   (write   ),
@@ -99497,8 +99410,6 @@ module axi_mem #(
 (
     input clk,
     input rst_n,
-    axi_if.w_sub s_axi_w_if,
-    axi_if.r_sub s_axi_r_if,
     axi_mem_if.request s_mem_req_if
 );
 logic          dv;
@@ -99519,8 +99430,6 @@ axi_sub #(
 ) i_axi_sub (
     .clk  (clk     ),
     .rst_n(rst_n   ),
-    .s_axi_w_if(s_axi_w_if),
-    .s_axi_r_if(s_axi_r_if),
     .dv      (dv      ),
     .addr    (addr    ),  
     .write   (write   ),
@@ -123779,8 +123688,6 @@ module axi2tlul
     ) i_axi_sub (
         .clk    (clk    ),
         .rst_n  (rst_n  ),
-        .s_axi_w_if     (s_axi_w_if ),
-        .s_axi_r_if     (s_axi_r_if ), 
         .dv     (dv     ),
         .addr   (addr   ),
         .write  (write  ),
@@ -153724,7 +153631,6 @@ module i3c_axi_sub_rd import axi_pkg::*; #(
 ) (
     input clk,
     input rst_n,
-    axi_if.r_sub s_axi_if,
     output logic          dv,
     output logic [AW-1:0] addr,  
     output logic [UW-1:0] user,
@@ -153764,7 +153670,7 @@ module i3c_axi_sub_rd import axi_pkg::*; #(
     xfer_ctx_t [C_LAT+1:0]          dp_xfer_ctx;
     logic      [C_LAT+1:0]          dp_rvalid;
     logic      [C_LAT+1:0]          dp_rready;
-    assign s_axi_if.arready = axi_out_of_rst && (!txn_active || txn_final_beat);
+
     always_ff@(posedge clk or negedge rst_n) begin
         if (!rst_n) begin
             axi_out_of_rst <= 1'b0;
@@ -153777,9 +153683,6 @@ module i3c_axi_sub_rd import axi_pkg::*; #(
         if (!rst_n) begin
             txn_active <= 1'b0;
         end
-        else if (s_axi_if.arvalid && s_axi_if.arready) begin
-            txn_active <= 1'b1;
-        end
         else if (txn_final_beat) begin
             txn_active <= 1'b0;
         end
@@ -153791,16 +153694,6 @@ module i3c_axi_sub_rd import axi_pkg::*; #(
         if (!rst_n) begin
             txn_ctx <= '{default:0, burst:AXI_BURST_FIXED};
             txn_cnt <= '0;
-        end
-        else if (s_axi_if.arvalid && s_axi_if.arready) begin
-            txn_ctx.addr  <= s_axi_if.araddr[AW-1:0];
-            txn_ctx.burst <= axi_burst_e'(s_axi_if.arburst);
-            txn_ctx.size  <= s_axi_if.arsize;
-            txn_ctx.len   <= s_axi_if.arlen ;
-            txn_ctx.user  <= s_axi_if.aruser;
-            txn_ctx.id    <= s_axi_if.arid  ;
-            txn_ctx.lock  <= s_axi_if.arlock;
-            txn_cnt       <= s_axi_if.arlen ;
         end
         else if (txn_rvalid[0]) begin
             txn_ctx.addr  <= txn_addr_nxt;
@@ -153889,15 +153782,6 @@ module i3c_axi_sub_rd import axi_pkg::*; #(
             );
         end: DATA_PIPELINE
     endgenerate
-    always_comb dp_rready[C_LAT+1] = s_axi_if.rready;
-    always_comb begin
-        s_axi_if.rvalid = dp_rvalid[C_LAT+1];
-        s_axi_if.rlast  = dp_xfer_ctx[C_LAT+1].last;
-        s_axi_if.rdata  = dp_rdata[C_LAT+1];
-        s_axi_if.rid    = dp_xfer_ctx[C_LAT+1].id;
-        s_axi_if.ruser  = '0;
-        s_axi_if.rresp  = dp_xfer_ctx[C_LAT+1].resp;
-    end
     genvar sva_ii;
     generate
         if (C_LAT > 0) begin
@@ -153956,27 +153840,6 @@ module i3c_axi_sub import axi_pkg::*; #(
     logic          w_last;   
     logic          w_hld;
     logic          w_err;
-    i3c_axi_sub_wr #(
-        .AW   (AW   ),
-        .AG   (AG   ),
-        .DW   (DW   ),
-        .UW   (UW   ),
-        .IW   (IW   )
-    ) i_axi_sub_wr (
-        .clk  (clk  ),
-        .rst_n(rst_n),
-        .s_axi_if(s_axi_w_if),
-        .dv   (w_dv   ),
-        .addr (w_addr ),
-        .user (w_user ),
-        .id   (w_id   ),
-        .wdata(w_wdata),
-        .wstrb(w_wstrb),
-        .wsize(w_size ),
-        .last (w_last ),
-        .hld  (w_hld  ),
-        .err  (w_err  )
-    );
     i3c_axi_sub_rd #(
         .AW(AW),
         .AG(AG),
@@ -153987,7 +153850,6 @@ module i3c_axi_sub import axi_pkg::*; #(
     ) i_axi_sub_rd (
         .clk  (clk  ),
         .rst_n(rst_n),
-        .s_axi_if(s_axi_r_if),
         .dv   (r_dv   ),
         .addr (r_addr ),
         .user (r_user ),
@@ -154054,7 +153916,6 @@ module i3c_axi_sub_wr import axi_pkg::*; #(
 ) (
     input clk,
     input rst_n,
-    axi_if.w_sub s_axi_if,
     output logic          dv,
     output logic [AW-1:0] addr,  
     output logic [UW-1:0] user,
@@ -154104,33 +153965,7 @@ module i3c_axi_sub_wr import axi_pkg::*; #(
             axi_out_of_rst <= 1'b1;
         end
     end
-    always_comb axi_awvalid_q    = s_axi_if.awvalid & axi_out_of_rst;
-    always_comb s_axi_if.awready = axi_awready_q    & axi_out_of_rst;
-    always_comb begin
-        s_axi_if_ctx.addr  = s_axi_if.awaddr[AW-1:0] ;
-        s_axi_if_ctx.burst = axi_burst_e'(s_axi_if.awburst);
-        s_axi_if_ctx.size  = s_axi_if.awsize ;
-        s_axi_if_ctx.len   = s_axi_if.awlen  ;
-        s_axi_if_ctx.user  = s_axi_if.awuser ;
-        s_axi_if_ctx.id    = s_axi_if.awid   ;
-        s_axi_if_ctx.lock  = 1'b0;
-    end
-    skidbuffer #(
-        .OPT_LOWPOWER   (0   ),
-        .OPT_OUTREG     (0   ),
-        .OPT_PASSTHROUGH(0   ),
-        .DW             ($bits(axi_ctx_t))
-    ) i_req_skd (
-        .i_clk  (clk             ),
-        .i_reset(rst_n           ),
-        .i_valid(axi_awvalid_q   ),
-        .o_ready(axi_awready_q   ),
-        .i_data (s_axi_if_ctx    ),
-        .o_valid(req_valid       ),
-        .i_ready(req_ready       ),
-        .o_data (req_ctx         )
-    );
-    assign req_ready = (!txn_active || (txn_final_beat && !s_axi_if.bvalid)) && rp_ready;
+
     always_ff@(posedge clk or negedge rst_n) begin
         if (!rst_n) begin
             txn_active <= 1'b0;
@@ -154191,27 +154026,6 @@ module i3c_axi_sub_wr import axi_pkg::*; #(
         .i_len      (txn_ctx.len  ),
         .o_next_addr(txn_addr_nxt )
     );
-    always_comb txn_wvalid = s_axi_if.wvalid && txn_active;
-    always_comb s_axi_if.wready = txn_wready && txn_active;
-    skidbuffer #(
-        .OPT_LOWPOWER   (0   ),
-        .OPT_OUTREG     (0   ),
-        .OPT_PASSTHROUGH(0   ),
-        .DW             (DW + BC + 1)
-    ) i_dp_skd (
-        .i_clk  (clk             ),
-        .i_reset(rst_n           ),
-        .i_valid(txn_wvalid      ),
-        .o_ready(txn_wready      ),
-        .i_data ({s_axi_if.wdata,
-                  s_axi_if.wstrb,
-                  s_axi_if.wlast}),
-        .o_valid(dv_pre          ),
-        .i_ready(!hld            ),
-        .o_data ({wdata,
-                  wstrb,
-                  last }         )
-    );
     always_comb dv = dv_pre && txn_allow;
     always_comb begin
         rp_valid = txn_final_beat;
@@ -154220,24 +154034,6 @@ module i3c_axi_sub_wr import axi_pkg::*; #(
                                                    AXI_RESP_OKAY;
         rp_id    = txn_ctx.id;
     end
-    skidbuffer #(
-        .OPT_LOWPOWER   (0   ),
-        .OPT_OUTREG     (1   ),
-        .OPT_PASSTHROUGH(0   ),
-        .DW             (IW + $bits(axi_resp_e))
-    ) i_rsp_skd (
-        .i_clk  (clk             ),
-        .i_reset(rst_n           ),
-        .i_valid(rp_valid        ),
-        .o_ready(rp_ready        ),
-        .i_data ({rp_resp,
-                  rp_id}         ),
-        .o_valid(s_axi_if.bvalid ),
-        .i_ready(s_axi_if.bready ),
-        .o_data ({s_axi_if.bresp,
-                  s_axi_if.bid}  )
-    );
-    always_comb s_axi_if.buser = '0;
 endmodule
 `begin_keywords "1800-2023"
 module read_queue #(
@@ -175158,8 +174954,6 @@ axi_sub #(
 ) i_axi_sub_sif_soc_ifc (
     .clk  (soc_ifc_clk_cg     ),
     .rst_n(cptra_noncore_rst_b),
-    .s_axi_w_if(s_axi_w_if),
-    .s_axi_r_if(s_axi_r_if),
     .dv    (soc_req_dv      ),
     .addr  (soc_req.addr    ),  
     .write (soc_req.write   ),
@@ -189212,8 +189006,6 @@ axi_sub #(
 ) i_axi_sub (
     .clk,
     .rst_n(rst_b), 
-    .s_axi_w_if,
-    .s_axi_r_if,
     .dv    (soc_resp_if.dv  ),
     .addr  (soc_resp_if.req_data.addr    ),  
     .write (soc_resp_if.req_data.write   ),
@@ -257009,8 +256801,6 @@ parameter css_mcu0_el2_param_t pt = 2291'h04840400010040010840000020908200002840
     ) mcu_rom_i (
       .clk(cptra_ss_clk_i),
       .rst_n(cptra_ss_rst_b_o),
-      .s_axi_r_if(cptra_ss_mcu_rom_s_axi_if_r_sub),
-      .s_axi_w_if(cptra_ss_mcu_rom_s_axi_if_w_sub),
       .s_mem_req_if(mcu_rom_mem_export_if)
     );
     mci_top #(
@@ -258759,9 +258549,7 @@ module caliptra_top_tb_axi_complex import caliptra_top_tb_pkg::*; (
         .EX_EN(0                       )
     ) i_axi_sram (
         .clk(core_clk),
-        .rst_n(cptra_rst_b),
-        .s_axi_w_if(axi_sram_if.w_sub),
-        .s_axi_r_if(axi_sram_if.r_sub)
+        .rst_n(cptra_rst_b)
     );
     initial i_axi_sram.i_sram.ram = '{default:'{default:8'h00}};
     always_comb begin
@@ -258935,8 +258723,6 @@ module caliptra_top_tb_axi_fifo #(
     ) i_axi_sub (
         .clk  (clk     ),
         .rst_n(rst_n   ),
-        .s_axi_w_if(s_axi_w_if),
-        .s_axi_r_if(s_axi_r_if),
         .dv      (dv      ),
         .addr    (addr    ),  
         .write   (write   ),
@@ -262526,7 +262312,6 @@ module caliptra_ss_top_tb_axi_64_to_32_downsizer (
     input logic [2:0] m_axi_if_awprot,
     input logic [3:0] m_axi_if_awregion,
     input logic [3:0] m_axi_if_awqos,
-    axi_if      s_axi_if,
     output logic [3:0] s_axi_if_arcache,
     output logic [2:0] s_axi_if_arprot,
     output logic [3:0] s_axi_if_arregion,
@@ -262594,134 +262379,17 @@ struct packed {
     logic [3:0]                        axregion;
     logic [3:0]                        axqos;
 } m_axi_if_r_ctx, m_axi_if_w_ctx, s_axi_if_r_ctx, s_axi_if_w_ctx;
-assign m_ar_hshake = m_axi_if.arvalid && m_axi_if.arready;
-assign s_ar_hshake = s_axi_if.arvalid && s_axi_if.arready;
 always_ff@(posedge clk or negedge rst_n) begin
     if (!rst_n) begin
         rd_ds_bypass <= 1'b1;
         rd_active    <= 1'b0;
     end
     else if (m_ar_hshake) begin
-        rd_ds_bypass <= m_axi_if.arsize <= 2;
         rd_active    <= 1'b1;
-        if (m_axi_if.arburst != AXI_BURST_INCR)
-            $fatal("Burst type of %p not supported by 64-to-32 downsizer", axi_burst_e'(m_axi_if.arburst));
-    end
-    else if (m_r_hshake && m_axi_if.rlast) begin
-        rd_ds_bypass <= 1'b1;
-        rd_active    <= 1'b0;
     end
 end
 always_ff@(posedge clk or negedge rst_n) begin
-    if (!rst_n) begin
-        s_axi_if.arvalid        <= 1'b0;
-        m_axi_if_r_ctx.axaddr   <= '0;
-        m_axi_if_r_ctx.axburst  <= '0;
-        m_axi_if_r_ctx.axsize   <= '0;
-        m_axi_if_r_ctx.axlen    <= '0;
-        m_axi_if_r_ctx.axuser   <= '0;
-        m_axi_if_r_ctx.axid     <= '0;
-        m_axi_if_r_ctx.axlock   <= '0;
-        m_axi_if_r_ctx.axcache  <= '0;
-        m_axi_if_r_ctx.axprot   <= '0;
-        m_axi_if_r_ctx.axregion <= '0;
-        m_axi_if_r_ctx.axqos    <= '0;
-        s_axi_if_r_ctx.axaddr   <= '0;
-        s_axi_if_r_ctx.axburst  <= '0;
-        s_axi_if_r_ctx.axsize   <= '0;
-        s_axi_if_r_ctx.axlen    <= '0;
-        s_axi_if_r_ctx.axuser   <= '0;
-        s_axi_if_r_ctx.axid     <= '0;
-        s_axi_if_r_ctx.axlock   <= '0;
-        s_axi_if_r_ctx.axcache  <= '0;
-        s_axi_if_r_ctx.axprot   <= '0;
-        s_axi_if_r_ctx.axregion <= '0;
-        s_axi_if_r_ctx.axqos    <= '0;
-    end
-    else if (m_ar_hshake) begin
-        s_axi_if.arvalid        <= 1'b1;
-        m_axi_if_r_ctx.axaddr   <= m_axi_if.araddr ;
-        m_axi_if_r_ctx.axburst  <= m_axi_if.arburst;
-        m_axi_if_r_ctx.axsize   <= m_axi_if.arsize ;
-        m_axi_if_r_ctx.axlen    <= m_axi_if.arlen  ;
-        m_axi_if_r_ctx.axuser   <= m_axi_if.aruser ;
-        m_axi_if_r_ctx.axid     <= m_axi_if.arid   ;
-        m_axi_if_r_ctx.axlock   <= m_axi_if.arlock ;
-        m_axi_if_r_ctx.axcache  <= m_axi_if_arcache  ;
-        m_axi_if_r_ctx.axprot   <= m_axi_if_arprot   ;
-        m_axi_if_r_ctx.axregion <= m_axi_if_arregion ;
-        m_axi_if_r_ctx.axqos    <= m_axi_if_arqos    ;
-        s_axi_if_r_ctx.axaddr   <= m_axi_if.araddr ;
-        s_axi_if_r_ctx.axburst  <= m_axi_if.arburst;
-        s_axi_if_r_ctx.axuser   <= m_axi_if.aruser ;
-        s_axi_if_r_ctx.axid     <= m_axi_if.arid   ;
-        s_axi_if_r_ctx.axlock   <= m_axi_if.arlock ;
-        s_axi_if_r_ctx.axcache  <= m_axi_if_arcache  ;
-        s_axi_if_r_ctx.axprot   <= m_axi_if_arprot   ;
-        s_axi_if_r_ctx.axregion <= m_axi_if_arregion ;
-        s_axi_if_r_ctx.axqos    <= m_axi_if_arqos    ;
-        if (m_axi_if.arsize <= 2) begin
-            s_axi_if_r_ctx.axsize   <= m_axi_if.arsize ;
-            s_axi_if_r_ctx.axlen    <= m_axi_if.arlen  ;
-        end
-        else if (m_axi_if.arsize == 3) begin
-            s_axi_if_r_ctx.axsize  <= 2               ;
-            s_axi_if_r_ctx.axlen   <= m_axi_if.arlen  * 2 + 1;
-        end
-        else begin
-            $fatal("Unexpected value of arsize, 0x%x", m_axi_if.arsize);
-        end
-    end
-    else if (s_ar_hshake) begin
-        s_axi_if.arvalid       <= 1'b0;
-    end
 end
-assign s_axi_if.araddr   = s_axi_if_r_ctx.axaddr  ;
-assign s_axi_if.arburst  = s_axi_if_r_ctx.axburst ;
-assign s_axi_if.arsize   = s_axi_if_r_ctx.axsize  ;
-assign s_axi_if.arlen    = s_axi_if_r_ctx.axlen   ;
-assign s_axi_if.aruser   = s_axi_if_r_ctx.axuser  ;
-assign s_axi_if.arid     = s_axi_if_r_ctx.axid    ;
-assign s_axi_if.arlock   = s_axi_if_r_ctx.axlock  ;
-assign s_axi_if_arcache  = s_axi_if_r_ctx.axcache ;
-assign s_axi_if_arprot   = s_axi_if_r_ctx.axprot  ;
-assign s_axi_if_arregion = s_axi_if_r_ctx.axregion;
-assign s_axi_if_arqos    = s_axi_if_r_ctx.axqos   ;
-assign m_axi_if.arready = !rd_active;
-always_comb begin
-    m_axi_if.rvalid = rd_ds_bypass ? s_axi_if.rvalid : r_fifo_rvalid;
-    m_axi_if.rdata  = rd_ds_bypass ? s_axi_if.rdata  : rd_qword;
-    m_axi_if.rlast  = rd_ds_bypass ? s_axi_if.rlast  : rd_last;
-    m_axi_if.rresp  = rd_ds_bypass ? s_axi_if.rresp  : rd_resp;
-    m_axi_if.ruser  = rd_ds_bypass ? s_axi_if.ruser  : '0;
-    m_axi_if.rid    = rd_ds_bypass ? s_axi_if.rid    : rd_rid;
-    s_axi_if.rready = rd_ds_bypass ? m_axi_if.rready : r_fifo_wready;
-    r_fifo_rready   = rd_ds_bypass ? 1'b0            : m_axi_if.rready;
-end
-assign m_r_hshake = m_axi_if.rvalid && m_axi_if.rready;
-assign s_r_hshake = s_axi_if.rvalid && s_axi_if.rready;
-always_ff@(posedge clk or negedge rst_n) begin
-    if (!rst_n) begin
-        rd_beat_upper <= 0;
-    end
-    else if (m_ar_hshake && m_axi_if.arsize == 3) begin
-        rd_beat_upper <= 0;
-    end
-    else if (s_r_hshake) begin
-        rd_beat_upper <= ~rd_beat_upper;
-        rd_low_word   <= rd_beat_upper ? rd_low_word : s_axi_if.rdata[31:0];
-        rd_low_resp   <= rd_beat_upper ? rd_low_resp : s_axi_if.rresp;
-    end
-end
-assign r_fifo_wvalid = rd_ds_bypass ? 1'b0 : (s_r_hshake && rd_beat_upper);
-assign r_fifo_wdata.data = {s_axi_if.rdata[63:32],rd_low_word};
-assign r_fifo_wdata.resp = (s_axi_if.rresp | rd_low_resp);
-assign r_fifo_wdata.rid  = s_axi_if.rid;
-assign r_fifo_wdata.last = s_axi_if.rlast;
-assign rd_qword = r_fifo_rdata.data;
-assign rd_resp  = r_fifo_rdata.resp;
-assign rd_rid   = r_fifo_rdata.rid;
-assign rd_last  = r_fifo_rdata.last;
 caliptra_prim_fifo_sync #(
   .Width            ($bits(r_fifo_wdata)),
   .Pass             (1'b0),  
@@ -262742,104 +262410,19 @@ caliptra_prim_fifo_sync #(
   .depth_o (r_fifo_depth),
   .err_o   (r_fifo_error)
 );
-assign m_aw_hshake = m_axi_if.awvalid && m_axi_if.awready;
-assign s_aw_hshake = s_axi_if.awvalid && s_axi_if.awready;
 always_ff@(posedge clk or negedge rst_n) begin
     if (!rst_n) begin
         wr_ds_bypass <= 1'b1;
         wr_active    <= 1'b0;
     end
     else if (m_aw_hshake) begin
-        wr_ds_bypass <= m_axi_if.awsize <= 2;
         wr_active    <= 1'b1;
-        if (m_axi_if.awburst != AXI_BURST_INCR)
-            $fatal("Burst type of %s not supported by 64-to-32 downsizer", axi_burst_e'(m_axi_if.awburst));
-    end
-    else if (s_w_hshake && s_axi_if.wlast) begin
-        wr_ds_bypass <= 1'b1;
-        wr_active    <= 1'b0;
     end
 end
 always_ff@(posedge clk or negedge rst_n) begin
     if (!rst_n) begin
-        s_axi_if.awvalid        <= 1'b0;
-        m_axi_if_w_ctx.axaddr   <= '0;
-        m_axi_if_w_ctx.axburst  <= '0;
-        m_axi_if_w_ctx.axsize   <= '0;
-        m_axi_if_w_ctx.axlen    <= '0;
-        m_axi_if_w_ctx.axuser   <= '0;
-        m_axi_if_w_ctx.axid     <= '0;
-        m_axi_if_w_ctx.axlock   <= '0;
-        m_axi_if_w_ctx.axcache  <= '0;
-        m_axi_if_w_ctx.axprot   <= '0;
-        m_axi_if_w_ctx.axregion <= '0;
-        m_axi_if_w_ctx.axqos    <= '0;
-        s_axi_if_w_ctx.axaddr   <= '0;
-        s_axi_if_w_ctx.axburst  <= '0;
-        s_axi_if_w_ctx.axsize   <= '0;
-        s_axi_if_w_ctx.axlen    <= '0;
-        s_axi_if_w_ctx.axuser   <= '0;
-        s_axi_if_w_ctx.axid     <= '0;
-        s_axi_if_w_ctx.axlock   <= '0;
-        s_axi_if_w_ctx.axcache  <= '0;
-        s_axi_if_w_ctx.axprot   <= '0;
-        s_axi_if_w_ctx.axregion <= '0;
-        s_axi_if_w_ctx.axqos    <= '0;
-    end
-    else if (m_aw_hshake) begin
-        s_axi_if.awvalid        <= 1'b1;
-        m_axi_if_w_ctx.axaddr   <= m_axi_if.awaddr ;
-        m_axi_if_w_ctx.axburst  <= m_axi_if.awburst;
-        m_axi_if_w_ctx.axsize   <= m_axi_if.awsize ;
-        m_axi_if_w_ctx.axlen    <= m_axi_if.awlen  ;
-        m_axi_if_w_ctx.axuser   <= m_axi_if.awuser ;
-        m_axi_if_w_ctx.axid     <= m_axi_if.awid   ;
-        m_axi_if_w_ctx.axlock   <= m_axi_if.awlock ;
-        m_axi_if_w_ctx.axcache  <= m_axi_if_awcache  ;
-        m_axi_if_w_ctx.axprot   <= m_axi_if_awprot   ;
-        m_axi_if_w_ctx.axregion <= m_axi_if_awregion ;
-        m_axi_if_w_ctx.axqos    <= m_axi_if_awqos    ;
-        s_axi_if_w_ctx.axaddr   <= m_axi_if.awaddr ;
-        s_axi_if_w_ctx.axburst  <= m_axi_if.awburst;
-        s_axi_if_w_ctx.axuser   <= m_axi_if.awuser ;
-        s_axi_if_w_ctx.axid     <= m_axi_if.awid   ;
-        s_axi_if_w_ctx.axlock   <= m_axi_if.awlock ;
-        s_axi_if_w_ctx.axcache  <= m_axi_if_awcache  ;
-        s_axi_if_w_ctx.axprot   <= m_axi_if_awprot   ;
-        s_axi_if_w_ctx.axregion <= m_axi_if_awregion ;
-        s_axi_if_w_ctx.axqos    <= m_axi_if_awqos    ;
-        if (m_axi_if.awsize <= 2) begin
-            s_axi_if_w_ctx.axsize   <= m_axi_if.awsize ;
-            s_axi_if_w_ctx.axlen    <= m_axi_if.awlen  ;
-        end
-        else if (m_axi_if.awsize == 3) begin
-            s_axi_if_w_ctx.axsize   <= 2               ;
-            s_axi_if_w_ctx.axlen    <= m_axi_if.awlen  * 2 + 1;
-        end
-        else begin
-            $fatal("Unexpected value of awsize, 0x%x", m_axi_if.awsize);
-        end
-    end
-    else if (s_aw_hshake) begin
-        s_axi_if.awvalid       <= 1'b0;
     end
 end
-assign s_axi_if.awaddr   = s_axi_if_w_ctx.axaddr  ;
-assign s_axi_if.awburst  = s_axi_if_w_ctx.axburst ;
-assign s_axi_if.awsize   = s_axi_if_w_ctx.axsize  ;
-assign s_axi_if.awlen    = s_axi_if_w_ctx.axlen   ;
-assign s_axi_if.awuser   = s_axi_if_w_ctx.axuser  ;
-assign s_axi_if.awid     = s_axi_if_w_ctx.axid    ;
-assign s_axi_if.awlock   = s_axi_if_w_ctx.axlock  ;
-assign s_axi_if_awcache  = s_axi_if_w_ctx.axcache ;
-assign s_axi_if_awprot   = s_axi_if_w_ctx.axprot  ;
-assign s_axi_if_awregion = s_axi_if_w_ctx.axregion;
-assign s_axi_if_awqos    = s_axi_if_w_ctx.axqos   ;
-assign m_axi_if.awready = !wr_active;
-assign w_fifo_wvalid   =  wr_ds_bypass               ? 1'b0 : m_axi_if.wvalid;
-assign m_axi_if.wready = (wr_ds_bypass && wr_active) ? s_axi_if.wready : wr_active ? w_fifo_wready : '0;
-assign m_w_hshake = m_axi_if.wvalid && m_axi_if.wready;
-assign s_w_hshake = s_axi_if.wvalid && s_axi_if.wready;
 always_ff@(posedge clk or negedge rst_n) begin
     if (!rst_n) begin
         wr_beat_upper <= 0;
@@ -262852,16 +262435,7 @@ always_ff@(posedge clk or negedge rst_n) begin
     end
 end
 always_comb begin
-    s_axi_if.wvalid = (wr_ds_bypass && wr_active) ? m_axi_if.wvalid : w_fifo_rvalid;
-    s_axi_if.wdata  = (wr_ds_bypass && wr_active) ? m_axi_if.wdata  : wr_beat_upper ? {wr_qword[63:32],32'h0}   : {32'h0,wr_qword[31: 0]};
-    s_axi_if.wlast  = (wr_ds_bypass && wr_active) ? m_axi_if.wlast  : wr_beat_upper ? wr_last                   : 1'b0;
-    s_axi_if.wstrb  = (wr_ds_bypass && wr_active) ? m_axi_if.wstrb  : wr_beat_upper ? {wr_qword_strb[7:4],4'h0} : {4'h0,wr_qword_strb[3:0]};
-    s_axi_if.wuser  = (wr_ds_bypass && wr_active) ? m_axi_if.wuser  : '0;
-    w_fifo_rready   = (wr_ds_bypass             ) ? 1'b0            : wr_beat_upper ? s_axi_if.wready           : 1'b0;
 end
-assign w_fifo_wdata.data = m_axi_if.wdata;
-assign w_fifo_wdata.strb = m_axi_if.wstrb;
-assign w_fifo_wdata.last = m_axi_if.wlast;
 assign wr_qword      = w_fifo_rdata.data;
 assign wr_qword_strb = w_fifo_rdata.strb;
 assign wr_last       = w_fifo_rdata.last;
@@ -262885,11 +262459,6 @@ caliptra_prim_fifo_sync #(
   .depth_o (w_fifo_depth),
   .err_o   (w_fifo_error)
 );
-assign m_axi_if.bresp  = s_axi_if.bresp ;
-assign m_axi_if.bid    = s_axi_if.bid   ;
-assign m_axi_if.buser  = s_axi_if.buser ;
-assign m_axi_if.bvalid = s_axi_if.bvalid;
-assign s_axi_if.bready = m_axi_if.bready;
 endmodule
 `begin_keywords "1800-2023"
 `default_nettype none
@@ -263617,9 +263186,7 @@ end
         .EX_EN(0                       )
     ) i_soc_sram (
         .clk(clk),
-        .rst_n(rst_l),
-        .s_axi_w_if(cptra_ss_soc_sram_axi_if.w_sub),
-        .s_axi_r_if(cptra_ss_soc_sram_axi_if.r_sub)
+        .rst_n(rst_l)
     );   
     initial i_soc_sram.i_sram.ram = '{default:'{default:8'h00}};
     caliptra_sram
@@ -264424,7 +263991,6 @@ end
         .m_axi_if_awprot  (cptra_ss_mcu_ifu_m_axi_if_awprot  ),
         .m_axi_if_awregion(cptra_ss_mcu_ifu_m_axi_if_awregion),
         .m_axi_if_awqos   (cptra_ss_mcu_ifu_m_axi_if_awqos   ),
-        .s_axi_if         (cptra_ss_mcu_ifu_ds_m_axi_if         ),
         .s_axi_if_arcache (cptra_ss_mcu_ifu_ds_m_axi_if_arcache ),
         .s_axi_if_arprot  (cptra_ss_mcu_ifu_ds_m_axi_if_arprot  ),
         .s_axi_if_arregion(cptra_ss_mcu_ifu_ds_m_axi_if_arregion),
