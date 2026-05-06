@@ -5257,7 +5257,7 @@ module caliptra_prim_generic_ram_1p import caliptra_prim_ram_1p_pkg::*; #(
           end
         end
       end else begin
-        rdata_o <= mem[addr_i];
+
       end
     end
   end
@@ -5279,7 +5279,6 @@ module caliptra_prim_generic_ram_1p import caliptra_prim_ram_1p_pkg::*; #(
     valid = Width > 312 || index >= Depth ? 0 : 1;
     if (valid == 1) begin
       val = 0;
-      val[Width-1:0] = mem[index];
     end
     return valid;
   endfunction
@@ -259037,8 +259036,6 @@ module caliptra_ss_top_sva
   logic        dai_access_error;
   assign part_may_have_digest  = PartInfo[part_idx].hw_digest || PartInfo[part_idx].sw_digest;
   assign part_digest_word_addr = otp_ctrl_part_pkg::digest_addrs[part_idx] / 2;
-  assign raw_part_digest_value =
-    caliptra_ss_top_tb.u_otp.u_prim_ram_1p_adv.u_mem.mem[part_digest_word_addr];
   assign part_has_digest       = part_may_have_digest && (raw_part_digest_value != 0);
   assign dai_addr_below_digest = (caliptra_ss_top_tb.caliptra_ss_dut.u_otp_ctrl.dai_addr >= PartInfo[part_idx].offset) &&
                                  (caliptra_ss_top_tb.caliptra_ss_dut.u_otp_ctrl.dai_addr < otp_ctrl_part_pkg::digest_addrs[part_idx]);
@@ -262129,7 +262126,6 @@ module fc_lcc_tb_services (
         fault_mask_q[i] <= '0;
       end else begin
         if (new_fault_req) begin
-          before_fault_q[i] <= caliptra_ss_top_tb.u_otp.u_prim_ram_1p_adv.u_mem.mem[PartitionOffsetsAndDigests[i][0] / 2][15:0];
           if (tb_service_cmd == CMD_FC_LCC_CORRECTABLE_FAULT) fault_mask_q[i] = 1;
           else if (tb_service_cmd == CMD_FC_LCC_UNCORRECTABLE_FAULT) fault_mask_q[i] = ~0;
         end
