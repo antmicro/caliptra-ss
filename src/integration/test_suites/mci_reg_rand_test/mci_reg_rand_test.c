@@ -49,7 +49,9 @@ void main(void) {
         REG_GROUP_CONTROL,
         REG_GROUP_CONTROL_RO,
         REG_GROUP_MCI_MBOX0,
+        REG_GROUP_MCI_MBOX0_RW1S,
         REG_GROUP_MCI_MBOX1,
+        REG_GROUP_MCI_MBOX1_RW1S,
         REG_GROUP_DFT,
         REG_GROUP_DEBUG,
         REG_GROUP_GENERIC_WIRES
@@ -64,33 +66,38 @@ void main(void) {
         // Exclude registers from writing during group write
         exclude_register(SOC_MCI_TOP_MCI_REG_MCI_BOOTFSM_GO);
         exclude_register(SOC_MCI_TOP_MCI_REG_CPTRA_BOOT_GO);
-        
+
         // Loop through all RW register groups
         for (int i = 0; i < num_groups; i++) {
             mci_register_group_t group = mci_reg_groups[i];
-                
+
             // Write random values to all registers in this group
-            write_random_to_register_group_and_track(group, &g_expected_data_dict);  
-                
+            write_random_to_register_group_and_track(group, &g_expected_data_dict);
+
             // Read registers and verify data matches
             error_count += read_register_group_and_verify(group, &g_expected_data_dict, false, COLD_RESET);
         }
 
         // Lock registers with SS_CONFIG_DONE_STICKY and SS_CONFIG_DONE registers by writing 0x1 to them
-        write_to_register_group_and_track(REG_GROUP_SS, 0x1, &g_expected_data_dict); 
+        write_to_register_group_and_track(REG_GROUP_SS, 0x1, &g_expected_data_dict);
 
-        read_register_group_and_verify(REG_GROUP_SS, &g_expected_data_dict, false, COLD_RESET); 
+        read_register_group_and_verify(REG_GROUP_SS, &g_expected_data_dict, false, COLD_RESET);
 
         // Loop through all RW register groups -- sticky registers should not be updated
         for (int i = 0; i < num_groups; i++) {
             mci_register_group_t group = mci_reg_groups[i];
 
             // Write random values to all registers in this group
-            write_random_to_register_group_and_track(group, &g_expected_data_dict);  
-                
+            write_random_to_register_group_and_track(group, &g_expected_data_dict);
+
             // Read registers and verify data matches
-            error_count += read_register_group_and_verify(group, &g_expected_data_dict, false, COLD_RESET);   
+            error_count += read_register_group_and_verify(group, &g_expected_data_dict, false, COLD_RESET);
         }
+
+        // Write 0 to SS_CONFIG_DONE_STICKY and SS_CONFIG_DONE registers, make sure it remains 1
+        write_to_register_group_and_track(REG_GROUP_SS, 0x0, &g_expected_data_dict);
+
+        read_register_group_and_verify(REG_GROUP_SS, &g_expected_data_dict, false, COLD_RESET);
 
         // Issue warm reset
         SEND_STDOUT_CTRL(TB_CMD_WARM_RESET);
@@ -108,10 +115,10 @@ void main(void) {
             error_count += read_register_group_and_verify(group, &g_expected_data_dict, true, WARM_RESET);
 
             // Write random values to all registers in this group
-            write_random_to_register_group_and_track(group, &g_expected_data_dict);  
-                            
+            write_random_to_register_group_and_track(group, &g_expected_data_dict);
+
             // Read registers and verify data matches
-            error_count += read_register_group_and_verify(group, &g_expected_data_dict, false, WARM_RESET);     
+            error_count += read_register_group_and_verify(group, &g_expected_data_dict, false, WARM_RESET);
         }
 
         // Issue cold reset
@@ -128,6 +135,39 @@ void main(void) {
 
             // Read registers and verify data matches
             error_count += read_register_group_and_verify(group, &g_expected_data_dict, true, COLD_RESET);
+        }
+
+        // Issue cold reset
+        SEND_STDOUT_CTRL(TB_CMD_COLD_RESET);
+
+        // Halt the MCU
+        csr_write_mpmc_halt();
+
+    } else if (rst_count == 4) {
+        // Loop through all RW register groups
+        for (int i = 0; i < num_groups; i++) {
+            mci_register_group_t group = mci_reg_groups[i];
+
+            // Write random values to all registers in this group
+            write_random_to_register_group_and_track(group, &g_expected_data_dict);
+
+            // Read registers and verify data matches
+            error_count += read_register_group_and_verify(group, &g_expected_data_dict, false, COLD_RESET);
+        }
+
+        // Write 0 to SS_CONFIG_DONE_STICKY and SS_CONFIG_DONE registers, make sure it's not locked
+        write_to_register_group_and_track(REG_GROUP_SS, 0x0, &g_expected_data_dict);
+        read_register_group_and_verify(REG_GROUP_SS, &g_expected_data_dict, false, COLD_RESET);
+
+        // Loop through all RW register groups -- all registers should be unlocked
+        for (int i = 0; i < num_groups; i++) {
+            mci_register_group_t group = mci_reg_groups[i];
+
+            // Write random values to all registers in this group
+            write_random_to_register_group_and_track(group, &g_expected_data_dict);
+
+            // Read registers and verify data matches
+            error_count += read_register_group_and_verify(group, &g_expected_data_dict, false, COLD_RESET);
         }
     }
 

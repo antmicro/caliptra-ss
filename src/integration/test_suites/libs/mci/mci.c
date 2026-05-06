@@ -270,21 +270,21 @@ const mci_register_info_t register_groups[][MAX_REGISTERS_PER_GROUP] = {
 
     // REG_GROUP_MCI_MBOX0
     {
-        { SOC_MCI_TOP_MCI_REG_MBOX0_VALID_AXI_USER_0, "MBOX0_VALID_AXI_USER_0", "Mailbox 0 Valid AXI User 0", REG_NOT_STICKY, true },
-        { SOC_MCI_TOP_MCI_REG_MBOX0_VALID_AXI_USER_1, "MBOX0_VALID_AXI_USER_1", "Mailbox 0 Valid AXI User 1", REG_NOT_STICKY, true },
-        { SOC_MCI_TOP_MCI_REG_MBOX0_VALID_AXI_USER_2, "MBOX0_VALID_AXI_USER_2", "Mailbox 0 Valid AXI User 2", REG_NOT_STICKY, true },
-        { SOC_MCI_TOP_MCI_REG_MBOX0_VALID_AXI_USER_3, "MBOX0_VALID_AXI_USER_3", "Mailbox 0 Valid AXI User 3", REG_NOT_STICKY, true },
-        { SOC_MCI_TOP_MCI_REG_MBOX0_VALID_AXI_USER_4, "MBOX0_VALID_AXI_USER_4", "Mailbox 0 Valid AXI User 4", REG_NOT_STICKY, true },
+        { SOC_MCI_TOP_MCI_REG_MBOX0_VALID_AXI_USER_0, "MBOX0_VALID_AXI_USER_0", "Mailbox 0 Valid AXI User 0", REG_EXT_LOCK, true },
+        { SOC_MCI_TOP_MCI_REG_MBOX0_VALID_AXI_USER_1, "MBOX0_VALID_AXI_USER_1", "Mailbox 0 Valid AXI User 1", REG_EXT_LOCK, true },
+        { SOC_MCI_TOP_MCI_REG_MBOX0_VALID_AXI_USER_2, "MBOX0_VALID_AXI_USER_2", "Mailbox 0 Valid AXI User 2", REG_EXT_LOCK, true },
+        { SOC_MCI_TOP_MCI_REG_MBOX0_VALID_AXI_USER_3, "MBOX0_VALID_AXI_USER_3", "Mailbox 0 Valid AXI User 3", REG_EXT_LOCK, true },
+        { SOC_MCI_TOP_MCI_REG_MBOX0_VALID_AXI_USER_4, "MBOX0_VALID_AXI_USER_4", "Mailbox 0 Valid AXI User 4", REG_EXT_LOCK, true },
         { 0, NULL, NULL, REG_NOT_STICKY, false }  // End marker
     },
 
     // REG_GROUP_MCI_MBOX0_RW1S
     {
-        { SOC_MCI_TOP_MCI_REG_MBOX0_AXI_USER_LOCK_0, "MBOX0_AXI_USER_LOCK_0", "Mailbox 0 Valid AXI Lock 0", REG_NOT_STICKY, false },
-        { SOC_MCI_TOP_MCI_REG_MBOX0_AXI_USER_LOCK_1, "MBOX0_AXI_USER_LOCK_1", "Mailbox 0 Valid AXI Lock 1", REG_NOT_STICKY, false },
-        { SOC_MCI_TOP_MCI_REG_MBOX0_AXI_USER_LOCK_2, "MBOX0_AXI_USER_LOCK_2", "Mailbox 0 Valid AXI Lock 2", REG_NOT_STICKY, false },
-        { SOC_MCI_TOP_MCI_REG_MBOX0_AXI_USER_LOCK_3, "MBOX0_AXI_USER_LOCK_3", "Mailbox 0 Valid AXI Lock 3", REG_NOT_STICKY, false },
-        { SOC_MCI_TOP_MCI_REG_MBOX0_AXI_USER_LOCK_4, "MBOX0_AXI_USER_LOCK_4", "Mailbox 0 Valid AXI Lock 4", REG_NOT_STICKY, false },
+        { SOC_MCI_TOP_MCI_REG_MBOX0_AXI_USER_LOCK_0, "MBOX0_AXI_USER_LOCK_0", "Mailbox 0 Valid AXI Lock 0", REG_SELF_LOCK_NON_ZERO, false },
+        { SOC_MCI_TOP_MCI_REG_MBOX0_AXI_USER_LOCK_1, "MBOX0_AXI_USER_LOCK_1", "Mailbox 0 Valid AXI Lock 1", REG_SELF_LOCK_NON_ZERO, false },
+        { SOC_MCI_TOP_MCI_REG_MBOX0_AXI_USER_LOCK_2, "MBOX0_AXI_USER_LOCK_2", "Mailbox 0 Valid AXI Lock 2", REG_SELF_LOCK_NON_ZERO, false },
+        { SOC_MCI_TOP_MCI_REG_MBOX0_AXI_USER_LOCK_3, "MBOX0_AXI_USER_LOCK_3", "Mailbox 0 Valid AXI Lock 3", REG_SELF_LOCK_NON_ZERO, false },
+        { SOC_MCI_TOP_MCI_REG_MBOX0_AXI_USER_LOCK_4, "MBOX0_AXI_USER_LOCK_4", "Mailbox 0 Valid AXI Lock 4", REG_SELF_LOCK_NON_ZERO, false },
         { 0, NULL, NULL, REG_NOT_STICKY, false }  // End marker
     },
 
@@ -310,21 +310,21 @@ const mci_register_info_t register_groups[][MAX_REGISTERS_PER_GROUP] = {
 
     // REG_GROUP_MCI_MBOX1
     {
-        { SOC_MCI_TOP_MCI_REG_MBOX1_VALID_AXI_USER_0, "MBOX1_VALID_AXI_USER_0", "Mailbox 1 Valid AXI User 0", REG_NOT_STICKY, true },
-        { SOC_MCI_TOP_MCI_REG_MBOX1_VALID_AXI_USER_1, "MBOX1_VALID_AXI_USER_1", "Mailbox 1 Valid AXI User 1", REG_NOT_STICKY, true },
-        { SOC_MCI_TOP_MCI_REG_MBOX1_VALID_AXI_USER_2, "MBOX1_VALID_AXI_USER_2", "Mailbox 1 Valid AXI User 2", REG_NOT_STICKY, true },
-        { SOC_MCI_TOP_MCI_REG_MBOX1_VALID_AXI_USER_3, "MBOX1_VALID_AXI_USER_3", "Mailbox 1 Valid AXI User 3", REG_NOT_STICKY, true },
-        { SOC_MCI_TOP_MCI_REG_MBOX1_VALID_AXI_USER_4, "MBOX1_VALID_AXI_USER_4", "Mailbox 1 Valid AXI User 4", REG_NOT_STICKY, true },
+        { SOC_MCI_TOP_MCI_REG_MBOX1_VALID_AXI_USER_0, "MBOX1_VALID_AXI_USER_0", "Mailbox 1 Valid AXI User 0", REG_EXT_LOCK, true },
+        { SOC_MCI_TOP_MCI_REG_MBOX1_VALID_AXI_USER_1, "MBOX1_VALID_AXI_USER_1", "Mailbox 1 Valid AXI User 1", REG_EXT_LOCK, true },
+        { SOC_MCI_TOP_MCI_REG_MBOX1_VALID_AXI_USER_2, "MBOX1_VALID_AXI_USER_2", "Mailbox 1 Valid AXI User 2", REG_EXT_LOCK, true },
+        { SOC_MCI_TOP_MCI_REG_MBOX1_VALID_AXI_USER_3, "MBOX1_VALID_AXI_USER_3", "Mailbox 1 Valid AXI User 3", REG_EXT_LOCK, true },
+        { SOC_MCI_TOP_MCI_REG_MBOX1_VALID_AXI_USER_4, "MBOX1_VALID_AXI_USER_4", "Mailbox 1 Valid AXI User 4", REG_EXT_LOCK, true },
         { 0, NULL, NULL, REG_NOT_STICKY, false }  // End marker
     },
 
     // REG_GROUP_MCI_MBOX1_RW1S
     {
-        { SOC_MCI_TOP_MCI_REG_MBOX1_AXI_USER_LOCK_0, "MBOX1_AXI_USER_LOCK_0", "Mailbox 1 Valid AXI Lock 0", REG_NOT_STICKY, false },
-        { SOC_MCI_TOP_MCI_REG_MBOX1_AXI_USER_LOCK_1, "MBOX1_AXI_USER_LOCK_1", "Mailbox 1 Valid AXI Lock 1", REG_NOT_STICKY, false },
-        { SOC_MCI_TOP_MCI_REG_MBOX1_AXI_USER_LOCK_2, "MBOX1_AXI_USER_LOCK_2", "Mailbox 1 Valid AXI Lock 2", REG_NOT_STICKY, false },
-        { SOC_MCI_TOP_MCI_REG_MBOX1_AXI_USER_LOCK_3, "MBOX1_AXI_USER_LOCK_3", "Mailbox 1 Valid AXI Lock 3", REG_NOT_STICKY, false },
-        { SOC_MCI_TOP_MCI_REG_MBOX1_AXI_USER_LOCK_4, "MBOX1_AXI_USER_LOCK_4", "Mailbox 1 Valid AXI Lock 4", REG_NOT_STICKY, false },
+        { SOC_MCI_TOP_MCI_REG_MBOX1_AXI_USER_LOCK_0, "MBOX1_AXI_USER_LOCK_0", "Mailbox 1 Valid AXI Lock 0", REG_SELF_LOCK_NON_ZERO, false },
+        { SOC_MCI_TOP_MCI_REG_MBOX1_AXI_USER_LOCK_1, "MBOX1_AXI_USER_LOCK_1", "Mailbox 1 Valid AXI Lock 1", REG_SELF_LOCK_NON_ZERO, false },
+        { SOC_MCI_TOP_MCI_REG_MBOX1_AXI_USER_LOCK_2, "MBOX1_AXI_USER_LOCK_2", "Mailbox 1 Valid AXI Lock 2", REG_SELF_LOCK_NON_ZERO, false },
+        { SOC_MCI_TOP_MCI_REG_MBOX1_AXI_USER_LOCK_3, "MBOX1_AXI_USER_LOCK_3", "Mailbox 1 Valid AXI Lock 3", REG_SELF_LOCK_NON_ZERO, false },
+        { SOC_MCI_TOP_MCI_REG_MBOX1_AXI_USER_LOCK_4, "MBOX1_AXI_USER_LOCK_4", "Mailbox 1 Valid AXI Lock 4", REG_SELF_LOCK_NON_ZERO, false },
         { 0, NULL, NULL, REG_NOT_STICKY, false }  // End marker
     },
 
@@ -381,8 +381,8 @@ const mci_register_info_t register_groups[][MAX_REGISTERS_PER_GROUP] = {
 
     // REG_GROUP_SS
     {
-        { SOC_MCI_TOP_MCI_REG_SS_CONFIG_DONE_STICKY, "SS_DCONFIG_DONE_STICKY", "Subsystem Config done sticky", REG_STICKY, false },
-        { SOC_MCI_TOP_MCI_REG_SS_CONFIG_DONE, "SS_CONFIG_DONE", "Subsystem Config Done", REG_NOT_STICKY, false },
+        { SOC_MCI_TOP_MCI_REG_SS_CONFIG_DONE_STICKY, "SS_DCONFIG_DONE_STICKY", "Subsystem Config done sticky", REG_SELF_LOCK_NON_ZERO_STICKY, false },
+        { SOC_MCI_TOP_MCI_REG_SS_CONFIG_DONE, "SS_CONFIG_DONE", "Subsystem Config Done", REG_SELF_LOCK_NON_ZERO_STICKY, false },
         { 0, NULL, NULL, REG_NOT_STICKY, false }  // End marker
     },
 
@@ -977,13 +977,15 @@ void reset_exp_reg_data(mci_reg_exp_dict_t *dict, reset_type_t reset_type, mci_r
         }
     }
 
-    bool force_update = (address == SOC_MCI_TOP_MCI_REG_SS_CONFIG_DONE_STICKY);
-
     // Standard update condition
     if ((reg_info->is_sticky == REG_CONFIG_DONE_STICKY && ss_config_done_sticky == 0) ||
         (reg_info->is_sticky == REG_CONFIG_DONE && ss_config_done == 0) ||
-        (reg_info->is_sticky != REG_CONFIG_DONE_STICKY && reg_info->is_sticky != REG_CONFIG_DONE) ||
-        force_update || update_axi_user) {
+        (reg_info->is_sticky == REG_SELF_LOCK_NON_ZERO && mci_reg_read(address) == 0) ||
+        (reg_info->is_sticky == REG_SELF_LOCK_NON_ZERO_STICKY && mci_reg_read(address) == 0) ||
+        (reg_info->is_sticky != REG_CONFIG_DONE_STICKY && reg_info->is_sticky != REG_CONFIG_DONE &&
+         reg_info->is_sticky != REG_SELF_LOCK_NON_ZERO_STICKY && reg_info->is_sticky != REG_EXT_LOCK &&
+         reg_info->is_sticky != REG_SELF_LOCK_NON_ZERO) ||
+        update_axi_user) {
         update_exp_data = true;
     }
 
@@ -1234,9 +1236,6 @@ void write_to_register_group_and_track(mci_register_group_t group, uint32_t writ
             // Check if this register should be excluded using our efficient method
             if (!is_register_excluded(reg->address)) {
 
-                VPRINTF(MEDIUM, "  Writing 0x%08x to %s (0x%08x)\n", write_data, reg->name, reg->address);
-                mci_reg_write(reg->address, write_data);
-
                 /* Get mask for this register */
                 uint32_t mask = get_register_mask(reg->address);
 
@@ -1244,6 +1243,9 @@ void write_to_register_group_and_track(mci_register_group_t group, uint32_t writ
                 if (set_reg_exp_data(dict, reg->address, write_data, mask, true) != 0) {
                     VPRINTF(MEDIUM, "  WARNING: Could not store expected data for %s\n", reg->name);
                 }
+
+                VPRINTF(MEDIUM, "  Writing 0x%08x to %s (0x%08x)\n", write_data, reg->name, reg->address);
+                mci_reg_write(reg->address, write_data);
             } else {
                 VPRINTF(MEDIUM, "  Skipping excluded register %s (0x%08x)\n", reg->name, reg->address);
             }
@@ -1417,7 +1419,7 @@ int read_register_group_and_verify(mci_register_group_t group, mci_reg_exp_dict_
                         }
                     }
                 } else if (reset_type == WARM_RESET) {
-                    if (reg->is_sticky == REG_STICKY || reg->is_sticky == REG_CONFIG_DONE_STICKY) {
+                    if (reg->is_sticky == REG_STICKY || reg->is_sticky == REG_CONFIG_DONE_STICKY || reg->is_sticky == REG_SELF_LOCK_NON_ZERO_STICKY) {
                         if (get_reg_exp_data(&g_expected_data_dict, reg->address, &exp_data) == 0) {
                             VPRINTF(MEDIUM, "Expected data for %s = 0x%0x\n", reg->name, exp_data);
                             // Compare and report

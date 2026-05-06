@@ -55,7 +55,15 @@ void nmi_handler (void);
 void nmi_handler (void) {
     VPRINTF(LOW, "*** Entering NMI Handler ***\n");
     if (lsu_read_32(SOC_MCI_TOP_MCI_REG_HW_ERROR_FATAL) & MCI_REG_HW_ERROR_FATAL_NMI_PIN_MASK) {
-        SEND_STDOUT_CTRL(TB_CMD_COLD_RESET);
+        lsu_write_32(SOC_MCI_TOP_MCI_REG_HW_ERROR_FATAL, 0);
+        if (lsu_read_32(SOC_MCI_TOP_MCI_REG_HW_ERROR_FATAL) & MCI_REG_HW_ERROR_FATAL_NMI_PIN_MASK) {
+                // Enabling timer 2 should deassert fatal_timeout signal
+                lsu_write_32(SOC_MCI_TOP_MCI_REG_WDT_TIMER2_EN, 1);
+                lsu_write_32(SOC_MCI_TOP_MCI_REG_HW_ERROR_FATAL, MCI_REG_HW_ERROR_FATAL_NMI_PIN_MASK);
+                    SEND_STDOUT_CTRL(TB_CMD_COLD_RESET);
+        } else {
+                handle_error("Zero cleared W1C register\n");
+        }
     }
     else {
         VPRINTF(ERROR, "Unexpected entry into NMI handler function\n");
@@ -73,7 +81,7 @@ void main(void) {
     lsu_write_32(SOC_MCI_TOP_MCI_REG_MCU_NMI_VECTOR, (uint32_t) (nmi_handler));
     //Call interrupt init
     // init_interrupts(); //TODO
-    
+
 
     rst_count++;
 
@@ -99,7 +107,7 @@ void main(void) {
         service_t1_intr();
         service_t2_intr();
 
-        
+
         set_default_t1_period();
         set_default_t2_period();
         configure_wdt_independent(BOTH_TIMERS_DIS, 0x00000000, 0x00000000, 0x00000000, 0x00000000);
