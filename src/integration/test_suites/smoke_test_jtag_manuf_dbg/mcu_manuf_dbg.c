@@ -41,7 +41,7 @@ volatile char* stdout = (char *)SOC_MCI_TOP_MCI_REG_DEBUG_OUT;
     enum printf_verbosity verbosity_g = LOW;
 #endif
 
-
+volatile int rst_count  = 0;
 
 
 void main (void) {
@@ -87,53 +87,63 @@ void main (void) {
     0x90b3fae2,
     0x7f04e213
     };
-    // VPRINTF(LOW, "=================\nMCU Caliptra Boot Go\n=================\n\n")
-    
-    // Writing to Caliptra Boot GO register of MCI for CSS BootFSM to bring Caliptra out of reset 
-    // This is just to see CSSBootFSM running correctly
-    mcu_cptra_init_d(.cfg_skip_set_fuse_done=true);
 
-    ////////////////////////////////////
-    // Fuse and Boot Bringup
-    //
-    uint32_t base_address = SOC_SOC_IFC_REG_FUSE_MANUF_DBG_UNLOCK_TOKEN_0;
-    for (int i = 0; i < 16; i++) {
-        VPRINTF(LOW, "MCU: writing 0x%x to address of 0x%x\n", vector[i], base_address + (i * 4));
-        lsu_write_32(base_address + (i * 4), vector[i]);
-    }
+    if (rst_count == 0) {
+        // Writing to Caliptra Boot GO register of MCI for CSS BootFSM to bring Caliptra out of reset
+        // This is just to see CSSBootFSM running correctly
+        mcu_cptra_init_d(.cfg_skip_set_fuse_done=true);
+
+        ////////////////////////////////////
+        // Fuse and Boot Bringup
+        //
+        uint32_t base_address = SOC_SOC_IFC_REG_FUSE_MANUF_DBG_UNLOCK_TOKEN_0;
+        for (int i = 0; i < 16; i++) {
+            VPRINTF(LOW, "MCU: writing 0x%x to address of 0x%x\n", vector[i], base_address + (i * 4));
+            lsu_write_32(base_address + (i * 4), vector[i]);
+        }
 
 
-    for (uint32_t ii = 0; ii < 600; ii++) {
-        __asm__ volatile ("nop"); // Sleep loop as "nop"
-    }
-
-    VPRINTF(LOW, "=================\n CALIPTRA_SS JTAG MANUF DEBUG TEST with ROM \n=================\n\n");
-
-    // lcc_initialization();
-    // transition_state_check(TEST_UNLOCKED0, raw_unlock_token[0], raw_unlock_token[1], raw_unlock_token[2], raw_unlock_token[3], 1);
-    // reset_fc_lcc_rtl();
-
-    // Initialize fuses
-    lsu_write_32(SOC_SOC_IFC_REG_CPTRA_FUSE_WR_DONE, SOC_IFC_REG_CPTRA_FUSE_WR_DONE_DONE_MASK);
-    VPRINTF(LOW, "MCU: Set fuse wr done\n");
-    
-
-    cptra_boot_go = 0;
-    VPRINTF(LOW, "MCU: waits in success loop\n");
-    while(cptra_boot_go != SOC_IFC_REG_SS_DBG_MANUF_SERVICE_REG_RSP_MANUF_DBG_UNLOCK_SUCCESS_MASK){
-        cptra_boot_go = lsu_read_32(SOC_SOC_IFC_REG_SS_DBG_MANUF_SERVICE_REG_RSP) & SOC_IFC_REG_SS_DBG_MANUF_SERVICE_REG_RSP_MANUF_DBG_UNLOCK_SUCCESS_MASK;
-        for (uint32_t ii = 0; ii < 500; ii++) {
+        for (uint32_t ii = 0; ii < 600; ii++) {
             __asm__ volatile ("nop"); // Sleep loop as "nop"
         }
+
+        VPRINTF(LOW, "=================\n CALIPTRA_SS JTAG MANUF DEBUG TEST with ROM \n=================\n\n");
+
+        // lcc_initialization();
+        // transition_state_check(TEST_UNLOCKED0, raw_unlock_token[0], raw_unlock_token[1], raw_unlock_token[2], raw_unlock_token[3], 1);
+        // reset_fc_lcc_rtl();
+
+        // Initialize fuses
+        lsu_write_32(SOC_SOC_IFC_REG_CPTRA_FUSE_WR_DONE, SOC_IFC_REG_CPTRA_FUSE_WR_DONE_DONE_MASK);
+        VPRINTF(LOW, "MCU: Set fuse wr done\n");
+
+
+        cptra_boot_go = 0;
+        VPRINTF(LOW, "MCU: waits in success loop\n");
+        while(cptra_boot_go != SOC_IFC_REG_SS_DBG_MANUF_SERVICE_REG_RSP_MANUF_DBG_UNLOCK_SUCCESS_MASK){
+            cptra_boot_go = lsu_read_32(SOC_SOC_IFC_REG_SS_DBG_MANUF_SERVICE_REG_RSP) & SOC_IFC_REG_SS_DBG_MANUF_SERVICE_REG_RSP_MANUF_DBG_UNLOCK_SUCCESS_MASK;
+            for (uint32_t ii = 0; ii < 500; ii++) {
+                __asm__ volatile ("nop"); // Sleep loop as "nop"
+            }
+        }
+
+        // Do a cold reset to improve coverage
+        // Warm reset would be enough for toggling ss_dbg_manuf_enable, but not cptra_ss_debug_intent
+        rst_count++;
+        SEND_STDOUT_CTRL(TB_CMD_COLD_RESET);
+
+        for (uint32_t ii = 0; ii < 5000; ii++) {
+            __asm__ volatile ("nop"); // Sleep loop as "nop"
+        }
+
+    } else if (rst_count == 1) {
+        VPRINTF(LOW, "MCU: Success done\n");
+        // reset_fc_lcc_rtl();
+        for (uint32_t ii = 0; ii < 5000; ii++) {
+            __asm__ volatile ("nop"); // Sleep loop as "nop"
+        }
+
+        SEND_STDOUT_CTRL(0xff);
     }
-
-    VPRINTF(LOW, "MCU: Success done\n");
-    // reset_fc_lcc_rtl();
-    for (uint32_t ii = 0; ii < 5000; ii++) {
-        __asm__ volatile ("nop"); // Sleep loop as "nop"
-    }
-
-
-    SEND_STDOUT_CTRL(0xff);
 
 }

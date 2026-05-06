@@ -127,5 +127,10 @@ if {$failure} {
 } 
 
 puts "TAP: MANUF DBG completed successfully."
+
+# Toggle TRST to improve coverage.
+reset_config trst_only
+reset
+
 shutdown
 
