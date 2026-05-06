@@ -323,6 +323,17 @@ This is done to not depend on randomization to toggle all state bits.
       ]
     }
     {
+      name: mci_aggregate_reg_test
+      desc: '''
+Test that aggregate fatal and non-fatal registers have correct access (W1C) behavior.
+            '''
+      stage: ""
+      tests:
+      [
+        mci_aggregate_reg_test
+      ]
+    }
+    {
       name: mci_err_intr_reg_rand_test
       desc: ""
       stage: ""
