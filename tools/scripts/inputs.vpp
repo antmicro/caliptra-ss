@@ -213848,7 +213848,7 @@ module mcu_mbox
     output logic sram_double_ecc_error,
     mci_mcu_sram_if.request mcu_mbox_sram_req_if
 );
-localparam MCI_MCU_SRAM_IF_ADDR_W = $bits(mcu_mbox_sram_req_if.req.addr);
+localparam MCI_MCU_SRAM_IF_ADDR_W = 32;
 mcu_mbox_csr__out_t hwif_out;
 mcu_mbox_csr__in_t hwif_in;
 logic mbox_valid_user;
@@ -257014,10 +257014,10 @@ parameter css_mcu0_el2_param_t pt = 2291'h04840400010040010840000020908200002840
       .s_mem_req_if(mcu_rom_mem_export_if)
     );
     mci_top #(
-        .AXI_ADDR_WIDTH  ($bits(cptra_ss_mci_s_axi_if_r_sub.araddr)),
+        .AXI_ADDR_WIDTH  (32),
         .AXI_DATA_WIDTH  (32                                       ),
-        .AXI_USER_WIDTH  ($bits(cptra_ss_mci_s_axi_if_r_sub.aruser)),
-        .AXI_ID_WIDTH    ($bits(cptra_ss_mci_s_axi_if_r_sub.arid)  ),
+        .AXI_USER_WIDTH  (32),
+        .AXI_ID_WIDTH    (32  ),
         .MCU_SRAM_SIZE_KB(MCU_SRAM_SIZE_KB                         ),
         .MIN_MCU_RST_COUNTER_WIDTH(MIN_MCU_RST_COUNTER_WIDTH       ),
         .MCU_MBOX0_SIZE_KB(MCU_MBOX0_SIZE_KB),
@@ -264996,7 +264996,7 @@ parameter css_mcu0_el2_param_t pt = 2291'h04840400010040010840000020908200002840
     caliptra_ss_bfm_services_if.bfm tb_services_if
 );
 localparam KB = 1024;
-localparam AXI_AW = $bits(m_axi_bfm_if.araddr);
+localparam AXI_AW = 32;
 localparam MCI_REG_SIZE_BYTES               = 2 ** MCI_REG_MIN_ADDR_WIDTH;
 localparam MCI_REG_START_ADDR               = (32'h21000000);
 localparam MCI_REG_END_ADDR                 = MCI_REG_START_ADDR + (MCI_REG_SIZE_BYTES) - 1;
