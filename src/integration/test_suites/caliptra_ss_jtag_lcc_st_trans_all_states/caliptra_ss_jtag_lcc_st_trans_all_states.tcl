@@ -129,23 +129,28 @@ while {$end != 1} {
             break
         }
     }
+
     # Check if we are in the right state.
     set lc_state_curr [read_lc_state]
     if {$lc_state_curr != $lc_state_next} {
         puts "ERROR: incorrect state: exp: $lc_state_next, act: $lc_state_curr"
         kill_sim
     }
-    # Check if we reached the expected lc counter.
-    set lc_cnt_curr   [read_lc_counter]
-    if {$lc_cnt_curr != $lc_cnt_next} {
-        puts "ERROR: incorrect counter: exp: $lc_cnt_next, act: $lc_cnt_curr"
-        kill_sim
-    }
+
     # If lc_state_next == SCRAP (20).
     if {$lc_state_next == 20} {
         # We reached the final SCRAP state, end test.
         puts "Info: Reached the final SCRAP state."
         set end 1
+        # In SCRAP, the counter is always read as 31.
+        set lc_cnt_next 31
+    }
+
+    # Check if we reached the expected lc counter.
+    set lc_cnt_curr   [read_lc_counter]
+    if {$lc_cnt_curr != $lc_cnt_next} {
+        puts "ERROR: incorrect counter: exp: $lc_cnt_next, act: $lc_cnt_curr"
+        kill_sim
     }
 }
 
