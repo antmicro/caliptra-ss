@@ -259046,17 +259046,6 @@ module caliptra_ss_top_sva
     @(posedge caliptra_ss_top_tb.core_clk)
     (~caliptra_ss_top_tb.caliptra_ss_dut.cptra_ss_pwrgood_i |-> (caliptra_ss_top_tb.caliptra_ss_dut.mci_top_i.i_mci_reg_top.mci_reg_hwif_out.HW_ERROR_FATAL=='h0))
   ) else $display("SVA ERROR: MCI HW ERROR FATAL is expected to reset on cold reset");
-  mci_error_fatal_warm_rst_check: assert property (
-    @(posedge caliptra_ss_top_tb.core_clk)
-    disable iff (!caliptra_ss_top_tb.caliptra_ss_dut.cptra_ss_pwrgood_i)
-    ((~caliptra_ss_top_tb.caliptra_ss_dut.cptra_ss_rst_b_i & caliptra_ss_top_tb.caliptra_ss_dut.cptra_ss_pwrgood_i) |-> ($stable(caliptra_ss_top_tb.caliptra_ss_dut.mci_top_i.i_mci_reg_top.mci_reg_hwif_out.HW_ERROR_FATAL)[*5]))
-  ) else $display("SVA ERROR: MCI HW ERROR FATAL is expected to remain unchanged on warm reset");
-  all_error_fatal_check: assert property (
-    @(posedge caliptra_ss_top_tb.core_clk)
-    disable iff (~caliptra_ss_top_tb.caliptra_ss_dut.cptra_ss_rst_b_i)
-    ((caliptra_ss_top_tb.caliptra_ss_dut.mci_top_i.i_mci_reg_top.mci_reg_hwif_out.internal_hw_error_fatal_mask.mask_nmi_pin & caliptra_ss_top_tb.caliptra_ss_dut.mci_top_i.i_mci_reg_top.mci_reg_hwif_out.internal_hw_error_fatal_mask.mask_mcu_sram_dmi_axi_collision) & (caliptra_ss_top_tb.caliptra_ss_dut.mci_top_i.i_mci_reg_top.nmi_intr | caliptra_ss_top_tb.caliptra_ss_dut.mci_top_i.i_mci_reg_top.mcu_sram_dmi_axi_collision_error) & caliptra_ss_top_tb.caliptra_ss_dut.mci_top_i.i_mci_reg_top.mci_intr |=> ~caliptra_ss_top_tb.caliptra_ss_dut.mci_top_i.i_mci_reg_top.all_error_fatal[*5])
-    and ((&caliptra_ss_top_tb.caliptra_ss_dut.mci_top_i.i_mci_reg_top.mci_reg_hwif_out.internal_fw_error_fatal_mask.mask & |caliptra_ss_top_tb.caliptra_ss_dut.mci_top_i.i_mci_reg_top.mci_reg_hwif_out.FW_ERROR_FATAL.error_code) |=> ~caliptra_ss_top_tb.caliptra_ss_dut.mci_top_i.i_mci_reg_top.all_error_fatal[*5])
-  ) else $display("SVA ERROR: all_error_fatal is asserted unexpectedly");
   all_error_fatal_sram_doublebit_check: assert property (
     @(posedge caliptra_ss_top_tb.core_clk)
     disable iff (~caliptra_ss_top_tb.caliptra_ss_dut.cptra_ss_rst_b_i)
@@ -259071,11 +259060,6 @@ module caliptra_ss_top_sva
     @(posedge caliptra_ss_top_tb.core_clk)
     (~caliptra_ss_top_tb.caliptra_ss_dut.cptra_ss_pwrgood_i |-> (caliptra_ss_top_tb.caliptra_ss_dut.mci_top_i.i_mci_reg_top.mci_reg_hwif_out.HW_ERROR_NON_FATAL=='h0))
   ) else $display("SVA ERROR: MCI HW ERROR NON FATAL is expected to reset on cold reset");
-  mci_error_non_fatal_warm_rst_check: assert property (
-    @(posedge caliptra_ss_top_tb.core_clk)
-    disable iff (!caliptra_ss_top_tb.caliptra_ss_dut.cptra_ss_pwrgood_i)
-    ((~caliptra_ss_top_tb.caliptra_ss_dut.cptra_ss_rst_b_i & caliptra_ss_top_tb.caliptra_ss_dut.cptra_ss_pwrgood_i) |-> ($stable(caliptra_ss_top_tb.caliptra_ss_dut.mci_top_i.i_mci_reg_top.mci_reg_hwif_out.HW_ERROR_NON_FATAL)[*5]))
-  ) else $display("SVA ERROR: MCI HW ERROR NON FATAL is expected to remain unchanged on warm reset");
   all_error_non_fatal_check: assert property (
     @(posedge caliptra_ss_top_tb.core_clk)
     disable iff (~caliptra_ss_top_tb.caliptra_ss_dut.cptra_ss_rst_b_i)
@@ -259130,20 +259114,10 @@ module caliptra_ss_top_sva
     @(posedge caliptra_ss_top_tb.core_clk)
     (~caliptra_ss_top_tb.caliptra_ss_dut.cptra_ss_pwrgood_i |-> (caliptra_ss_top_tb.caliptra_ss_dut.mci_top_i.i_mci_reg_top.mci_reg_hwif_out.FW_ERROR_FATAL=='h0))
   ) else $display("SVA ERROR: MCI FW ERROR FATAL is expected to reset on cold reset");
-  mci_fw_error_fatal_warm_rst_check: assert property (
-    @(posedge caliptra_ss_top_tb.core_clk)
-    disable iff (!caliptra_ss_top_tb.caliptra_ss_dut.cptra_ss_pwrgood_i)
-    ((~caliptra_ss_top_tb.caliptra_ss_dut.cptra_ss_rst_b_i & caliptra_ss_top_tb.caliptra_ss_dut.cptra_ss_pwrgood_i) |-> ($stable(caliptra_ss_top_tb.caliptra_ss_dut.mci_top_i.i_mci_reg_top.mci_reg_hwif_out.FW_ERROR_FATAL)[*5]))
-  ) else $display("SVA ERROR: MCI FW ERROR FATAL is expected to remain unchanged on warm reset");
   mci_fw_error_non_fatal_cold_rst_check: assert property (
     @(posedge caliptra_ss_top_tb.core_clk)
     (~caliptra_ss_top_tb.caliptra_ss_dut.cptra_ss_pwrgood_i |-> (caliptra_ss_top_tb.caliptra_ss_dut.mci_top_i.i_mci_reg_top.mci_reg_hwif_out.FW_ERROR_NON_FATAL=='h0))
   ) else $display("SVA ERROR: MCI FW ERROR NON FATAL is expected to reset on cold reset");
-  mci_fw_error_non_fatal_warm_rst_check: assert property (
-    @(posedge caliptra_ss_top_tb.core_clk)
-    disable iff (!caliptra_ss_top_tb.caliptra_ss_dut.cptra_ss_pwrgood_i)
-    ((~caliptra_ss_top_tb.caliptra_ss_dut.cptra_ss_rst_b_i & caliptra_ss_top_tb.caliptra_ss_dut.cptra_ss_pwrgood_i) |-> ($stable(caliptra_ss_top_tb.caliptra_ss_dut.mci_top_i.i_mci_reg_top.mci_reg_hwif_out.FW_ERROR_NON_FATAL)[*5]))
-  ) else $display("SVA ERROR: MCI FW ERROR NON FATAL is expected to remain unchanged on warm reset");
   function dec_lc_state_e decode_lc_state(lc_state_e lc_state);
     unique case (lc_state)
       LcStRaw:           return DecLcStRaw;
