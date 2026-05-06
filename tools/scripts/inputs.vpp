@@ -265268,7 +265268,7 @@ task smoke_test_mcu_sram_execution_region();
     end
     $display("[%t] 10 Random VALID writes to MCU_SRAM", $time);
     for(int i = 0; i < 10; i++) begin
-        get_execution_rand_addr(write_addrs[i]);
+
         write_data[i]  = $urandom;
         update_duplicate_addresses(i, write_addrs, write_data);
         $display("[%t] Writing 0x%x: 0x%x with AXI User: 0x%x", $time, write_addrs[i], write_data[i], axi_user);
@@ -265381,7 +265381,6 @@ task smoke_test_mcu_sram_execution_region();
     @(posedge core_clk);  
     $display("[%t] 10 Random VALID writes to MCU_SRAM", $time);
     for(int i = 0; i < 10; i++) begin
-        get_execution_rand_addr(write_addrs[i]);
         write_data[i]  = $urandom;
         update_duplicate_addresses(i, write_addrs, write_data);
         $display("[%t] Writing 0x%x: 0x%x with AXI User: 0x%x", $time, write_addrs[i], write_data[i], axi_user);
@@ -265480,7 +265479,6 @@ task smoke_test_mcu_sram_execution_region();
     @(posedge core_clk);  
     $display("[%t] 10 Random VALID writes to MCU_SRAM", $time);
     for(int i = 0; i < 10; i++) begin
-        get_execution_rand_addr(write_addrs[i]);
         write_data[i]  = $urandom;
         update_duplicate_addresses(i, write_addrs, write_data);
         $display("[%t] Writing 0x%x: 0x%x with AXI User: 0x%x", $time, write_addrs[i], write_data[i], axi_user);
@@ -265581,7 +265579,6 @@ task smoke_test_mcu_sram_execution_region();
     @(posedge core_clk);  
     $display("[%t] 10 Random VALID writes to MCU_SRAM", $time);
     for(int i = 0; i < 10; i++) begin
-        get_execution_rand_addr(write_addrs[i]);
         write_data[i]  = $urandom;
         update_duplicate_addresses(i, write_addrs, write_data);
         $display("[%t] Writing 0x%x: 0x%x with AXI User: 0x%x", $time, write_addrs[i], write_data[i], axi_user);
