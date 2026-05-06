@@ -262032,15 +262032,15 @@ module fc_lcc_tb_services (
         case (tb_service_cmd)
           CMD_FORCE_FC_AWUSER_CPTR_CORE: begin
             $display("fc_lcc_tb_services: Forcing fuse ctrl core_axi_wr_req.awuser = CLPTRA_CORE_AXI_USER");
-            force caliptra_ss_top_tb.caliptra_ss_dut.u_otp_ctrl.u_fuse_ctrl_filter.core_axi_wr_req.awuser = caliptra_ss_top_tb.caliptra_ss_dut.cptra_ss_strap_caliptra_dma_axi_user_i;
+
           end
           CMD_FORCE_FC_AWUSER_MCU: begin
             $display("fc_lcc_tb_services: Forcing fuse ctrl core_axi_wr_req.awuser = MCU_LSU_AXI_USER");
-            force caliptra_ss_top_tb.caliptra_ss_dut.u_otp_ctrl.u_fuse_ctrl_filter.core_axi_wr_req.awuser = caliptra_ss_top_tb.caliptra_ss_dut.cptra_ss_strap_mcu_lsu_axi_user_i;
+
           end
           CMD_RELEASE_AWUSER: begin
             $display("fc_lcc_tb_services: Releasing fuse ctrl's force on core_axi_wr_req.awuser");
-            release caliptra_ss_top_tb.caliptra_ss_dut.u_otp_ctrl.u_fuse_ctrl_filter.core_axi_wr_req.awuser;
+
           end
           CMD_FC_FORCE_ZEROIZATION: begin
             $display("fc_lcc_tb_services: Forcing FIPS_ZEROIZATION_PPD_i = 1, ROM mask = 32'hFFFFFFFF, and lcc_is_in_SCRAP_mode = 0");
@@ -262063,13 +262063,6 @@ module fc_lcc_tb_services (
           end
           CMD_FORCE_LC_TOKENS: begin
             $display("fc_lcc_tb_services: Forcing LCC TOKENS");            
-            force caliptra_ss_top_tb.caliptra_ss_dut.u_lc_ctrl.otp_lc_data_i.test_tokens_valid = 4'b0101;  
-            force caliptra_ss_top_tb.caliptra_ss_dut.u_lc_ctrl.otp_lc_data_i.test_unlock_token = 128'h3852_305b_aecf_5ff1_d5c1_d25f_6db9_058d;
-            force caliptra_ss_top_tb.caliptra_ss_dut.u_lc_ctrl.otp_lc_data_i.test_exit_dev_token = 128'hd10ceca9_725373ec_32ac874c_7381bd54;
-            force caliptra_ss_top_tb.caliptra_ss_dut.u_lc_ctrl.otp_lc_data_i.dev_exit_prod_token = 128'hf1c0bd8a_da705018_5d3667f5_aeebc767;
-            force caliptra_ss_top_tb.caliptra_ss_dut.u_lc_ctrl.otp_lc_data_i.prod_exit_prodend_token = 128'hdb17c6f2_fa63d690_734a8a31_6147d7e5;
-            force caliptra_ss_top_tb.caliptra_ss_dut.u_lc_ctrl.otp_lc_data_i.rma_token_valid = 4'b0101; 
-            force caliptra_ss_top_tb.caliptra_ss_dut.u_lc_ctrl.otp_lc_data_i.rma_token = 128'h67926115_6880f4cc_51785553_16c51e4d;
           end
           CMD_LC_FORCE_RMA_SCRAP_PPD: begin
             $display("fc_lcc_tb_services: Forcing Allow_RMA_or_SCRAP_on_PPD  = 1");
@@ -262123,7 +262116,7 @@ module fc_lcc_tb_services (
           end
           CMD_LC_FAULT_CNTR: begin
             $display("fc_lcc_tb_services: fault lcc cntr fuse");
-            force caliptra_ss_top_tb.caliptra_ss_dut.u_lc_ctrl.u_lc_ctrl_fsm.u_lc_ctrl_state_transition.lc_cnt_i[0] = '0;
+
           end
           CMD_DISABLE_CLK_BYP_ACK: begin
             $display("fc_lcc_tb_services: disable clk_byp_ack");
@@ -262556,7 +262549,7 @@ parameter css_mcu0_el2_param_t pt = 2291'h04840400010040010840000020908200002840
         if ($test$plusargs("CALIPTRA_SS_JTAG_DBG")) begin
         end 
         if ($test$plusargs("CALIPTRA_SS_JTAG_MCI_BRK")) begin
-            force caliptra_ss_top_tb.caliptra_ss_dut.mci_top_i.from_otp_to_lcc_program_i.state = PROD_state;
+
             force caliptra_ss_top_tb.cptra_ss_debug_intent_i = 1'b1;
             force caliptra_ss_top_tb.cptra_ss_mci_boot_seq_brkpoint_i = 1'b1;
             $display("APPLYING FORCE (caliptra_ss_top_tb_services): MCI_PATH.state is PROD_state");  
@@ -262788,9 +262781,9 @@ parameter css_mcu0_el2_param_t pt = 2291'h04840400010040010840000020908200002840
                     release caliptra_ss_top_tb.caliptra_ss_dut.mci_top_i.i_mci_reg_top.mbox1_sram_single_ecc_error;
                 end
                 8: begin
-                    force caliptra_ss_top_tb.caliptra_ss_dut.mci_top_i.i_mci_reg_top.security_state_o.debug_locked = 1'b1;
+
                     @(negedge clk);
-                    release caliptra_ss_top_tb.caliptra_ss_dut.mci_top_i.i_mci_reg_top.security_state_o.debug_locked;
+
                 end
                 9: begin
                     force caliptra_ss_top_tb.caliptra_ss_dut.mci_top_i.i_mci_reg_top.scan_mode = 1'b1;
