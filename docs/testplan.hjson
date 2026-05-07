@@ -343,6 +343,17 @@ Test that aggregate fatal and non-fatal registers have correct access (W1C) beha
       ]
     }
     {
+      name: mci_invalid_access_test
+      desc: '''
+Test that accesses from unprivileged source doesn't modify privileged registers.
+            '''
+      stage: ""
+      tests:
+      [
+        mci_invalid_access_test
+      ]
+    }
+    {
       name: mci_pk_hash_reg_rand_test
       desc: ""
       stage: ""
