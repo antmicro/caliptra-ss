@@ -80,10 +80,32 @@ static const uint32_t mbox_data[9] = {
     0x8A8888F8
 };
 
+volatile int rst_count = 0;
+volatile int use_scrap = 0;
+
 void main(void) {
+    uint32_t sec_state;
+    uint32_t lifecycle;
+
+    if (rst_count == 1) {
+        sec_state = lsu_read_32(SOC_MCI_TOP_MCI_REG_SECURITY_STATE);
+        lifecycle = sec_state & MCI_REG_SECURITY_STATE_DEVICE_LIFECYCLE_MASK;
+        uint32_t expected = use_scrap ? LIFECYCLE_PRODUCTION : LIFECYCLE_MANUFACTURING;
+        if (lifecycle != expected) {
+            VPRINTF(LOW, "ERROR: expected %s(0x%x), got lifecycle=0x%x (SECURITY_STATE=0x%08x)\n",
+                    use_scrap ? "LIFECYCLE_PRODUCTION" : "LIFECYCLE_MANUFACTURING", expected, lifecycle, sec_state);
+            SEND_STDOUT_CTRL(0x01);
+            while(1);
+        }
+        SEND_STDOUT_CTRL(0xff);
+        while(1);
+    }
+
     uint32_t rand_val  = xorshift32();
     uint32_t use_debug = rand_val & 1;
-    uint32_t use_scrap = (rand_val >> 1) & 1;
+    use_scrap = (rand_val >> 1) & 1;
+
+    rst_count += 1;
 
     VPRINTF(LOW, "=================\nMCU mci_lcc_manuf_to_non_debug\n=================\n\n");
 
@@ -112,8 +134,8 @@ void main(void) {
     mcu_cptra_init_d(.cfg_skip_set_fuse_done=true);
 
     // Verify MANUFACTURING lifecycle and expected debug_locked
-    uint32_t sec_state = lsu_read_32(SOC_SOC_IFC_REG_CPTRA_SECURITY_STATE);
-    uint32_t lifecycle = sec_state & SOC_IFC_REG_CPTRA_SECURITY_STATE_DEVICE_LIFECYCLE_MASK;
+    sec_state = lsu_read_32(SOC_SOC_IFC_REG_CPTRA_SECURITY_STATE);
+    lifecycle = sec_state & SOC_IFC_REG_CPTRA_SECURITY_STATE_DEVICE_LIFECYCLE_MASK;
     if (lifecycle != LIFECYCLE_MANUFACTURING) {
         VPRINTF(LOW, "ERROR: expected MANUFACTURING(0x%x) in MANUF state, got lifecycle=0x%x (SECURITY_STATE=0x%08x)\n",
                 LIFECYCLE_MANUFACTURING, lifecycle, sec_state);
@@ -233,6 +255,6 @@ void main(void) {
     for (uint8_t i = 0; i < 160; i++) {
         __asm__ volatile ("nop");
     }
-
-    SEND_STDOUT_CTRL(0xff);
+    SEND_STDOUT_CTRL(TB_CMD_COLD_RESET);
+    while(1);
 }
