@@ -334,6 +334,17 @@ Test that aggregate fatal and non-fatal registers have correct access (W1C) beha
       ]
     }
     {
+      name: mci_boot_regs_test
+      desc: '''
+Test MCI_BOOTFSM and CPTRA_BOOT_GO registers access
+            '''
+      stage: ""
+      tests:
+      [
+        mci_boot_regs_test
+      ]
+    }
+    {
       name: mci_err_intr_reg_rand_test
       desc: ""
       stage: ""
