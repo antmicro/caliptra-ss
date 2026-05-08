@@ -60,6 +60,7 @@ uint32_t PROD_dbg_pk[] =  {
     0x9b5994a8
 };
 
+volatile uint32_t rst_cnt = 0;
 
 void main (void) {
     int argc=0;
@@ -92,7 +93,14 @@ void main (void) {
         0x28abfbfa, 0x5a8f41,   0x44901cee, 0x4961df3f,
         0x8db3e5ea, 0x8d489c51, 0x90e26b42, 0xaf9369e
     };
-    // VPRINTF(LOW, "=================\nMCU Caliptra Boot Go\n=================\n\n")
+
+    // IMprove coverage by clearing debug request
+    if (rst_cnt == 1) {
+        SEND_STDOUT_CTRL(TB_CMD_TEST_PASS);
+        while(1);
+    }
+
+    rst_cnt = 1;
 
     // Writing to Caliptra Boot GO register of MCI for CSS BootFSM to bring Caliptra out of reset
     // This is just to see CSSBootFSM running correctly
@@ -159,7 +167,6 @@ void main (void) {
     lsu_write_32(SOC_MCI_TOP_MCI_REG_SOC_PROD_DEBUG_STATE_0, 0);
     lsu_write_32(SOC_MCI_TOP_MCI_REG_SOC_PROD_DEBUG_STATE_1, 0);
 
-
-    SEND_STDOUT_CTRL(0xff);
-
+    SEND_STDOUT_CTRL(TB_CMD_COLD_RESET);
+    while(1);
 }
