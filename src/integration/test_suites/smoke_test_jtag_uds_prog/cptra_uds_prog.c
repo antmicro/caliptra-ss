@@ -21,6 +21,7 @@
 #include <stdint.h>
 #include "printf.h"
 #include "soc_address_map.h"
+#include "caliptra_ss_lib.h"
 
 
 /*
@@ -144,10 +145,10 @@ void UDS_provision(uint32_t base_address) {
 
     // 0x580: CPTRA_SS_TEST_EXIT_TO_MANUF_TOKEN
     int i;
-    int data [] = {0xffffffff, 0xffffffff, 0x00000000, 0x00000000,
-                   0x5a5a5a5a, 0x5a5a5a5a, 0xa5a5a5a5, 0xa5a5a5a5,
-                   0x01234567, 0x89abcdef, 0xbeadbeef, 0xbaadf00d,
-                   0x78aef80b, 0x96E4BD00, 0x3AB7DB4E, 0x404D8094,
+    int data [] = {xorshift32(), xorshift32(), xorshift32(), xorshift32(),
+                   xorshift32(), xorshift32(), xorshift32(), xorshift32(),
+                   xorshift32(), xorshift32(), xorshift32(), xorshift32(),
+                   xorshift32(), xorshift32(), xorshift32(), xorshift32(),
     };
     for (i=0;i<8;i++){
         dai_wr(base_address+i*8, data[i*2], data[i*2+1], 64, 0);
