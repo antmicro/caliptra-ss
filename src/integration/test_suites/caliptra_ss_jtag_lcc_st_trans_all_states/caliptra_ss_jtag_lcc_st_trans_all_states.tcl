@@ -120,6 +120,18 @@ while {$end != 1} {
         [format 0x%08X $t2] [format 0x%08X $t3] (cond=$use_token)"
     # Now conduct the state transition.
     transition_state $lc_state_next $t0 $t1 $t2 $t3 $use_token
+
+    # XXX: read_lc_state occasionally gets stuck (ignoring the timeout) when the
+    # read happens during LCC reset. Since the function never returns, we can't
+    # simply reset TAP and try again.
+    # Try to minimize chances of bad timing by delaying for 20 seconds. This
+    # period was obtained by comparing multiple runs, and it should be
+    # a compromise between waiting long enough to avoid reading during reset
+    # (it usually takes 10-12 seconds before the simulation forces the reset,
+    # with a single max value of 21 seconds seen for ~120 transitions) and
+    # not increasing total test time too much.
+    after 20000
+
     while {1} {
         # Wait until we got a different state that the current one that is not
         # POST_TRANSITION (21) or INVALID (23).
