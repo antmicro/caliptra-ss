@@ -541,14 +541,29 @@ proc test_transition_if {lock_register} {
             puts "ERROR: incorrect claim_transition_if_regwen after lock: exp: 0, act: $act_rw0"
             exit 1
         }
-    }
 
-    riscv dmi_write $LC_CTRL_CLAIM_TRANSITION_IF_OFFSET $MUBITRUE
-    set exp1 [expr {$lock_register ? $MUBIFALSE : $MUBITRUE}]
-    set act1 [expr {[riscv dmi_read $LC_CTRL_CLAIM_TRANSITION_IF_OFFSET] & 0xFF}]
-    if {$act1 != $exp1} {
-        puts "ERROR: incorrect claim_transition_if after write: exp: $exp1, act: $act1"
-        exit 1
+        riscv dmi_write $LC_CTRL_CLAIM_TRANSITION_IF_OFFSET $MUBITRUE
+        set exp1 $MUBIFALSE
+        set act1 [expr {[riscv dmi_read $LC_CTRL_CLAIM_TRANSITION_IF_OFFSET] & 0xFF}]
+        if {$act1 != $exp1} {
+            puts "ERROR: incorrect claim_transition_if after write: exp: $exp1, act: $act1"
+            exit 1
+        }
+    } else {
+        set act1 0
+        set exp1 $MUBITRUE
+
+        # Mutex may be held by MCU, try few times before giving up
+        for {set i 0} {$i<10} {incr i} {
+            riscv dmi_write $LC_CTRL_CLAIM_TRANSITION_IF_OFFSET $MUBITRUE
+            set act1 [expr {[riscv dmi_read $LC_CTRL_CLAIM_TRANSITION_IF_OFFSET] & 0xFF}]
+            if {$act1 == $exp1} {break}
+        }
+
+        if {$act1 != $exp1} {
+            puts "ERROR: incorrect claim_transition_if after write: exp: $exp1, act: $act1"
+            exit 1
+        }
     }
 
     puts "============"
