@@ -39,7 +39,17 @@ volatile char* stdout = (char *)SOC_MCI_TOP_MCI_REG_DEBUG_OUT;
     enum printf_verbosity verbosity_g = LOW;
 #endif
 
+volatile uint32_t rst_cnt = 0;
+
 void main(void) {
+
+    // Improve coverage, toggle lifecycle state and counter after escalation
+    if (rst_cnt == 1) {
+        SEND_STDOUT_CTRL(TB_CMD_TEST_PASS);
+        while(1);
+    }
+
+    rst_cnt = 1;
     VPRINTF(LOW, "=================\nLCC check timeout\n=================\n\n");
 
     mcu_cptra_init_d();
@@ -110,5 +120,6 @@ void main(void) {
         __asm__ volatile ("nop"); // Sleep loop as "nop"
     }
 
-    SEND_STDOUT_CTRL(0xff);
+    SEND_STDOUT_CTRL(TB_CMD_COLD_RESET);
+    while(1);
 }
