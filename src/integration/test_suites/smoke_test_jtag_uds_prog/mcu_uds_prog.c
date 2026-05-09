@@ -42,7 +42,7 @@ volatile char* stdout = (char *)SOC_MCI_TOP_MCI_REG_DEBUG_OUT;
 #endif
 
 
-
+volatile uint32_t rst_cnt = 0;
 
 void main (void) {
     int argc=0;
@@ -68,7 +68,14 @@ void main (void) {
     uint32_t mbox_resp_dlen;
     uint32_t mbox_resp_data;
     uint32_t cptra_boot_go;
-    // Writing to Caliptra Boot GO register of MCI for CSS BootFSM to bring Caliptra out of reset 
+
+    if (rst_cnt == 1) {
+        SEND_STDOUT_CTRL(TB_CMD_TEST_PASS);
+        while(1);
+    }
+    rst_cnt = 1;
+
+    // Writing to Caliptra Boot GO register of MCI for CSS BootFSM to bring Caliptra out of reset
     // This is just to see CSSBootFSM running correctly
     mcu_mci_boot_go();
     ////////////////////////////////////
@@ -84,15 +91,15 @@ void main (void) {
     VPRINTF(LOW, "=================\n CALIPTRA_SS JTAG UDS Prov TEST with ROM \n=================\n\n");
     lsu_write_32(SOC_MCI_TOP_MCI_REG_GENERIC_INPUT_WIRES_0, 0x1);
     VPRINTF(LOW, "MCU: Writting  SOC_MCI_TOP_MCI_REG_GENERIC_INPUT_WIRES_0 %x\n", 0x1);
-    
+
     // lcc_initialization();
     // transition_state_check(TEST_UNLOCKED0, raw_unlock_token[0], raw_unlock_token[1], raw_unlock_token[2], raw_unlock_token[3], 1);
     // reset_fc_lcc_rtl();
 
     // Initialize fuses
     lsu_write_32(SOC_SOC_IFC_REG_CPTRA_FUSE_WR_DONE, SOC_IFC_REG_CPTRA_FUSE_WR_DONE_DONE_MASK);
-    VPRINTF(LOW, "MCU: Set fuse wr done\n");    
-    
+    VPRINTF(LOW, "MCU: Set fuse wr done\n");
+
 
     cptra_boot_go = 0;
     VPRINTF(LOW, "MCU: waits in success loop\n");
@@ -107,6 +114,6 @@ void main (void) {
     }
 
 
-    SEND_STDOUT_CTRL(0xff);
-
+    SEND_STDOUT_CTRL(TB_CMD_COLD_RESET);
+    while(1);
 }
