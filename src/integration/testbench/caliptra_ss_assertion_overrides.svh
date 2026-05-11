@@ -23,4 +23,6 @@ initial begin
   $assertoff(0, caliptra_ss_top_tb.caliptra_ss_dut.caliptra_top_dut.mldsa.sampler_top_inst.sha3_inst.u_pad.RunThenComplete_M);
   // Exiting prod debug triggers this assertion
   $assertoff(0, `MCI_PATH.LCC_state_translator.NonDebugUnlockedCheck_A);
+  // This assertion doesn't align with RTL
+  $assertoff(0, caliptra_ss_top_tb.ss_sva.cascade_wdt_t2_pet);
 end

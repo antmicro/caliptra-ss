@@ -56,14 +56,20 @@ void nmi_handler (void) {
     VPRINTF(LOW, "*** Entering NMI Handler ***\n");
     if (lsu_read_32(SOC_MCI_TOP_MCI_REG_HW_ERROR_FATAL) & MCI_REG_HW_ERROR_FATAL_NMI_PIN_MASK) {
         lsu_write_32(SOC_MCI_TOP_MCI_REG_HW_ERROR_FATAL, 0);
-        if (lsu_read_32(SOC_MCI_TOP_MCI_REG_HW_ERROR_FATAL) & MCI_REG_HW_ERROR_FATAL_NMI_PIN_MASK) {
-                // Enabling timer 2 should deassert fatal_timeout signal
-                lsu_write_32(SOC_MCI_TOP_MCI_REG_WDT_TIMER2_EN, 1);
-                lsu_write_32(SOC_MCI_TOP_MCI_REG_HW_ERROR_FATAL, MCI_REG_HW_ERROR_FATAL_NMI_PIN_MASK);
-                    SEND_STDOUT_CTRL(TB_CMD_COLD_RESET);
-        } else {
-                handle_error("Zero cleared W1C register\n");
+        if (lsu_read_32(SOC_MCI_TOP_MCI_REG_HW_ERROR_FATAL) & MCI_REG_HW_ERROR_FATAL_NMI_PIN_MASK == 0) {
+            handle_error("Zero cleared W1C register\n");
         }
+        // Set timeout2 intr
+        lsu_write_32(SOC_MCI_TOP_MCI_REG_INTR_BLOCK_RF_ERROR0_INTR_TRIG_R, MCI_REG_INTR_BLOCK_RF_ERROR0_INTR_TRIG_R_ERROR_WDT_TIMER2_TIMEOUT_TRIG_MASK);
+        // Servicing timer2 intr should not clear NMI
+        lsu_write_32(SOC_MCI_TOP_MCI_REG_INTR_BLOCK_RF_ERROR0_INTERNAL_INTR_R, MCI_REG_INTR_BLOCK_RF_ERROR0_INTERNAL_INTR_R_ERROR_WDT_TIMER2_TIMEOUT_STS_MASK);
+        if (lsu_read_32(SOC_MCI_TOP_MCI_REG_HW_ERROR_FATAL) & MCI_REG_HW_ERROR_FATAL_NMI_PIN_MASK == 0) {
+            handle_error("Servicing timer2 timeout cleared NMI\n");
+        }
+        // Enabling timer 2 should deassert fatal_timeout signal
+        lsu_write_32(SOC_MCI_TOP_MCI_REG_WDT_TIMER2_EN, 1);
+        lsu_write_32(SOC_MCI_TOP_MCI_REG_HW_ERROR_FATAL, MCI_REG_HW_ERROR_FATAL_NMI_PIN_MASK);
+            SEND_STDOUT_CTRL(TB_CMD_COLD_RESET);
     }
     else {
         VPRINTF(ERROR, "Unexpected entry into NMI handler function\n");

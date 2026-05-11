@@ -217,6 +217,64 @@ void main(void) {
         SEND_STDOUT_CTRL(TB_CMD_COLD_RESET);
         csr_write_mpmc_halt();
     }
+    else if (rst_count == 14) {
+        VPRINTF(LOW, "Cascade mode - t2 restart doesn't clear timer\n");
+        // Clear timer2
+        lsu_write_32(SOC_MCI_TOP_MCI_REG_WDT_TIMER2_EN, MCI_REG_WDT_TIMER2_EN_TIMER2_EN_MASK);
+        lsu_write_32(SOC_MCI_TOP_MCI_REG_WDT_TIMER2_CTRL, MCI_REG_WDT_TIMER2_CTRL_TIMER2_RESTART_MASK);
+        lsu_write_32(SOC_MCI_TOP_MCI_REG_WDT_TIMER1_TIMEOUT_PERIOD_0, 0);
+        lsu_write_32(SOC_MCI_TOP_MCI_REG_WDT_TIMER1_TIMEOUT_PERIOD_1, 0);
+        lsu_write_32(SOC_MCI_TOP_MCI_REG_WDT_TIMER2_TIMEOUT_PERIOD_0, 0x500);
+        lsu_write_32(SOC_MCI_TOP_MCI_REG_WDT_TIMER2_TIMEOUT_PERIOD_1, 0);
+        lsu_write_32(SOC_MCI_TOP_MCI_REG_WDT_TIMER1_EN, MCI_REG_WDT_TIMER1_EN_TIMER1_EN_MASK);
+        lsu_write_32(SOC_MCI_TOP_MCI_REG_WDT_TIMER1_CTRL, MCI_REG_WDT_TIMER1_CTRL_TIMER1_RESTART_MASK);
+        lsu_write_32(SOC_MCI_TOP_MCI_REG_WDT_TIMER2_EN, 0);
+        VPRINTF(LOW, "t2s\n");
+        for (uint8_t ii = 0; ii < 200; ii++) {
+            __asm__ volatile ("nop"); // Sleep loop as "nop"
+        }
+        lsu_write_32(SOC_MCI_TOP_MCI_REG_WDT_TIMER2_CTRL, MCI_REG_WDT_TIMER2_CTRL_TIMER2_RESTART_MASK);
+        VPRINTF(LOW, "t2r\n");
+        for (uint8_t ii = 0; ii < 200; ii++) {
+            __asm__ volatile ("nop"); // Sleep loop as "nop"
+        }
+
+        SEND_STDOUT_CTRL(TB_CMD_TEST_FAIL);
+        csr_write_mpmc_halt();
+    }
+    else if (rst_count == 15) {
+        VPRINTF(LOW, "Timer 2 forced service doesn't clear timer\n");
+        // Clear timer2
+        lsu_write_32(SOC_MCI_TOP_MCI_REG_WDT_TIMER2_EN, MCI_REG_WDT_TIMER2_EN_TIMER2_EN_MASK);
+        lsu_write_32(SOC_MCI_TOP_MCI_REG_WDT_TIMER1_EN, MCI_REG_WDT_TIMER1_EN_TIMER1_EN_MASK);
+        lsu_write_32(SOC_MCI_TOP_MCI_REG_WDT_TIMER1_TIMEOUT_PERIOD_0, 0);
+        lsu_write_32(SOC_MCI_TOP_MCI_REG_WDT_TIMER1_TIMEOUT_PERIOD_1, 0);
+        lsu_write_32(SOC_MCI_TOP_MCI_REG_WDT_TIMER2_TIMEOUT_PERIOD_0, 0x500);
+        lsu_write_32(SOC_MCI_TOP_MCI_REG_WDT_TIMER2_TIMEOUT_PERIOD_1, 0);
+        lsu_write_32(SOC_MCI_TOP_MCI_REG_WDT_TIMER1_CTRL, MCI_REG_WDT_TIMER1_CTRL_TIMER1_RESTART_MASK);
+        // Set timer2 interrupt
+        lsu_write_32(SOC_MCI_TOP_MCI_REG_INTR_BLOCK_RF_ERROR0_INTR_TRIG_R, MCI_REG_INTR_BLOCK_RF_ERROR0_INTR_TRIG_R_ERROR_WDT_TIMER2_TIMEOUT_TRIG_MASK);
+        lsu_write_32(SOC_MCI_TOP_MCI_REG_WDT_TIMER2_CTRL, MCI_REG_WDT_TIMER2_CTRL_TIMER2_RESTART_MASK);
+        VPRINTF(LOW, "t2s\n");
+        for (uint8_t ii = 0; ii < 200; ii++) {
+            __asm__ volatile ("nop"); // Sleep loop as "nop"
+        }
+        // Servicing existing intr shouldn't clear counter
+        lsu_write_32(SOC_MCI_TOP_MCI_REG_INTR_BLOCK_RF_ERROR0_INTERNAL_INTR_R, MCI_REG_INTR_BLOCK_RF_ERROR0_INTERNAL_INTR_R_ERROR_WDT_TIMER2_TIMEOUT_STS_MASK);
+        // Servicing timer1 intr shouldn't clear timer2 counter when in independent mode
+        lsu_write_32(SOC_MCI_TOP_MCI_REG_INTR_BLOCK_RF_ERROR0_INTERNAL_INTR_R, MCI_REG_INTR_BLOCK_RF_ERROR0_INTERNAL_INTR_R_ERROR_WDT_TIMER1_TIMEOUT_STS_MASK);
+        VPRINTF(LOW, "t2r\n");
+        for (uint8_t ii = 0; ii < 200; ii++) {
+            __asm__ volatile ("nop"); // Sleep loop as "nop"
+        }
+
+        if ((lsu_read_32(SOC_MCI_TOP_MCI_REG_INTR_BLOCK_RF_ERROR0_INTERNAL_INTR_R) & MCI_REG_INTR_BLOCK_RF_ERROR0_INTERNAL_INTR_R_ERROR_WDT_TIMER2_TIMEOUT_STS_MASK) == 0) {
+            SEND_STDOUT_CTRL(TB_CMD_TEST_FAIL);
+            csr_write_mpmc_halt();
+        }
+        SEND_STDOUT_CTRL(TB_CMD_COLD_RESET);
+        csr_write_mpmc_halt();
+    }
     else {
         SEND_STDOUT_CTRL(TB_CMD_TEST_PASS);
         csr_write_mpmc_halt();
