@@ -22,7 +22,7 @@
 // the MCI LCC state translator.  The FSM transitions to TRANSLATOR_NON_DEBUG,
 // which drives device_lifecycle=DEVICE_PRODUCTION(0x3) and debug_locked=1.
 // After releasing the injection the FSM remains in TRANSLATOR_NON_DEBUG
-// (self-locking — reset is required to escape), so both fields must still read
+// (self-locking - reset is required to escape), so both fields must still read
 // DEVICE_PRODUCTION + debug_locked=1.
 //
 // SECURITY_STATE register layout:
@@ -79,7 +79,7 @@ void main(void) {
         SEND_STDOUT_CTRL(0x01);
         return;
     }
-    VPRINTF(LOW, "INFO: initial state OK — lifecycle=0x%x, debug_locked=0 (SECURITY_STATE=0x%08x)\n", lifecycle, sec_state);
+    VPRINTF(LOW, "INFO: initial state OK - lifecycle=0x%x, debug_locked=0 (SECURITY_STATE=0x%08x)\n", lifecycle, sec_state);
 
     // Inject state_error.
     VPRINTF(LOW, "INFO: injecting state_error into MCI LCC state translator\n");
@@ -108,7 +108,7 @@ void main(void) {
         SEND_STDOUT_CTRL(0x01);
         return;
     }
-    VPRINTF(LOW, "INFO: locked state OK — lifecycle=DEVICE_PRODUCTION(0x%x), debug_locked=1 (SECURITY_STATE=0x%08x)\n",
+    VPRINTF(LOW, "INFO: locked state OK - lifecycle=DEVICE_PRODUCTION(0x%x), debug_locked=1 (SECURITY_STATE=0x%08x)\n",
             lifecycle, sec_state);
 
     // Release the injected state_error.
@@ -130,12 +130,12 @@ void main(void) {
         return;
     }
     if (lifecycle != LIFECYCLE_PRODUCTION) {
-        VPRINTF(LOW, "ERROR: device_lifecycle changed after state_error release — expected 0x%x, got 0x%x (SECURITY_STATE=0x%08x)\n",
+        VPRINTF(LOW, "ERROR: device_lifecycle changed after state_error release - expected 0x%x, got 0x%x (SECURITY_STATE=0x%08x)\n",
                 LIFECYCLE_PRODUCTION, lifecycle, sec_state);
         SEND_STDOUT_CTRL(0x01);
         return;
     }
-    VPRINTF(LOW, "INFO: post-release state OK — lifecycle=DEVICE_PRODUCTION(0x%x), debug_locked=1 (SECURITY_STATE=0x%08x)\n",
+    VPRINTF(LOW, "INFO: post-release state OK - lifecycle=DEVICE_PRODUCTION(0x%x), debug_locked=1 (SECURITY_STATE=0x%08x)\n",
             lifecycle, sec_state);
 
     for (uint8_t i = 0; i < 160; i++) {
