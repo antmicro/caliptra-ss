@@ -46,18 +46,18 @@ uint32_t PROD_DBG_PK_HASH_OFFSET      = 0x00000480;
 uint32_t debug_level = 1;
 
 uint32_t PROD_dbg_pk[] =  {
-    0x2bb37255, 
-    0x51a4edc7,
-    0xbd948b1e,
-    0x2c2a257e,
-    0x7a694bfd,
-    0xc2d5de4d,
-    0x8adec52a,
-    0xe7aeda4a,
-    0x2761c721,
-    0x98940dae,
-    0xe14e2482,
-    0xd6da39e1
+    0x0ea36807,
+    0x1129cf89,
+    0xd46c2835,
+    0x1311fe46,
+    0x2c961e7a,
+    0xf3f46ddc,
+    0x32433a5d,
+    0x0fb00758,
+    0xe1ad993e,
+    0x0491438e,
+    0x8949efd7,
+    0x9b5994a8
 };
 
 
@@ -135,8 +135,8 @@ void main (void) {
 
     cptra_boot_go = 0;
     VPRINTF(LOW, "MCU: waits in success loop\n");
-    while(cptra_boot_go != SOC_IFC_REG_SS_DBG_SERVICE_REG_RSP_PROD_DBG_UNLOCK_SUCCESS_MASK){
-        cptra_boot_go = lsu_read_32(SOC_SOC_IFC_REG_SS_DBG_SERVICE_REG_RSP) & SOC_IFC_REG_SS_DBG_SERVICE_REG_RSP_PROD_DBG_UNLOCK_SUCCESS_MASK;
+    while(cptra_boot_go != SOC_IFC_REG_SS_DBG_MANUF_SERVICE_REG_RSP_PROD_DBG_UNLOCK_SUCCESS_MASK){
+        cptra_boot_go = lsu_read_32(SOC_SOC_IFC_REG_SS_DBG_MANUF_SERVICE_REG_RSP) & SOC_IFC_REG_SS_DBG_MANUF_SERVICE_REG_RSP_PROD_DBG_UNLOCK_SUCCESS_MASK;
         for (uint32_t ii = 0; ii < 500; ii++) {
             __asm__ volatile ("nop"); // Sleep loop as "nop"
         }
