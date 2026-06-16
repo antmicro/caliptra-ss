@@ -1210,6 +1210,48 @@ module caliptra_ss_top_tb
     logic deassert_hard_rst_flag;
     logic assert_rst_flag_from_service;
     logic deassert_rst_flag_from_service;
+    logic route_fatal_to_nmi;
+
+    // Custom event injection
+    logic inject_mbox_soc_lock_on_mbox_unlock;
+
+    //AXI
+    logic [31:0] address;
+    logic [31:0] axuser;
+    logic [31:0] wuser[$];
+    logic [31:0] wdata[$];
+    logic [ 7:0] len;
+    logic [ 3:0] wstrb[$];
+    logic [ 1:0] burst;
+    logic        use_id;
+    logic        id;
+    logic        write;
+    logic        write_addr;
+    logic        write_data;
+    logic        write_resp;
+    logic        read;
+    logic        read_addr;
+    logic        read_resp;
+    logic        put_status;
+    logic        put_rdata;
+
+    logic [31:0] obf_key_value;
+    logic  [2:0] obf_key_idx;
+    logic        set_obf_key;
+    logic        get_obf_key;
+
+
+    // UDS access
+    logic       get_uds_value;
+    logic [2:0] uds_idx;
+
+    // FE access
+    logic       get_fe_value;
+    logic [1:0] fe_idx;
+
+    // KV check cleared
+    logic        check_kv_clear;
+    logic [4:0]  kv_idx;
 
     assign ready_for_fuses         = 0;
     assign ready_for_mb_processing = 0;
@@ -1269,8 +1311,49 @@ module caliptra_ss_top_tb
         .assert_hard_rst_flag(assert_hard_rst_flag),
         .deassert_hard_rst_flag(deassert_hard_rst_flag),
         .assert_rst_flag_from_service(assert_rst_flag_from_service),
-        .deassert_rst_flag_from_service(deassert_rst_flag_from_service)
+        .deassert_rst_flag_from_service(deassert_rst_flag_from_service),
 
+        .route_fatal_to_nmi(route_fatal_to_nmi),
+
+        // Custom event injection
+        .inject_mbox_soc_lock_on_mbox_unlock(inject_mbox_soc_lock_on_mbox_unlock),
+
+        //AXI SoC
+        .axi_addr(address),
+        .axi_axuser(axuser),
+        .axi_wuser(wuser),
+        .axi_wdata(wdata),
+        .axi_len(len),
+        .axi_wstrb(wstrb),
+        .axi_burst(burst),
+        .axi_use_id(use_id),
+        .axi_id(id),
+        .axi_write(write),
+        .axi_write_addr(write_addr),
+        .axi_write_data(write_data),
+        .axi_write_resp(write_resp),
+        .axi_read(read),
+        .axi_read_addr(read_addr),
+        .axi_read_resp(read_resp),
+        .axi_put_status(put_status),
+        .axi_put_rdata(put_rdata),
+
+        .obf_key_value(obf_key_value),
+        .obf_key_idx(obf_key_idx),
+        .set_obf_key(set_obf_key),
+        .get_obf_key(get_obf_key),
+
+        // UDS access
+        .get_uds_value(get_uds_value),
+        .uds_idx(uds_idx),
+
+        // FE access
+        .get_fe_value(get_fe_value),
+        .fe_idx(fe_idx),
+
+        // KV check cleared
+        .check_kv_clear(check_kv_clear),
+        .kv_idx(kv_idx)
     );
 
     // JTAG DPI
@@ -1337,6 +1420,9 @@ module caliptra_ss_top_tb
         .ras_test_ctrl(ras_test_ctrl),
         .cycleCnt(cycleCnt),
 
+        // Custom event injection
+        .inject_mbox_soc_lock_on_mbox_unlock(inject_mbox_soc_lock_on_mbox_unlock),
+
         //Interrupt flags
         .int_flag(int_flag),
         .cycleCnt_smpl_en(cycleCnt_smpl_en),
@@ -1348,10 +1434,51 @@ module caliptra_ss_top_tb
         .assert_rst_flag(assert_rst_flag_from_service),
         .deassert_rst_flag(deassert_rst_flag_from_service),
 
+        .route_fatal_to_nmi(route_fatal_to_nmi),
+
         .cptra_uds_tb(cptra_uds_rand),
         .cptra_fe_tb(cptra_fe_rand),
-        .cptra_obf_key_tb(cptra_obf_key_tb)
+        .cptra_obf_key_tb(cptra_obf_key_tb),
 
+        //AXI SoC
+        .axi_addr(address),
+        .axi_axuser(axuser),
+        .axi_wuser(wuser),
+        .axi_wdata(wdata),
+        .axi_len(len),
+        .axi_wstrb(wstrb),
+        .axi_burst(burst),
+        .axi_use_id(use_id),
+        .axi_id(id),
+        .axi_write(write),
+        .axi_write_addr(write_addr),
+        .axi_write_data(write_data),
+        .axi_write_resp(write_resp),
+        .axi_read(read),
+        .axi_read_addr(read_addr),
+        .axi_read_resp(read_resp),
+        .axi_put_status(put_status),
+        .axi_put_rdata(put_rdata),
+
+        .obf_key_value(obf_key_value),
+        .obf_key_idx(obf_key_idx),
+        .set_obf_key(set_obf_key),
+        .get_obf_key(get_obf_key),
+
+        // UDS access
+        .get_uds_value(get_uds_value),
+        .uds_idx(uds_idx),
+
+        // FE access
+        .get_fe_value(get_fe_value),
+        .fe_idx(fe_idx),
+
+        // KV check cleared
+        .check_kv_clear(check_kv_clear),
+        .kv_idx(kv_idx),
+
+        //Control signals
+        .debug_intent(cptra_ss_debug_intent_i)
     );
 
     caliptra_top_sva sva();
@@ -1677,7 +1804,6 @@ module caliptra_ss_top_tb
     assign cptra_ss_strap_generic_1_i           = `OTP_CTRL_DIRECT_ACCESS_CMD; // {32'hSOC_OTP_CTRL_DIRECT_ACCESS_CMD's address in SOC_IFC_REG - SOC_OTP_CTRL_BASE_ADDR}
     assign cptra_ss_strap_generic_2_i           = 32'h0;
     assign cptra_ss_strap_generic_3_i           = 32'h0;
-    assign cptra_ss_debug_intent_i              = 1'b0;
 
     // JTAG DPI
     jtagdpi #(
