@@ -26,7 +26,7 @@ uint8_t cptra_axi_dword_read_with_status(uint64_t src_addr, uint32_t * payload);
 
 uint8_t soc_ifc_axi_dma_read_ahb_payload_with_status(uint64_t src_addr, uint8_t fixed, uint32_t * payload, uint32_t byte_count, uint16_t block_size);
 
-uint8_t cptra_axi_dword_write(uint64_t dest_addr, uint32_t data);
+void cptra_axi_dword_write(uint64_t dest_addr, uint32_t data);
 
 uint8_t cptra_axi_dword_write_with_status(uint64_t dest_addr, uint32_t data);
 

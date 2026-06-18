@@ -23,8 +23,7 @@
 
 uint32_t cptra_axi_dword_read(uint64_t src_addr){
     uint32_t payload[1];
-    uint8_t status;
-    status = soc_ifc_axi_dma_read_ahb_payload(src_addr, 0, payload, 4,0);
+    soc_ifc_axi_dma_read_ahb_payload(src_addr, 0, payload, 4,0);
     return payload[0];
 }
 
@@ -39,11 +38,9 @@ uint8_t soc_ifc_axi_dma_read_ahb_payload_with_status(uint64_t src_addr, uint8_t 
 }
 
 
-uint8_t cptra_axi_dword_write(uint64_t dest_addr, uint32_t data){
+void cptra_axi_dword_write(uint64_t dest_addr, uint32_t data){
     uint32_t payload[1] = {data};
-    uint8_t status;
-    status = soc_ifc_axi_dma_send_ahb_payload(dest_addr, 0, payload, 4,0);
-    return status;
+    soc_ifc_axi_dma_send_ahb_payload(dest_addr, 0, payload, 4,0);
 }
 
 uint8_t soc_ifc_axi_dma_wait_idle_with_status(uint8_t clr_lock, uint8_t clr_error) {
@@ -274,11 +271,10 @@ void cptra_mcu_mbox_write_dword_sram(uint32_t mbox_num, uint32_t dword_addr, uin
 }
 
 void cptra_mcu_mbox_write_dword_sram_burst(uint32_t mbox_num, uint32_t dword_addr, uint32_t * payload, uint32_t size_in_bytes, uint16_t block_size) {
-    VPRINTF(LOW, "CALIPTRA: Write burst to MBOX%x starting at SRAM[%d], size in bytes: 0x%x\n", mbox_num, dword_addr, size_in_bytes); 
-    uint8_t status;
-    status = soc_ifc_axi_dma_send_ahb_payload(SOC_MCI_TOP_MCU_MBOX0_CSR_MBOX_SRAM_BASE_ADDR + 4*dword_addr + MCU_MBOX_NUM_STRIDE * mbox_num,
-                                             0, payload, size_in_bytes, block_size);
-}    
+    VPRINTF(LOW, "CALIPTRA: Write burst to MBOX%x starting at SRAM[%d], size in bytes: 0x%x\n", mbox_num, dword_addr, size_in_bytes);
+    soc_ifc_axi_dma_send_ahb_payload(SOC_MCI_TOP_MCU_MBOX0_CSR_MBOX_SRAM_BASE_ADDR + 4*dword_addr + MCU_MBOX_NUM_STRIDE * mbox_num,
+                                     0, payload, size_in_bytes, block_size);
+}
 
 uint32_t cptra_mcu_mbox_read_dword_sram(uint32_t mbox_num, uint32_t dword_addr) {
     uint32_t data = cptra_axi_dword_read(SOC_MCI_TOP_MCU_MBOX0_CSR_MBOX_SRAM_BASE_ADDR + 4*dword_addr + MCU_MBOX_NUM_STRIDE * mbox_num);
@@ -288,10 +284,8 @@ uint32_t cptra_mcu_mbox_read_dword_sram(uint32_t mbox_num, uint32_t dword_addr) 
 
 void cptra_mcu_mbox_read_dword_sram_burst(uint32_t mbox_num, uint32_t dword_addr, uint32_t * payload, uint32_t size_in_bytes, uint16_t block_size) {
     VPRINTF(LOW, "CALIPTRA: Read burst to MBOX%x starting at SRAM[%d], size in bytes: 0x%x\n", mbox_num, dword_addr, size_in_bytes); 
-    uint8_t status;
-    status = soc_ifc_axi_dma_read_ahb_payload(SOC_MCI_TOP_MCU_MBOX0_CSR_MBOX_SRAM_BASE_ADDR + 4*dword_addr + MCU_MBOX_NUM_STRIDE * mbox_num,
-                                             0, payload, size_in_bytes, block_size);
-
+    soc_ifc_axi_dma_read_ahb_payload(SOC_MCI_TOP_MCU_MBOX0_CSR_MBOX_SRAM_BASE_ADDR + 4*dword_addr + MCU_MBOX_NUM_STRIDE * mbox_num,
+                                     0, payload, size_in_bytes, block_size);
 }
 
 void cptra_mcu_mbox_write_cmd_status(uint32_t mbox_num, uint32_t data) {
