@@ -175,7 +175,8 @@ void mcu_cptra_init(mcu_cptra_init_args args);
 
 void handle_error(const char *format, ...);
 
-uint32_t xorshift32(void);
+// Also defined in caliptra-rtl, declare as weak to avoid linking errors
+uint32_t xorshift32(void) __attribute__ ((weak));
 
 // Bitfield indicating which MCU Mboxes are valid for the given test
 extern uint32_t valid_mbox_instances;
