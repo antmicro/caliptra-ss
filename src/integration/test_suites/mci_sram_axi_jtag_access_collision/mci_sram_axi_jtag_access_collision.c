@@ -45,6 +45,7 @@ void main(void) {
     lcc_initialization();
     transition_state(TEST_UNLOCKED0, raw_unlock_token[0], raw_unlock_token[1], raw_unlock_token[2], raw_unlock_token[3], 1);
     reset_fc_lcc_rtl();
+    wait_dai_op_idle(0);
 
     // Wait for the SRAM to be unlocked
     while(!(lsu_read_32(SOC_SOC_IFC_REG_CPTRA_FLOW_STATUS) & 0x1));
