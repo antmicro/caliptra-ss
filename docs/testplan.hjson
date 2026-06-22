@@ -767,6 +767,15 @@ Issue raw volatile unlock request and check that devices remains locked
       ]
     }
     {
+      name: smoke_test_jtag_prod_dbg_unlock
+      desc: ""
+      stage: ""
+      tests:
+      [
+        smoke_test_jtag_prod_dbg_unlock
+      ]
+    }
+    {
       name: smoke_test_jtag_mcu_system_bus_access
       desc: '''
 Perform 32-bit access to MCI DEBUG_[IN|OUT] registers using JTAG to system bus path.
