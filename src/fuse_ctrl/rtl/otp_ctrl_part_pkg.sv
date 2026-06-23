@@ -26,7 +26,7 @@ package otp_ctrl_part_pkg;
 
   parameter int NumVendorPkFuses = 2;
   parameter int NumVendorSecretFuses = 0;
-  parameter int NumVendorNonSecretFuses = 1;
+  parameter int NumVendorNonSecretFuses = 5;
 
   ////////////////////////////////////
   // Scrambling Constants and Types //
@@ -244,7 +244,7 @@ package otp_ctrl_part_pkg;
     '{
       variant:          Unbuffered,
       offset:           12'd208,
-      size:             112,
+      size:             104,
       key_sel:          key_sel_e'('0),
       secret:           1'b0,
       sw_digest:        1'b1,
@@ -259,7 +259,7 @@ package otp_ctrl_part_pkg;
     // SECRET_LC_TRANSITION_PARTITION
     '{
       variant:          Buffered,
-      offset:           12'd320,
+      offset:           12'd312,
       size:             184,
       key_sel:          SecretLifeCycleTransitionKey,
       secret:           1'b1,
@@ -275,7 +275,7 @@ package otp_ctrl_part_pkg;
     // LIFE_CYCLE
     '{
       variant:          LifeCycle,
-      offset:           12'd504,
+      offset:           12'd496,
       size:             88,
       key_sel:          key_sel_e'('0),
       secret:           1'b0,
@@ -291,8 +291,8 @@ package otp_ctrl_part_pkg;
     // VENDOR_HASHES_MANUF_PARTITION
     '{
       variant:          Unbuffered,
-      offset:           12'd592,
-      size:             168,
+      offset:           12'd584,
+      size:             152,
       key_sel:          key_sel_e'('0),
       secret:           1'b0,
       sw_digest:        1'b1,
@@ -307,8 +307,8 @@ package otp_ctrl_part_pkg;
     // VENDOR_HASHES_OWNER_PROD_PARTITION
     '{
       variant:          Unbuffered,
-      offset:           12'd760,
-      size:             64,
+      offset:           12'd736,
+      size:             56,
       key_sel:          key_sel_e'('0),
       secret:           1'b0,
       sw_digest:        1'b1,
@@ -323,8 +323,8 @@ package otp_ctrl_part_pkg;
     // VENDOR_HASHES_PROD_PARTITION
     '{
       variant:          Unbuffered,
-      offset:           12'd824,
-      size:             64,
+      offset:           12'd792,
+      size:             56,
       key_sel:          key_sel_e'('0),
       secret:           1'b0,
       sw_digest:        1'b1,
@@ -336,27 +336,11 @@ package otp_ctrl_part_pkg;
       iskeymgr_owner:   1'b0,
       lc_phase:         DecLcStProd
     },
-    // VENDOR_REVOCATIONS_PROD_PARTITION
-    '{
-      variant:          Unbuffered,
-      offset:           12'd888,
-      size:             48,
-      key_sel:          key_sel_e'('0),
-      secret:           1'b0,
-      sw_digest:        1'b1,
-      hw_digest:        1'b0,
-      write_lock:       1'b1,
-      read_lock:        1'b0,
-      integrity:        1'b0,
-      iskeymgr_creator: 1'b0,
-      iskeymgr_owner:   1'b0,
-      lc_phase:         DecLcStProd
-    },
     // VENDOR_NON_SECRET_PROD_PARTITION
     '{
       variant:          Unbuffered,
-      offset:           12'd936,
-      size:             8,
+      offset:           12'd848,
+      size:             176,
       key_sel:          key_sel_e'('0),
       secret:           1'b0,
       sw_digest:        1'b0,
@@ -371,7 +355,7 @@ package otp_ctrl_part_pkg;
     // CSR_PARTITION
     '{
       variant:          Unbuffered,
-      offset:           12'd944,
+      offset:           12'd1024,
       size:             192,
       key_sel:          key_sel_e'('0),
       secret:           1'b0,
@@ -399,7 +383,6 @@ package otp_ctrl_part_pkg;
     VendorHashesManufPartitionIdx,
     VendorHashesOwnerProdPartitionIdx,
     VendorHashesProdPartitionIdx,
-    VendorRevocationsProdPartitionIdx,
     VendorNonSecretProdPartitionIdx,
     CsrPartitionIdx,
     // These are not "real partitions", but in terms of implementation it is convenient to
@@ -497,47 +480,30 @@ package otp_ctrl_part_pkg;
 
 
   // OTP invalid partition default for buffered partitions.
-  parameter logic [9087:0] PartInvDefault = 9088'({
+  parameter logic [9727:0] PartInvDefault = 9728'({
     1536'({
       1536'h0
     }),
-    64'({
-      32'h0, // unallocated space
-      32'h0
+    1408'({
+      128'h0,
+      256'h0,
+      256'h0,
+      256'h0,
+      256'h0,
+      256'h0
     }),
-    384'({
-      64'hAA3F4C71234F097C,
-      32'h0,
-      32'h0,
-      32'h0,
-      32'h0,
-      32'h0,
-      32'h0,
-      32'h0,
-      32'h0,
-      32'h0,
-      32'h0
-    }),
-    512'({
+    448'({
       64'h8CBBAD02BB4CA928,
-      32'h0,
-      32'h0,
       384'h0
     }),
-    512'({
+    448'({
       64'hC469C593E5DC0DA8,
-      32'h0,
-      32'h0,
       384'h0
     }),
-    1344'({
+    1216'({
       64'hBE193854E9CA60A0,
-      32'h0,
-      32'h0,
       384'h0,
-      32'h0,
       384'h0,
-      32'h0,
       384'h0
     }),
     704'({
@@ -558,10 +524,9 @@ package otp_ctrl_part_pkg;
       128'hB6711DB6F5D40A37DBC827839FE2DCC2,
       128'hB28B5C0FEE5F4C02711D135F59A50322
     }),
-    896'({
+    832'({
       64'hF87BED95CFBA3727,
-      768'h0,
-      64'h0
+      768'h0
     }),
     128'({
       64'h20440F25BB053FB5,
@@ -609,7 +574,6 @@ package otp_ctrl_part_pkg;
     hw2reg.vendor_hashes_manuf_partition_digest = part_digest[VendorHashesManufPartitionIdx];
     hw2reg.vendor_hashes_owner_prod_partition_digest = part_digest[VendorHashesOwnerProdPartitionIdx];
     hw2reg.vendor_hashes_prod_partition_digest = part_digest[VendorHashesProdPartitionIdx];
-    hw2reg.vendor_revocations_prod_partition_digest = part_digest[VendorRevocationsProdPartitionIdx];
     return hw2reg;
   endfunction : named_reg_assign
 
@@ -637,10 +601,6 @@ package otp_ctrl_part_pkg;
     // VENDOR_HASHES_PROD_PARTITION
     if (!reg2hw.vendor_hashes_prod_partition_read_lock) begin
       part_access_pre[VendorHashesProdPartitionIdx].read_lock = caliptra_prim_mubi_pkg::MuBi8True;
-    end
-    // VENDOR_REVOCATIONS_PROD_PARTITION
-    if (!reg2hw.vendor_revocations_prod_partition_read_lock) begin
-      part_access_pre[VendorRevocationsProdPartitionIdx].read_lock = caliptra_prim_mubi_pkg::MuBi8True;
     end
     // VENDOR_NON_SECRET_PROD_PARTITION
     if (!reg2hw.vendor_non_secret_prod_partition_read_lock) begin
@@ -692,9 +652,6 @@ package otp_ctrl_part_pkg;
     // VENDOR_HASHES_PROD_PARTITION
     unused ^= ^{part_init_done[VendorHashesProdPartitionIdx],
                 part_buf_data[VendorHashesProdPartitionOffset +: VendorHashesProdPartitionSize]};
-    // VENDOR_REVOCATIONS_PROD_PARTITION
-    unused ^= ^{part_init_done[VendorRevocationsProdPartitionIdx],
-                part_buf_data[VendorRevocationsProdPartitionOffset +: VendorRevocationsProdPartitionSize]};
     // VENDOR_NON_SECRET_PROD_PARTITION
     unused ^= ^{part_init_done[VendorNonSecretProdPartitionIdx],
                 part_buf_data[VendorNonSecretProdPartitionOffset +: VendorNonSecretProdPartitionSize]};
@@ -752,9 +709,6 @@ package otp_ctrl_part_pkg;
     // VENDOR_HASHES_PROD_PARTITION
     unused ^= ^{part_digest[VendorHashesProdPartitionIdx],
                 part_buf_data[VendorHashesProdPartitionOffset +: VendorHashesProdPartitionSize]};
-    // VENDOR_REVOCATIONS_PROD_PARTITION
-    unused ^= ^{part_digest[VendorRevocationsProdPartitionIdx],
-                part_buf_data[VendorRevocationsProdPartitionOffset +: VendorRevocationsProdPartitionSize]};
     // VENDOR_NON_SECRET_PROD_PARTITION
     unused ^= ^{part_digest[VendorNonSecretProdPartitionIdx],
                 part_buf_data[VendorNonSecretProdPartitionOffset +: VendorNonSecretProdPartitionSize]};

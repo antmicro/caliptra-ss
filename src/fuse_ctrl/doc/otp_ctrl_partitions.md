@@ -24,6 +24,5 @@ It has been generated with ./tools/scripts/fuse_ctrl_script/gen_fuse_ctrl_partit
 |   VENDOR_HASHES_MANUF_PARTITION    |    no    |     no     |     yes     | yes (Digest)  |   yes (CSR)   | Vendor hash manufacturing partition.                                |
 | VENDOR_HASHES_OWNER_PROD_PARTITION |    no    |     no     |     yes     | yes (Digest)  |   yes (CSR)   | Vendor owner hash production partition.                             |
 |    VENDOR_HASHES_PROD_PARTITION    |    no    |     no     |     yes     | yes (Digest)  |   yes (CSR)   | Vendor hashes production partition.                                 |
-| VENDOR_REVOCATIONS_PROD_PARTITION  |    no    |     no     |     no      | yes (Digest)  |   yes (CSR)   | Vendor revocations production partition.                            |
 |  VENDOR_NON_SECRET_PROD_PARTITION  |    no    |     no     |     no      |      no       |   yes (CSR)   | Vendor non-secret production partition.                             |
 |           CSR_PARTITION            |    no    |     no     |     no      |      no       |      no       | Addresses mapped to FMC register space.                             |
