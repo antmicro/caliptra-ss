@@ -151,7 +151,7 @@
     { name: "NumErrorEntries",
       desc: "Number of error register entries.",
       type: "int",
-      default: "17", // partitions + DAI/LCI
+      default: "16", // partitions + DAI/LCI
       local: "true"
     },
     { name: "NumDaiWords",
@@ -177,13 +177,13 @@
     { name: "NumPart",
       desc: "Number of partitions",
       type: "int",
-      default: "15",
+      default: "14",
       local: "true"
     },
     { name: "NumPartUnbuf",
       desc: "Number of unbuffered partitions",
       type: "int",
-      default: "7",
+      default: "6",
       local: "true"
     },
     { name: "NumPartBuf",
@@ -417,25 +417,13 @@
     { name: "SwManufPartitionSize",
       desc: "Size of the SW_MANUF_PARTITION partition",
       type: "int",
-      default: "112",
-      local: "true"
-    },
-    { name: "CptraCoreAntiRollbackDisableOffset",
-      desc: "Offset of CPTRA_CORE_ANTI_ROLLBACK_DISABLE",
-      type: "int",
-      default: "208",
-      local: "true"
-    },
-    { name: "CptraCoreAntiRollbackDisableSize",
-      desc: "Size of CPTRA_CORE_ANTI_ROLLBACK_DISABLE",
-      type: "int",
-      default: "8",
+      default: "104",
       local: "true"
     },
     { name: "CptraCoreIdevidCertIdevidAttrOffset",
       desc: "Offset of CPTRA_CORE_IDEVID_CERT_IDEVID_ATTR",
       type: "int",
-      default: "216",
+      default: "208",
       local: "true"
     },
     { name: "CptraCoreIdevidCertIdevidAttrSize",
@@ -447,7 +435,7 @@
     { name: "SwManufPartitionDigestOffset",
       desc: "Offset of SW_MANUF_PARTITION_DIGEST",
       type: "int",
-      default: "312",
+      default: "304",
       local: "true"
     },
     { name: "SwManufPartitionDigestSize",
@@ -459,7 +447,7 @@
     { name: "SecretLcTransitionPartitionOffset",
       desc: "Offset of the SECRET_LC_TRANSITION_PARTITION partition",
       type: "int",
-      default: "320",
+      default: "312",
       local: "true"
     },
     { name: "SecretLcTransitionPartitionSize",
@@ -471,7 +459,7 @@
     { name: "CptraSsTestUnlockToken1Offset",
       desc: "Offset of CPTRA_SS_TEST_UNLOCK_TOKEN_1",
       type: "int",
-      default: "320",
+      default: "312",
       local: "true"
     },
     { name: "CptraSsTestUnlockToken1Size",
@@ -483,7 +471,7 @@
     { name: "CptraSsTestUnlockToken2Offset",
       desc: "Offset of CPTRA_SS_TEST_UNLOCK_TOKEN_2",
       type: "int",
-      default: "336",
+      default: "328",
       local: "true"
     },
     { name: "CptraSsTestUnlockToken2Size",
@@ -495,7 +483,7 @@
     { name: "CptraSsTestUnlockToken3Offset",
       desc: "Offset of CPTRA_SS_TEST_UNLOCK_TOKEN_3",
       type: "int",
-      default: "352",
+      default: "344",
       local: "true"
     },
     { name: "CptraSsTestUnlockToken3Size",
@@ -507,7 +495,7 @@
     { name: "CptraSsTestUnlockToken4Offset",
       desc: "Offset of CPTRA_SS_TEST_UNLOCK_TOKEN_4",
       type: "int",
-      default: "368",
+      default: "360",
       local: "true"
     },
     { name: "CptraSsTestUnlockToken4Size",
@@ -519,7 +507,7 @@
     { name: "CptraSsTestUnlockToken5Offset",
       desc: "Offset of CPTRA_SS_TEST_UNLOCK_TOKEN_5",
       type: "int",
-      default: "384",
+      default: "376",
       local: "true"
     },
     { name: "CptraSsTestUnlockToken5Size",
@@ -531,7 +519,7 @@
     { name: "CptraSsTestUnlockToken6Offset",
       desc: "Offset of CPTRA_SS_TEST_UNLOCK_TOKEN_6",
       type: "int",
-      default: "400",
+      default: "392",
       local: "true"
     },
     { name: "CptraSsTestUnlockToken6Size",
@@ -543,7 +531,7 @@
     { name: "CptraSsTestUnlockToken7Offset",
       desc: "Offset of CPTRA_SS_TEST_UNLOCK_TOKEN_7",
       type: "int",
-      default: "416",
+      default: "408",
       local: "true"
     },
     { name: "CptraSsTestUnlockToken7Size",
@@ -555,7 +543,7 @@
     { name: "CptraSsTestExitToManufTokenOffset",
       desc: "Offset of CPTRA_SS_TEST_EXIT_TO_MANUF_TOKEN",
       type: "int",
-      default: "432",
+      default: "424",
       local: "true"
     },
     { name: "CptraSsTestExitToManufTokenSize",
@@ -567,7 +555,7 @@
     { name: "CptraSsManufToProdTokenOffset",
       desc: "Offset of CPTRA_SS_MANUF_TO_PROD_TOKEN",
       type: "int",
-      default: "448",
+      default: "440",
       local: "true"
     },
     { name: "CptraSsManufToProdTokenSize",
@@ -579,7 +567,7 @@
     { name: "CptraSsProdToProdEndTokenOffset",
       desc: "Offset of CPTRA_SS_PROD_TO_PROD_END_TOKEN",
       type: "int",
-      default: "464",
+      default: "456",
       local: "true"
     },
     { name: "CptraSsProdToProdEndTokenSize",
@@ -591,7 +579,7 @@
     { name: "CptraSsRmaTokenOffset",
       desc: "Offset of CPTRA_SS_RMA_TOKEN",
       type: "int",
-      default: "480",
+      default: "472",
       local: "true"
     },
     { name: "CptraSsRmaTokenSize",
@@ -603,7 +591,7 @@
     { name: "SecretLcTransitionPartitionDigestOffset",
       desc: "Offset of SECRET_LC_TRANSITION_PARTITION_DIGEST",
       type: "int",
-      default: "496",
+      default: "488",
       local: "true"
     },
     { name: "SecretLcTransitionPartitionDigestSize",
@@ -615,7 +603,7 @@
     { name: "LifeCycleOffset",
       desc: "Offset of the LIFE_CYCLE partition",
       type: "int",
-      default: "504",
+      default: "496",
       local: "true"
     },
     { name: "LifeCycleSize",
@@ -627,7 +615,7 @@
     { name: "LcTransitionCntOffset",
       desc: "Offset of LC_TRANSITION_CNT",
       type: "int",
-      default: "504",
+      default: "496",
       local: "true"
     },
     { name: "LcTransitionCntSize",
@@ -639,7 +627,7 @@
     { name: "LcStateOffset",
       desc: "Offset of LC_STATE",
       type: "int",
-      default: "552",
+      default: "544",
       local: "true"
     },
     { name: "LcStateSize",
@@ -651,19 +639,19 @@
     { name: "VendorHashesManufPartitionOffset",
       desc: "Offset of the VENDOR_HASHES_MANUF_PARTITION partition",
       type: "int",
-      default: "592",
+      default: "584",
       local: "true"
     },
     { name: "VendorHashesManufPartitionSize",
       desc: "Size of the VENDOR_HASHES_MANUF_PARTITION partition",
       type: "int",
-      default: "168",
+      default: "152",
       local: "true"
     },
     { name: "CptraCoreVendorPkHash2Offset",
       desc: "Offset of CPTRA_CORE_VENDOR_PK_HASH_2",
       type: "int",
-      default: "592",
+      default: "584",
       local: "true"
     },
     { name: "CptraCoreVendorPkHash2Size",
@@ -672,22 +660,10 @@
       default: "48",
       local: "true"
     },
-    { name: "CptraCoreVendorPkHash2ValidOffset",
-      desc: "Offset of CPTRA_CORE_VENDOR_PK_HASH_2_VALID",
-      type: "int",
-      default: "640",
-      local: "true"
-    },
-    { name: "CptraCoreVendorPkHash2ValidSize",
-      desc: "Size of CPTRA_CORE_VENDOR_PK_HASH_2_VALID",
-      type: "int",
-      default: "4",
-      local: "true"
-    },
     { name: "CptraCoreVendorPkHash3Offset",
       desc: "Offset of CPTRA_CORE_VENDOR_PK_HASH_3",
       type: "int",
-      default: "644",
+      default: "632",
       local: "true"
     },
     { name: "CptraCoreVendorPkHash3Size",
@@ -696,22 +672,10 @@
       default: "48",
       local: "true"
     },
-    { name: "CptraCoreVendorPkHash3ValidOffset",
-      desc: "Offset of CPTRA_CORE_VENDOR_PK_HASH_3_VALID",
-      type: "int",
-      default: "692",
-      local: "true"
-    },
-    { name: "CptraCoreVendorPkHash3ValidSize",
-      desc: "Size of CPTRA_CORE_VENDOR_PK_HASH_3_VALID",
-      type: "int",
-      default: "4",
-      local: "true"
-    },
     { name: "CptraCoreVendorPkHash4Offset",
       desc: "Offset of CPTRA_CORE_VENDOR_PK_HASH_4",
       type: "int",
-      default: "696",
+      default: "680",
       local: "true"
     },
     { name: "CptraCoreVendorPkHash4Size",
@@ -720,34 +684,10 @@
       default: "48",
       local: "true"
     },
-    { name: "CptraCoreVendorPkHash4ValidOffset",
-      desc: "Offset of CPTRA_CORE_VENDOR_PK_HASH_4_VALID",
-      type: "int",
-      default: "744",
-      local: "true"
-    },
-    { name: "CptraCoreVendorPkHash4ValidSize",
-      desc: "Size of CPTRA_CORE_VENDOR_PK_HASH_4_VALID",
-      type: "int",
-      default: "4",
-      local: "true"
-    },
-    { name: "CptraCoreVendorPkHashPadOffset",
-      desc: "Offset of CPTRA_CORE_VENDOR_PK_HASH_PAD",
-      type: "int",
-      default: "748",
-      local: "true"
-    },
-    { name: "CptraCoreVendorPkHashPadSize",
-      desc: "Size of CPTRA_CORE_VENDOR_PK_HASH_PAD",
-      type: "int",
-      default: "4",
-      local: "true"
-    },
     { name: "VendorHashesManufPartitionDigestOffset",
       desc: "Offset of VENDOR_HASHES_MANUF_PARTITION_DIGEST",
       type: "int",
-      default: "752",
+      default: "728",
       local: "true"
     },
     { name: "VendorHashesManufPartitionDigestSize",
@@ -759,19 +699,19 @@
     { name: "VendorHashesOwnerProdPartitionOffset",
       desc: "Offset of the VENDOR_HASHES_OWNER_PROD_PARTITION partition",
       type: "int",
-      default: "760",
+      default: "736",
       local: "true"
     },
     { name: "VendorHashesOwnerProdPartitionSize",
       desc: "Size of the VENDOR_HASHES_OWNER_PROD_PARTITION partition",
       type: "int",
-      default: "64",
+      default: "56",
       local: "true"
     },
     { name: "CptraSsOwnerPkHashOffset",
       desc: "Offset of CPTRA_SS_OWNER_PK_HASH",
       type: "int",
-      default: "760",
+      default: "736",
       local: "true"
     },
     { name: "CptraSsOwnerPkHashSize",
@@ -780,34 +720,10 @@
       default: "48",
       local: "true"
     },
-    { name: "CptraSsOwnerPqcKeyTypeOffset",
-      desc: "Offset of CPTRA_SS_OWNER_PQC_KEY_TYPE",
-      type: "int",
-      default: "808",
-      local: "true"
-    },
-    { name: "CptraSsOwnerPqcKeyTypeSize",
-      desc: "Size of CPTRA_SS_OWNER_PQC_KEY_TYPE",
-      type: "int",
-      default: "4",
-      local: "true"
-    },
-    { name: "CptraSsOwnerPkHashValidOffset",
-      desc: "Offset of CPTRA_SS_OWNER_PK_HASH_VALID",
-      type: "int",
-      default: "812",
-      local: "true"
-    },
-    { name: "CptraSsOwnerPkHashValidSize",
-      desc: "Size of CPTRA_SS_OWNER_PK_HASH_VALID",
-      type: "int",
-      default: "4",
-      local: "true"
-    },
     { name: "VendorHashesOwnerProdPartitionDigestOffset",
       desc: "Offset of VENDOR_HASHES_OWNER_PROD_PARTITION_DIGEST",
       type: "int",
-      default: "816",
+      default: "784",
       local: "true"
     },
     { name: "VendorHashesOwnerProdPartitionDigestSize",
@@ -819,19 +735,19 @@
     { name: "VendorHashesProdPartitionOffset",
       desc: "Offset of the VENDOR_HASHES_PROD_PARTITION partition",
       type: "int",
-      default: "824",
+      default: "792",
       local: "true"
     },
     { name: "VendorHashesProdPartitionSize",
       desc: "Size of the VENDOR_HASHES_PROD_PARTITION partition",
       type: "int",
-      default: "64",
+      default: "56",
       local: "true"
     },
     { name: "CptraCoreVendorPkHash1Offset",
       desc: "Offset of CPTRA_CORE_VENDOR_PK_HASH_1",
       type: "int",
-      default: "824",
+      default: "792",
       local: "true"
     },
     { name: "CptraCoreVendorPkHash1Size",
@@ -840,34 +756,10 @@
       default: "48",
       local: "true"
     },
-    { name: "CptraCorePqcKeyType1Offset",
-      desc: "Offset of CPTRA_CORE_PQC_KEY_TYPE_1",
-      type: "int",
-      default: "872",
-      local: "true"
-    },
-    { name: "CptraCorePqcKeyType1Size",
-      desc: "Size of CPTRA_CORE_PQC_KEY_TYPE_1",
-      type: "int",
-      default: "4",
-      local: "true"
-    },
-    { name: "CptraCoreVendorPkHash1ValidOffset",
-      desc: "Offset of CPTRA_CORE_VENDOR_PK_HASH_1_VALID",
-      type: "int",
-      default: "876",
-      local: "true"
-    },
-    { name: "CptraCoreVendorPkHash1ValidSize",
-      desc: "Size of CPTRA_CORE_VENDOR_PK_HASH_1_VALID",
-      type: "int",
-      default: "4",
-      local: "true"
-    },
     { name: "VendorHashesProdPartitionDigestOffset",
       desc: "Offset of VENDOR_HASHES_PROD_PARTITION_DIGEST",
       type: "int",
-      default: "880",
+      default: "840",
       local: "true"
     },
     { name: "VendorHashesProdPartitionDigestSize",
@@ -876,178 +768,94 @@
       default: "8",
       local: "true"
     },
-    { name: "VendorRevocationsProdPartitionOffset",
-      desc: "Offset of the VENDOR_REVOCATIONS_PROD_PARTITION partition",
-      type: "int",
-      default: "888",
-      local: "true"
-    },
-    { name: "VendorRevocationsProdPartitionSize",
-      desc: "Size of the VENDOR_REVOCATIONS_PROD_PARTITION partition",
-      type: "int",
-      default: "48",
-      local: "true"
-    },
-    { name: "CptraSsOwnerEccRevocationOffset",
-      desc: "Offset of CPTRA_SS_OWNER_ECC_REVOCATION",
-      type: "int",
-      default: "888",
-      local: "true"
-    },
-    { name: "CptraSsOwnerEccRevocationSize",
-      desc: "Size of CPTRA_SS_OWNER_ECC_REVOCATION",
-      type: "int",
-      default: "4",
-      local: "true"
-    },
-    { name: "CptraSsOwnerMldsaRevocationOffset",
-      desc: "Offset of CPTRA_SS_OWNER_MLDSA_REVOCATION",
-      type: "int",
-      default: "892",
-      local: "true"
-    },
-    { name: "CptraSsOwnerMldsaRevocationSize",
-      desc: "Size of CPTRA_SS_OWNER_MLDSA_REVOCATION",
-      type: "int",
-      default: "4",
-      local: "true"
-    },
-    { name: "CptraCoreEccRevocation1Offset",
-      desc: "Offset of CPTRA_CORE_ECC_REVOCATION_1",
-      type: "int",
-      default: "896",
-      local: "true"
-    },
-    { name: "CptraCoreEccRevocation1Size",
-      desc: "Size of CPTRA_CORE_ECC_REVOCATION_1",
-      type: "int",
-      default: "4",
-      local: "true"
-    },
-    { name: "CptraCoreMldsaRevocation1Offset",
-      desc: "Offset of CPTRA_CORE_MLDSA_REVOCATION_1",
-      type: "int",
-      default: "900",
-      local: "true"
-    },
-    { name: "CptraCoreMldsaRevocation1Size",
-      desc: "Size of CPTRA_CORE_MLDSA_REVOCATION_1",
-      type: "int",
-      default: "4",
-      local: "true"
-    },
-    { name: "CptraCoreEccRevocation2Offset",
-      desc: "Offset of CPTRA_CORE_ECC_REVOCATION_2",
-      type: "int",
-      default: "904",
-      local: "true"
-    },
-    { name: "CptraCoreEccRevocation2Size",
-      desc: "Size of CPTRA_CORE_ECC_REVOCATION_2",
-      type: "int",
-      default: "4",
-      local: "true"
-    },
-    { name: "CptraCoreMldsaRevocation2Offset",
-      desc: "Offset of CPTRA_CORE_MLDSA_REVOCATION_2",
-      type: "int",
-      default: "908",
-      local: "true"
-    },
-    { name: "CptraCoreMldsaRevocation2Size",
-      desc: "Size of CPTRA_CORE_MLDSA_REVOCATION_2",
-      type: "int",
-      default: "4",
-      local: "true"
-    },
-    { name: "CptraCoreEccRevocation3Offset",
-      desc: "Offset of CPTRA_CORE_ECC_REVOCATION_3",
-      type: "int",
-      default: "912",
-      local: "true"
-    },
-    { name: "CptraCoreEccRevocation3Size",
-      desc: "Size of CPTRA_CORE_ECC_REVOCATION_3",
-      type: "int",
-      default: "4",
-      local: "true"
-    },
-    { name: "CptraCoreMldsaRevocation3Offset",
-      desc: "Offset of CPTRA_CORE_MLDSA_REVOCATION_3",
-      type: "int",
-      default: "916",
-      local: "true"
-    },
-    { name: "CptraCoreMldsaRevocation3Size",
-      desc: "Size of CPTRA_CORE_MLDSA_REVOCATION_3",
-      type: "int",
-      default: "4",
-      local: "true"
-    },
-    { name: "CptraCoreEccRevocation4Offset",
-      desc: "Offset of CPTRA_CORE_ECC_REVOCATION_4",
-      type: "int",
-      default: "920",
-      local: "true"
-    },
-    { name: "CptraCoreEccRevocation4Size",
-      desc: "Size of CPTRA_CORE_ECC_REVOCATION_4",
-      type: "int",
-      default: "4",
-      local: "true"
-    },
-    { name: "CptraCoreMldsaRevocation4Offset",
-      desc: "Offset of CPTRA_CORE_MLDSA_REVOCATION_4",
-      type: "int",
-      default: "924",
-      local: "true"
-    },
-    { name: "CptraCoreMldsaRevocation4Size",
-      desc: "Size of CPTRA_CORE_MLDSA_REVOCATION_4",
-      type: "int",
-      default: "4",
-      local: "true"
-    },
-    { name: "VendorRevocationsProdPartitionDigestOffset",
-      desc: "Offset of VENDOR_REVOCATIONS_PROD_PARTITION_DIGEST",
-      type: "int",
-      default: "928",
-      local: "true"
-    },
-    { name: "VendorRevocationsProdPartitionDigestSize",
-      desc: "Size of VENDOR_REVOCATIONS_PROD_PARTITION_DIGEST",
-      type: "int",
-      default: "8",
-      local: "true"
-    },
     { name: "VendorNonSecretProdPartitionOffset",
       desc: "Offset of the VENDOR_NON_SECRET_PROD_PARTITION partition",
       type: "int",
-      default: "936",
+      default: "848",
       local: "true"
     },
     { name: "VendorNonSecretProdPartitionSize",
       desc: "Size of the VENDOR_NON_SECRET_PROD_PARTITION partition",
       type: "int",
-      default: "8",
+      default: "176",
       local: "true"
     },
     { name: "CptraSsVendorSpecificNonSecretFuse0Offset",
       desc: "Offset of CPTRA_SS_VENDOR_SPECIFIC_NON_SECRET_FUSE_0",
       type: "int",
-      default: "936",
+      default: "848",
       local: "true"
     },
     { name: "CptraSsVendorSpecificNonSecretFuse0Size",
       desc: "Size of CPTRA_SS_VENDOR_SPECIFIC_NON_SECRET_FUSE_0",
       type: "int",
-      default: "4",
+      default: "32",
+      local: "true"
+    },
+    { name: "CptraSsVendorSpecificNonSecretFuse1Offset",
+      desc: "Offset of CPTRA_SS_VENDOR_SPECIFIC_NON_SECRET_FUSE_1",
+      type: "int",
+      default: "880",
+      local: "true"
+    },
+    { name: "CptraSsVendorSpecificNonSecretFuse1Size",
+      desc: "Size of CPTRA_SS_VENDOR_SPECIFIC_NON_SECRET_FUSE_1",
+      type: "int",
+      default: "32",
+      local: "true"
+    },
+    { name: "CptraSsVendorSpecificNonSecretFuse2Offset",
+      desc: "Offset of CPTRA_SS_VENDOR_SPECIFIC_NON_SECRET_FUSE_2",
+      type: "int",
+      default: "912",
+      local: "true"
+    },
+    { name: "CptraSsVendorSpecificNonSecretFuse2Size",
+      desc: "Size of CPTRA_SS_VENDOR_SPECIFIC_NON_SECRET_FUSE_2",
+      type: "int",
+      default: "32",
+      local: "true"
+    },
+    { name: "CptraSsVendorSpecificNonSecretFuse3Offset",
+      desc: "Offset of CPTRA_SS_VENDOR_SPECIFIC_NON_SECRET_FUSE_3",
+      type: "int",
+      default: "944",
+      local: "true"
+    },
+    { name: "CptraSsVendorSpecificNonSecretFuse3Size",
+      desc: "Size of CPTRA_SS_VENDOR_SPECIFIC_NON_SECRET_FUSE_3",
+      type: "int",
+      default: "32",
+      local: "true"
+    },
+    { name: "CptraSsVendorSpecificNonSecretFuse4Offset",
+      desc: "Offset of CPTRA_SS_VENDOR_SPECIFIC_NON_SECRET_FUSE_4",
+      type: "int",
+      default: "976",
+      local: "true"
+    },
+    { name: "CptraSsVendorSpecificNonSecretFuse4Size",
+      desc: "Size of CPTRA_SS_VENDOR_SPECIFIC_NON_SECRET_FUSE_4",
+      type: "int",
+      default: "32",
+      local: "true"
+    },
+    { name: "CptraSsVendorSpecificRsvdOffset",
+      desc: "Offset of CPTRA_SS_VENDOR_SPECIFIC_RSVD",
+      type: "int",
+      default: "1008",
+      local: "true"
+    },
+    { name: "CptraSsVendorSpecificRsvdSize",
+      desc: "Size of CPTRA_SS_VENDOR_SPECIFIC_RSVD",
+      type: "int",
+      default: "16",
       local: "true"
     },
     { name: "CsrPartitionOffset",
       desc: "Offset of the CSR_PARTITION partition",
       type: "int",
-      default: "944",
+      default: "1024",
       local: "true"
     },
     { name: "CsrPartitionSize",
@@ -1059,7 +867,7 @@
     { name: "CsrRegionOffset",
       desc: "Offset of CSR_REGION",
       type: "int",
-      default: "944",
+      default: "1024",
       local: "true"
     },
     { name: "CsrRegionSize",
@@ -1648,73 +1456,66 @@
                   '''
           }
           { bits: "12"
-            name: "VENDOR_REVOCATIONS_PROD_PARTITION_ERROR"
-            desc: '''
-                  Set to 1 if an error occurred in this partition.
-                  If set to 1, SW should check the !!ERR_CODE register at the corresponding index.
-                  '''
-          }
-          { bits: "13"
             name: "VENDOR_NON_SECRET_PROD_PARTITION_ERROR"
             desc: '''
                   Set to 1 if an error occurred in this partition.
                   If set to 1, SW should check the !!ERR_CODE register at the corresponding index.
                   '''
           }
-          { bits: "14"
+          { bits: "13"
             name: "CSR_PARTITION_ERROR"
             desc: '''
                   Set to 1 if an error occurred in this partition.
                   If set to 1, SW should check the !!ERR_CODE register at the corresponding index.
                   '''
           }
-          { bits: "15"
+          { bits: "14"
             name: "DAI_ERROR"
             desc: '''
                   Set to 1 if an error occurred in the DAI.
                   If set to 1, SW should check the !!ERR_CODE register at the corresponding index.
                   '''
           }
-          { bits: "16"
+          { bits: "15"
             name: "LCI_ERROR"
             desc: '''
                   Set to 1 if an error occurred in the LCI.
                   If set to 1, SW should check the !!ERR_CODE register at the corresponding index.
                   '''
           }
-          { bits: "17"
+          { bits: "16"
             name: "TIMEOUT_ERROR"
             desc: '''
                   Set to 1 if an integrity or consistency check times out.
                   This raises an fatal_check_error alert and is an unrecoverable error condition.
                   '''
           }
-          { bits: "18"
+          { bits: "17"
             name: "LFSR_FSM_ERROR"
             desc: '''
                   Set to 1 if the LFSR timer FSM has reached an invalid state.
                   This raises an fatal_check_error alert and is an unrecoverable error condition.
                   '''
           }
-          { bits: "19"
+          { bits: "18"
             name: "SCRAMBLING_FSM_ERROR"
             desc: '''
                   Set to 1 if the scrambling datapath FSM has reached an invalid state.
                   This raises an fatal_check_error alert and is an unrecoverable error condition.
                   '''
           }
-          { bits: "20"
+          { bits: "19"
             name: "BUS_INTEG_ERROR"
             desc: '''
                   This bit is set to 1 if a fatal bus integrity fault is detected.
                   This error triggers a fatal_bus_integ_error alert.
                   '''
           }
-          { bits: "21"
+          { bits: "20"
             name: "DAI_IDLE"
             desc: "Set to 1 if the DAI is idle and ready to accept commands."
           }
-          { bits: "22"
+          { bits: "21"
             name: "CHECK_PENDING"
             desc: "Set to 1 if an integrity or consistency check triggered by the LFSR timer or via !!CHECK_TRIGGER is pending."
           }
@@ -2163,27 +1964,6 @@
           },
         ]
       },
-      { name: "VENDOR_REVOCATIONS_PROD_PARTITION_READ_LOCK",
-        desc: '''
-              Runtime read lock for the VENDOR_REVOCATIONS_PROD_PARTITION partition.
-              ''',
-        swaccess: "rw0c",
-        hwaccess: "hro",
-        regwen:   "DIRECT_ACCESS_REGWEN",
-        tags:     [ // The value of this register can affect the read access of the this
-                    // partition's memory window. Excluding this register from writing can ensure
-                    // memories have read and write access.
-                    "excl:CsrNonInitTests:CsrExclWrite"],
-        fields: [
-          { bits:   "0",
-            desc: '''
-            When cleared to 0, read access to the VENDOR_REVOCATIONS_PROD_PARTITION partition is locked.
-            Write 0 to clear this bit.
-            '''
-            resval: 1,
-          },
-        ]
-      },
       { name: "VENDOR_NON_SECRET_PROD_PARTITION_READ_LOCK",
         desc: '''
               Runtime read lock for the VENDOR_NON_SECRET_PROD_PARTITION partition.
@@ -2446,29 +2226,6 @@
                     The integrity digest is 0 by default. Software must write this
                     digest value via the direct access interface in order to lock the partition.
                     After a reset, write access to the VENDOR_HASHES_PROD_PARTITION partition is locked and
-                    the digest becomes visible in this CSR.
-                    ''',
-          count:     "NumDigestWords",
-          swaccess:  "ro",
-          hwaccess:  "hwo",
-          hwext:     "true",
-          cname:     "WORD",
-          resval:    0,
-          tags: [ // OTP internal HW will update status so can not auto-predict its value.
-                  "excl:CsrAllTests:CsrExclCheck"],
-          fields: [
-            { bits: "31:0"
-            }
-          ]
-        }
-      },
-      { multireg: {
-          name:     "VENDOR_REVOCATIONS_PROD_PARTITION_DIGEST",
-          desc:     '''
-                    Integrity digest for the VENDOR_REVOCATIONS_PROD_PARTITION partition.
-                    The integrity digest is 0 by default. Software must write this
-                    digest value via the direct access interface in order to lock the partition.
-                    After a reset, write access to the VENDOR_REVOCATIONS_PROD_PARTITION partition is locked and
                     the digest becomes visible in this CSR.
                     ''',
           count:     "NumDigestWords",

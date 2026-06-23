@@ -68,9 +68,9 @@ module otp_ctrl_core_reg_top (
 
   // also check for spurious write enables
   logic reg_we_err;
-  logic [65:0] reg_we_check;
+  logic [61:0] reg_we_check;
   caliptra_prim_reg_we_check #(
-    .OneHotWidth(66)
+    .OneHotWidth(62)
   ) u_caliptra_prim_reg_we_check (
     .clk_i(clk_i),
     .rst_ni(rst_ni),
@@ -213,7 +213,6 @@ module otp_ctrl_core_reg_top (
   logic status_vendor_hashes_manuf_partition_error_qs;
   logic status_vendor_hashes_owner_prod_partition_error_qs;
   logic status_vendor_hashes_prod_partition_error_qs;
-  logic status_vendor_revocations_prod_partition_error_qs;
   logic status_vendor_non_secret_prod_partition_error_qs;
   logic status_csr_partition_error_qs;
   logic status_dai_error_qs;
@@ -256,8 +255,6 @@ module otp_ctrl_core_reg_top (
   logic [2:0] err_code_14_qs;
   logic err_code_15_re;
   logic [2:0] err_code_15_qs;
-  logic err_code_16_re;
-  logic [2:0] err_code_16_qs;
   logic direct_access_regwen_re;
   logic direct_access_regwen_we;
   logic direct_access_regwen_qs;
@@ -309,9 +306,6 @@ module otp_ctrl_core_reg_top (
   logic vendor_hashes_prod_partition_read_lock_we;
   logic vendor_hashes_prod_partition_read_lock_qs;
   logic vendor_hashes_prod_partition_read_lock_wd;
-  logic vendor_revocations_prod_partition_read_lock_we;
-  logic vendor_revocations_prod_partition_read_lock_qs;
-  logic vendor_revocations_prod_partition_read_lock_wd;
   logic vendor_non_secret_prod_partition_read_lock_we;
   logic vendor_non_secret_prod_partition_read_lock_qs;
   logic vendor_non_secret_prod_partition_read_lock_wd;
@@ -362,10 +356,6 @@ module otp_ctrl_core_reg_top (
   logic [31:0] vendor_hashes_prod_partition_digest_0_qs;
   logic vendor_hashes_prod_partition_digest_1_re;
   logic [31:0] vendor_hashes_prod_partition_digest_1_qs;
-  logic vendor_revocations_prod_partition_digest_0_re;
-  logic [31:0] vendor_revocations_prod_partition_digest_0_qs;
-  logic vendor_revocations_prod_partition_digest_1_re;
-  logic [31:0] vendor_revocations_prod_partition_digest_1_qs;
 
   // Register instances
   // R[intr_state]: V(False)
@@ -783,22 +773,7 @@ module otp_ctrl_core_reg_top (
     .qs     (status_vendor_hashes_prod_partition_error_qs)
   );
 
-  //   F[vendor_revocations_prod_partition_error]: 12:12
-  caliptra_prim_subreg_ext #(
-    .DW    (1)
-  ) u_status_vendor_revocations_prod_partition_error (
-    .re     (status_re),
-    .we     (1'b0),
-    .wd     ('0),
-    .d      (hw2reg.status.vendor_revocations_prod_partition_error.d),
-    .qre    (),
-    .qe     (),
-    .q      (),
-    .ds     (),
-    .qs     (status_vendor_revocations_prod_partition_error_qs)
-  );
-
-  //   F[vendor_non_secret_prod_partition_error]: 13:13
+  //   F[vendor_non_secret_prod_partition_error]: 12:12
   caliptra_prim_subreg_ext #(
     .DW    (1)
   ) u_status_vendor_non_secret_prod_partition_error (
@@ -813,7 +788,7 @@ module otp_ctrl_core_reg_top (
     .qs     (status_vendor_non_secret_prod_partition_error_qs)
   );
 
-  //   F[csr_partition_error]: 14:14
+  //   F[csr_partition_error]: 13:13
   caliptra_prim_subreg_ext #(
     .DW    (1)
   ) u_status_csr_partition_error (
@@ -828,7 +803,7 @@ module otp_ctrl_core_reg_top (
     .qs     (status_csr_partition_error_qs)
   );
 
-  //   F[dai_error]: 15:15
+  //   F[dai_error]: 14:14
   caliptra_prim_subreg_ext #(
     .DW    (1)
   ) u_status_dai_error (
@@ -843,7 +818,7 @@ module otp_ctrl_core_reg_top (
     .qs     (status_dai_error_qs)
   );
 
-  //   F[lci_error]: 16:16
+  //   F[lci_error]: 15:15
   caliptra_prim_subreg_ext #(
     .DW    (1)
   ) u_status_lci_error (
@@ -858,7 +833,7 @@ module otp_ctrl_core_reg_top (
     .qs     (status_lci_error_qs)
   );
 
-  //   F[timeout_error]: 17:17
+  //   F[timeout_error]: 16:16
   caliptra_prim_subreg_ext #(
     .DW    (1)
   ) u_status_timeout_error (
@@ -873,7 +848,7 @@ module otp_ctrl_core_reg_top (
     .qs     (status_timeout_error_qs)
   );
 
-  //   F[lfsr_fsm_error]: 18:18
+  //   F[lfsr_fsm_error]: 17:17
   caliptra_prim_subreg_ext #(
     .DW    (1)
   ) u_status_lfsr_fsm_error (
@@ -888,7 +863,7 @@ module otp_ctrl_core_reg_top (
     .qs     (status_lfsr_fsm_error_qs)
   );
 
-  //   F[scrambling_fsm_error]: 19:19
+  //   F[scrambling_fsm_error]: 18:18
   caliptra_prim_subreg_ext #(
     .DW    (1)
   ) u_status_scrambling_fsm_error (
@@ -903,7 +878,7 @@ module otp_ctrl_core_reg_top (
     .qs     (status_scrambling_fsm_error_qs)
   );
 
-  //   F[bus_integ_error]: 20:20
+  //   F[bus_integ_error]: 19:19
   caliptra_prim_subreg_ext #(
     .DW    (1)
   ) u_status_bus_integ_error (
@@ -918,7 +893,7 @@ module otp_ctrl_core_reg_top (
     .qs     (status_bus_integ_error_qs)
   );
 
-  //   F[dai_idle]: 21:21
+  //   F[dai_idle]: 20:20
   caliptra_prim_subreg_ext #(
     .DW    (1)
   ) u_status_dai_idle (
@@ -933,7 +908,7 @@ module otp_ctrl_core_reg_top (
     .qs     (status_dai_idle_qs)
   );
 
-  //   F[check_pending]: 22:22
+  //   F[check_pending]: 21:21
   caliptra_prim_subreg_ext #(
     .DW    (1)
   ) u_status_check_pending (
@@ -1218,23 +1193,6 @@ module otp_ctrl_core_reg_top (
     .q      (),
     .ds     (),
     .qs     (err_code_15_qs)
-  );
-
-
-  // Subregister 16 of Multireg err_code
-  // R[err_code_16]: V(True)
-  caliptra_prim_subreg_ext #(
-    .DW    (3)
-  ) u_err_code_16 (
-    .re     (err_code_16_re),
-    .we     (1'b0),
-    .wd     ('0),
-    .d      (hw2reg.err_code[16].d),
-    .qre    (),
-    .qe     (),
-    .q      (),
-    .ds     (),
-    .qs     (err_code_16_qs)
   );
 
 
@@ -1760,38 +1718,6 @@ module otp_ctrl_core_reg_top (
   );
 
 
-  // R[vendor_revocations_prod_partition_read_lock]: V(False)
-  // Create REGWEN-gated WE signal
-  logic vendor_revocations_prod_partition_read_lock_gated_we;
-  assign vendor_revocations_prod_partition_read_lock_gated_we =
-    vendor_revocations_prod_partition_read_lock_we & direct_access_regwen_qs;
-  caliptra_prim_subreg #(
-    .DW      (1),
-    .SwAccess(caliptra_prim_subreg_pkg::SwAccessW0C),
-    .RESVAL  (1'h1),
-    .Mubi    (1'b0)
-  ) u_vendor_revocations_prod_partition_read_lock (
-    .clk_i   (clk_i),
-    .rst_ni  (rst_ni),
-
-    // from register interface
-    .we     (vendor_revocations_prod_partition_read_lock_gated_we),
-    .wd     (vendor_revocations_prod_partition_read_lock_wd),
-
-    // from internal hardware
-    .de     (1'b0),
-    .d      ('0),
-
-    // to internal hardware
-    .qe     (),
-    .q      (reg2hw.vendor_revocations_prod_partition_read_lock.q),
-    .ds     (),
-
-    // to register interface (read)
-    .qs     (vendor_revocations_prod_partition_read_lock_qs)
-  );
-
-
   // R[vendor_non_secret_prod_partition_read_lock]: V(False)
   // Create REGWEN-gated WE signal
   logic vendor_non_secret_prod_partition_read_lock_gated_we;
@@ -2226,42 +2152,8 @@ module otp_ctrl_core_reg_top (
   );
 
 
-  // Subregister 0 of Multireg vendor_revocations_prod_partition_digest
-  // R[vendor_revocations_prod_partition_digest_0]: V(True)
-  caliptra_prim_subreg_ext #(
-    .DW    (32)
-  ) u_vendor_revocations_prod_partition_digest_0 (
-    .re     (vendor_revocations_prod_partition_digest_0_re),
-    .we     (1'b0),
-    .wd     ('0),
-    .d      (hw2reg.vendor_revocations_prod_partition_digest[0].d),
-    .qre    (),
-    .qe     (),
-    .q      (),
-    .ds     (),
-    .qs     (vendor_revocations_prod_partition_digest_0_qs)
-  );
 
-
-  // Subregister 1 of Multireg vendor_revocations_prod_partition_digest
-  // R[vendor_revocations_prod_partition_digest_1]: V(True)
-  caliptra_prim_subreg_ext #(
-    .DW    (32)
-  ) u_vendor_revocations_prod_partition_digest_1 (
-    .re     (vendor_revocations_prod_partition_digest_1_re),
-    .we     (1'b0),
-    .wd     ('0),
-    .d      (hw2reg.vendor_revocations_prod_partition_digest[1].d),
-    .qre    (),
-    .qe     (),
-    .q      (),
-    .ds     (),
-    .qs     (vendor_revocations_prod_partition_digest_1_qs)
-  );
-
-
-
-  logic [65:0] addr_hit;
+  logic [61:0] addr_hit;
   always_comb begin
     addr_hit = '0;
     addr_hit[ 0] = (reg_addr == OTP_CTRL_INTR_STATE_OFFSET);
@@ -2285,51 +2177,47 @@ module otp_ctrl_core_reg_top (
     addr_hit[18] = (reg_addr == OTP_CTRL_ERR_CODE_13_OFFSET);
     addr_hit[19] = (reg_addr == OTP_CTRL_ERR_CODE_14_OFFSET);
     addr_hit[20] = (reg_addr == OTP_CTRL_ERR_CODE_15_OFFSET);
-    addr_hit[21] = (reg_addr == OTP_CTRL_ERR_CODE_16_OFFSET);
-    addr_hit[22] = (reg_addr == OTP_CTRL_DIRECT_ACCESS_REGWEN_OFFSET);
-    addr_hit[23] = (reg_addr == OTP_CTRL_DIRECT_ACCESS_CMD_OFFSET);
-    addr_hit[24] = (reg_addr == OTP_CTRL_DIRECT_ACCESS_ADDRESS_OFFSET);
-    addr_hit[25] = (reg_addr == OTP_CTRL_DIRECT_ACCESS_WDATA_0_OFFSET);
-    addr_hit[26] = (reg_addr == OTP_CTRL_DIRECT_ACCESS_WDATA_1_OFFSET);
-    addr_hit[27] = (reg_addr == OTP_CTRL_DIRECT_ACCESS_RDATA_0_OFFSET);
-    addr_hit[28] = (reg_addr == OTP_CTRL_DIRECT_ACCESS_RDATA_1_OFFSET);
-    addr_hit[29] = (reg_addr == OTP_CTRL_CHECK_TRIGGER_REGWEN_OFFSET);
-    addr_hit[30] = (reg_addr == OTP_CTRL_CHECK_TRIGGER_OFFSET);
-    addr_hit[31] = (reg_addr == OTP_CTRL_CHECK_REGWEN_OFFSET);
-    addr_hit[32] = (reg_addr == OTP_CTRL_CHECK_TIMEOUT_OFFSET);
-    addr_hit[33] = (reg_addr == OTP_CTRL_INTEGRITY_CHECK_PERIOD_OFFSET);
-    addr_hit[34] = (reg_addr == OTP_CTRL_CONSISTENCY_CHECK_PERIOD_OFFSET);
-    addr_hit[35] = (reg_addr == OTP_CTRL_SW_MANUF_PARTITION_READ_LOCK_OFFSET);
-    addr_hit[36] = (reg_addr == OTP_CTRL_VENDOR_HASHES_MANUF_PARTITION_READ_LOCK_OFFSET);
-    addr_hit[37] = (reg_addr == OTP_CTRL_VENDOR_HASHES_OWNER_PROD_PARTITION_READ_LOCK_OFFSET);
-    addr_hit[38] = (reg_addr == OTP_CTRL_VENDOR_HASHES_PROD_PARTITION_READ_LOCK_OFFSET);
-    addr_hit[39] = (reg_addr == OTP_CTRL_VENDOR_REVOCATIONS_PROD_PARTITION_READ_LOCK_OFFSET);
-    addr_hit[40] = (reg_addr == OTP_CTRL_VENDOR_NON_SECRET_PROD_PARTITION_READ_LOCK_OFFSET);
-    addr_hit[41] = (reg_addr == OTP_CTRL_VENDOR_PK_HASH_VOLATILE_LOCK_OFFSET);
-    addr_hit[42] = (reg_addr == OTP_CTRL_SW_TEST_UNLOCK_PARTITION_DIGEST_0_OFFSET);
-    addr_hit[43] = (reg_addr == OTP_CTRL_SW_TEST_UNLOCK_PARTITION_DIGEST_1_OFFSET);
-    addr_hit[44] = (reg_addr == OTP_CTRL_SECRET_MANUF_PARTITION_DIGEST_0_OFFSET);
-    addr_hit[45] = (reg_addr == OTP_CTRL_SECRET_MANUF_PARTITION_DIGEST_1_OFFSET);
-    addr_hit[46] = (reg_addr == OTP_CTRL_SECRET_PROD_PARTITION_0_DIGEST_0_OFFSET);
-    addr_hit[47] = (reg_addr == OTP_CTRL_SECRET_PROD_PARTITION_0_DIGEST_1_OFFSET);
-    addr_hit[48] = (reg_addr == OTP_CTRL_SECRET_PROD_PARTITION_1_DIGEST_0_OFFSET);
-    addr_hit[49] = (reg_addr == OTP_CTRL_SECRET_PROD_PARTITION_1_DIGEST_1_OFFSET);
-    addr_hit[50] = (reg_addr == OTP_CTRL_SECRET_PROD_PARTITION_2_DIGEST_0_OFFSET);
-    addr_hit[51] = (reg_addr == OTP_CTRL_SECRET_PROD_PARTITION_2_DIGEST_1_OFFSET);
-    addr_hit[52] = (reg_addr == OTP_CTRL_SECRET_PROD_PARTITION_3_DIGEST_0_OFFSET);
-    addr_hit[53] = (reg_addr == OTP_CTRL_SECRET_PROD_PARTITION_3_DIGEST_1_OFFSET);
-    addr_hit[54] = (reg_addr == OTP_CTRL_SW_MANUF_PARTITION_DIGEST_0_OFFSET);
-    addr_hit[55] = (reg_addr == OTP_CTRL_SW_MANUF_PARTITION_DIGEST_1_OFFSET);
-    addr_hit[56] = (reg_addr == OTP_CTRL_SECRET_LC_TRANSITION_PARTITION_DIGEST_0_OFFSET);
-    addr_hit[57] = (reg_addr == OTP_CTRL_SECRET_LC_TRANSITION_PARTITION_DIGEST_1_OFFSET);
-    addr_hit[58] = (reg_addr == OTP_CTRL_VENDOR_HASHES_MANUF_PARTITION_DIGEST_0_OFFSET);
-    addr_hit[59] = (reg_addr == OTP_CTRL_VENDOR_HASHES_MANUF_PARTITION_DIGEST_1_OFFSET);
-    addr_hit[60] = (reg_addr == OTP_CTRL_VENDOR_HASHES_OWNER_PROD_PARTITION_DIGEST_0_OFFSET);
-    addr_hit[61] = (reg_addr == OTP_CTRL_VENDOR_HASHES_OWNER_PROD_PARTITION_DIGEST_1_OFFSET);
-    addr_hit[62] = (reg_addr == OTP_CTRL_VENDOR_HASHES_PROD_PARTITION_DIGEST_0_OFFSET);
-    addr_hit[63] = (reg_addr == OTP_CTRL_VENDOR_HASHES_PROD_PARTITION_DIGEST_1_OFFSET);
-    addr_hit[64] = (reg_addr == OTP_CTRL_VENDOR_REVOCATIONS_PROD_PARTITION_DIGEST_0_OFFSET);
-    addr_hit[65] = (reg_addr == OTP_CTRL_VENDOR_REVOCATIONS_PROD_PARTITION_DIGEST_1_OFFSET);
+    addr_hit[21] = (reg_addr == OTP_CTRL_DIRECT_ACCESS_REGWEN_OFFSET);
+    addr_hit[22] = (reg_addr == OTP_CTRL_DIRECT_ACCESS_CMD_OFFSET);
+    addr_hit[23] = (reg_addr == OTP_CTRL_DIRECT_ACCESS_ADDRESS_OFFSET);
+    addr_hit[24] = (reg_addr == OTP_CTRL_DIRECT_ACCESS_WDATA_0_OFFSET);
+    addr_hit[25] = (reg_addr == OTP_CTRL_DIRECT_ACCESS_WDATA_1_OFFSET);
+    addr_hit[26] = (reg_addr == OTP_CTRL_DIRECT_ACCESS_RDATA_0_OFFSET);
+    addr_hit[27] = (reg_addr == OTP_CTRL_DIRECT_ACCESS_RDATA_1_OFFSET);
+    addr_hit[28] = (reg_addr == OTP_CTRL_CHECK_TRIGGER_REGWEN_OFFSET);
+    addr_hit[29] = (reg_addr == OTP_CTRL_CHECK_TRIGGER_OFFSET);
+    addr_hit[30] = (reg_addr == OTP_CTRL_CHECK_REGWEN_OFFSET);
+    addr_hit[31] = (reg_addr == OTP_CTRL_CHECK_TIMEOUT_OFFSET);
+    addr_hit[32] = (reg_addr == OTP_CTRL_INTEGRITY_CHECK_PERIOD_OFFSET);
+    addr_hit[33] = (reg_addr == OTP_CTRL_CONSISTENCY_CHECK_PERIOD_OFFSET);
+    addr_hit[34] = (reg_addr == OTP_CTRL_SW_MANUF_PARTITION_READ_LOCK_OFFSET);
+    addr_hit[35] = (reg_addr == OTP_CTRL_VENDOR_HASHES_MANUF_PARTITION_READ_LOCK_OFFSET);
+    addr_hit[36] = (reg_addr == OTP_CTRL_VENDOR_HASHES_OWNER_PROD_PARTITION_READ_LOCK_OFFSET);
+    addr_hit[37] = (reg_addr == OTP_CTRL_VENDOR_HASHES_PROD_PARTITION_READ_LOCK_OFFSET);
+    addr_hit[38] = (reg_addr == OTP_CTRL_VENDOR_NON_SECRET_PROD_PARTITION_READ_LOCK_OFFSET);
+    addr_hit[39] = (reg_addr == OTP_CTRL_VENDOR_PK_HASH_VOLATILE_LOCK_OFFSET);
+    addr_hit[40] = (reg_addr == OTP_CTRL_SW_TEST_UNLOCK_PARTITION_DIGEST_0_OFFSET);
+    addr_hit[41] = (reg_addr == OTP_CTRL_SW_TEST_UNLOCK_PARTITION_DIGEST_1_OFFSET);
+    addr_hit[42] = (reg_addr == OTP_CTRL_SECRET_MANUF_PARTITION_DIGEST_0_OFFSET);
+    addr_hit[43] = (reg_addr == OTP_CTRL_SECRET_MANUF_PARTITION_DIGEST_1_OFFSET);
+    addr_hit[44] = (reg_addr == OTP_CTRL_SECRET_PROD_PARTITION_0_DIGEST_0_OFFSET);
+    addr_hit[45] = (reg_addr == OTP_CTRL_SECRET_PROD_PARTITION_0_DIGEST_1_OFFSET);
+    addr_hit[46] = (reg_addr == OTP_CTRL_SECRET_PROD_PARTITION_1_DIGEST_0_OFFSET);
+    addr_hit[47] = (reg_addr == OTP_CTRL_SECRET_PROD_PARTITION_1_DIGEST_1_OFFSET);
+    addr_hit[48] = (reg_addr == OTP_CTRL_SECRET_PROD_PARTITION_2_DIGEST_0_OFFSET);
+    addr_hit[49] = (reg_addr == OTP_CTRL_SECRET_PROD_PARTITION_2_DIGEST_1_OFFSET);
+    addr_hit[50] = (reg_addr == OTP_CTRL_SECRET_PROD_PARTITION_3_DIGEST_0_OFFSET);
+    addr_hit[51] = (reg_addr == OTP_CTRL_SECRET_PROD_PARTITION_3_DIGEST_1_OFFSET);
+    addr_hit[52] = (reg_addr == OTP_CTRL_SW_MANUF_PARTITION_DIGEST_0_OFFSET);
+    addr_hit[53] = (reg_addr == OTP_CTRL_SW_MANUF_PARTITION_DIGEST_1_OFFSET);
+    addr_hit[54] = (reg_addr == OTP_CTRL_SECRET_LC_TRANSITION_PARTITION_DIGEST_0_OFFSET);
+    addr_hit[55] = (reg_addr == OTP_CTRL_SECRET_LC_TRANSITION_PARTITION_DIGEST_1_OFFSET);
+    addr_hit[56] = (reg_addr == OTP_CTRL_VENDOR_HASHES_MANUF_PARTITION_DIGEST_0_OFFSET);
+    addr_hit[57] = (reg_addr == OTP_CTRL_VENDOR_HASHES_MANUF_PARTITION_DIGEST_1_OFFSET);
+    addr_hit[58] = (reg_addr == OTP_CTRL_VENDOR_HASHES_OWNER_PROD_PARTITION_DIGEST_0_OFFSET);
+    addr_hit[59] = (reg_addr == OTP_CTRL_VENDOR_HASHES_OWNER_PROD_PARTITION_DIGEST_1_OFFSET);
+    addr_hit[60] = (reg_addr == OTP_CTRL_VENDOR_HASHES_PROD_PARTITION_DIGEST_0_OFFSET);
+    addr_hit[61] = (reg_addr == OTP_CTRL_VENDOR_HASHES_PROD_PARTITION_DIGEST_1_OFFSET);
   end
 
   assign addrmiss = (reg_re || reg_we) ? ~|addr_hit : 1'b0 ;
@@ -2398,11 +2286,7 @@ module otp_ctrl_core_reg_top (
                (addr_hit[58] & (|(OTP_CTRL_CORE_PERMIT[58] & ~reg_be))) |
                (addr_hit[59] & (|(OTP_CTRL_CORE_PERMIT[59] & ~reg_be))) |
                (addr_hit[60] & (|(OTP_CTRL_CORE_PERMIT[60] & ~reg_be))) |
-               (addr_hit[61] & (|(OTP_CTRL_CORE_PERMIT[61] & ~reg_be))) |
-               (addr_hit[62] & (|(OTP_CTRL_CORE_PERMIT[62] & ~reg_be))) |
-               (addr_hit[63] & (|(OTP_CTRL_CORE_PERMIT[63] & ~reg_be))) |
-               (addr_hit[64] & (|(OTP_CTRL_CORE_PERMIT[64] & ~reg_be))) |
-               (addr_hit[65] & (|(OTP_CTRL_CORE_PERMIT[65] & ~reg_be)))));
+               (addr_hit[61] & (|(OTP_CTRL_CORE_PERMIT[61] & ~reg_be)))));
   end
 
   // Generate write-enables
@@ -2449,94 +2333,88 @@ module otp_ctrl_core_reg_top (
   assign err_code_13_re = addr_hit[18] & reg_re & !reg_error;
   assign err_code_14_re = addr_hit[19] & reg_re & !reg_error;
   assign err_code_15_re = addr_hit[20] & reg_re & !reg_error;
-  assign err_code_16_re = addr_hit[21] & reg_re & !reg_error;
-  assign direct_access_regwen_re = addr_hit[22] & reg_re & !reg_error;
-  assign direct_access_regwen_we = addr_hit[22] & reg_we & !reg_error;
+  assign direct_access_regwen_re = addr_hit[21] & reg_re & !reg_error;
+  assign direct_access_regwen_we = addr_hit[21] & reg_we & !reg_error;
 
   assign direct_access_regwen_wd = reg_wdata[0];
-  assign direct_access_cmd_we = addr_hit[23] & reg_we & !reg_error;
+  assign direct_access_cmd_we = addr_hit[22] & reg_we & !reg_error;
 
   assign direct_access_cmd_rd_wd = reg_wdata[0];
 
   assign direct_access_cmd_wr_wd = reg_wdata[1];
 
   assign direct_access_cmd_digest_wd = reg_wdata[2];
-  assign direct_access_address_we = addr_hit[24] & reg_we & !reg_error;
+  assign direct_access_address_we = addr_hit[23] & reg_we & !reg_error;
 
   assign direct_access_address_wd = reg_wdata[11:0];
-  assign direct_access_wdata_0_we = addr_hit[25] & reg_we & !reg_error;
+  assign direct_access_wdata_0_we = addr_hit[24] & reg_we & !reg_error;
 
   assign direct_access_wdata_0_wd = reg_wdata[31:0];
-  assign direct_access_wdata_1_we = addr_hit[26] & reg_we & !reg_error;
+  assign direct_access_wdata_1_we = addr_hit[25] & reg_we & !reg_error;
 
   assign direct_access_wdata_1_wd = reg_wdata[31:0];
-  assign direct_access_rdata_0_re = addr_hit[27] & reg_re & !reg_error;
-  assign direct_access_rdata_1_re = addr_hit[28] & reg_re & !reg_error;
-  assign check_trigger_regwen_we = addr_hit[29] & reg_we & !reg_error;
+  assign direct_access_rdata_0_re = addr_hit[26] & reg_re & !reg_error;
+  assign direct_access_rdata_1_re = addr_hit[27] & reg_re & !reg_error;
+  assign check_trigger_regwen_we = addr_hit[28] & reg_we & !reg_error;
 
   assign check_trigger_regwen_wd = reg_wdata[0];
-  assign check_trigger_we = addr_hit[30] & reg_we & !reg_error;
+  assign check_trigger_we = addr_hit[29] & reg_we & !reg_error;
 
   assign check_trigger_integrity_wd = reg_wdata[0];
 
   assign check_trigger_consistency_wd = reg_wdata[1];
-  assign check_regwen_we = addr_hit[31] & reg_we & !reg_error;
+  assign check_regwen_we = addr_hit[30] & reg_we & !reg_error;
 
   assign check_regwen_wd = reg_wdata[0];
-  assign check_timeout_we = addr_hit[32] & reg_we & !reg_error;
+  assign check_timeout_we = addr_hit[31] & reg_we & !reg_error;
 
   assign check_timeout_wd = reg_wdata[31:0];
-  assign integrity_check_period_we = addr_hit[33] & reg_we & !reg_error;
+  assign integrity_check_period_we = addr_hit[32] & reg_we & !reg_error;
 
   assign integrity_check_period_wd = reg_wdata[31:0];
-  assign consistency_check_period_we = addr_hit[34] & reg_we & !reg_error;
+  assign consistency_check_period_we = addr_hit[33] & reg_we & !reg_error;
 
   assign consistency_check_period_wd = reg_wdata[31:0];
-  assign sw_manuf_partition_read_lock_we = addr_hit[35] & reg_we & !reg_error;
+  assign sw_manuf_partition_read_lock_we = addr_hit[34] & reg_we & !reg_error;
 
   assign sw_manuf_partition_read_lock_wd = reg_wdata[0];
-  assign vendor_hashes_manuf_partition_read_lock_we = addr_hit[36] & reg_we & !reg_error;
+  assign vendor_hashes_manuf_partition_read_lock_we = addr_hit[35] & reg_we & !reg_error;
 
   assign vendor_hashes_manuf_partition_read_lock_wd = reg_wdata[0];
-  assign vendor_hashes_owner_prod_partition_read_lock_we = addr_hit[37] & reg_we & !reg_error;
+  assign vendor_hashes_owner_prod_partition_read_lock_we = addr_hit[36] & reg_we & !reg_error;
 
   assign vendor_hashes_owner_prod_partition_read_lock_wd = reg_wdata[0];
-  assign vendor_hashes_prod_partition_read_lock_we = addr_hit[38] & reg_we & !reg_error;
+  assign vendor_hashes_prod_partition_read_lock_we = addr_hit[37] & reg_we & !reg_error;
 
   assign vendor_hashes_prod_partition_read_lock_wd = reg_wdata[0];
-  assign vendor_revocations_prod_partition_read_lock_we = addr_hit[39] & reg_we & !reg_error;
-
-  assign vendor_revocations_prod_partition_read_lock_wd = reg_wdata[0];
-  assign vendor_non_secret_prod_partition_read_lock_we = addr_hit[40] & reg_we & !reg_error;
+  assign vendor_non_secret_prod_partition_read_lock_we = addr_hit[38] & reg_we & !reg_error;
 
   assign vendor_non_secret_prod_partition_read_lock_wd = reg_wdata[0];
-  assign vendor_pk_hash_volatile_lock_we = addr_hit[41] & reg_we & !reg_error;
+  assign vendor_pk_hash_volatile_lock_we = addr_hit[39] & reg_we & !reg_error;
 
   assign vendor_pk_hash_volatile_lock_wd = reg_wdata[31:0];
-  assign sw_test_unlock_partition_digest_0_re = addr_hit[42] & reg_re & !reg_error;
-  assign sw_test_unlock_partition_digest_1_re = addr_hit[43] & reg_re & !reg_error;
-  assign secret_manuf_partition_digest_0_re = addr_hit[44] & reg_re & !reg_error;
-  assign secret_manuf_partition_digest_1_re = addr_hit[45] & reg_re & !reg_error;
-  assign secret_prod_partition_0_digest_0_re = addr_hit[46] & reg_re & !reg_error;
-  assign secret_prod_partition_0_digest_1_re = addr_hit[47] & reg_re & !reg_error;
-  assign secret_prod_partition_1_digest_0_re = addr_hit[48] & reg_re & !reg_error;
-  assign secret_prod_partition_1_digest_1_re = addr_hit[49] & reg_re & !reg_error;
-  assign secret_prod_partition_2_digest_0_re = addr_hit[50] & reg_re & !reg_error;
-  assign secret_prod_partition_2_digest_1_re = addr_hit[51] & reg_re & !reg_error;
-  assign secret_prod_partition_3_digest_0_re = addr_hit[52] & reg_re & !reg_error;
-  assign secret_prod_partition_3_digest_1_re = addr_hit[53] & reg_re & !reg_error;
-  assign sw_manuf_partition_digest_0_re = addr_hit[54] & reg_re & !reg_error;
-  assign sw_manuf_partition_digest_1_re = addr_hit[55] & reg_re & !reg_error;
-  assign secret_lc_transition_partition_digest_0_re = addr_hit[56] & reg_re & !reg_error;
-  assign secret_lc_transition_partition_digest_1_re = addr_hit[57] & reg_re & !reg_error;
-  assign vendor_hashes_manuf_partition_digest_0_re = addr_hit[58] & reg_re & !reg_error;
-  assign vendor_hashes_manuf_partition_digest_1_re = addr_hit[59] & reg_re & !reg_error;
-  assign vendor_hashes_owner_prod_partition_digest_0_re = addr_hit[60] & reg_re & !reg_error;
-  assign vendor_hashes_owner_prod_partition_digest_1_re = addr_hit[61] & reg_re & !reg_error;
-  assign vendor_hashes_prod_partition_digest_0_re = addr_hit[62] & reg_re & !reg_error;
-  assign vendor_hashes_prod_partition_digest_1_re = addr_hit[63] & reg_re & !reg_error;
-  assign vendor_revocations_prod_partition_digest_0_re = addr_hit[64] & reg_re & !reg_error;
-  assign vendor_revocations_prod_partition_digest_1_re = addr_hit[65] & reg_re & !reg_error;
+  assign sw_test_unlock_partition_digest_0_re = addr_hit[40] & reg_re & !reg_error;
+  assign sw_test_unlock_partition_digest_1_re = addr_hit[41] & reg_re & !reg_error;
+  assign secret_manuf_partition_digest_0_re = addr_hit[42] & reg_re & !reg_error;
+  assign secret_manuf_partition_digest_1_re = addr_hit[43] & reg_re & !reg_error;
+  assign secret_prod_partition_0_digest_0_re = addr_hit[44] & reg_re & !reg_error;
+  assign secret_prod_partition_0_digest_1_re = addr_hit[45] & reg_re & !reg_error;
+  assign secret_prod_partition_1_digest_0_re = addr_hit[46] & reg_re & !reg_error;
+  assign secret_prod_partition_1_digest_1_re = addr_hit[47] & reg_re & !reg_error;
+  assign secret_prod_partition_2_digest_0_re = addr_hit[48] & reg_re & !reg_error;
+  assign secret_prod_partition_2_digest_1_re = addr_hit[49] & reg_re & !reg_error;
+  assign secret_prod_partition_3_digest_0_re = addr_hit[50] & reg_re & !reg_error;
+  assign secret_prod_partition_3_digest_1_re = addr_hit[51] & reg_re & !reg_error;
+  assign sw_manuf_partition_digest_0_re = addr_hit[52] & reg_re & !reg_error;
+  assign sw_manuf_partition_digest_1_re = addr_hit[53] & reg_re & !reg_error;
+  assign secret_lc_transition_partition_digest_0_re = addr_hit[54] & reg_re & !reg_error;
+  assign secret_lc_transition_partition_digest_1_re = addr_hit[55] & reg_re & !reg_error;
+  assign vendor_hashes_manuf_partition_digest_0_re = addr_hit[56] & reg_re & !reg_error;
+  assign vendor_hashes_manuf_partition_digest_1_re = addr_hit[57] & reg_re & !reg_error;
+  assign vendor_hashes_owner_prod_partition_digest_0_re = addr_hit[58] & reg_re & !reg_error;
+  assign vendor_hashes_owner_prod_partition_digest_1_re = addr_hit[59] & reg_re & !reg_error;
+  assign vendor_hashes_prod_partition_digest_0_re = addr_hit[60] & reg_re & !reg_error;
+  assign vendor_hashes_prod_partition_digest_1_re = addr_hit[61] & reg_re & !reg_error;
 
   // Assign write-enables to checker logic vector.
   always_comb begin
@@ -2562,27 +2440,27 @@ module otp_ctrl_core_reg_top (
     reg_we_check[18] = 1'b0;
     reg_we_check[19] = 1'b0;
     reg_we_check[20] = 1'b0;
-    reg_we_check[21] = 1'b0;
-    reg_we_check[22] = direct_access_regwen_we;
-    reg_we_check[23] = direct_access_cmd_gated_we;
-    reg_we_check[24] = direct_access_address_gated_we;
-    reg_we_check[25] = direct_access_wdata_0_gated_we;
-    reg_we_check[26] = direct_access_wdata_1_gated_we;
+    reg_we_check[21] = direct_access_regwen_we;
+    reg_we_check[22] = direct_access_cmd_gated_we;
+    reg_we_check[23] = direct_access_address_gated_we;
+    reg_we_check[24] = direct_access_wdata_0_gated_we;
+    reg_we_check[25] = direct_access_wdata_1_gated_we;
+    reg_we_check[26] = 1'b0;
     reg_we_check[27] = 1'b0;
-    reg_we_check[28] = 1'b0;
-    reg_we_check[29] = check_trigger_regwen_we;
-    reg_we_check[30] = check_trigger_gated_we;
-    reg_we_check[31] = check_regwen_we;
-    reg_we_check[32] = check_timeout_gated_we;
-    reg_we_check[33] = integrity_check_period_gated_we;
-    reg_we_check[34] = consistency_check_period_gated_we;
-    reg_we_check[35] = sw_manuf_partition_read_lock_gated_we;
-    reg_we_check[36] = vendor_hashes_manuf_partition_read_lock_gated_we;
-    reg_we_check[37] = vendor_hashes_owner_prod_partition_read_lock_gated_we;
-    reg_we_check[38] = vendor_hashes_prod_partition_read_lock_gated_we;
-    reg_we_check[39] = vendor_revocations_prod_partition_read_lock_gated_we;
-    reg_we_check[40] = vendor_non_secret_prod_partition_read_lock_gated_we;
-    reg_we_check[41] = vendor_pk_hash_volatile_lock_we;
+    reg_we_check[28] = check_trigger_regwen_we;
+    reg_we_check[29] = check_trigger_gated_we;
+    reg_we_check[30] = check_regwen_we;
+    reg_we_check[31] = check_timeout_gated_we;
+    reg_we_check[32] = integrity_check_period_gated_we;
+    reg_we_check[33] = consistency_check_period_gated_we;
+    reg_we_check[34] = sw_manuf_partition_read_lock_gated_we;
+    reg_we_check[35] = vendor_hashes_manuf_partition_read_lock_gated_we;
+    reg_we_check[36] = vendor_hashes_owner_prod_partition_read_lock_gated_we;
+    reg_we_check[37] = vendor_hashes_prod_partition_read_lock_gated_we;
+    reg_we_check[38] = vendor_non_secret_prod_partition_read_lock_gated_we;
+    reg_we_check[39] = vendor_pk_hash_volatile_lock_we;
+    reg_we_check[40] = 1'b0;
+    reg_we_check[41] = 1'b0;
     reg_we_check[42] = 1'b0;
     reg_we_check[43] = 1'b0;
     reg_we_check[44] = 1'b0;
@@ -2603,10 +2481,6 @@ module otp_ctrl_core_reg_top (
     reg_we_check[59] = 1'b0;
     reg_we_check[60] = 1'b0;
     reg_we_check[61] = 1'b0;
-    reg_we_check[62] = 1'b0;
-    reg_we_check[63] = 1'b0;
-    reg_we_check[64] = 1'b0;
-    reg_we_check[65] = 1'b0;
   end
 
   // Read data return
@@ -2649,17 +2523,16 @@ module otp_ctrl_core_reg_top (
         reg_rdata_next[9] = status_vendor_hashes_manuf_partition_error_qs;
         reg_rdata_next[10] = status_vendor_hashes_owner_prod_partition_error_qs;
         reg_rdata_next[11] = status_vendor_hashes_prod_partition_error_qs;
-        reg_rdata_next[12] = status_vendor_revocations_prod_partition_error_qs;
-        reg_rdata_next[13] = status_vendor_non_secret_prod_partition_error_qs;
-        reg_rdata_next[14] = status_csr_partition_error_qs;
-        reg_rdata_next[15] = status_dai_error_qs;
-        reg_rdata_next[16] = status_lci_error_qs;
-        reg_rdata_next[17] = status_timeout_error_qs;
-        reg_rdata_next[18] = status_lfsr_fsm_error_qs;
-        reg_rdata_next[19] = status_scrambling_fsm_error_qs;
-        reg_rdata_next[20] = status_bus_integ_error_qs;
-        reg_rdata_next[21] = status_dai_idle_qs;
-        reg_rdata_next[22] = status_check_pending_qs;
+        reg_rdata_next[12] = status_vendor_non_secret_prod_partition_error_qs;
+        reg_rdata_next[13] = status_csr_partition_error_qs;
+        reg_rdata_next[14] = status_dai_error_qs;
+        reg_rdata_next[15] = status_lci_error_qs;
+        reg_rdata_next[16] = status_timeout_error_qs;
+        reg_rdata_next[17] = status_lfsr_fsm_error_qs;
+        reg_rdata_next[18] = status_scrambling_fsm_error_qs;
+        reg_rdata_next[19] = status_bus_integ_error_qs;
+        reg_rdata_next[20] = status_dai_idle_qs;
+        reg_rdata_next[21] = status_check_pending_qs;
       end
 
       addr_hit[5]: begin
@@ -2727,186 +2600,170 @@ module otp_ctrl_core_reg_top (
       end
 
       addr_hit[21]: begin
-        reg_rdata_next[2:0] = err_code_16_qs;
-      end
-
-      addr_hit[22]: begin
         reg_rdata_next[0] = direct_access_regwen_qs;
       end
 
-      addr_hit[23]: begin
+      addr_hit[22]: begin
         reg_rdata_next[0] = '0;
         reg_rdata_next[1] = '0;
         reg_rdata_next[2] = '0;
       end
 
-      addr_hit[24]: begin
+      addr_hit[23]: begin
         reg_rdata_next[11:0] = direct_access_address_qs;
       end
 
-      addr_hit[25]: begin
+      addr_hit[24]: begin
         reg_rdata_next[31:0] = direct_access_wdata_0_qs;
       end
 
-      addr_hit[26]: begin
+      addr_hit[25]: begin
         reg_rdata_next[31:0] = direct_access_wdata_1_qs;
       end
 
-      addr_hit[27]: begin
+      addr_hit[26]: begin
         reg_rdata_next[31:0] = direct_access_rdata_0_qs;
       end
 
-      addr_hit[28]: begin
+      addr_hit[27]: begin
         reg_rdata_next[31:0] = direct_access_rdata_1_qs;
       end
 
-      addr_hit[29]: begin
+      addr_hit[28]: begin
         reg_rdata_next[0] = check_trigger_regwen_qs;
       end
 
-      addr_hit[30]: begin
+      addr_hit[29]: begin
         reg_rdata_next[0] = '0;
         reg_rdata_next[1] = '0;
       end
 
-      addr_hit[31]: begin
+      addr_hit[30]: begin
         reg_rdata_next[0] = check_regwen_qs;
       end
 
-      addr_hit[32]: begin
+      addr_hit[31]: begin
         reg_rdata_next[31:0] = check_timeout_qs;
       end
 
-      addr_hit[33]: begin
+      addr_hit[32]: begin
         reg_rdata_next[31:0] = integrity_check_period_qs;
       end
 
-      addr_hit[34]: begin
+      addr_hit[33]: begin
         reg_rdata_next[31:0] = consistency_check_period_qs;
       end
 
-      addr_hit[35]: begin
+      addr_hit[34]: begin
         reg_rdata_next[0] = sw_manuf_partition_read_lock_qs;
       end
 
-      addr_hit[36]: begin
+      addr_hit[35]: begin
         reg_rdata_next[0] = vendor_hashes_manuf_partition_read_lock_qs;
       end
 
-      addr_hit[37]: begin
+      addr_hit[36]: begin
         reg_rdata_next[0] = vendor_hashes_owner_prod_partition_read_lock_qs;
       end
 
-      addr_hit[38]: begin
+      addr_hit[37]: begin
         reg_rdata_next[0] = vendor_hashes_prod_partition_read_lock_qs;
       end
 
-      addr_hit[39]: begin
-        reg_rdata_next[0] = vendor_revocations_prod_partition_read_lock_qs;
-      end
-
-      addr_hit[40]: begin
+      addr_hit[38]: begin
         reg_rdata_next[0] = vendor_non_secret_prod_partition_read_lock_qs;
       end
 
-      addr_hit[41]: begin
+      addr_hit[39]: begin
         reg_rdata_next[31:0] = vendor_pk_hash_volatile_lock_qs;
       end
 
-      addr_hit[42]: begin
+      addr_hit[40]: begin
         reg_rdata_next[31:0] = sw_test_unlock_partition_digest_0_qs;
       end
 
-      addr_hit[43]: begin
+      addr_hit[41]: begin
         reg_rdata_next[31:0] = sw_test_unlock_partition_digest_1_qs;
       end
 
-      addr_hit[44]: begin
+      addr_hit[42]: begin
         reg_rdata_next[31:0] = secret_manuf_partition_digest_0_qs;
       end
 
-      addr_hit[45]: begin
+      addr_hit[43]: begin
         reg_rdata_next[31:0] = secret_manuf_partition_digest_1_qs;
       end
 
-      addr_hit[46]: begin
+      addr_hit[44]: begin
         reg_rdata_next[31:0] = secret_prod_partition_0_digest_0_qs;
       end
 
-      addr_hit[47]: begin
+      addr_hit[45]: begin
         reg_rdata_next[31:0] = secret_prod_partition_0_digest_1_qs;
       end
 
-      addr_hit[48]: begin
+      addr_hit[46]: begin
         reg_rdata_next[31:0] = secret_prod_partition_1_digest_0_qs;
       end
 
-      addr_hit[49]: begin
+      addr_hit[47]: begin
         reg_rdata_next[31:0] = secret_prod_partition_1_digest_1_qs;
       end
 
-      addr_hit[50]: begin
+      addr_hit[48]: begin
         reg_rdata_next[31:0] = secret_prod_partition_2_digest_0_qs;
       end
 
-      addr_hit[51]: begin
+      addr_hit[49]: begin
         reg_rdata_next[31:0] = secret_prod_partition_2_digest_1_qs;
       end
 
-      addr_hit[52]: begin
+      addr_hit[50]: begin
         reg_rdata_next[31:0] = secret_prod_partition_3_digest_0_qs;
       end
 
-      addr_hit[53]: begin
+      addr_hit[51]: begin
         reg_rdata_next[31:0] = secret_prod_partition_3_digest_1_qs;
       end
 
-      addr_hit[54]: begin
+      addr_hit[52]: begin
         reg_rdata_next[31:0] = sw_manuf_partition_digest_0_qs;
       end
 
-      addr_hit[55]: begin
+      addr_hit[53]: begin
         reg_rdata_next[31:0] = sw_manuf_partition_digest_1_qs;
       end
 
-      addr_hit[56]: begin
+      addr_hit[54]: begin
         reg_rdata_next[31:0] = secret_lc_transition_partition_digest_0_qs;
       end
 
-      addr_hit[57]: begin
+      addr_hit[55]: begin
         reg_rdata_next[31:0] = secret_lc_transition_partition_digest_1_qs;
       end
 
-      addr_hit[58]: begin
+      addr_hit[56]: begin
         reg_rdata_next[31:0] = vendor_hashes_manuf_partition_digest_0_qs;
       end
 
-      addr_hit[59]: begin
+      addr_hit[57]: begin
         reg_rdata_next[31:0] = vendor_hashes_manuf_partition_digest_1_qs;
       end
 
-      addr_hit[60]: begin
+      addr_hit[58]: begin
         reg_rdata_next[31:0] = vendor_hashes_owner_prod_partition_digest_0_qs;
       end
 
-      addr_hit[61]: begin
+      addr_hit[59]: begin
         reg_rdata_next[31:0] = vendor_hashes_owner_prod_partition_digest_1_qs;
       end
 
-      addr_hit[62]: begin
+      addr_hit[60]: begin
         reg_rdata_next[31:0] = vendor_hashes_prod_partition_digest_0_qs;
       end
 
-      addr_hit[63]: begin
+      addr_hit[61]: begin
         reg_rdata_next[31:0] = vendor_hashes_prod_partition_digest_1_qs;
-      end
-
-      addr_hit[64]: begin
-        reg_rdata_next[31:0] = vendor_revocations_prod_partition_digest_0_qs;
-      end
-
-      addr_hit[65]: begin
-        reg_rdata_next[31:0] = vendor_revocations_prod_partition_digest_1_qs;
       end
 
       default: begin
