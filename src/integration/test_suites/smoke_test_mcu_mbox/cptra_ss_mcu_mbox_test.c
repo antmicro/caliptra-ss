@@ -195,7 +195,11 @@ uint8_t caliptra_ss_mcu_mbox_get_data(uint32_t mbox_num) {
             while(1);
         }
     }
-    
+
+    VPRINTF(LOW, "CALIPTRA: Sending status complete\n");
+    write_payload[0] = 0x2;
+    soc_ifc_axi_dma_send_ahb_payload(SOC_MCI_TOP_MCU_MBOX0_CSR_MBOX_CMD_STATUS, 0, write_payload, 4, 0);
+
     return fail;
 
 }
@@ -246,6 +250,9 @@ void main(void) {
             while(1);
         }
 
-        VPRINTF(LOW, "CALIPTRA: Sequence complete\n");
+        // Don't print anything here. MCU sends test result around this
+        // time, and printing could cause outstanding AXI bursts that
+        // aren't finished by the end of simulation, which in turn is
+        // flagged as violation by Avery AXI VIP.
 
 }
