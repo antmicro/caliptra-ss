@@ -23,51 +23,47 @@
 | otp_ctrl.[`ERR_CODE_13`](#err_code)                                                                      | 0x48     |        4 | This register holds information about error conditions that occurred in the agents                  |
 | otp_ctrl.[`ERR_CODE_14`](#err_code)                                                                      | 0x4c     |        4 | This register holds information about error conditions that occurred in the agents                  |
 | otp_ctrl.[`ERR_CODE_15`](#err_code)                                                                      | 0x50     |        4 | This register holds information about error conditions that occurred in the agents                  |
-| otp_ctrl.[`ERR_CODE_16`](#err_code)                                                                      | 0x54     |        4 | This register holds information about error conditions that occurred in the agents                  |
-| otp_ctrl.[`DIRECT_ACCESS_REGWEN`](#direct_access_regwen)                                                 | 0x58     |        4 | Register write enable for all direct access interface registers.                                    |
-| otp_ctrl.[`DIRECT_ACCESS_CMD`](#direct_access_cmd)                                                       | 0x5c     |        4 | Command register for direct accesses.                                                               |
-| otp_ctrl.[`DIRECT_ACCESS_ADDRESS`](#direct_access_address)                                               | 0x60     |        4 | Address register for direct accesses.                                                               |
-| otp_ctrl.[`DIRECT_ACCESS_WDATA_0`](#direct_access_wdata)                                                 | 0x64     |        4 | Write data for direct accesses.                                                                     |
-| otp_ctrl.[`DIRECT_ACCESS_WDATA_1`](#direct_access_wdata)                                                 | 0x68     |        4 | Write data for direct accesses.                                                                     |
-| otp_ctrl.[`DIRECT_ACCESS_RDATA_0`](#direct_access_rdata)                                                 | 0x6c     |        4 | Read data for direct accesses.                                                                      |
-| otp_ctrl.[`DIRECT_ACCESS_RDATA_1`](#direct_access_rdata)                                                 | 0x70     |        4 | Read data for direct accesses.                                                                      |
-| otp_ctrl.[`CHECK_TRIGGER_REGWEN`](#check_trigger_regwen)                                                 | 0x74     |        4 | Register write enable for !!CHECK_TRIGGER.                                                          |
-| otp_ctrl.[`CHECK_TRIGGER`](#check_trigger)                                                               | 0x78     |        4 | Command register for direct accesses.                                                               |
-| otp_ctrl.[`CHECK_REGWEN`](#check_regwen)                                                                 | 0x7c     |        4 | Register write enable for !!INTEGRITY_CHECK_PERIOD and !!CONSISTENCY_CHECK_PERIOD.                  |
-| otp_ctrl.[`CHECK_TIMEOUT`](#check_timeout)                                                               | 0x80     |        4 | Timeout value for the integrity and consistency checks.                                             |
-| otp_ctrl.[`INTEGRITY_CHECK_PERIOD`](#integrity_check_period)                                             | 0x84     |        4 | This value specifies the maximum period that can be generated pseudo-randomly.                      |
-| otp_ctrl.[`CONSISTENCY_CHECK_PERIOD`](#consistency_check_period)                                         | 0x88     |        4 | This value specifies the maximum period that can be generated pseudo-randomly.                      |
-| otp_ctrl.[`SW_MANUF_PARTITION_READ_LOCK`](#sw_manuf_partition_read_lock)                                 | 0x8c     |        4 | Runtime read lock for the SW_MANUF_PARTITION partition.                                             |
-| otp_ctrl.[`VENDOR_HASHES_MANUF_PARTITION_READ_LOCK`](#vendor_hashes_manuf_partition_read_lock)           | 0x90     |        4 | Runtime read lock for the VENDOR_HASHES_MANUF_PARTITION partition.                                  |
-| otp_ctrl.[`VENDOR_HASHES_OWNER_PROD_PARTITION_READ_LOCK`](#vendor_hashes_owner_prod_partition_read_lock) | 0x94     |        4 | Runtime read lock for the VENDOR_HASHES_OWNER_PROD_PARTITION partition.                             |
-| otp_ctrl.[`VENDOR_HASHES_PROD_PARTITION_READ_LOCK`](#vendor_hashes_prod_partition_read_lock)             | 0x98     |        4 | Runtime read lock for the VENDOR_HASHES_PROD_PARTITION partition.                                   |
-| otp_ctrl.[`VENDOR_REVOCATIONS_PROD_PARTITION_READ_LOCK`](#vendor_revocations_prod_partition_read_lock)   | 0x9c     |        4 | Runtime read lock for the VENDOR_REVOCATIONS_PROD_PARTITION partition.                              |
-| otp_ctrl.[`VENDOR_NON_SECRET_PROD_PARTITION_READ_LOCK`](#vendor_non_secret_prod_partition_read_lock)     | 0xa0     |        4 | Runtime read lock for the VENDOR_NON_SECRET_PROD_PARTITION partition.                               |
-| otp_ctrl.[`VENDOR_PK_HASH_VOLATILE_LOCK`](#vendor_pk_hash_volatile_lock)                                 | 0xa4     |        4 | Address register for direct accesses.                                                               |
-| otp_ctrl.[`SW_TEST_UNLOCK_PARTITION_DIGEST_0`](#sw_test_unlock_partition_digest)                         | 0xa8     |        4 | Integrity digest for the SW_TEST_UNLOCK_PARTITION partition.                                        |
-| otp_ctrl.[`SW_TEST_UNLOCK_PARTITION_DIGEST_1`](#sw_test_unlock_partition_digest)                         | 0xac     |        4 | Integrity digest for the SW_TEST_UNLOCK_PARTITION partition.                                        |
-| otp_ctrl.[`SECRET_MANUF_PARTITION_DIGEST_0`](#secret_manuf_partition_digest)                             | 0xb0     |        4 | Integrity digest for the SECRET_MANUF_PARTITION partition.                                          |
-| otp_ctrl.[`SECRET_MANUF_PARTITION_DIGEST_1`](#secret_manuf_partition_digest)                             | 0xb4     |        4 | Integrity digest for the SECRET_MANUF_PARTITION partition.                                          |
-| otp_ctrl.[`SECRET_PROD_PARTITION_0_DIGEST_0`](#secret_prod_partition_0_digest)                           | 0xb8     |        4 | Integrity digest for the SECRET_PROD_PARTITION_0 partition.                                         |
-| otp_ctrl.[`SECRET_PROD_PARTITION_0_DIGEST_1`](#secret_prod_partition_0_digest)                           | 0xbc     |        4 | Integrity digest for the SECRET_PROD_PARTITION_0 partition.                                         |
-| otp_ctrl.[`SECRET_PROD_PARTITION_1_DIGEST_0`](#secret_prod_partition_1_digest)                           | 0xc0     |        4 | Integrity digest for the SECRET_PROD_PARTITION_1 partition.                                         |
-| otp_ctrl.[`SECRET_PROD_PARTITION_1_DIGEST_1`](#secret_prod_partition_1_digest)                           | 0xc4     |        4 | Integrity digest for the SECRET_PROD_PARTITION_1 partition.                                         |
-| otp_ctrl.[`SECRET_PROD_PARTITION_2_DIGEST_0`](#secret_prod_partition_2_digest)                           | 0xc8     |        4 | Integrity digest for the SECRET_PROD_PARTITION_2 partition.                                         |
-| otp_ctrl.[`SECRET_PROD_PARTITION_2_DIGEST_1`](#secret_prod_partition_2_digest)                           | 0xcc     |        4 | Integrity digest for the SECRET_PROD_PARTITION_2 partition.                                         |
-| otp_ctrl.[`SECRET_PROD_PARTITION_3_DIGEST_0`](#secret_prod_partition_3_digest)                           | 0xd0     |        4 | Integrity digest for the SECRET_PROD_PARTITION_3 partition.                                         |
-| otp_ctrl.[`SECRET_PROD_PARTITION_3_DIGEST_1`](#secret_prod_partition_3_digest)                           | 0xd4     |        4 | Integrity digest for the SECRET_PROD_PARTITION_3 partition.                                         |
-| otp_ctrl.[`SW_MANUF_PARTITION_DIGEST_0`](#sw_manuf_partition_digest)                                     | 0xd8     |        4 | Integrity digest for the SW_MANUF_PARTITION partition.                                              |
-| otp_ctrl.[`SW_MANUF_PARTITION_DIGEST_1`](#sw_manuf_partition_digest)                                     | 0xdc     |        4 | Integrity digest for the SW_MANUF_PARTITION partition.                                              |
-| otp_ctrl.[`SECRET_LC_TRANSITION_PARTITION_DIGEST_0`](#secret_lc_transition_partition_digest)             | 0xe0     |        4 | Integrity digest for the SECRET_LC_TRANSITION_PARTITION partition.                                  |
-| otp_ctrl.[`SECRET_LC_TRANSITION_PARTITION_DIGEST_1`](#secret_lc_transition_partition_digest)             | 0xe4     |        4 | Integrity digest for the SECRET_LC_TRANSITION_PARTITION partition.                                  |
-| otp_ctrl.[`VENDOR_HASHES_MANUF_PARTITION_DIGEST_0`](#vendor_hashes_manuf_partition_digest)               | 0xe8     |        4 | Integrity digest for the VENDOR_HASHES_MANUF_PARTITION partition.                                   |
-| otp_ctrl.[`VENDOR_HASHES_MANUF_PARTITION_DIGEST_1`](#vendor_hashes_manuf_partition_digest)               | 0xec     |        4 | Integrity digest for the VENDOR_HASHES_MANUF_PARTITION partition.                                   |
-| otp_ctrl.[`VENDOR_HASHES_OWNER_PROD_PARTITION_DIGEST_0`](#vendor_hashes_owner_prod_partition_digest)     | 0xf0     |        4 | Integrity digest for the VENDOR_HASHES_OWNER_PROD_PARTITION partition.                              |
-| otp_ctrl.[`VENDOR_HASHES_OWNER_PROD_PARTITION_DIGEST_1`](#vendor_hashes_owner_prod_partition_digest)     | 0xf4     |        4 | Integrity digest for the VENDOR_HASHES_OWNER_PROD_PARTITION partition.                              |
-| otp_ctrl.[`VENDOR_HASHES_PROD_PARTITION_DIGEST_0`](#vendor_hashes_prod_partition_digest)                 | 0xf8     |        4 | Integrity digest for the VENDOR_HASHES_PROD_PARTITION partition.                                    |
-| otp_ctrl.[`VENDOR_HASHES_PROD_PARTITION_DIGEST_1`](#vendor_hashes_prod_partition_digest)                 | 0xfc     |        4 | Integrity digest for the VENDOR_HASHES_PROD_PARTITION partition.                                    |
-| otp_ctrl.[`VENDOR_REVOCATIONS_PROD_PARTITION_DIGEST_0`](#vendor_revocations_prod_partition_digest)       | 0x100    |        4 | Integrity digest for the VENDOR_REVOCATIONS_PROD_PARTITION partition.                               |
-| otp_ctrl.[`VENDOR_REVOCATIONS_PROD_PARTITION_DIGEST_1`](#vendor_revocations_prod_partition_digest)       | 0x104    |        4 | Integrity digest for the VENDOR_REVOCATIONS_PROD_PARTITION partition.                               |
+| otp_ctrl.[`DIRECT_ACCESS_REGWEN`](#direct_access_regwen)                                                 | 0x54     |        4 | Register write enable for all direct access interface registers.                                    |
+| otp_ctrl.[`DIRECT_ACCESS_CMD`](#direct_access_cmd)                                                       | 0x58     |        4 | Command register for direct accesses.                                                               |
+| otp_ctrl.[`DIRECT_ACCESS_ADDRESS`](#direct_access_address)                                               | 0x5c     |        4 | Address register for direct accesses.                                                               |
+| otp_ctrl.[`DIRECT_ACCESS_WDATA_0`](#direct_access_wdata)                                                 | 0x60     |        4 | Write data for direct accesses.                                                                     |
+| otp_ctrl.[`DIRECT_ACCESS_WDATA_1`](#direct_access_wdata)                                                 | 0x64     |        4 | Write data for direct accesses.                                                                     |
+| otp_ctrl.[`DIRECT_ACCESS_RDATA_0`](#direct_access_rdata)                                                 | 0x68     |        4 | Read data for direct accesses.                                                                      |
+| otp_ctrl.[`DIRECT_ACCESS_RDATA_1`](#direct_access_rdata)                                                 | 0x6c     |        4 | Read data for direct accesses.                                                                      |
+| otp_ctrl.[`CHECK_TRIGGER_REGWEN`](#check_trigger_regwen)                                                 | 0x70     |        4 | Register write enable for !!CHECK_TRIGGER.                                                          |
+| otp_ctrl.[`CHECK_TRIGGER`](#check_trigger)                                                               | 0x74     |        4 | Command register for direct accesses.                                                               |
+| otp_ctrl.[`CHECK_REGWEN`](#check_regwen)                                                                 | 0x78     |        4 | Register write enable for !!INTEGRITY_CHECK_PERIOD and !!CONSISTENCY_CHECK_PERIOD.                  |
+| otp_ctrl.[`CHECK_TIMEOUT`](#check_timeout)                                                               | 0x7c     |        4 | Timeout value for the integrity and consistency checks.                                             |
+| otp_ctrl.[`INTEGRITY_CHECK_PERIOD`](#integrity_check_period)                                             | 0x80     |        4 | This value specifies the maximum period that can be generated pseudo-randomly.                      |
+| otp_ctrl.[`CONSISTENCY_CHECK_PERIOD`](#consistency_check_period)                                         | 0x84     |        4 | This value specifies the maximum period that can be generated pseudo-randomly.                      |
+| otp_ctrl.[`SW_MANUF_PARTITION_READ_LOCK`](#sw_manuf_partition_read_lock)                                 | 0x88     |        4 | Runtime read lock for the SW_MANUF_PARTITION partition.                                             |
+| otp_ctrl.[`VENDOR_HASHES_MANUF_PARTITION_READ_LOCK`](#vendor_hashes_manuf_partition_read_lock)           | 0x8c     |        4 | Runtime read lock for the VENDOR_HASHES_MANUF_PARTITION partition.                                  |
+| otp_ctrl.[`VENDOR_HASHES_OWNER_PROD_PARTITION_READ_LOCK`](#vendor_hashes_owner_prod_partition_read_lock) | 0x90     |        4 | Runtime read lock for the VENDOR_HASHES_OWNER_PROD_PARTITION partition.                             |
+| otp_ctrl.[`VENDOR_HASHES_PROD_PARTITION_READ_LOCK`](#vendor_hashes_prod_partition_read_lock)             | 0x94     |        4 | Runtime read lock for the VENDOR_HASHES_PROD_PARTITION partition.                                   |
+| otp_ctrl.[`VENDOR_NON_SECRET_PROD_PARTITION_READ_LOCK`](#vendor_non_secret_prod_partition_read_lock)     | 0x98     |        4 | Runtime read lock for the VENDOR_NON_SECRET_PROD_PARTITION partition.                               |
+| otp_ctrl.[`VENDOR_PK_HASH_VOLATILE_LOCK`](#vendor_pk_hash_volatile_lock)                                 | 0x9c     |        4 | Address register for direct accesses.                                                               |
+| otp_ctrl.[`SW_TEST_UNLOCK_PARTITION_DIGEST_0`](#sw_test_unlock_partition_digest)                         | 0xa0     |        4 | Integrity digest for the SW_TEST_UNLOCK_PARTITION partition.                                        |
+| otp_ctrl.[`SW_TEST_UNLOCK_PARTITION_DIGEST_1`](#sw_test_unlock_partition_digest)                         | 0xa4     |        4 | Integrity digest for the SW_TEST_UNLOCK_PARTITION partition.                                        |
+| otp_ctrl.[`SECRET_MANUF_PARTITION_DIGEST_0`](#secret_manuf_partition_digest)                             | 0xa8     |        4 | Integrity digest for the SECRET_MANUF_PARTITION partition.                                          |
+| otp_ctrl.[`SECRET_MANUF_PARTITION_DIGEST_1`](#secret_manuf_partition_digest)                             | 0xac     |        4 | Integrity digest for the SECRET_MANUF_PARTITION partition.                                          |
+| otp_ctrl.[`SECRET_PROD_PARTITION_0_DIGEST_0`](#secret_prod_partition_0_digest)                           | 0xb0     |        4 | Integrity digest for the SECRET_PROD_PARTITION_0 partition.                                         |
+| otp_ctrl.[`SECRET_PROD_PARTITION_0_DIGEST_1`](#secret_prod_partition_0_digest)                           | 0xb4     |        4 | Integrity digest for the SECRET_PROD_PARTITION_0 partition.                                         |
+| otp_ctrl.[`SECRET_PROD_PARTITION_1_DIGEST_0`](#secret_prod_partition_1_digest)                           | 0xb8     |        4 | Integrity digest for the SECRET_PROD_PARTITION_1 partition.                                         |
+| otp_ctrl.[`SECRET_PROD_PARTITION_1_DIGEST_1`](#secret_prod_partition_1_digest)                           | 0xbc     |        4 | Integrity digest for the SECRET_PROD_PARTITION_1 partition.                                         |
+| otp_ctrl.[`SECRET_PROD_PARTITION_2_DIGEST_0`](#secret_prod_partition_2_digest)                           | 0xc0     |        4 | Integrity digest for the SECRET_PROD_PARTITION_2 partition.                                         |
+| otp_ctrl.[`SECRET_PROD_PARTITION_2_DIGEST_1`](#secret_prod_partition_2_digest)                           | 0xc4     |        4 | Integrity digest for the SECRET_PROD_PARTITION_2 partition.                                         |
+| otp_ctrl.[`SECRET_PROD_PARTITION_3_DIGEST_0`](#secret_prod_partition_3_digest)                           | 0xc8     |        4 | Integrity digest for the SECRET_PROD_PARTITION_3 partition.                                         |
+| otp_ctrl.[`SECRET_PROD_PARTITION_3_DIGEST_1`](#secret_prod_partition_3_digest)                           | 0xcc     |        4 | Integrity digest for the SECRET_PROD_PARTITION_3 partition.                                         |
+| otp_ctrl.[`SW_MANUF_PARTITION_DIGEST_0`](#sw_manuf_partition_digest)                                     | 0xd0     |        4 | Integrity digest for the SW_MANUF_PARTITION partition.                                              |
+| otp_ctrl.[`SW_MANUF_PARTITION_DIGEST_1`](#sw_manuf_partition_digest)                                     | 0xd4     |        4 | Integrity digest for the SW_MANUF_PARTITION partition.                                              |
+| otp_ctrl.[`SECRET_LC_TRANSITION_PARTITION_DIGEST_0`](#secret_lc_transition_partition_digest)             | 0xd8     |        4 | Integrity digest for the SECRET_LC_TRANSITION_PARTITION partition.                                  |
+| otp_ctrl.[`SECRET_LC_TRANSITION_PARTITION_DIGEST_1`](#secret_lc_transition_partition_digest)             | 0xdc     |        4 | Integrity digest for the SECRET_LC_TRANSITION_PARTITION partition.                                  |
+| otp_ctrl.[`VENDOR_HASHES_MANUF_PARTITION_DIGEST_0`](#vendor_hashes_manuf_partition_digest)               | 0xe0     |        4 | Integrity digest for the VENDOR_HASHES_MANUF_PARTITION partition.                                   |
+| otp_ctrl.[`VENDOR_HASHES_MANUF_PARTITION_DIGEST_1`](#vendor_hashes_manuf_partition_digest)               | 0xe4     |        4 | Integrity digest for the VENDOR_HASHES_MANUF_PARTITION partition.                                   |
+| otp_ctrl.[`VENDOR_HASHES_OWNER_PROD_PARTITION_DIGEST_0`](#vendor_hashes_owner_prod_partition_digest)     | 0xe8     |        4 | Integrity digest for the VENDOR_HASHES_OWNER_PROD_PARTITION partition.                              |
+| otp_ctrl.[`VENDOR_HASHES_OWNER_PROD_PARTITION_DIGEST_1`](#vendor_hashes_owner_prod_partition_digest)     | 0xec     |        4 | Integrity digest for the VENDOR_HASHES_OWNER_PROD_PARTITION partition.                              |
+| otp_ctrl.[`VENDOR_HASHES_PROD_PARTITION_DIGEST_0`](#vendor_hashes_prod_partition_digest)                 | 0xf0     |        4 | Integrity digest for the VENDOR_HASHES_PROD_PARTITION partition.                                    |
+| otp_ctrl.[`VENDOR_HASHES_PROD_PARTITION_DIGEST_1`](#vendor_hashes_prod_partition_digest)                 | 0xf4     |        4 | Integrity digest for the VENDOR_HASHES_PROD_PARTITION partition.                                    |
 | otp_ctrl.[`SW_CFG_WINDOW`](#sw_cfg_window)                                                               | 0x1000   |     4096 | Any read to this window directly maps to the corresponding offset in the creator and owner software |
 
 ## INTR_STATE
@@ -149,28 +145,27 @@ Alert Test Register
 OTP status register.
 - Offset: `0x10`
 - Reset default: `0x0`
-- Reset mask: `0x7fffff`
+- Reset mask: `0x3fffff`
 
 ### Fields
 
 ```wavejson
-{"reg": [{"name": "SW_TEST_UNLOCK_PARTITION_ERROR", "bits": 1, "attr": ["ro"], "rotate": -90}, {"name": "SECRET_MANUF_PARTITION_ERROR", "bits": 1, "attr": ["ro"], "rotate": -90}, {"name": "SECRET_PROD_PARTITION_0_ERROR", "bits": 1, "attr": ["ro"], "rotate": -90}, {"name": "SECRET_PROD_PARTITION_1_ERROR", "bits": 1, "attr": ["ro"], "rotate": -90}, {"name": "SECRET_PROD_PARTITION_2_ERROR", "bits": 1, "attr": ["ro"], "rotate": -90}, {"name": "SECRET_PROD_PARTITION_3_ERROR", "bits": 1, "attr": ["ro"], "rotate": -90}, {"name": "SW_MANUF_PARTITION_ERROR", "bits": 1, "attr": ["ro"], "rotate": -90}, {"name": "SECRET_LC_TRANSITION_PARTITION_ERROR", "bits": 1, "attr": ["ro"], "rotate": -90}, {"name": "LIFE_CYCLE_ERROR", "bits": 1, "attr": ["ro"], "rotate": -90}, {"name": "VENDOR_HASHES_MANUF_PARTITION_ERROR", "bits": 1, "attr": ["ro"], "rotate": -90}, {"name": "VENDOR_HASHES_OWNER_PROD_PARTITION_ERROR", "bits": 1, "attr": ["ro"], "rotate": -90}, {"name": "VENDOR_HASHES_PROD_PARTITION_ERROR", "bits": 1, "attr": ["ro"], "rotate": -90}, {"name": "VENDOR_REVOCATIONS_PROD_PARTITION_ERROR", "bits": 1, "attr": ["ro"], "rotate": -90}, {"name": "VENDOR_NON_SECRET_PROD_PARTITION_ERROR", "bits": 1, "attr": ["ro"], "rotate": -90}, {"name": "CSR_PARTITION_ERROR", "bits": 1, "attr": ["ro"], "rotate": -90}, {"name": "DAI_ERROR", "bits": 1, "attr": ["ro"], "rotate": -90}, {"name": "LCI_ERROR", "bits": 1, "attr": ["ro"], "rotate": -90}, {"name": "TIMEOUT_ERROR", "bits": 1, "attr": ["ro"], "rotate": -90}, {"name": "LFSR_FSM_ERROR", "bits": 1, "attr": ["ro"], "rotate": -90}, {"name": "SCRAMBLING_FSM_ERROR", "bits": 1, "attr": ["ro"], "rotate": -90}, {"name": "BUS_INTEG_ERROR", "bits": 1, "attr": ["ro"], "rotate": -90}, {"name": "DAI_IDLE", "bits": 1, "attr": ["ro"], "rotate": -90}, {"name": "CHECK_PENDING", "bits": 1, "attr": ["ro"], "rotate": -90}, {"bits": 9}], "config": {"lanes": 1, "fontsize": 10, "vspace": 420}}
+{"reg": [{"name": "SW_TEST_UNLOCK_PARTITION_ERROR", "bits": 1, "attr": ["ro"], "rotate": -90}, {"name": "SECRET_MANUF_PARTITION_ERROR", "bits": 1, "attr": ["ro"], "rotate": -90}, {"name": "SECRET_PROD_PARTITION_0_ERROR", "bits": 1, "attr": ["ro"], "rotate": -90}, {"name": "SECRET_PROD_PARTITION_1_ERROR", "bits": 1, "attr": ["ro"], "rotate": -90}, {"name": "SECRET_PROD_PARTITION_2_ERROR", "bits": 1, "attr": ["ro"], "rotate": -90}, {"name": "SECRET_PROD_PARTITION_3_ERROR", "bits": 1, "attr": ["ro"], "rotate": -90}, {"name": "SW_MANUF_PARTITION_ERROR", "bits": 1, "attr": ["ro"], "rotate": -90}, {"name": "SECRET_LC_TRANSITION_PARTITION_ERROR", "bits": 1, "attr": ["ro"], "rotate": -90}, {"name": "LIFE_CYCLE_ERROR", "bits": 1, "attr": ["ro"], "rotate": -90}, {"name": "VENDOR_HASHES_MANUF_PARTITION_ERROR", "bits": 1, "attr": ["ro"], "rotate": -90}, {"name": "VENDOR_HASHES_OWNER_PROD_PARTITION_ERROR", "bits": 1, "attr": ["ro"], "rotate": -90}, {"name": "VENDOR_HASHES_PROD_PARTITION_ERROR", "bits": 1, "attr": ["ro"], "rotate": -90}, {"name": "VENDOR_NON_SECRET_PROD_PARTITION_ERROR", "bits": 1, "attr": ["ro"], "rotate": -90}, {"name": "CSR_PARTITION_ERROR", "bits": 1, "attr": ["ro"], "rotate": -90}, {"name": "DAI_ERROR", "bits": 1, "attr": ["ro"], "rotate": -90}, {"name": "LCI_ERROR", "bits": 1, "attr": ["ro"], "rotate": -90}, {"name": "TIMEOUT_ERROR", "bits": 1, "attr": ["ro"], "rotate": -90}, {"name": "LFSR_FSM_ERROR", "bits": 1, "attr": ["ro"], "rotate": -90}, {"name": "SCRAMBLING_FSM_ERROR", "bits": 1, "attr": ["ro"], "rotate": -90}, {"name": "BUS_INTEG_ERROR", "bits": 1, "attr": ["ro"], "rotate": -90}, {"name": "DAI_IDLE", "bits": 1, "attr": ["ro"], "rotate": -90}, {"name": "CHECK_PENDING", "bits": 1, "attr": ["ro"], "rotate": -90}, {"bits": 10}], "config": {"lanes": 1, "fontsize": 10, "vspace": 420}}
 ```
 
 |  Bits  |  Type  |  Reset  | Name                                     | Description                                                                                                                                           |
 |:------:|:------:|:-------:|:-----------------------------------------|:------------------------------------------------------------------------------------------------------------------------------------------------------|
-| 31:23  |        |         |                                          | Reserved                                                                                                                                              |
-|   22   |   ro   |   0x0   | CHECK_PENDING                            | Set to 1 if an integrity or consistency check triggered by the LFSR timer or via [`CHECK_TRIGGER`](#check_trigger) is pending.                        |
-|   21   |   ro   |   0x0   | DAI_IDLE                                 | Set to 1 if the DAI is idle and ready to accept commands.                                                                                             |
-|   20   |   ro   |   0x0   | BUS_INTEG_ERROR                          | This bit is set to 1 if a fatal bus integrity fault is detected. This error triggers a fatal_bus_integ_error alert.                                   |
-|   19   |   ro   |   0x0   | SCRAMBLING_FSM_ERROR                     | Set to 1 if the scrambling datapath FSM has reached an invalid state. This raises an fatal_check_error alert and is an unrecoverable error condition. |
-|   18   |   ro   |   0x0   | LFSR_FSM_ERROR                           | Set to 1 if the LFSR timer FSM has reached an invalid state. This raises an fatal_check_error alert and is an unrecoverable error condition.          |
-|   17   |   ro   |   0x0   | TIMEOUT_ERROR                            | Set to 1 if an integrity or consistency check times out. This raises an fatal_check_error alert and is an unrecoverable error condition.              |
-|   16   |   ro   |   0x0   | LCI_ERROR                                | Set to 1 if an error occurred in the LCI. If set to 1, SW should check the [`ERR_CODE`](#err_code) register at the corresponding index.               |
-|   15   |   ro   |   0x0   | DAI_ERROR                                | Set to 1 if an error occurred in the DAI. If set to 1, SW should check the [`ERR_CODE`](#err_code) register at the corresponding index.               |
-|   14   |   ro   |   0x0   | CSR_PARTITION_ERROR                      | Set to 1 if an error occurred in this partition. If set to 1, SW should check the [`ERR_CODE`](#err_code) register at the corresponding index.        |
-|   13   |   ro   |   0x0   | VENDOR_NON_SECRET_PROD_PARTITION_ERROR   | Set to 1 if an error occurred in this partition. If set to 1, SW should check the [`ERR_CODE`](#err_code) register at the corresponding index.        |
-|   12   |   ro   |   0x0   | VENDOR_REVOCATIONS_PROD_PARTITION_ERROR  | Set to 1 if an error occurred in this partition. If set to 1, SW should check the [`ERR_CODE`](#err_code) register at the corresponding index.        |
+| 31:22  |        |         |                                          | Reserved                                                                                                                                              |
+|   21   |   ro   |   0x0   | CHECK_PENDING                            | Set to 1 if an integrity or consistency check triggered by the LFSR timer or via [`CHECK_TRIGGER`](#check_trigger) is pending.                        |
+|   20   |   ro   |   0x0   | DAI_IDLE                                 | Set to 1 if the DAI is idle and ready to accept commands.                                                                                             |
+|   19   |   ro   |   0x0   | BUS_INTEG_ERROR                          | This bit is set to 1 if a fatal bus integrity fault is detected. This error triggers a fatal_bus_integ_error alert.                                   |
+|   18   |   ro   |   0x0   | SCRAMBLING_FSM_ERROR                     | Set to 1 if the scrambling datapath FSM has reached an invalid state. This raises an fatal_check_error alert and is an unrecoverable error condition. |
+|   17   |   ro   |   0x0   | LFSR_FSM_ERROR                           | Set to 1 if the LFSR timer FSM has reached an invalid state. This raises an fatal_check_error alert and is an unrecoverable error condition.          |
+|   16   |   ro   |   0x0   | TIMEOUT_ERROR                            | Set to 1 if an integrity or consistency check times out. This raises an fatal_check_error alert and is an unrecoverable error condition.              |
+|   15   |   ro   |   0x0   | LCI_ERROR                                | Set to 1 if an error occurred in the LCI. If set to 1, SW should check the [`ERR_CODE`](#err_code) register at the corresponding index.               |
+|   14   |   ro   |   0x0   | DAI_ERROR                                | Set to 1 if an error occurred in the DAI. If set to 1, SW should check the [`ERR_CODE`](#err_code) register at the corresponding index.               |
+|   13   |   ro   |   0x0   | CSR_PARTITION_ERROR                      | Set to 1 if an error occurred in this partition. If set to 1, SW should check the [`ERR_CODE`](#err_code) register at the corresponding index.        |
+|   12   |   ro   |   0x0   | VENDOR_NON_SECRET_PROD_PARTITION_ERROR   | Set to 1 if an error occurred in this partition. If set to 1, SW should check the [`ERR_CODE`](#err_code) register at the corresponding index.        |
 |   11   |   ro   |   0x0   | VENDOR_HASHES_PROD_PARTITION_ERROR       | Set to 1 if an error occurred in this partition. If set to 1, SW should check the [`ERR_CODE`](#err_code) register at the corresponding index.        |
 |   10   |   ro   |   0x0   | VENDOR_HASHES_OWNER_PROD_PARTITION_ERROR | Set to 1 if an error occurred in this partition. If set to 1, SW should check the [`ERR_CODE`](#err_code) register at the corresponding index.        |
 |   9    |   ro   |   0x0   | VENDOR_HASHES_MANUF_PARTITION_ERROR      | Set to 1 if an error occurred in this partition. If set to 1, SW should check the [`ERR_CODE`](#err_code) register at the corresponding index.        |
@@ -214,7 +209,6 @@ fatal_check_error alert.
 | ERR_CODE_13 | 0x48     |
 | ERR_CODE_14 | 0x4c     |
 | ERR_CODE_15 | 0x50     |
-| ERR_CODE_16 | 0x54     |
 
 
 ### Fields
@@ -244,7 +238,7 @@ fatal_check_error alert.
 
 ## DIRECT_ACCESS_REGWEN
 Register write enable for all direct access interface registers.
-- Offset: `0x58`
+- Offset: `0x54`
 - Reset default: `0x1`
 - Reset mask: `0x1`
 
@@ -270,7 +264,7 @@ will also be set to 0 in such a case.
 
 ## DIRECT_ACCESS_CMD
 Command register for direct accesses.
-- Offset: `0x5c`
+- Offset: `0x58`
 - Reset default: `0x0`
 - Reset mask: `0x7`
 - Register enable: [`DIRECT_ACCESS_REGWEN`](#direct_access_regwen)
@@ -290,7 +284,7 @@ Command register for direct accesses.
 
 ## DIRECT_ACCESS_ADDRESS
 Address register for direct accesses.
-- Offset: `0x60`
+- Offset: `0x5c`
 - Reset default: `0x0`
 - Reset mask: `0xfff`
 - Register enable: [`DIRECT_ACCESS_REGWEN`](#direct_access_regwen)
@@ -326,8 +320,8 @@ partition is being written to.
 
 | Name                  | Offset   |
 |:----------------------|:---------|
-| DIRECT_ACCESS_WDATA_0 | 0x64     |
-| DIRECT_ACCESS_WDATA_1 | 0x68     |
+| DIRECT_ACCESS_WDATA_0 | 0x60     |
+| DIRECT_ACCESS_WDATA_1 | 0x64     |
 
 
 ### Fields
@@ -351,8 +345,8 @@ partition is read from.
 
 | Name                  | Offset   |
 |:----------------------|:---------|
-| DIRECT_ACCESS_RDATA_0 | 0x6c     |
-| DIRECT_ACCESS_RDATA_1 | 0x70     |
+| DIRECT_ACCESS_RDATA_0 | 0x68     |
+| DIRECT_ACCESS_RDATA_1 | 0x6c     |
 
 
 ### Fields
@@ -367,7 +361,7 @@ partition is read from.
 
 ## CHECK_TRIGGER_REGWEN
 Register write enable for [`CHECK_TRIGGER.`](#check_trigger)
-- Offset: `0x74`
+- Offset: `0x70`
 - Reset default: `0x1`
 - Reset mask: `0x1`
 
@@ -384,7 +378,7 @@ Register write enable for [`CHECK_TRIGGER.`](#check_trigger)
 
 ## CHECK_TRIGGER
 Command register for direct accesses.
-- Offset: `0x78`
+- Offset: `0x74`
 - Reset default: `0x0`
 - Reset mask: `0x3`
 - Register enable: [`CHECK_TRIGGER_REGWEN`](#check_trigger_regwen)
@@ -413,7 +407,7 @@ in the [`STATUS`](#status) and [`ERR_CODE`](#err_code) registers, and via the in
 
 ## CHECK_REGWEN
 Register write enable for [`INTEGRITY_CHECK_PERIOD`](#integrity_check_period) and [`CONSISTENCY_CHECK_PERIOD.`](#consistency_check_period)
-- Offset: `0x7c`
+- Offset: `0x78`
 - Reset default: `0x1`
 - Reset mask: `0x1`
 
@@ -430,7 +424,7 @@ Register write enable for [`INTEGRITY_CHECK_PERIOD`](#integrity_check_period) an
 
 ## CHECK_TIMEOUT
 Timeout value for the integrity and consistency checks.
-- Offset: `0x80`
+- Offset: `0x7c`
 - Reset default: `0x0`
 - Reset mask: `0xffffffff`
 - Register enable: [`CHECK_REGWEN`](#check_regwen)
@@ -457,7 +451,7 @@ safe side. A value of zero disables the timeout mechanism (default).
 ## INTEGRITY_CHECK_PERIOD
 This value specifies the maximum period that can be generated pseudo-randomly.
 Only applies to the HW_CFG* and SECRET* partitions once they are locked.
-- Offset: `0x84`
+- Offset: `0x80`
 - Reset default: `0x0`
 - Reset mask: `0xffffffff`
 - Register enable: [`CHECK_REGWEN`](#check_regwen)
@@ -483,7 +477,7 @@ A value of zero disables the timer (default). Note that a one-off check can alwa
 ## CONSISTENCY_CHECK_PERIOD
 This value specifies the maximum period that can be generated pseudo-randomly.
 This applies to the LIFE_CYCLE partition and the HW_CFG* and SECRET* partitions once they are locked.
-- Offset: `0x88`
+- Offset: `0x84`
 - Reset default: `0x0`
 - Reset mask: `0xffffffff`
 - Register enable: [`CHECK_REGWEN`](#check_regwen)
@@ -508,7 +502,7 @@ A value of zero disables the timer (default). Note that a one-off check can alwa
 
 ## SW_MANUF_PARTITION_READ_LOCK
 Runtime read lock for the SW_MANUF_PARTITION partition.
-- Offset: `0x8c`
+- Offset: `0x88`
 - Reset default: `0x1`
 - Reset mask: `0x1`
 - Register enable: [`DIRECT_ACCESS_REGWEN`](#direct_access_regwen)
@@ -526,7 +520,7 @@ Runtime read lock for the SW_MANUF_PARTITION partition.
 
 ## VENDOR_HASHES_MANUF_PARTITION_READ_LOCK
 Runtime read lock for the VENDOR_HASHES_MANUF_PARTITION partition.
-- Offset: `0x90`
+- Offset: `0x8c`
 - Reset default: `0x1`
 - Reset mask: `0x1`
 - Register enable: [`DIRECT_ACCESS_REGWEN`](#direct_access_regwen)
@@ -544,7 +538,7 @@ Runtime read lock for the VENDOR_HASHES_MANUF_PARTITION partition.
 
 ## VENDOR_HASHES_OWNER_PROD_PARTITION_READ_LOCK
 Runtime read lock for the VENDOR_HASHES_OWNER_PROD_PARTITION partition.
-- Offset: `0x94`
+- Offset: `0x90`
 - Reset default: `0x1`
 - Reset mask: `0x1`
 - Register enable: [`DIRECT_ACCESS_REGWEN`](#direct_access_regwen)
@@ -562,7 +556,7 @@ Runtime read lock for the VENDOR_HASHES_OWNER_PROD_PARTITION partition.
 
 ## VENDOR_HASHES_PROD_PARTITION_READ_LOCK
 Runtime read lock for the VENDOR_HASHES_PROD_PARTITION partition.
-- Offset: `0x98`
+- Offset: `0x94`
 - Reset default: `0x1`
 - Reset mask: `0x1`
 - Register enable: [`DIRECT_ACCESS_REGWEN`](#direct_access_regwen)
@@ -578,27 +572,9 @@ Runtime read lock for the VENDOR_HASHES_PROD_PARTITION partition.
 |  31:1  |        |         |                                        | Reserved                                                                                                           |
 |   0    |  rw0c  |   0x1   | VENDOR_HASHES_PROD_PARTITION_READ_LOCK | When cleared to 0, read access to the VENDOR_HASHES_PROD_PARTITION partition is locked. Write 0 to clear this bit. |
 
-## VENDOR_REVOCATIONS_PROD_PARTITION_READ_LOCK
-Runtime read lock for the VENDOR_REVOCATIONS_PROD_PARTITION partition.
-- Offset: `0x9c`
-- Reset default: `0x1`
-- Reset mask: `0x1`
-- Register enable: [`DIRECT_ACCESS_REGWEN`](#direct_access_regwen)
-
-### Fields
-
-```wavejson
-{"reg": [{"name": "VENDOR_REVOCATIONS_PROD_PARTITION_READ_LOCK", "bits": 1, "attr": ["rw0c"], "rotate": -90}, {"bits": 31}], "config": {"lanes": 1, "fontsize": 10, "vspace": 450}}
-```
-
-|  Bits  |  Type  |  Reset  | Name                                        | Description                                                                                                             |
-|:------:|:------:|:-------:|:--------------------------------------------|:------------------------------------------------------------------------------------------------------------------------|
-|  31:1  |        |         |                                             | Reserved                                                                                                                |
-|   0    |  rw0c  |   0x1   | VENDOR_REVOCATIONS_PROD_PARTITION_READ_LOCK | When cleared to 0, read access to the VENDOR_REVOCATIONS_PROD_PARTITION partition is locked. Write 0 to clear this bit. |
-
 ## VENDOR_NON_SECRET_PROD_PARTITION_READ_LOCK
 Runtime read lock for the VENDOR_NON_SECRET_PROD_PARTITION partition.
-- Offset: `0xa0`
+- Offset: `0x98`
 - Reset default: `0x1`
 - Reset mask: `0x1`
 - Register enable: [`DIRECT_ACCESS_REGWEN`](#direct_access_regwen)
@@ -616,7 +592,7 @@ Runtime read lock for the VENDOR_NON_SECRET_PROD_PARTITION partition.
 
 ## VENDOR_PK_HASH_VOLATILE_LOCK
 Address register for direct accesses.
-- Offset: `0xa4`
+- Offset: `0x9c`
 - Reset default: `0x0`
 - Reset mask: `0xffffffff`
 
@@ -641,8 +617,8 @@ After a reset, the digest then becomes visible in this CSR, and the correspondin
 
 | Name                              | Offset   |
 |:----------------------------------|:---------|
-| SW_TEST_UNLOCK_PARTITION_DIGEST_0 | 0xa8     |
-| SW_TEST_UNLOCK_PARTITION_DIGEST_1 | 0xac     |
+| SW_TEST_UNLOCK_PARTITION_DIGEST_0 | 0xa0     |
+| SW_TEST_UNLOCK_PARTITION_DIGEST_1 | 0xa4     |
 
 
 ### Fields
@@ -666,8 +642,8 @@ After a reset, the digest then becomes visible in this CSR, and the correspondin
 
 | Name                            | Offset   |
 |:--------------------------------|:---------|
-| SECRET_MANUF_PARTITION_DIGEST_0 | 0xb0     |
-| SECRET_MANUF_PARTITION_DIGEST_1 | 0xb4     |
+| SECRET_MANUF_PARTITION_DIGEST_0 | 0xa8     |
+| SECRET_MANUF_PARTITION_DIGEST_1 | 0xac     |
 
 
 ### Fields
@@ -691,8 +667,8 @@ After a reset, the digest then becomes visible in this CSR, and the correspondin
 
 | Name                             | Offset   |
 |:---------------------------------|:---------|
-| SECRET_PROD_PARTITION_0_DIGEST_0 | 0xb8     |
-| SECRET_PROD_PARTITION_0_DIGEST_1 | 0xbc     |
+| SECRET_PROD_PARTITION_0_DIGEST_0 | 0xb0     |
+| SECRET_PROD_PARTITION_0_DIGEST_1 | 0xb4     |
 
 
 ### Fields
@@ -716,8 +692,8 @@ After a reset, the digest then becomes visible in this CSR, and the correspondin
 
 | Name                             | Offset   |
 |:---------------------------------|:---------|
-| SECRET_PROD_PARTITION_1_DIGEST_0 | 0xc0     |
-| SECRET_PROD_PARTITION_1_DIGEST_1 | 0xc4     |
+| SECRET_PROD_PARTITION_1_DIGEST_0 | 0xb8     |
+| SECRET_PROD_PARTITION_1_DIGEST_1 | 0xbc     |
 
 
 ### Fields
@@ -741,8 +717,8 @@ After a reset, the digest then becomes visible in this CSR, and the correspondin
 
 | Name                             | Offset   |
 |:---------------------------------|:---------|
-| SECRET_PROD_PARTITION_2_DIGEST_0 | 0xc8     |
-| SECRET_PROD_PARTITION_2_DIGEST_1 | 0xcc     |
+| SECRET_PROD_PARTITION_2_DIGEST_0 | 0xc0     |
+| SECRET_PROD_PARTITION_2_DIGEST_1 | 0xc4     |
 
 
 ### Fields
@@ -766,8 +742,8 @@ After a reset, the digest then becomes visible in this CSR, and the correspondin
 
 | Name                             | Offset   |
 |:---------------------------------|:---------|
-| SECRET_PROD_PARTITION_3_DIGEST_0 | 0xd0     |
-| SECRET_PROD_PARTITION_3_DIGEST_1 | 0xd4     |
+| SECRET_PROD_PARTITION_3_DIGEST_0 | 0xc8     |
+| SECRET_PROD_PARTITION_3_DIGEST_1 | 0xcc     |
 
 
 ### Fields
@@ -793,8 +769,8 @@ the digest becomes visible in this CSR.
 
 | Name                        | Offset   |
 |:----------------------------|:---------|
-| SW_MANUF_PARTITION_DIGEST_0 | 0xd8     |
-| SW_MANUF_PARTITION_DIGEST_1 | 0xdc     |
+| SW_MANUF_PARTITION_DIGEST_0 | 0xd0     |
+| SW_MANUF_PARTITION_DIGEST_1 | 0xd4     |
 
 
 ### Fields
@@ -818,8 +794,8 @@ After a reset, the digest then becomes visible in this CSR, and the correspondin
 
 | Name                                    | Offset   |
 |:----------------------------------------|:---------|
-| SECRET_LC_TRANSITION_PARTITION_DIGEST_0 | 0xe0     |
-| SECRET_LC_TRANSITION_PARTITION_DIGEST_1 | 0xe4     |
+| SECRET_LC_TRANSITION_PARTITION_DIGEST_0 | 0xd8     |
+| SECRET_LC_TRANSITION_PARTITION_DIGEST_1 | 0xdc     |
 
 
 ### Fields
@@ -845,8 +821,8 @@ the digest becomes visible in this CSR.
 
 | Name                                   | Offset   |
 |:---------------------------------------|:---------|
-| VENDOR_HASHES_MANUF_PARTITION_DIGEST_0 | 0xe8     |
-| VENDOR_HASHES_MANUF_PARTITION_DIGEST_1 | 0xec     |
+| VENDOR_HASHES_MANUF_PARTITION_DIGEST_0 | 0xe0     |
+| VENDOR_HASHES_MANUF_PARTITION_DIGEST_1 | 0xe4     |
 
 
 ### Fields
@@ -872,8 +848,8 @@ the digest becomes visible in this CSR.
 
 | Name                                        | Offset   |
 |:--------------------------------------------|:---------|
-| VENDOR_HASHES_OWNER_PROD_PARTITION_DIGEST_0 | 0xf0     |
-| VENDOR_HASHES_OWNER_PROD_PARTITION_DIGEST_1 | 0xf4     |
+| VENDOR_HASHES_OWNER_PROD_PARTITION_DIGEST_0 | 0xe8     |
+| VENDOR_HASHES_OWNER_PROD_PARTITION_DIGEST_1 | 0xec     |
 
 
 ### Fields
@@ -899,8 +875,8 @@ the digest becomes visible in this CSR.
 
 | Name                                  | Offset   |
 |:--------------------------------------|:---------|
-| VENDOR_HASHES_PROD_PARTITION_DIGEST_0 | 0xf8     |
-| VENDOR_HASHES_PROD_PARTITION_DIGEST_1 | 0xfc     |
+| VENDOR_HASHES_PROD_PARTITION_DIGEST_0 | 0xf0     |
+| VENDOR_HASHES_PROD_PARTITION_DIGEST_1 | 0xf4     |
 
 
 ### Fields
@@ -912,33 +888,6 @@ the digest becomes visible in this CSR.
 |  Bits  |  Type  |  Reset  | Name                                | Description   |
 |:------:|:------:|:-------:|:------------------------------------|:--------------|
 |  31:0  |   ro   |   0x0   | VENDOR_HASHES_PROD_PARTITION_DIGEST |               |
-
-## VENDOR_REVOCATIONS_PROD_PARTITION_DIGEST
-Integrity digest for the VENDOR_REVOCATIONS_PROD_PARTITION partition.
-The integrity digest is 0 by default. Software must write this
-digest value via the direct access interface in order to lock the partition.
-After a reset, write access to the VENDOR_REVOCATIONS_PROD_PARTITION partition is locked and
-the digest becomes visible in this CSR.
-- Reset default: `0x0`
-- Reset mask: `0xffffffff`
-
-### Instances
-
-| Name                                       | Offset   |
-|:-------------------------------------------|:---------|
-| VENDOR_REVOCATIONS_PROD_PARTITION_DIGEST_0 | 0x100    |
-| VENDOR_REVOCATIONS_PROD_PARTITION_DIGEST_1 | 0x104    |
-
-
-### Fields
-
-```wavejson
-{"reg": [{"name": "VENDOR_REVOCATIONS_PROD_PARTITION_DIGEST", "bits": 32, "attr": ["ro"], "rotate": 0}], "config": {"lanes": 1, "fontsize": 10, "vspace": 80}}
-```
-
-|  Bits  |  Type  |  Reset  | Name                                     | Description   |
-|:------:|:------:|:-------:|:-----------------------------------------|:--------------|
-|  31:0  |   ro   |   0x0   | VENDOR_REVOCATIONS_PROD_PARTITION_DIGEST |               |
 
 ## SW_CFG_WINDOW
 Any read to this window directly maps to the corresponding offset in the creator and owner software

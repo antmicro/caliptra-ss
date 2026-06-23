@@ -15,4 +15,3 @@ It has been generated with ./tools/scripts/fuse_ctrl_script/gen_fuse_ctrl_partit
 |      [VENDOR_HASHES_MANUF_PARTITION_DIGEST](#Reg_vendor_hashes_manuf_partition_digest_0)      |   VENDOR_HASHES_MANUF_PARTITION    |         no         |
 | [VENDOR_HASHES_OWNER_PROD_PARTITION_DIGEST](#Reg_vendor_hashes_owner_prod_partition_digest_0) | VENDOR_HASHES_OWNER_PROD_PARTITION |         no         |
 |       [VENDOR_HASHES_PROD_PARTITION_DIGEST](#Reg_vendor_hashes_prod_partition_digest_0)       |    VENDOR_HASHES_PROD_PARTITION    |         no         |
-|  [VENDOR_REVOCATIONS_PROD_PARTITION_DIGEST](#Reg_vendor_revocations_prod_partition_digest_0)  | VENDOR_REVOCATIONS_PROD_PARTITION  |         no         |

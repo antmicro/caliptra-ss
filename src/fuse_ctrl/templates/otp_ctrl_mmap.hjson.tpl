@@ -248,14 +248,14 @@
             bkout_type:   false,
             lc_phase:     "LcStDev",
             items: [
-                {
-                    name: "CPTRA_CORE_ANTI_ROLLBACK_DISABLE",
-                    size: "8",
-                    desc: '''
-                    Disables anti-rollback support from Caliptra.
-                    For example, if a Platform RoT is managing FW storage and anti-rollback protection external to the SoC.
-                    '''
-                },
+                //{
+                //    name: "CPTRA_CORE_ANTI_ROLLBACK_DISABLE",
+                //    size: "8",
+                //    desc: '''
+                //    Disables anti-rollback support from Caliptra.
+                //    For example, if a Platform RoT is managing FW storage and anti-rollback protection external to the SoC.
+                //    '''
+                //},
                 {
                     name: "CPTRA_CORE_IDEVID_CERT_IDEVID_ATTR",
                     size: "96",
@@ -639,15 +639,15 @@
                 //    SoC product requirements determine the need of this partition; and the number of public keys required.
                 //    '''
                 //},
-                {
-                    name:   "CPTRA_CORE_VENDOR_PK_HASH_2_VALID",
-                    size:   "4",
-                    desc: '''
-                    Once a key is marked valid, anything above should not be able to be written (essentially
-                    a volatile lock should be implemented on higher order bits).
-                    SoC product requirements determine the need of this partition; and the number of public keys required.
-                    '''
-                },                                          
+                //{
+                //    name:   "CPTRA_CORE_VENDOR_PK_HASH_2_VALID",
+                //    size:   "4",
+                //    desc: '''
+                //    Once a key is marked valid, anything above should not be able to be written (essentially
+                //    a volatile lock should be implemented on higher order bits).
+                //    SoC product requirements determine the need of this partition; and the number of public keys required.
+                //    '''
+                //},                                          
                 {
                     name: "CPTRA_CORE_VENDOR_PK_HASH_3",
                     size: "48",
@@ -671,15 +671,15 @@
                 //    SoC product requirements determine the need of this partition; and the number of public keys required.
                 //    '''
                 //},
-                {
-                    name:   "CPTRA_CORE_VENDOR_PK_HASH_3_VALID",
-                    size:   "4",
-                    desc: '''
-                    Once a key is marked valid, anything above should not be able to be written (essentially
-                    a volatile lock should be implemented on higher order bits).
-                    SoC product requirements determine the need of this partition; and the number of public keys required.
-                    '''
-                },                                          
+                //{
+                //    name:   "CPTRA_CORE_VENDOR_PK_HASH_3_VALID",
+                //    size:   "4",
+                //    desc: '''
+                //    Once a key is marked valid, anything above should not be able to be written (essentially
+                //    a volatile lock should be implemented on higher order bits).
+                //    SoC product requirements determine the need of this partition; and the number of public keys required.
+                //    '''
+                //},                                          
                 {
                     name: "CPTRA_CORE_VENDOR_PK_HASH_4",
                     size: "48",
@@ -703,22 +703,22 @@
                 //    SoC product requirements determine the need of this partition; and the number of public keys required.
                 //    '''
                 //},
-                {
-                    name:   "CPTRA_CORE_VENDOR_PK_HASH_4_VALID",
-                    size:   "4",
-                    desc: '''
-                    Once a key is marked valid, anything above should not be able to be written (essentially
-                    a volatile lock should be implemented on higher order bits).
-                    SoC product requirements determine the need of this partition; and the number of public keys required.
-                    '''
-                },                                          
-                {
-                    name:   "CPTRA_CORE_VENDOR_PK_HASH_PAD",
-                    size:   "4",
-                    desc: '''
-                    Padding for partition alignment
-                    '''
-                },                                          
+                //{
+                //    name:   "CPTRA_CORE_VENDOR_PK_HASH_4_VALID",
+                //    size:   "4",
+                //    desc: '''
+                //    Once a key is marked valid, anything above should not be able to be written (essentially
+                //    a volatile lock should be implemented on higher order bits).
+                //    SoC product requirements determine the need of this partition; and the number of public keys required.
+                //    '''
+                //},                                          
+                //{
+                //    name:   "CPTRA_CORE_VENDOR_PK_HASH_PAD",
+                //    size:   "4",
+                //    desc: '''
+                //    Padding for partition alignment
+                //    '''
+                //},                                          
             ],
             desc: '''Vendor hash manufacturing partition.
             '''
@@ -752,23 +752,23 @@
                 //    ECC for CPTRA_SS_OWNER_PK_HASH.
                 //    '''
                 //},
-                {
-                    name:   "CPTRA_SS_OWNER_PQC_KEY_TYPE",
-                    size:   "4",
-                    desc: '''
-                    One-hot encoded selection of PQC key type for firmware validation. Bit 0 -> MLDSA, Bit 1 -> LMS.
-                    SoC product requirements determine the need of this partition.
-                    '''
-                },
-                {
-                    name:   "CPTRA_SS_OWNER_PK_HASH_VALID",
-                    size:   "4",
-                    desc: '''
-                    Once a key is marked valid, anything above should not be able to be written (essentially
-                    a volatile lock should be implemented on higher order bits).
-                    SoC product requirements determine the need of this partition.
-                    '''
-                }, 
+                //{
+                //    name:   "CPTRA_SS_OWNER_PQC_KEY_TYPE",
+                //    size:   "4",
+                //    desc: '''
+                //    One-hot encoded selection of PQC key type for firmware validation. Bit 0 -> MLDSA, Bit 1 -> LMS.
+                //    SoC product requirements determine the need of this partition.
+                //    '''
+                //},
+                //{
+                //    name:   "CPTRA_SS_OWNER_PK_HASH_VALID",
+                //    size:   "4",
+                //    desc: '''
+                //    Once a key is marked valid, anything above should not be able to be written (essentially
+                //    a volatile lock should be implemented on higher order bits).
+                //    SoC product requirements determine the need of this partition.
+                //    '''
+                //}, 
             ],
             desc: '''Vendor owner hash production partition.
             '''
@@ -802,102 +802,102 @@
                 //    ECC for CPTRA_CORE_VENDOR_PK_HASH_1.
                 //    '''
                 //},
-                {
-                    name:   "CPTRA_CORE_PQC_KEY_TYPE_1",
-                    size:   "4",
-                    desc: '''
-                    One-hot encoded selection of PQC key type for firmware validation. Bit 0 -> MLDSA, Bit 1 -> LMS.
-                    SoC product requirements determine the need of this partition; and the number of public keys required.
-                    '''
-                },
-                {
-                    name:   "CPTRA_CORE_VENDOR_PK_HASH_1_VALID",
-                    size:   "4",
-                    desc: '''
-                    Once a key is marked valid, anything above should not be able to be written (essentially
-                    a volatile lock should be implemented on higher order bits).
-                    SoC product requirements determine the need of this partition; and the number of public keys required.
-                    '''
-                },                                          
+                //{
+                //    name:   "CPTRA_CORE_PQC_KEY_TYPE_1",
+                //    size:   "4",
+                //    desc: '''
+                //    One-hot encoded selection of PQC key type for firmware validation. Bit 0 -> MLDSA, Bit 1 -> LMS.
+                //    SoC product requirements determine the need of this partition; and the number of public keys required.
+                //    '''
+                //},
+                //{
+                //    name:   "CPTRA_CORE_VENDOR_PK_HASH_1_VALID",
+                //    size:   "4",
+                //    desc: '''
+                //    Once a key is marked valid, anything above should not be able to be written (essentially
+                //    a volatile lock should be implemented on higher order bits).
+                //    SoC product requirements determine the need of this partition; and the number of public keys required.
+                //    '''
+                //},                                          
             ],
             desc: '''Vendor hashes production partition.
             '''
         },
-        {
-            name:         "VENDOR_REVOCATIONS_PROD_PARTITION",
-            variant:      "Unbuffered",
-            absorb:       false,
-            secret:       false,
-            sw_digest:    true,
-            hw_digest:    false,
-            write_lock:   "Digest",
-            read_lock:    "CSR",
-            key_sel:      "NoKey",
-            integrity:    false, // Do not use integrity (ECC) on this partition.
-            bkout_type:   false, // Do not generate a breakout type for this partition.
-            lc_phase:     "LcStProd",
-            items: [
-                {
-                    name:   "CPTRA_SS_OWNER_ECC_REVOCATION",
-                    size:   "4",
-                    desc: '''
-                    One-hot encoded list of revoked Vendor ECDSA P384 Public Keys (up to 4 keys).
-                    SoC product requirements determine the need of this partition.
-                    '''
-                },
-                //{
-                //    name:   "CPTRA_SS_OWNER_LMS_REVOCATION",
-                //    size:   "4",
-                //    desc: '''
-                //    One-hot encoded list of revoked Vendor LMS Public Keys (up to 32 keys).
-                //    SoC product requirements determine the need of this partition.
-                //    '''
-                //},
-                {
-                    name:   "CPTRA_SS_OWNER_MLDSA_REVOCATION",
-                    size:   "4",
-                    desc: '''
-                    One-hot encoded list of revoked Vendor MLDSA Public Keys (up to 4 keys).
-                    SoC product requirements determine the need of this partition.
-                    '''
-                },
+        //{
+        //    name:         "VENDOR_REVOCATIONS_PROD_PARTITION",
+        //    variant:      "Unbuffered",
+        //    absorb:       false,
+        //    secret:       false,
+        //    sw_digest:    true,
+        //    hw_digest:    false,
+        //    write_lock:   "Digest",
+        //    read_lock:    "CSR",
+        //    key_sel:      "NoKey",
+        //    integrity:    false, // Do not use integrity (ECC) on this partition.
+        //    bkout_type:   false, // Do not generate a breakout type for this partition.
+        //    lc_phase:     "LcStProd",
+        //    items: [
+        //        {
+        //            name:   "CPTRA_SS_OWNER_ECC_REVOCATION",
+        //            size:   "4",
+        //            desc: '''
+        //            One-hot encoded list of revoked Vendor ECDSA P384 Public Keys (up to 4 keys).
+        //            SoC product requirements determine the need of this partition.
+        //            '''
+        //        },
+        //        //{
+        //        //    name:   "CPTRA_SS_OWNER_LMS_REVOCATION",
+        //        //    size:   "4",
+        //        //    desc: '''
+        //        //    One-hot encoded list of revoked Vendor LMS Public Keys (up to 32 keys).
+        //        //    SoC product requirements determine the need of this partition.
+        //        //    '''
+        //        //},
+        //        {
+        //            name:   "CPTRA_SS_OWNER_MLDSA_REVOCATION",
+        //            size:   "4",
+        //            desc: '''
+        //            One-hot encoded list of revoked Vendor MLDSA Public Keys (up to 4 keys).
+        //            SoC product requirements determine the need of this partition.
+        //            '''
+        //        },
     % for i in range(4):  
-                {
-                    name:   "CPTRA_CORE_ECC_REVOCATION_${i+1}",
-                    size:   "4",
-                    desc: '''
-                    One-hot encoded list of revoked Vendor ECDSA P384 Public Keys (up to 4 keys).
-                    SoC product requirements determine the need of this partition; and the number of public keys required.
-                    '''
-                },
-                //{
-                //    name:   "CPTRA_CORE_LMS_REVOCATION_${i+1}",
-                //    size:   "4",
-                //    desc: '''
-                //    One-hot encoded list of revoked Vendor LMS Public Keys (up to 32 keys).
-                //    SoC product requirements determine the need of this partition; and the number of public keys required.
-                //    '''
-                //},
-                {
-                    name:   "CPTRA_CORE_MLDSA_REVOCATION_${i+1}",
-                    size:   "4",
-                    desc: '''
-                    One-hot encoded list of revoked Vendor MLDSA Public Keys (up to 4 keys).
-                    SoC product requirements determine the need of this partition; and the number of public keys required.
-                    '''
-                },
+        //        {
+        //            name:   "CPTRA_CORE_ECC_REVOCATION_${i+1}",
+        //            size:   "4",
+        //            desc: '''
+        //            One-hot encoded list of revoked Vendor ECDSA P384 Public Keys (up to 4 keys).
+        //            SoC product requirements determine the need of this partition; and the number of public keys required.
+        //            '''
+        //        },
+        //        //{
+        //        //    name:   "CPTRA_CORE_LMS_REVOCATION_${i+1}",
+        //        //    size:   "4",
+        //        //    desc: '''
+        //        //    One-hot encoded list of revoked Vendor LMS Public Keys (up to 32 keys).
+        //        //    SoC product requirements determine the need of this partition; and the number of public keys required.
+        //        //    '''
+        //        //},
+        //        {
+        //            name:   "CPTRA_CORE_MLDSA_REVOCATION_${i+1}",
+        //            size:   "4",
+        //            desc: '''
+        //            One-hot encoded list of revoked Vendor MLDSA Public Keys (up to 4 keys).
+        //            SoC product requirements determine the need of this partition; and the number of public keys required.
+        //            '''
+        //        },
     % endfor                                  
-                //{
-                //    name:   "REVOCATION_RSVD",
-                //    size:   "4",
-                //    desc: '''
-                //    Filling for partition alignment to 64-bit.
-                //    '''
-                //},
-            ],
-            desc: '''Vendor revocations production partition.
-            '''
-        },
+        //        //{
+        //        //    name:   "REVOCATION_RSVD",
+        //        //    size:   "4",
+        //        //    desc: '''
+        //        //    Filling for partition alignment to 64-bit.
+        //        //    '''
+        //        //},
+        //    ],
+        //    desc: '''Vendor revocations production partition.
+        //    '''
+        //},
 % if num_vendor_secret_fuses > 0:
         {
             name:         "VENDOR_SECRET_PROD_PARTITION",
@@ -945,17 +945,17 @@
     % for i in range(num_vendor_non_secret_fuses):
                {
                     name: "CPTRA_SS_VENDOR_SPECIFIC_NON_SECRET_FUSE_${i}",
-                    size: "4",
+                    size: "32",
                     desc: '''Vendor-specific non-secret fuse ${i}.
                     '''
                 },
     % endfor
-//               {
-//                    name: "CPTRA_SS_VENDOR_SPECIFIC_RSVD",
-//                    size: "28",
-//                    desc: '''Vendor-specific non-secret fuse.
-//                    '''
-//                },
+               {
+                    name: "CPTRA_SS_VENDOR_SPECIFIC_RSVD",
+                    size: "16",
+                    desc: '''Vendor-specific non-secret fuse.
+                    '''
+                },
             ],
             desc: '''Vendor non-secret production partition.
             '''
