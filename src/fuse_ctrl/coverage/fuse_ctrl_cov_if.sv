@@ -87,7 +87,6 @@ interface fuse_ctrl_cov_if
       CptraCoreFieldEntropy3_cp:     coverpoint `FC_MEM[CptraCoreFieldEntropy3Offset/2]     { bins Fuse = { [1:$] }; }
       SecretProdPartition3Digest_cp: coverpoint `FC_MEM[SecretProdPartition3DigestOffset/2] { bins Fuse = { [1:$] }; }
       // SW_MANUF_PARTITION
-      CptraCoreAntiRollbackDisable_cp:      coverpoint `FC_MEM[CptraCoreAntiRollbackDisableOffset/2]      { bins Fuse = { [1:$] }; }
       CptraCoreIdevidCertIdevidAttr_cp:     coverpoint `FC_MEM[CptraCoreIdevidCertIdevidAttrOffset/2]     { bins Fuse = { [1:$] }; }
       SwManufPartitionDigest_cp:            coverpoint `FC_MEM[SwManufPartitionDigestOffset/2]            { bins Fuse = { [1:$] }; }
       // SECRET_LC_TRANSITION_PARTITION
@@ -108,37 +107,22 @@ interface fuse_ctrl_cov_if
       LcState_cp:         coverpoint `FC_MEM[LcStateOffset/2]         { bins Fuse = { [1:$] }; }
       // VENDOR_HASHES_MANUF_PARTITION
       CptraCoreVendorPkHash2_cp:           coverpoint `FC_MEM[CptraCoreVendorPkHash2Offset/2]           { bins Fuse = { [1:$] }; }
-      CptraCoreVendorPkHash2Valid_cp:      coverpoint `FC_MEM[CptraCoreVendorPkHash2ValidOffset/2]      { bins Fuse = { [1:$] }; }
       CptraCoreVendorPkHash3_cp:           coverpoint `FC_MEM[CptraCoreVendorPkHash3Offset/2]           { bins Fuse = { [1:$] }; }
-      CptraCoreVendorPkHash3Valid_cp:      coverpoint `FC_MEM[CptraCoreVendorPkHash3ValidOffset/2]      { bins Fuse = { [1:$] }; }
       CptraCoreVendorPkHash4_cp:           coverpoint `FC_MEM[CptraCoreVendorPkHash4Offset/2]           { bins Fuse = { [1:$] }; }
-      CptraCoreVendorPkHash4Valid_cp:      coverpoint `FC_MEM[CptraCoreVendorPkHash4ValidOffset/2]      { bins Fuse = { [1:$] }; }
-      CptraCoreVendorPkHashPad_cp:         coverpoint `FC_MEM[CptraCoreVendorPkHashPadOffset/2]         { bins Fuse = { [1:$] }; }
       VendorHashesManufPartitionDigest_cp: coverpoint `FC_MEM[VendorHashesManufPartitionDigestOffset/2] { bins Fuse = { [1:$] }; }
       // VENDOR_HASHES_OWNER_PROD_PARTITION
       CptraSsOwnerPkHash_cp:                   coverpoint `FC_MEM[CptraSsOwnerPkHashOffset/2]                   { bins Fuse = { [1:$] }; }
-      CptraSsOwnerPqcKeyType_cp:               coverpoint `FC_MEM[CptraSsOwnerPqcKeyTypeOffset/2]               { bins Fuse = { [1:$] }; }
-      CptraSsOwnerPkHashValid_cp:              coverpoint `FC_MEM[CptraSsOwnerPkHashValidOffset/2]              { bins Fuse = { [1:$] }; }
       VendorHashesOwnerProdPartitionDigest_cp: coverpoint `FC_MEM[VendorHashesOwnerProdPartitionDigestOffset/2] { bins Fuse = { [1:$] }; }
       // VENDOR_HASHES_PROD_PARTITION
       CptraCoreVendorPkHash1_cp:          coverpoint `FC_MEM[CptraCoreVendorPkHash1Offset/2]          { bins Fuse = { [1:$] }; }
-      CptraCorePqcKeyType1_cp:            coverpoint `FC_MEM[CptraCorePqcKeyType1Offset/2]            { bins Fuse = { [1:$] }; }
-      CptraCoreVendorPkHash1Valid_cp:     coverpoint `FC_MEM[CptraCoreVendorPkHash1ValidOffset/2]     { bins Fuse = { [1:$] }; }
       VendorHashesProdPartitionDigest_cp: coverpoint `FC_MEM[VendorHashesProdPartitionDigestOffset/2] { bins Fuse = { [1:$] }; }
-      // VENDOR_REVOCATIONS_PROD_PARTITION
-      CptraSsOwnerEccRevocation_cp:            coverpoint `FC_MEM[CptraSsOwnerEccRevocationOffset/2]            { bins Fuse = { [1:$] }; }
-      CptraSsOwnerMldsaRevocation_cp:          coverpoint `FC_MEM[CptraSsOwnerMldsaRevocationOffset/2]          { bins Fuse = { [1:$] }; }
-      CptraCoreEccRevocation1_cp:              coverpoint `FC_MEM[CptraCoreEccRevocation1Offset/2]              { bins Fuse = { [1:$] }; }
-      CptraCoreMldsaRevocation1_cp:            coverpoint `FC_MEM[CptraCoreMldsaRevocation1Offset/2]            { bins Fuse = { [1:$] }; }
-      CptraCoreEccRevocation2_cp:              coverpoint `FC_MEM[CptraCoreEccRevocation2Offset/2]              { bins Fuse = { [1:$] }; }
-      CptraCoreMldsaRevocation2_cp:            coverpoint `FC_MEM[CptraCoreMldsaRevocation2Offset/2]            { bins Fuse = { [1:$] }; }
-      CptraCoreEccRevocation3_cp:              coverpoint `FC_MEM[CptraCoreEccRevocation3Offset/2]              { bins Fuse = { [1:$] }; }
-      CptraCoreMldsaRevocation3_cp:            coverpoint `FC_MEM[CptraCoreMldsaRevocation3Offset/2]            { bins Fuse = { [1:$] }; }
-      CptraCoreEccRevocation4_cp:              coverpoint `FC_MEM[CptraCoreEccRevocation4Offset/2]              { bins Fuse = { [1:$] }; }
-      CptraCoreMldsaRevocation4_cp:            coverpoint `FC_MEM[CptraCoreMldsaRevocation4Offset/2]            { bins Fuse = { [1:$] }; }
-      VendorRevocationsProdPartitionDigest_cp: coverpoint `FC_MEM[VendorRevocationsProdPartitionDigestOffset/2] { bins Fuse = { [1:$] }; }
       // VENDOR_NON_SECRET_PROD_PARTITION
       CptraSsVendorSpecificNonSecretFuse0_cp: coverpoint `FC_MEM[CptraSsVendorSpecificNonSecretFuse0Offset/2] { bins Fuse = { [1:$] }; }
+      CptraSsVendorSpecificNonSecretFuse1_cp: coverpoint `FC_MEM[CptraSsVendorSpecificNonSecretFuse1Offset/2] { bins Fuse = { [1:$] }; }
+      CptraSsVendorSpecificNonSecretFuse2_cp: coverpoint `FC_MEM[CptraSsVendorSpecificNonSecretFuse2Offset/2] { bins Fuse = { [1:$] }; }
+      CptraSsVendorSpecificNonSecretFuse3_cp: coverpoint `FC_MEM[CptraSsVendorSpecificNonSecretFuse3Offset/2] { bins Fuse = { [1:$] }; }
+      CptraSsVendorSpecificNonSecretFuse4_cp: coverpoint `FC_MEM[CptraSsVendorSpecificNonSecretFuse4Offset/2] { bins Fuse = { [1:$] }; }
+      CptraSsVendorSpecificRsvd_cp:           coverpoint `FC_MEM[CptraSsVendorSpecificRsvdOffset/2]           { bins Fuse = { [1:$] }; }
       // CSR_PARTITION
       CsrRegion_cp: coverpoint `FC_MEM[CsrRegionOffset/2] { bins Fuse = { [1:$] }; }
     endgroup
