@@ -9598,28 +9598,26 @@
 #define OTP_CTRL_STATUS_VENDOR_HASHES_OWNER_PROD_PARTITION_ERROR_MASK                               (0x400)
 #define OTP_CTRL_STATUS_VENDOR_HASHES_PROD_PARTITION_ERROR_LOW                                      (11)
 #define OTP_CTRL_STATUS_VENDOR_HASHES_PROD_PARTITION_ERROR_MASK                                     (0x800)
-#define OTP_CTRL_STATUS_VENDOR_REVOCATIONS_PROD_PARTITION_ERROR_LOW                                 (12)
-#define OTP_CTRL_STATUS_VENDOR_REVOCATIONS_PROD_PARTITION_ERROR_MASK                                (0x1000)
-#define OTP_CTRL_STATUS_VENDOR_NON_SECRET_PROD_PARTITION_ERROR_LOW                                  (13)
-#define OTP_CTRL_STATUS_VENDOR_NON_SECRET_PROD_PARTITION_ERROR_MASK                                 (0x2000)
-#define OTP_CTRL_STATUS_CSR_PARTITION_ERROR_LOW                                                     (14)
-#define OTP_CTRL_STATUS_CSR_PARTITION_ERROR_MASK                                                    (0x4000)
-#define OTP_CTRL_STATUS_DAI_ERROR_LOW                                                               (15)
-#define OTP_CTRL_STATUS_DAI_ERROR_MASK                                                              (0x8000)
-#define OTP_CTRL_STATUS_LCI_ERROR_LOW                                                               (16)
-#define OTP_CTRL_STATUS_LCI_ERROR_MASK                                                              (0x10000)
-#define OTP_CTRL_STATUS_TIMEOUT_ERROR_LOW                                                           (17)
-#define OTP_CTRL_STATUS_TIMEOUT_ERROR_MASK                                                          (0x20000)
-#define OTP_CTRL_STATUS_LFSR_FSM_ERROR_LOW                                                          (18)
-#define OTP_CTRL_STATUS_LFSR_FSM_ERROR_MASK                                                         (0x40000)
-#define OTP_CTRL_STATUS_SCRAMBLING_FSM_ERROR_LOW                                                    (19)
-#define OTP_CTRL_STATUS_SCRAMBLING_FSM_ERROR_MASK                                                   (0x80000)
-#define OTP_CTRL_STATUS_BUS_INTEG_ERROR_LOW                                                         (20)
-#define OTP_CTRL_STATUS_BUS_INTEG_ERROR_MASK                                                        (0x100000)
-#define OTP_CTRL_STATUS_DAI_IDLE_LOW                                                                (21)
-#define OTP_CTRL_STATUS_DAI_IDLE_MASK                                                               (0x200000)
-#define OTP_CTRL_STATUS_CHECK_PENDING_LOW                                                           (22)
-#define OTP_CTRL_STATUS_CHECK_PENDING_MASK                                                          (0x400000)
+#define OTP_CTRL_STATUS_VENDOR_NON_SECRET_PROD_PARTITION_ERROR_LOW                                  (12)
+#define OTP_CTRL_STATUS_VENDOR_NON_SECRET_PROD_PARTITION_ERROR_MASK                                 (0x1000)
+#define OTP_CTRL_STATUS_CSR_PARTITION_ERROR_LOW                                                     (13)
+#define OTP_CTRL_STATUS_CSR_PARTITION_ERROR_MASK                                                    (0x2000)
+#define OTP_CTRL_STATUS_DAI_ERROR_LOW                                                               (14)
+#define OTP_CTRL_STATUS_DAI_ERROR_MASK                                                              (0x4000)
+#define OTP_CTRL_STATUS_LCI_ERROR_LOW                                                               (15)
+#define OTP_CTRL_STATUS_LCI_ERROR_MASK                                                              (0x8000)
+#define OTP_CTRL_STATUS_TIMEOUT_ERROR_LOW                                                           (16)
+#define OTP_CTRL_STATUS_TIMEOUT_ERROR_MASK                                                          (0x10000)
+#define OTP_CTRL_STATUS_LFSR_FSM_ERROR_LOW                                                          (17)
+#define OTP_CTRL_STATUS_LFSR_FSM_ERROR_MASK                                                         (0x20000)
+#define OTP_CTRL_STATUS_SCRAMBLING_FSM_ERROR_LOW                                                    (18)
+#define OTP_CTRL_STATUS_SCRAMBLING_FSM_ERROR_MASK                                                   (0x40000)
+#define OTP_CTRL_STATUS_BUS_INTEG_ERROR_LOW                                                         (19)
+#define OTP_CTRL_STATUS_BUS_INTEG_ERROR_MASK                                                        (0x80000)
+#define OTP_CTRL_STATUS_DAI_IDLE_LOW                                                                (20)
+#define OTP_CTRL_STATUS_DAI_IDLE_MASK                                                               (0x100000)
+#define OTP_CTRL_STATUS_CHECK_PENDING_LOW                                                           (21)
+#define OTP_CTRL_STATUS_CHECK_PENDING_MASK                                                          (0x200000)
 #endif
 #define SOC_OTP_CTRL_ERR_CODE_RF_START                                                              (0x70000014)
 #define SOC_OTP_CTRL_ERR_CODE_RF_ERR_CODE_0                                                         (0x70000014)
@@ -9718,21 +9716,15 @@
 #define OTP_CTRL_ERR_CODE_RF_ERR_CODE_15_ERR_CODE_LOW                                               (0)
 #define OTP_CTRL_ERR_CODE_RF_ERR_CODE_15_ERR_CODE_MASK                                              (0x7)
 #endif
-#define SOC_OTP_CTRL_ERR_CODE_RF_ERR_CODE_16                                                        (0x70000054)
-#ifndef OTP_CTRL_ERR_CODE_RF_ERR_CODE_16
-#define OTP_CTRL_ERR_CODE_RF_ERR_CODE_16                                                            (0x54)
-#define OTP_CTRL_ERR_CODE_RF_ERR_CODE_16_ERR_CODE_LOW                                               (0)
-#define OTP_CTRL_ERR_CODE_RF_ERR_CODE_16_ERR_CODE_MASK                                              (0x7)
-#endif
-#define SOC_OTP_CTRL_DIRECT_ACCESS_REGWEN                                                           (0x70000058)
+#define SOC_OTP_CTRL_DIRECT_ACCESS_REGWEN                                                           (0x70000054)
 #ifndef OTP_CTRL_DIRECT_ACCESS_REGWEN
-#define OTP_CTRL_DIRECT_ACCESS_REGWEN                                                               (0x58)
+#define OTP_CTRL_DIRECT_ACCESS_REGWEN                                                               (0x54)
 #define OTP_CTRL_DIRECT_ACCESS_REGWEN_REGWEN_LOW                                                    (0)
 #define OTP_CTRL_DIRECT_ACCESS_REGWEN_REGWEN_MASK                                                   (0x1)
 #endif
-#define SOC_OTP_CTRL_DIRECT_ACCESS_CMD                                                              (0x7000005c)
+#define SOC_OTP_CTRL_DIRECT_ACCESS_CMD                                                              (0x70000058)
 #ifndef OTP_CTRL_DIRECT_ACCESS_CMD
-#define OTP_CTRL_DIRECT_ACCESS_CMD                                                                  (0x5c)
+#define OTP_CTRL_DIRECT_ACCESS_CMD                                                                  (0x58)
 #define OTP_CTRL_DIRECT_ACCESS_CMD_RD_LOW                                                           (0)
 #define OTP_CTRL_DIRECT_ACCESS_CMD_RD_MASK                                                          (0x1)
 #define OTP_CTRL_DIRECT_ACCESS_CMD_WR_LOW                                                           (1)
@@ -9740,213 +9732,198 @@
 #define OTP_CTRL_DIRECT_ACCESS_CMD_DIGEST_LOW                                                       (2)
 #define OTP_CTRL_DIRECT_ACCESS_CMD_DIGEST_MASK                                                      (0x4)
 #endif
-#define SOC_OTP_CTRL_DIRECT_ACCESS_ADDRESS                                                          (0x70000060)
+#define SOC_OTP_CTRL_DIRECT_ACCESS_ADDRESS                                                          (0x7000005c)
 #ifndef OTP_CTRL_DIRECT_ACCESS_ADDRESS
-#define OTP_CTRL_DIRECT_ACCESS_ADDRESS                                                              (0x60)
+#define OTP_CTRL_DIRECT_ACCESS_ADDRESS                                                              (0x5c)
 #define OTP_CTRL_DIRECT_ACCESS_ADDRESS_ADDRESS_LOW                                                  (0)
 #define OTP_CTRL_DIRECT_ACCESS_ADDRESS_ADDRESS_MASK                                                 (0xfff)
 #endif
-#define SOC_OTP_CTRL_DAI_WDATA_RF_START                                                             (0x70000064)
-#define SOC_OTP_CTRL_DAI_WDATA_RF_DIRECT_ACCESS_WDATA_0                                             (0x70000064)
+#define SOC_OTP_CTRL_DAI_WDATA_RF_START                                                             (0x70000060)
+#define SOC_OTP_CTRL_DAI_WDATA_RF_DIRECT_ACCESS_WDATA_0                                             (0x70000060)
 #ifndef OTP_CTRL_DAI_WDATA_RF_DIRECT_ACCESS_WDATA_0
-#define OTP_CTRL_DAI_WDATA_RF_DIRECT_ACCESS_WDATA_0                                                 (0x64)
+#define OTP_CTRL_DAI_WDATA_RF_DIRECT_ACCESS_WDATA_0                                                 (0x60)
 #endif
-#define SOC_OTP_CTRL_DAI_WDATA_RF_DIRECT_ACCESS_WDATA_1                                             (0x70000068)
+#define SOC_OTP_CTRL_DAI_WDATA_RF_DIRECT_ACCESS_WDATA_1                                             (0x70000064)
 #ifndef OTP_CTRL_DAI_WDATA_RF_DIRECT_ACCESS_WDATA_1
-#define OTP_CTRL_DAI_WDATA_RF_DIRECT_ACCESS_WDATA_1                                                 (0x68)
+#define OTP_CTRL_DAI_WDATA_RF_DIRECT_ACCESS_WDATA_1                                                 (0x64)
 #endif
-#define SOC_OTP_CTRL_DAI_RDATA_RF_START                                                             (0x7000006c)
-#define SOC_OTP_CTRL_DAI_RDATA_RF_DIRECT_ACCESS_RDATA_0                                             (0x7000006c)
+#define SOC_OTP_CTRL_DAI_RDATA_RF_START                                                             (0x70000068)
+#define SOC_OTP_CTRL_DAI_RDATA_RF_DIRECT_ACCESS_RDATA_0                                             (0x70000068)
 #ifndef OTP_CTRL_DAI_RDATA_RF_DIRECT_ACCESS_RDATA_0
-#define OTP_CTRL_DAI_RDATA_RF_DIRECT_ACCESS_RDATA_0                                                 (0x6c)
+#define OTP_CTRL_DAI_RDATA_RF_DIRECT_ACCESS_RDATA_0                                                 (0x68)
 #endif
-#define SOC_OTP_CTRL_DAI_RDATA_RF_DIRECT_ACCESS_RDATA_1                                             (0x70000070)
+#define SOC_OTP_CTRL_DAI_RDATA_RF_DIRECT_ACCESS_RDATA_1                                             (0x7000006c)
 #ifndef OTP_CTRL_DAI_RDATA_RF_DIRECT_ACCESS_RDATA_1
-#define OTP_CTRL_DAI_RDATA_RF_DIRECT_ACCESS_RDATA_1                                                 (0x70)
+#define OTP_CTRL_DAI_RDATA_RF_DIRECT_ACCESS_RDATA_1                                                 (0x6c)
 #endif
-#define SOC_OTP_CTRL_CHECK_TRIGGER_REGWEN                                                           (0x70000074)
+#define SOC_OTP_CTRL_CHECK_TRIGGER_REGWEN                                                           (0x70000070)
 #ifndef OTP_CTRL_CHECK_TRIGGER_REGWEN
-#define OTP_CTRL_CHECK_TRIGGER_REGWEN                                                               (0x74)
+#define OTP_CTRL_CHECK_TRIGGER_REGWEN                                                               (0x70)
 #define OTP_CTRL_CHECK_TRIGGER_REGWEN_REGWEN_LOW                                                    (0)
 #define OTP_CTRL_CHECK_TRIGGER_REGWEN_REGWEN_MASK                                                   (0x1)
 #endif
-#define SOC_OTP_CTRL_CHECK_TRIGGER                                                                  (0x70000078)
+#define SOC_OTP_CTRL_CHECK_TRIGGER                                                                  (0x70000074)
 #ifndef OTP_CTRL_CHECK_TRIGGER
-#define OTP_CTRL_CHECK_TRIGGER                                                                      (0x78)
+#define OTP_CTRL_CHECK_TRIGGER                                                                      (0x74)
 #define OTP_CTRL_CHECK_TRIGGER_INTEGRITY_LOW                                                        (0)
 #define OTP_CTRL_CHECK_TRIGGER_INTEGRITY_MASK                                                       (0x1)
 #define OTP_CTRL_CHECK_TRIGGER_CONSISTENCY_LOW                                                      (1)
 #define OTP_CTRL_CHECK_TRIGGER_CONSISTENCY_MASK                                                     (0x2)
 #endif
-#define SOC_OTP_CTRL_CHECK_REGWEN                                                                   (0x7000007c)
+#define SOC_OTP_CTRL_CHECK_REGWEN                                                                   (0x70000078)
 #ifndef OTP_CTRL_CHECK_REGWEN
-#define OTP_CTRL_CHECK_REGWEN                                                                       (0x7c)
+#define OTP_CTRL_CHECK_REGWEN                                                                       (0x78)
 #define OTP_CTRL_CHECK_REGWEN_REGWEN_LOW                                                            (0)
 #define OTP_CTRL_CHECK_REGWEN_REGWEN_MASK                                                           (0x1)
 #endif
-#define SOC_OTP_CTRL_CHECK_TIMEOUT                                                                  (0x70000080)
+#define SOC_OTP_CTRL_CHECK_TIMEOUT                                                                  (0x7000007c)
 #ifndef OTP_CTRL_CHECK_TIMEOUT
-#define OTP_CTRL_CHECK_TIMEOUT                                                                      (0x80)
+#define OTP_CTRL_CHECK_TIMEOUT                                                                      (0x7c)
 #endif
-#define SOC_OTP_CTRL_INTEGRITY_CHECK_PERIOD                                                         (0x70000084)
+#define SOC_OTP_CTRL_INTEGRITY_CHECK_PERIOD                                                         (0x70000080)
 #ifndef OTP_CTRL_INTEGRITY_CHECK_PERIOD
-#define OTP_CTRL_INTEGRITY_CHECK_PERIOD                                                             (0x84)
+#define OTP_CTRL_INTEGRITY_CHECK_PERIOD                                                             (0x80)
 #endif
-#define SOC_OTP_CTRL_CONSISTENCY_CHECK_PERIOD                                                       (0x70000088)
+#define SOC_OTP_CTRL_CONSISTENCY_CHECK_PERIOD                                                       (0x70000084)
 #ifndef OTP_CTRL_CONSISTENCY_CHECK_PERIOD
-#define OTP_CTRL_CONSISTENCY_CHECK_PERIOD                                                           (0x88)
+#define OTP_CTRL_CONSISTENCY_CHECK_PERIOD                                                           (0x84)
 #endif
-#define SOC_OTP_CTRL_SW_MANUF_PARTITION_READ_LOCK                                                   (0x7000008c)
+#define SOC_OTP_CTRL_SW_MANUF_PARTITION_READ_LOCK                                                   (0x70000088)
 #ifndef OTP_CTRL_SW_MANUF_PARTITION_READ_LOCK
-#define OTP_CTRL_SW_MANUF_PARTITION_READ_LOCK                                                       (0x8c)
+#define OTP_CTRL_SW_MANUF_PARTITION_READ_LOCK                                                       (0x88)
 #define OTP_CTRL_SW_MANUF_PARTITION_READ_LOCK_READ_LOCK_LOW                                         (0)
 #define OTP_CTRL_SW_MANUF_PARTITION_READ_LOCK_READ_LOCK_MASK                                        (0x1)
 #endif
-#define SOC_OTP_CTRL_VENDOR_HASHES_MANUF_PARTITION_READ_LOCK                                        (0x70000090)
+#define SOC_OTP_CTRL_VENDOR_HASHES_MANUF_PARTITION_READ_LOCK                                        (0x7000008c)
 #ifndef OTP_CTRL_VENDOR_HASHES_MANUF_PARTITION_READ_LOCK
-#define OTP_CTRL_VENDOR_HASHES_MANUF_PARTITION_READ_LOCK                                            (0x90)
+#define OTP_CTRL_VENDOR_HASHES_MANUF_PARTITION_READ_LOCK                                            (0x8c)
 #define OTP_CTRL_VENDOR_HASHES_MANUF_PARTITION_READ_LOCK_READ_LOCK_LOW                              (0)
 #define OTP_CTRL_VENDOR_HASHES_MANUF_PARTITION_READ_LOCK_READ_LOCK_MASK                             (0x1)
 #endif
-#define SOC_OTP_CTRL_VENDOR_HASHES_OWNER_PROD_PARTITION_READ_LOCK                                   (0x70000094)
+#define SOC_OTP_CTRL_VENDOR_HASHES_OWNER_PROD_PARTITION_READ_LOCK                                   (0x70000090)
 #ifndef OTP_CTRL_VENDOR_HASHES_OWNER_PROD_PARTITION_READ_LOCK
-#define OTP_CTRL_VENDOR_HASHES_OWNER_PROD_PARTITION_READ_LOCK                                       (0x94)
+#define OTP_CTRL_VENDOR_HASHES_OWNER_PROD_PARTITION_READ_LOCK                                       (0x90)
 #define OTP_CTRL_VENDOR_HASHES_OWNER_PROD_PARTITION_READ_LOCK_READ_LOCK_LOW                         (0)
 #define OTP_CTRL_VENDOR_HASHES_OWNER_PROD_PARTITION_READ_LOCK_READ_LOCK_MASK                        (0x1)
 #endif
-#define SOC_OTP_CTRL_VENDOR_HASHES_PROD_PARTITION_READ_LOCK                                         (0x70000098)
+#define SOC_OTP_CTRL_VENDOR_HASHES_PROD_PARTITION_READ_LOCK                                         (0x70000094)
 #ifndef OTP_CTRL_VENDOR_HASHES_PROD_PARTITION_READ_LOCK
-#define OTP_CTRL_VENDOR_HASHES_PROD_PARTITION_READ_LOCK                                             (0x98)
+#define OTP_CTRL_VENDOR_HASHES_PROD_PARTITION_READ_LOCK                                             (0x94)
 #define OTP_CTRL_VENDOR_HASHES_PROD_PARTITION_READ_LOCK_READ_LOCK_LOW                               (0)
 #define OTP_CTRL_VENDOR_HASHES_PROD_PARTITION_READ_LOCK_READ_LOCK_MASK                              (0x1)
 #endif
-#define SOC_OTP_CTRL_VENDOR_REVOCATIONS_PROD_PARTITION_READ_LOCK                                    (0x7000009c)
-#ifndef OTP_CTRL_VENDOR_REVOCATIONS_PROD_PARTITION_READ_LOCK
-#define OTP_CTRL_VENDOR_REVOCATIONS_PROD_PARTITION_READ_LOCK                                        (0x9c)
-#define OTP_CTRL_VENDOR_REVOCATIONS_PROD_PARTITION_READ_LOCK_READ_LOCK_LOW                          (0)
-#define OTP_CTRL_VENDOR_REVOCATIONS_PROD_PARTITION_READ_LOCK_READ_LOCK_MASK                         (0x1)
-#endif
-#define SOC_OTP_CTRL_VENDOR_NON_SECRET_PROD_PARTITION_READ_LOCK                                     (0x700000a0)
+#define SOC_OTP_CTRL_VENDOR_NON_SECRET_PROD_PARTITION_READ_LOCK                                     (0x70000098)
 #ifndef OTP_CTRL_VENDOR_NON_SECRET_PROD_PARTITION_READ_LOCK
-#define OTP_CTRL_VENDOR_NON_SECRET_PROD_PARTITION_READ_LOCK                                         (0xa0)
+#define OTP_CTRL_VENDOR_NON_SECRET_PROD_PARTITION_READ_LOCK                                         (0x98)
 #define OTP_CTRL_VENDOR_NON_SECRET_PROD_PARTITION_READ_LOCK_READ_LOCK_LOW                           (0)
 #define OTP_CTRL_VENDOR_NON_SECRET_PROD_PARTITION_READ_LOCK_READ_LOCK_MASK                          (0x1)
 #endif
-#define SOC_OTP_CTRL_VENDOR_PK_HASH_VOLATILE_LOCK                                                   (0x700000a4)
+#define SOC_OTP_CTRL_VENDOR_PK_HASH_VOLATILE_LOCK                                                   (0x7000009c)
 #ifndef OTP_CTRL_VENDOR_PK_HASH_VOLATILE_LOCK
-#define OTP_CTRL_VENDOR_PK_HASH_VOLATILE_LOCK                                                       (0xa4)
+#define OTP_CTRL_VENDOR_PK_HASH_VOLATILE_LOCK                                                       (0x9c)
 #endif
-#define SOC_OTP_CTRL_SW_TEST_UNLOCK_PARTITION_DIGEST_START                                          (0x700000a8)
-#define SOC_OTP_CTRL_SW_TEST_UNLOCK_PARTITION_DIGEST_DIGEST_0                                       (0x700000a8)
+#define SOC_OTP_CTRL_SW_TEST_UNLOCK_PARTITION_DIGEST_START                                          (0x700000a0)
+#define SOC_OTP_CTRL_SW_TEST_UNLOCK_PARTITION_DIGEST_DIGEST_0                                       (0x700000a0)
 #ifndef OTP_CTRL_SW_TEST_UNLOCK_PARTITION_DIGEST_DIGEST_0
-#define OTP_CTRL_SW_TEST_UNLOCK_PARTITION_DIGEST_DIGEST_0                                           (0xa8)
+#define OTP_CTRL_SW_TEST_UNLOCK_PARTITION_DIGEST_DIGEST_0                                           (0xa0)
 #endif
-#define SOC_OTP_CTRL_SW_TEST_UNLOCK_PARTITION_DIGEST_DIGEST_1                                       (0x700000ac)
+#define SOC_OTP_CTRL_SW_TEST_UNLOCK_PARTITION_DIGEST_DIGEST_1                                       (0x700000a4)
 #ifndef OTP_CTRL_SW_TEST_UNLOCK_PARTITION_DIGEST_DIGEST_1
-#define OTP_CTRL_SW_TEST_UNLOCK_PARTITION_DIGEST_DIGEST_1                                           (0xac)
+#define OTP_CTRL_SW_TEST_UNLOCK_PARTITION_DIGEST_DIGEST_1                                           (0xa4)
 #endif
-#define SOC_OTP_CTRL_SECRET_MANUF_PARTITION_DIGEST_START                                            (0x700000b0)
-#define SOC_OTP_CTRL_SECRET_MANUF_PARTITION_DIGEST_DIGEST_0                                         (0x700000b0)
+#define SOC_OTP_CTRL_SECRET_MANUF_PARTITION_DIGEST_START                                            (0x700000a8)
+#define SOC_OTP_CTRL_SECRET_MANUF_PARTITION_DIGEST_DIGEST_0                                         (0x700000a8)
 #ifndef OTP_CTRL_SECRET_MANUF_PARTITION_DIGEST_DIGEST_0
-#define OTP_CTRL_SECRET_MANUF_PARTITION_DIGEST_DIGEST_0                                             (0xb0)
+#define OTP_CTRL_SECRET_MANUF_PARTITION_DIGEST_DIGEST_0                                             (0xa8)
 #endif
-#define SOC_OTP_CTRL_SECRET_MANUF_PARTITION_DIGEST_DIGEST_1                                         (0x700000b4)
+#define SOC_OTP_CTRL_SECRET_MANUF_PARTITION_DIGEST_DIGEST_1                                         (0x700000ac)
 #ifndef OTP_CTRL_SECRET_MANUF_PARTITION_DIGEST_DIGEST_1
-#define OTP_CTRL_SECRET_MANUF_PARTITION_DIGEST_DIGEST_1                                             (0xb4)
+#define OTP_CTRL_SECRET_MANUF_PARTITION_DIGEST_DIGEST_1                                             (0xac)
 #endif
-#define SOC_OTP_CTRL_SECRET_PROD_PARTITION_0_DIGEST_START                                           (0x700000b8)
-#define SOC_OTP_CTRL_SECRET_PROD_PARTITION_0_DIGEST_DIGEST_0                                        (0x700000b8)
+#define SOC_OTP_CTRL_SECRET_PROD_PARTITION_0_DIGEST_START                                           (0x700000b0)
+#define SOC_OTP_CTRL_SECRET_PROD_PARTITION_0_DIGEST_DIGEST_0                                        (0x700000b0)
 #ifndef OTP_CTRL_SECRET_PROD_PARTITION_0_DIGEST_DIGEST_0
-#define OTP_CTRL_SECRET_PROD_PARTITION_0_DIGEST_DIGEST_0                                            (0xb8)
+#define OTP_CTRL_SECRET_PROD_PARTITION_0_DIGEST_DIGEST_0                                            (0xb0)
 #endif
-#define SOC_OTP_CTRL_SECRET_PROD_PARTITION_0_DIGEST_DIGEST_1                                        (0x700000bc)
+#define SOC_OTP_CTRL_SECRET_PROD_PARTITION_0_DIGEST_DIGEST_1                                        (0x700000b4)
 #ifndef OTP_CTRL_SECRET_PROD_PARTITION_0_DIGEST_DIGEST_1
-#define OTP_CTRL_SECRET_PROD_PARTITION_0_DIGEST_DIGEST_1                                            (0xbc)
+#define OTP_CTRL_SECRET_PROD_PARTITION_0_DIGEST_DIGEST_1                                            (0xb4)
 #endif
-#define SOC_OTP_CTRL_SECRET_PROD_PARTITION_1_DIGEST_START                                           (0x700000c0)
-#define SOC_OTP_CTRL_SECRET_PROD_PARTITION_1_DIGEST_DIGEST_0                                        (0x700000c0)
+#define SOC_OTP_CTRL_SECRET_PROD_PARTITION_1_DIGEST_START                                           (0x700000b8)
+#define SOC_OTP_CTRL_SECRET_PROD_PARTITION_1_DIGEST_DIGEST_0                                        (0x700000b8)
 #ifndef OTP_CTRL_SECRET_PROD_PARTITION_1_DIGEST_DIGEST_0
-#define OTP_CTRL_SECRET_PROD_PARTITION_1_DIGEST_DIGEST_0                                            (0xc0)
+#define OTP_CTRL_SECRET_PROD_PARTITION_1_DIGEST_DIGEST_0                                            (0xb8)
 #endif
-#define SOC_OTP_CTRL_SECRET_PROD_PARTITION_1_DIGEST_DIGEST_1                                        (0x700000c4)
+#define SOC_OTP_CTRL_SECRET_PROD_PARTITION_1_DIGEST_DIGEST_1                                        (0x700000bc)
 #ifndef OTP_CTRL_SECRET_PROD_PARTITION_1_DIGEST_DIGEST_1
-#define OTP_CTRL_SECRET_PROD_PARTITION_1_DIGEST_DIGEST_1                                            (0xc4)
+#define OTP_CTRL_SECRET_PROD_PARTITION_1_DIGEST_DIGEST_1                                            (0xbc)
 #endif
-#define SOC_OTP_CTRL_SECRET_PROD_PARTITION_2_DIGEST_START                                           (0x700000c8)
-#define SOC_OTP_CTRL_SECRET_PROD_PARTITION_2_DIGEST_DIGEST_0                                        (0x700000c8)
+#define SOC_OTP_CTRL_SECRET_PROD_PARTITION_2_DIGEST_START                                           (0x700000c0)
+#define SOC_OTP_CTRL_SECRET_PROD_PARTITION_2_DIGEST_DIGEST_0                                        (0x700000c0)
 #ifndef OTP_CTRL_SECRET_PROD_PARTITION_2_DIGEST_DIGEST_0
-#define OTP_CTRL_SECRET_PROD_PARTITION_2_DIGEST_DIGEST_0                                            (0xc8)
+#define OTP_CTRL_SECRET_PROD_PARTITION_2_DIGEST_DIGEST_0                                            (0xc0)
 #endif
-#define SOC_OTP_CTRL_SECRET_PROD_PARTITION_2_DIGEST_DIGEST_1                                        (0x700000cc)
+#define SOC_OTP_CTRL_SECRET_PROD_PARTITION_2_DIGEST_DIGEST_1                                        (0x700000c4)
 #ifndef OTP_CTRL_SECRET_PROD_PARTITION_2_DIGEST_DIGEST_1
-#define OTP_CTRL_SECRET_PROD_PARTITION_2_DIGEST_DIGEST_1                                            (0xcc)
+#define OTP_CTRL_SECRET_PROD_PARTITION_2_DIGEST_DIGEST_1                                            (0xc4)
 #endif
-#define SOC_OTP_CTRL_SECRET_PROD_PARTITION_3_DIGEST_START                                           (0x700000d0)
-#define SOC_OTP_CTRL_SECRET_PROD_PARTITION_3_DIGEST_DIGEST_0                                        (0x700000d0)
+#define SOC_OTP_CTRL_SECRET_PROD_PARTITION_3_DIGEST_START                                           (0x700000c8)
+#define SOC_OTP_CTRL_SECRET_PROD_PARTITION_3_DIGEST_DIGEST_0                                        (0x700000c8)
 #ifndef OTP_CTRL_SECRET_PROD_PARTITION_3_DIGEST_DIGEST_0
-#define OTP_CTRL_SECRET_PROD_PARTITION_3_DIGEST_DIGEST_0                                            (0xd0)
+#define OTP_CTRL_SECRET_PROD_PARTITION_3_DIGEST_DIGEST_0                                            (0xc8)
 #endif
-#define SOC_OTP_CTRL_SECRET_PROD_PARTITION_3_DIGEST_DIGEST_1                                        (0x700000d4)
+#define SOC_OTP_CTRL_SECRET_PROD_PARTITION_3_DIGEST_DIGEST_1                                        (0x700000cc)
 #ifndef OTP_CTRL_SECRET_PROD_PARTITION_3_DIGEST_DIGEST_1
-#define OTP_CTRL_SECRET_PROD_PARTITION_3_DIGEST_DIGEST_1                                            (0xd4)
+#define OTP_CTRL_SECRET_PROD_PARTITION_3_DIGEST_DIGEST_1                                            (0xcc)
 #endif
-#define SOC_OTP_CTRL_SW_MANUF_PARTITION_DIGEST_START                                                (0x700000d8)
-#define SOC_OTP_CTRL_SW_MANUF_PARTITION_DIGEST_DIGEST_0                                             (0x700000d8)
+#define SOC_OTP_CTRL_SW_MANUF_PARTITION_DIGEST_START                                                (0x700000d0)
+#define SOC_OTP_CTRL_SW_MANUF_PARTITION_DIGEST_DIGEST_0                                             (0x700000d0)
 #ifndef OTP_CTRL_SW_MANUF_PARTITION_DIGEST_DIGEST_0
-#define OTP_CTRL_SW_MANUF_PARTITION_DIGEST_DIGEST_0                                                 (0xd8)
+#define OTP_CTRL_SW_MANUF_PARTITION_DIGEST_DIGEST_0                                                 (0xd0)
 #endif
-#define SOC_OTP_CTRL_SW_MANUF_PARTITION_DIGEST_DIGEST_1                                             (0x700000dc)
+#define SOC_OTP_CTRL_SW_MANUF_PARTITION_DIGEST_DIGEST_1                                             (0x700000d4)
 #ifndef OTP_CTRL_SW_MANUF_PARTITION_DIGEST_DIGEST_1
-#define OTP_CTRL_SW_MANUF_PARTITION_DIGEST_DIGEST_1                                                 (0xdc)
+#define OTP_CTRL_SW_MANUF_PARTITION_DIGEST_DIGEST_1                                                 (0xd4)
 #endif
-#define SOC_OTP_CTRL_SECRET_LC_TRANSITION_PARTITION_DIGEST_START                                    (0x700000e0)
-#define SOC_OTP_CTRL_SECRET_LC_TRANSITION_PARTITION_DIGEST_DIGEST_0                                 (0x700000e0)
+#define SOC_OTP_CTRL_SECRET_LC_TRANSITION_PARTITION_DIGEST_START                                    (0x700000d8)
+#define SOC_OTP_CTRL_SECRET_LC_TRANSITION_PARTITION_DIGEST_DIGEST_0                                 (0x700000d8)
 #ifndef OTP_CTRL_SECRET_LC_TRANSITION_PARTITION_DIGEST_DIGEST_0
-#define OTP_CTRL_SECRET_LC_TRANSITION_PARTITION_DIGEST_DIGEST_0                                     (0xe0)
+#define OTP_CTRL_SECRET_LC_TRANSITION_PARTITION_DIGEST_DIGEST_0                                     (0xd8)
 #endif
-#define SOC_OTP_CTRL_SECRET_LC_TRANSITION_PARTITION_DIGEST_DIGEST_1                                 (0x700000e4)
+#define SOC_OTP_CTRL_SECRET_LC_TRANSITION_PARTITION_DIGEST_DIGEST_1                                 (0x700000dc)
 #ifndef OTP_CTRL_SECRET_LC_TRANSITION_PARTITION_DIGEST_DIGEST_1
-#define OTP_CTRL_SECRET_LC_TRANSITION_PARTITION_DIGEST_DIGEST_1                                     (0xe4)
+#define OTP_CTRL_SECRET_LC_TRANSITION_PARTITION_DIGEST_DIGEST_1                                     (0xdc)
 #endif
-#define SOC_OTP_CTRL_VENDOR_HASHES_MANUF_PARTITION_DIGEST_START                                     (0x700000e8)
-#define SOC_OTP_CTRL_VENDOR_HASHES_MANUF_PARTITION_DIGEST_DIGEST_0                                  (0x700000e8)
+#define SOC_OTP_CTRL_VENDOR_HASHES_MANUF_PARTITION_DIGEST_START                                     (0x700000e0)
+#define SOC_OTP_CTRL_VENDOR_HASHES_MANUF_PARTITION_DIGEST_DIGEST_0                                  (0x700000e0)
 #ifndef OTP_CTRL_VENDOR_HASHES_MANUF_PARTITION_DIGEST_DIGEST_0
-#define OTP_CTRL_VENDOR_HASHES_MANUF_PARTITION_DIGEST_DIGEST_0                                      (0xe8)
+#define OTP_CTRL_VENDOR_HASHES_MANUF_PARTITION_DIGEST_DIGEST_0                                      (0xe0)
 #endif
-#define SOC_OTP_CTRL_VENDOR_HASHES_MANUF_PARTITION_DIGEST_DIGEST_1                                  (0x700000ec)
+#define SOC_OTP_CTRL_VENDOR_HASHES_MANUF_PARTITION_DIGEST_DIGEST_1                                  (0x700000e4)
 #ifndef OTP_CTRL_VENDOR_HASHES_MANUF_PARTITION_DIGEST_DIGEST_1
-#define OTP_CTRL_VENDOR_HASHES_MANUF_PARTITION_DIGEST_DIGEST_1                                      (0xec)
+#define OTP_CTRL_VENDOR_HASHES_MANUF_PARTITION_DIGEST_DIGEST_1                                      (0xe4)
 #endif
-#define SOC_OTP_CTRL_VENDOR_HASHES_OWNER_PROD_PARTITION_DIGEST_START                                (0x700000f0)
-#define SOC_OTP_CTRL_VENDOR_HASHES_OWNER_PROD_PARTITION_DIGEST_DIGEST_0                             (0x700000f0)
+#define SOC_OTP_CTRL_VENDOR_HASHES_OWNER_PROD_PARTITION_DIGEST_START                                (0x700000e8)
+#define SOC_OTP_CTRL_VENDOR_HASHES_OWNER_PROD_PARTITION_DIGEST_DIGEST_0                             (0x700000e8)
 #ifndef OTP_CTRL_VENDOR_HASHES_OWNER_PROD_PARTITION_DIGEST_DIGEST_0
-#define OTP_CTRL_VENDOR_HASHES_OWNER_PROD_PARTITION_DIGEST_DIGEST_0                                 (0xf0)
+#define OTP_CTRL_VENDOR_HASHES_OWNER_PROD_PARTITION_DIGEST_DIGEST_0                                 (0xe8)
 #endif
-#define SOC_OTP_CTRL_VENDOR_HASHES_OWNER_PROD_PARTITION_DIGEST_DIGEST_1                             (0x700000f4)
+#define SOC_OTP_CTRL_VENDOR_HASHES_OWNER_PROD_PARTITION_DIGEST_DIGEST_1                             (0x700000ec)
 #ifndef OTP_CTRL_VENDOR_HASHES_OWNER_PROD_PARTITION_DIGEST_DIGEST_1
-#define OTP_CTRL_VENDOR_HASHES_OWNER_PROD_PARTITION_DIGEST_DIGEST_1                                 (0xf4)
+#define OTP_CTRL_VENDOR_HASHES_OWNER_PROD_PARTITION_DIGEST_DIGEST_1                                 (0xec)
 #endif
-#define SOC_OTP_CTRL_VENDOR_HASHES_PROD_PARTITION_DIGEST_START                                      (0x700000f8)
-#define SOC_OTP_CTRL_VENDOR_HASHES_PROD_PARTITION_DIGEST_DIGEST_0                                   (0x700000f8)
+#define SOC_OTP_CTRL_VENDOR_HASHES_PROD_PARTITION_DIGEST_START                                      (0x700000f0)
+#define SOC_OTP_CTRL_VENDOR_HASHES_PROD_PARTITION_DIGEST_DIGEST_0                                   (0x700000f0)
 #ifndef OTP_CTRL_VENDOR_HASHES_PROD_PARTITION_DIGEST_DIGEST_0
-#define OTP_CTRL_VENDOR_HASHES_PROD_PARTITION_DIGEST_DIGEST_0                                       (0xf8)
+#define OTP_CTRL_VENDOR_HASHES_PROD_PARTITION_DIGEST_DIGEST_0                                       (0xf0)
 #endif
-#define SOC_OTP_CTRL_VENDOR_HASHES_PROD_PARTITION_DIGEST_DIGEST_1                                   (0x700000fc)
+#define SOC_OTP_CTRL_VENDOR_HASHES_PROD_PARTITION_DIGEST_DIGEST_1                                   (0x700000f4)
 #ifndef OTP_CTRL_VENDOR_HASHES_PROD_PARTITION_DIGEST_DIGEST_1
-#define OTP_CTRL_VENDOR_HASHES_PROD_PARTITION_DIGEST_DIGEST_1                                       (0xfc)
+#define OTP_CTRL_VENDOR_HASHES_PROD_PARTITION_DIGEST_DIGEST_1                                       (0xf4)
 #endif
-#define SOC_OTP_CTRL_VENDOR_REVOCATIONS_PROD_PARTITION_DIGEST_START                                 (0x70000100)
-#define SOC_OTP_CTRL_VENDOR_REVOCATIONS_PROD_PARTITION_DIGEST_DIGEST_0                              (0x70000100)
-#ifndef OTP_CTRL_VENDOR_REVOCATIONS_PROD_PARTITION_DIGEST_DIGEST_0
-#define OTP_CTRL_VENDOR_REVOCATIONS_PROD_PARTITION_DIGEST_DIGEST_0                                  (0x100)
-#endif
-#define SOC_OTP_CTRL_VENDOR_REVOCATIONS_PROD_PARTITION_DIGEST_DIGEST_1                              (0x70000104)
-#ifndef OTP_CTRL_VENDOR_REVOCATIONS_PROD_PARTITION_DIGEST_DIGEST_1
-#define OTP_CTRL_VENDOR_REVOCATIONS_PROD_PARTITION_DIGEST_DIGEST_1                                  (0x104)
-#endif
-#define SOC_OTP_CTRL_CSR0                                                                           (0x70000108)
+#define SOC_OTP_CTRL_CSR0                                                                           (0x700000f8)
 #ifndef OTP_CTRL_CSR0
-#define OTP_CTRL_CSR0                                                                               (0x108)
+#define OTP_CTRL_CSR0                                                                               (0xf8)
 #define OTP_CTRL_CSR0_FIELD0_LOW                                                                    (0)
 #define OTP_CTRL_CSR0_FIELD0_MASK                                                                   (0x1)
 #define OTP_CTRL_CSR0_FIELD1_LOW                                                                    (1)
@@ -9958,9 +9935,9 @@
 #define OTP_CTRL_CSR0_FIELD4_LOW                                                                    (16)
 #define OTP_CTRL_CSR0_FIELD4_MASK                                                                   (0x7ff0000)
 #endif
-#define SOC_OTP_CTRL_CSR1                                                                           (0x7000010c)
+#define SOC_OTP_CTRL_CSR1                                                                           (0x700000fc)
 #ifndef OTP_CTRL_CSR1
-#define OTP_CTRL_CSR1                                                                               (0x10c)
+#define OTP_CTRL_CSR1                                                                               (0xfc)
 #define OTP_CTRL_CSR1_FIELD0_LOW                                                                    (0)
 #define OTP_CTRL_CSR1_FIELD0_MASK                                                                   (0x7f)
 #define OTP_CTRL_CSR1_FIELD1_LOW                                                                    (7)
@@ -9972,15 +9949,15 @@
 #define OTP_CTRL_CSR1_FIELD4_LOW                                                                    (16)
 #define OTP_CTRL_CSR1_FIELD4_MASK                                                                   (0xffff0000)
 #endif
-#define SOC_OTP_CTRL_CSR2                                                                           (0x70000110)
+#define SOC_OTP_CTRL_CSR2                                                                           (0x70000100)
 #ifndef OTP_CTRL_CSR2
-#define OTP_CTRL_CSR2                                                                               (0x110)
+#define OTP_CTRL_CSR2                                                                               (0x100)
 #define OTP_CTRL_CSR2_FIELD0_LOW                                                                    (0)
 #define OTP_CTRL_CSR2_FIELD0_MASK                                                                   (0x1)
 #endif
-#define SOC_OTP_CTRL_CSR3                                                                           (0x70000114)
+#define SOC_OTP_CTRL_CSR3                                                                           (0x70000104)
 #ifndef OTP_CTRL_CSR3
-#define OTP_CTRL_CSR3                                                                               (0x114)
+#define OTP_CTRL_CSR3                                                                               (0x104)
 #define OTP_CTRL_CSR3_FIELD0_LOW                                                                    (0)
 #define OTP_CTRL_CSR3_FIELD0_MASK                                                                   (0x7)
 #define OTP_CTRL_CSR3_FIELD1_LOW                                                                    (4)
@@ -10000,9 +9977,9 @@
 #define OTP_CTRL_CSR3_FIELD8_LOW                                                                    (22)
 #define OTP_CTRL_CSR3_FIELD8_MASK                                                                   (0x400000)
 #endif
-#define SOC_OTP_CTRL_CSR4                                                                           (0x70000118)
+#define SOC_OTP_CTRL_CSR4                                                                           (0x70000108)
 #ifndef OTP_CTRL_CSR4
-#define OTP_CTRL_CSR4                                                                               (0x118)
+#define OTP_CTRL_CSR4                                                                               (0x108)
 #define OTP_CTRL_CSR4_FIELD0_LOW                                                                    (0)
 #define OTP_CTRL_CSR4_FIELD0_MASK                                                                   (0x3ff)
 #define OTP_CTRL_CSR4_FIELD1_LOW                                                                    (12)
@@ -10012,9 +9989,9 @@
 #define OTP_CTRL_CSR4_FIELD3_LOW                                                                    (14)
 #define OTP_CTRL_CSR4_FIELD3_MASK                                                                   (0x4000)
 #endif
-#define SOC_OTP_CTRL_CSR5                                                                           (0x7000011c)
+#define SOC_OTP_CTRL_CSR5                                                                           (0x7000010c)
 #ifndef OTP_CTRL_CSR5
-#define OTP_CTRL_CSR5                                                                               (0x11c)
+#define OTP_CTRL_CSR5                                                                               (0x10c)
 #define OTP_CTRL_CSR5_FIELD0_LOW                                                                    (0)
 #define OTP_CTRL_CSR5_FIELD0_MASK                                                                   (0x3f)
 #define OTP_CTRL_CSR5_FIELD1_LOW                                                                    (6)
@@ -10030,9 +10007,9 @@
 #define OTP_CTRL_CSR5_FIELD6_LOW                                                                    (16)
 #define OTP_CTRL_CSR5_FIELD6_MASK                                                                   (0xffff0000)
 #endif
-#define SOC_OTP_CTRL_CSR6                                                                           (0x70000120)
+#define SOC_OTP_CTRL_CSR6                                                                           (0x70000110)
 #ifndef OTP_CTRL_CSR6
-#define OTP_CTRL_CSR6                                                                               (0x120)
+#define OTP_CTRL_CSR6                                                                               (0x110)
 #define OTP_CTRL_CSR6_FIELD0_LOW                                                                    (0)
 #define OTP_CTRL_CSR6_FIELD0_MASK                                                                   (0x3ff)
 #define OTP_CTRL_CSR6_FIELD1_LOW                                                                    (11)
@@ -10042,9 +10019,9 @@
 #define OTP_CTRL_CSR6_FIELD3_LOW                                                                    (16)
 #define OTP_CTRL_CSR6_FIELD3_MASK                                                                   (0xffff0000)
 #endif
-#define SOC_OTP_CTRL_CSR7                                                                           (0x70000124)
+#define SOC_OTP_CTRL_CSR7                                                                           (0x70000114)
 #ifndef OTP_CTRL_CSR7
-#define OTP_CTRL_CSR7                                                                               (0x124)
+#define OTP_CTRL_CSR7                                                                               (0x114)
 #define OTP_CTRL_CSR7_FIELD0_LOW                                                                    (0)
 #define OTP_CTRL_CSR7_FIELD0_MASK                                                                   (0x3f)
 #define OTP_CTRL_CSR7_FIELD1_LOW                                                                    (8)
