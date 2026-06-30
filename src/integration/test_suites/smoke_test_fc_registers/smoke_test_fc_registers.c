@@ -50,7 +50,7 @@ volatile char* stdout = (char *)SOC_MCI_TOP_MCI_REG_DEBUG_OUT;
  *  5. Check that a read now results in an error.
  */
 void register_accesses() {
-    const uint32_t fuse_address = CPTRA_CORE_ECC_REVOCATION_1;
+    const uint32_t fuse_address = VENDOR_NON_SECRET_PROD_PARTITION;
 
     const uint32_t data = 0xdeadbeef;
     uint32_t read_data;
@@ -70,7 +70,7 @@ void register_accesses() {
     dai_rd(fuse_address, &read_data, NULL, 32, 0);
 
     // Step 4
-    lsu_write_32(SOC_OTP_CTRL_VENDOR_REVOCATIONS_PROD_PARTITION_READ_LOCK, 0);
+    lsu_write_32(OTP_CTRL_VENDOR_NON_SECRET_PROD_PARTITION_READ_LOCK, 0);
 
     // Step 5
     dai_rd(fuse_address, &read_data, NULL, 32, OTP_CTRL_STATUS_DAI_ERROR_MASK);
