@@ -58,11 +58,9 @@ typedef enum {
     CPTRA_SS_VENDOR_SPECIFIC_NON_SECRET_FUSE_0 = 0x0350,
     CPTRA_SS_VENDOR_SPECIFIC_NON_SECRET_FUSE_1 = 0x0370,
     CPTRA_SS_VENDOR_SPECIFIC_NON_SECRET_FUSE_2 = 0x0390,
-    CPTRA_SS_VENDOR_SPECIFIC_NON_SECRET_FUSE_3 = 0x03B0,
-    CPTRA_SS_VENDOR_SPECIFIC_NON_SECRET_FUSE_4 = 0x03D0,
-    CPTRA_SS_VENDOR_SPECIFIC_RSVD = 0x03F0,
+    CPTRA_SS_VENDOR_SPECIFIC_RSVD = 0x03B0,
     // CSR_PARTITION
-    CSR_REGION = 0x0400
+    CSR_REGION = 0x03C0
 } fuse_k;
 
 typedef enum {
@@ -157,8 +155,6 @@ uint32_t vendor_non_secret_prod_partition_fuses[] = {
     CPTRA_SS_VENDOR_SPECIFIC_NON_SECRET_FUSE_0,
     CPTRA_SS_VENDOR_SPECIFIC_NON_SECRET_FUSE_1,
     CPTRA_SS_VENDOR_SPECIFIC_NON_SECRET_FUSE_2,
-    CPTRA_SS_VENDOR_SPECIFIC_NON_SECRET_FUSE_3,
-    CPTRA_SS_VENDOR_SPECIFIC_NON_SECRET_FUSE_4,
     CPTRA_SS_VENDOR_SPECIFIC_RSVD
 };
 uint32_t csr_partition_fuses[] = {
@@ -384,13 +380,13 @@ partition_t partitions[NUM_PARTITIONS] = {
         .has_ecc = false,
         .lc_phase = 17,
         .is_lifecycle = false,
-        .num_fuses = 5,
+        .num_fuses = 3,
         .fuses = vendor_non_secret_prod_partition_fuses
     },
     // CSR_PARTITION
     {
         .index = 13,
-        .address = 0x0400,
+        .address = 0x03C0,
         .digest_address = 0x0000,
         .variant = 1,
         .granularity = 32,
