@@ -718,7 +718,7 @@ package otp_ctrl_part_pkg;
   endfunction : named_keymgr_key_assign
 
   parameter int ProdVendorHashNum   = NumVendorPkFuses-1;
-  parameter int ProdVendorHashSize  = CptraCoreVendorPkHash1Size + CptraCorePqcKeyType1Size;
+  parameter int ProdVendorHashSize  = CptraCoreVendorPkHash1Size;
   parameter int ProdVendorHashStart = CptraCoreVendorPkHash1Offset;
   parameter int ProdVendorHashEnd   = CptraCoreVendorPkHash1Offset + (ProdVendorHashSize * ProdVendorHashNum);
 
