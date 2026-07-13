@@ -992,18 +992,6 @@
                     '''
                 },
                {
-                    name: "CPTRA_SS_VENDOR_SPECIFIC_NON_SECRET_FUSE_3",
-                    size: "32",
-                    desc: '''Vendor-specific non-secret fuse 3.
-                    '''
-                },
-               {
-                    name: "CPTRA_SS_VENDOR_SPECIFIC_NON_SECRET_FUSE_4",
-                    size: "32",
-                    desc: '''Vendor-specific non-secret fuse 4.
-                    '''
-                },
-               {
                     name: "CPTRA_SS_VENDOR_SPECIFIC_RSVD",
                     size: "16",
                     desc: '''Vendor-specific non-secret fuse.

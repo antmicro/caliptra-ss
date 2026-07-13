@@ -777,7 +777,7 @@
     { name: "VendorNonSecretProdPartitionSize",
       desc: "Size of the VENDOR_NON_SECRET_PROD_PARTITION partition",
       type: "int",
-      default: "176",
+      default: "112",
       local: "true"
     },
     { name: "CptraSsVendorSpecificNonSecretFuse0Offset",
@@ -816,34 +816,10 @@
       default: "32",
       local: "true"
     },
-    { name: "CptraSsVendorSpecificNonSecretFuse3Offset",
-      desc: "Offset of CPTRA_SS_VENDOR_SPECIFIC_NON_SECRET_FUSE_3",
-      type: "int",
-      default: "944",
-      local: "true"
-    },
-    { name: "CptraSsVendorSpecificNonSecretFuse3Size",
-      desc: "Size of CPTRA_SS_VENDOR_SPECIFIC_NON_SECRET_FUSE_3",
-      type: "int",
-      default: "32",
-      local: "true"
-    },
-    { name: "CptraSsVendorSpecificNonSecretFuse4Offset",
-      desc: "Offset of CPTRA_SS_VENDOR_SPECIFIC_NON_SECRET_FUSE_4",
-      type: "int",
-      default: "976",
-      local: "true"
-    },
-    { name: "CptraSsVendorSpecificNonSecretFuse4Size",
-      desc: "Size of CPTRA_SS_VENDOR_SPECIFIC_NON_SECRET_FUSE_4",
-      type: "int",
-      default: "32",
-      local: "true"
-    },
     { name: "CptraSsVendorSpecificRsvdOffset",
       desc: "Offset of CPTRA_SS_VENDOR_SPECIFIC_RSVD",
       type: "int",
-      default: "1008",
+      default: "944",
       local: "true"
     },
     { name: "CptraSsVendorSpecificRsvdSize",
@@ -855,7 +831,7 @@
     { name: "CsrPartitionOffset",
       desc: "Offset of the CSR_PARTITION partition",
       type: "int",
-      default: "1024",
+      default: "960",
       local: "true"
     },
     { name: "CsrPartitionSize",
@@ -867,7 +843,7 @@
     { name: "CsrRegionOffset",
       desc: "Offset of CSR_REGION",
       type: "int",
-      default: "1024",
+      default: "960",
       local: "true"
     },
     { name: "CsrRegionSize",
