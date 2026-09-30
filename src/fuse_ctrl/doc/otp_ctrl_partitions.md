@@ -12,21 +12,6 @@ It has been generated with ./tools/scripts/fuse_ctrl_script/gen_fuse_ctrl_partit
 |      SECRET_PROD_PARTITION_3      |   yes    |    yes     |     yes     | yes (Digest)  | yes (Digest)  | Secret production partition 3.                                      |
 |        SW_MANUF_PARTITION         |    no    |     no     |     yes     | yes (Digest)  |   yes (CSR)   | Software manufacturing partition.                                   |
 |  SECRET_LC_TRANSITION_PARTITION   |   yes    |    yes     |     yes     | yes (Digest)  | yes (Digest)  | Secret life-cycle unlock token partition.                           |
-|           SVN_PARTITION           |    no    |     no     |     no      |      no       |   yes (CSR)   | SVN Partition.                                                      |
-|       VENDOR_TEST_PARTITION       |    no    |     no     |     no      | yes (Digest)  |   yes (CSR)   | Vendor test partition.                                              |
-|   VENDOR_HASHES_MANUF_PARTITION   |    no    |     no     |     no      | yes (Digest)  |   yes (CSR)   | Vendor hashes manufacturing partition.                              |
-|   VENDOR_HASHES_PROD_PARTITION    |    no    |     no     |     no      | yes (Digest)  |   yes (CSR)   | Vendor hashes production partition.                                 |
-| VENDOR_REVOCATIONS_PROD_PARTITION |    no    |     no     |     no      | yes (Digest)  |   yes (CSR)   | Vendor revocations production partition.                            |
-|   VENDOR_SECRET_PROD_PARTITION    |   yes    |    yes     |     yes     | yes (Digest)  | yes (Digest)  | Vendor secret production partition.                                 |
-| VENDOR_NON_SECRET_PROD_PARTITION  |    no    |     no     |     yes     | yes (Digest)  |   yes (CSR)   | Vendor non-secret production partition.                             |
-|     CPTRA_SS_LOCK_HEK_PROD_0      |    no    |     no     |     yes     | yes (Digest)  |   yes (CSR)   | OCP L.O.C.K Hard Epoch Key (HEK) ratchet seed slot 0.               |
-|     CPTRA_SS_LOCK_HEK_PROD_1      |    no    |     no     |     yes     | yes (Digest)  |   yes (CSR)   | OCP L.O.C.K Hard Epoch Key (HEK) ratchet seed slot 1.               |
-|     CPTRA_SS_LOCK_HEK_PROD_2      |    no    |     no     |     yes     | yes (Digest)  |   yes (CSR)   | OCP L.O.C.K Hard Epoch Key (HEK) ratchet seed slot 2.               |
-|     CPTRA_SS_LOCK_HEK_PROD_3      |    no    |     no     |     yes     | yes (Digest)  |   yes (CSR)   | OCP L.O.C.K Hard Epoch Key (HEK) ratchet seed slot 3.               |
-|     CPTRA_SS_LOCK_HEK_PROD_4      |    no    |     no     |     yes     | yes (Digest)  |   yes (CSR)   | OCP L.O.C.K Hard Epoch Key (HEK) ratchet seed slot 4.               |
-|     CPTRA_SS_LOCK_HEK_PROD_5      |    no    |     no     |     yes     | yes (Digest)  |   yes (CSR)   | OCP L.O.C.K Hard Epoch Key (HEK) ratchet seed slot 5.               |
-|     CPTRA_SS_LOCK_HEK_PROD_6      |    no    |     no     |     yes     | yes (Digest)  |   yes (CSR)   | OCP L.O.C.K Hard Epoch Key (HEK) ratchet seed slot 6.               |
-|     CPTRA_SS_LOCK_HEK_PROD_7      |    no    |     no     |     yes     | yes (Digest)  |   yes (CSR)   | OCP L.O.C.K Hard Epoch Key (HEK) ratchet seed slot 7.               |
 |            LIFE_CYCLE             |    no    |    yes     |     yes     |      no       |      no       | Lifecycle partition.                                                |
 |                                   |          |            |             |               |               | This contains lifecycle transition count and state. This partition  |
 |                                   |          |            |             |               |               | cannot be locked since the life cycle state needs to advance to RMA |
@@ -36,3 +21,11 @@ It has been generated with ./tools/scripts/fuse_ctrl_script/gen_fuse_ctrl_partit
 |                                   |          |            |             |               |               | possible to read the raw manufacturing life cycle state in encoded  |
 |                                   |          |            |             |               |               | form, since that encoding is considered a netlist secret. The LC    |
 |                                   |          |            |             |               |               | controller only exposes a decoded version of this state.            |
+|   VENDOR_HASHES_MANUF_PARTITION   |    no    |     no     |     yes     | yes (Digest)  |   yes (CSR)   | Vendor hashes manufacturing partition.                              |
+|   VENDOR_HASHES_PROD_PARTITION    |    no    |     no     |     yes     | yes (Digest)  |   yes (CSR)   | Vendor hashes production partition.                                 |
+|           SVN_PARTITION           |    no    |     no     |     no      |      no       |   yes (CSR)   | SVN Partition.                                                      |
+|       VENDOR_TEST_PARTITION       |    no    |     no     |     no      | yes (Digest)  |   yes (CSR)   | Vendor test partition.                                              |
+| VENDOR_REVOCATIONS_PROD_PARTITION |    no    |     no     |     no      | yes (Digest)  |   yes (CSR)   | Vendor revocations production partition.                            |
+|   VENDOR_SECRET_PROD_PARTITION    |   yes    |    yes     |     no      | yes (Digest)  | yes (Digest)  | Vendor secret production partition.                                 |
+| VENDOR_NON_SECRET_PROD_PARTITION  |    no    |     no     |     no      | yes (Digest)  |   yes (CSR)   | Vendor non-secret production partition.                             |
+|           CSR_PARTITION           |    no    |     no     |     no      |      no       |      no       | Addresses mapped to FMC register space.                             |

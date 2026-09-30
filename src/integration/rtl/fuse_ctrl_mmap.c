@@ -122,7 +122,7 @@ const partition_t partitions[NUM_PARTITIONS] = {
     {
         .index = 6,
         .address = 0x00F8,
-        .digest_address = 0x02F8,
+        .digest_address = 0x22F0,
         .zer_address = 0x0000,
         .variant = 1,
         .granularity = 32,
@@ -138,8 +138,8 @@ const partition_t partitions[NUM_PARTITIONS] = {
     // SECRET_LC_TRANSITION_PARTITION
     {
         .index = 7,
-        .address = 0x0300,
-        .digest_address = 0x03B0,
+        .address = 0x22F8,
+        .digest_address = 0x23A8,
         .zer_address = 0x0000,
         .variant = 0,
         .granularity = 64,
@@ -152,10 +152,61 @@ const partition_t partitions[NUM_PARTITIONS] = {
         .num_fuses = 11,
         .fuses = secret_lc_transition_partition_fuses
     },
-    // SVN_PARTITION
+    // LIFE_CYCLE
     {
         .index = 8,
-        .address = 0x03B8,
+        .address = 0x23B0,
+        .digest_address = 0x0000,
+        .zer_address = 0x0000,
+        .variant = 2,
+        .granularity = 32,
+        .is_secret = false,
+        .hw_digest = false,
+        .sw_digest = false,
+        .has_ecc = true,
+        .lc_phase = 0,
+        .is_lifecycle = true,
+        .num_fuses = 2,
+        .fuses = life_cycle_fuses
+    },
+    // VENDOR_HASHES_MANUF_PARTITION
+    {
+        .index = 9,
+        .address = 0x2408,
+        .digest_address = 0x2440,
+        .zer_address = 0x0000,
+        .variant = 1,
+        .granularity = 32,
+        .is_secret = false,
+        .hw_digest = false,
+        .sw_digest = true,
+        .has_ecc = true,
+        .lc_phase = 16,
+        .is_lifecycle = false,
+        .num_fuses = 2,
+        .fuses = vendor_hashes_manuf_partition_fuses
+    },
+    // VENDOR_HASHES_PROD_PARTITION
+    {
+        .index = 10,
+        .address = 0x2448,
+        .digest_address = 0x27A0,
+        .zer_address = 0x0000,
+        .variant = 1,
+        .granularity = 32,
+        .is_secret = false,
+        .hw_digest = false,
+        .sw_digest = true,
+        .has_ecc = true,
+        .lc_phase = 17,
+        .is_lifecycle = false,
+        .num_fuses = 34,
+        .fuses = vendor_hashes_prod_partition_fuses
+    },
+    // SVN_PARTITION
+    {
+        .index = 11,
+        .address = 0x27A8,
         .digest_address = 0x0000,
         .zer_address = 0x0000,
         .variant = 1,
@@ -171,9 +222,9 @@ const partition_t partitions[NUM_PARTITIONS] = {
     },
     // VENDOR_TEST_PARTITION
     {
-        .index = 9,
-        .address = 0x03E0,
-        .digest_address = 0x0418,
+        .index = 12,
+        .address = 0x27D0,
+        .digest_address = 0x2808,
         .zer_address = 0x0000,
         .variant = 1,
         .granularity = 32,
@@ -186,45 +237,11 @@ const partition_t partitions[NUM_PARTITIONS] = {
         .num_fuses = 1,
         .fuses = vendor_test_partition_fuses
     },
-    // VENDOR_HASHES_MANUF_PARTITION
-    {
-        .index = 10,
-        .address = 0x0420,
-        .digest_address = 0x0458,
-        .zer_address = 0x0000,
-        .variant = 1,
-        .granularity = 32,
-        .is_secret = false,
-        .hw_digest = false,
-        .sw_digest = true,
-        .has_ecc = false,
-        .lc_phase = 16,
-        .is_lifecycle = false,
-        .num_fuses = 2,
-        .fuses = vendor_hashes_manuf_partition_fuses
-    },
-    // VENDOR_HASHES_PROD_PARTITION
-    {
-        .index = 11,
-        .address = 0x0460,
-        .digest_address = 0x07B8,
-        .zer_address = 0x0000,
-        .variant = 1,
-        .granularity = 32,
-        .is_secret = false,
-        .hw_digest = false,
-        .sw_digest = true,
-        .has_ecc = false,
-        .lc_phase = 17,
-        .is_lifecycle = false,
-        .num_fuses = 34,
-        .fuses = vendor_hashes_prod_partition_fuses
-    },
     // VENDOR_REVOCATIONS_PROD_PARTITION
     {
-        .index = 12,
-        .address = 0x07C0,
-        .digest_address = 0x0890,
+        .index = 13,
+        .address = 0x2810,
+        .digest_address = 0x28E0,
         .zer_address = 0x0000,
         .variant = 1,
         .granularity = 32,
@@ -239,16 +256,16 @@ const partition_t partitions[NUM_PARTITIONS] = {
     },
     // VENDOR_SECRET_PROD_PARTITION
     {
-        .index = 13,
-        .address = 0x0898,
-        .digest_address = 0x0A98,
-        .zer_address = 0x0AA0,
+        .index = 14,
+        .address = 0x28E8,
+        .digest_address = 0x2AE8,
+        .zer_address = 0x2AF0,
         .variant = 0,
         .granularity = 64,
         .is_secret = true,
         .hw_digest = true,
         .sw_digest = false,
-        .has_ecc = true,
+        .has_ecc = false,
         .lc_phase = 17,
         .is_lifecycle = false,
         .num_fuses = 16,
@@ -256,173 +273,37 @@ const partition_t partitions[NUM_PARTITIONS] = {
     },
     // VENDOR_NON_SECRET_PROD_PARTITION
     {
-        .index = 14,
-        .address = 0x0AA8,
-        .digest_address = 0x0CA8,
+        .index = 15,
+        .address = 0x2AF8,
+        .digest_address = 0x2CF8,
         .zer_address = 0x0000,
         .variant = 1,
         .granularity = 32,
         .is_secret = false,
         .hw_digest = false,
         .sw_digest = true,
-        .has_ecc = true,
+        .has_ecc = false,
         .lc_phase = 17,
         .is_lifecycle = false,
         .num_fuses = 16,
         .fuses = vendor_non_secret_prod_partition_fuses
     },
-    // CPTRA_SS_LOCK_HEK_PROD_0
-    {
-        .index = 15,
-        .address = 0x0CB0,
-        .digest_address = 0x0CD0,
-        .zer_address = 0x0CD8,
-        .variant = 1,
-        .granularity = 32,
-        .is_secret = false,
-        .hw_digest = false,
-        .sw_digest = true,
-        .has_ecc = true,
-        .lc_phase = 17,
-        .is_lifecycle = false,
-        .num_fuses = 1,
-        .fuses = cptra_ss_lock_hek_prod_0_fuses
-    },
-    // CPTRA_SS_LOCK_HEK_PROD_1
+    // CSR_PARTITION
     {
         .index = 16,
-        .address = 0x0CE0,
-        .digest_address = 0x0D00,
-        .zer_address = 0x0D08,
-        .variant = 1,
-        .granularity = 32,
-        .is_secret = false,
-        .hw_digest = false,
-        .sw_digest = true,
-        .has_ecc = true,
-        .lc_phase = 17,
-        .is_lifecycle = false,
-        .num_fuses = 1,
-        .fuses = cptra_ss_lock_hek_prod_1_fuses
-    },
-    // CPTRA_SS_LOCK_HEK_PROD_2
-    {
-        .index = 17,
-        .address = 0x0D10,
-        .digest_address = 0x0D30,
-        .zer_address = 0x0D38,
-        .variant = 1,
-        .granularity = 32,
-        .is_secret = false,
-        .hw_digest = false,
-        .sw_digest = true,
-        .has_ecc = true,
-        .lc_phase = 17,
-        .is_lifecycle = false,
-        .num_fuses = 1,
-        .fuses = cptra_ss_lock_hek_prod_2_fuses
-    },
-    // CPTRA_SS_LOCK_HEK_PROD_3
-    {
-        .index = 18,
-        .address = 0x0D40,
-        .digest_address = 0x0D60,
-        .zer_address = 0x0D68,
-        .variant = 1,
-        .granularity = 32,
-        .is_secret = false,
-        .hw_digest = false,
-        .sw_digest = true,
-        .has_ecc = true,
-        .lc_phase = 17,
-        .is_lifecycle = false,
-        .num_fuses = 1,
-        .fuses = cptra_ss_lock_hek_prod_3_fuses
-    },
-    // CPTRA_SS_LOCK_HEK_PROD_4
-    {
-        .index = 19,
-        .address = 0x0D70,
-        .digest_address = 0x0D90,
-        .zer_address = 0x0D98,
-        .variant = 1,
-        .granularity = 32,
-        .is_secret = false,
-        .hw_digest = false,
-        .sw_digest = true,
-        .has_ecc = true,
-        .lc_phase = 17,
-        .is_lifecycle = false,
-        .num_fuses = 1,
-        .fuses = cptra_ss_lock_hek_prod_4_fuses
-    },
-    // CPTRA_SS_LOCK_HEK_PROD_5
-    {
-        .index = 20,
-        .address = 0x0DA0,
-        .digest_address = 0x0DC0,
-        .zer_address = 0x0DC8,
-        .variant = 1,
-        .granularity = 32,
-        .is_secret = false,
-        .hw_digest = false,
-        .sw_digest = true,
-        .has_ecc = true,
-        .lc_phase = 17,
-        .is_lifecycle = false,
-        .num_fuses = 1,
-        .fuses = cptra_ss_lock_hek_prod_5_fuses
-    },
-    // CPTRA_SS_LOCK_HEK_PROD_6
-    {
-        .index = 21,
-        .address = 0x0DD0,
-        .digest_address = 0x0DF0,
-        .zer_address = 0x0DF8,
-        .variant = 1,
-        .granularity = 32,
-        .is_secret = false,
-        .hw_digest = false,
-        .sw_digest = true,
-        .has_ecc = true,
-        .lc_phase = 17,
-        .is_lifecycle = false,
-        .num_fuses = 1,
-        .fuses = cptra_ss_lock_hek_prod_6_fuses
-    },
-    // CPTRA_SS_LOCK_HEK_PROD_7
-    {
-        .index = 22,
-        .address = 0x0E00,
-        .digest_address = 0x0E20,
-        .zer_address = 0x0E28,
-        .variant = 1,
-        .granularity = 32,
-        .is_secret = false,
-        .hw_digest = false,
-        .sw_digest = true,
-        .has_ecc = true,
-        .lc_phase = 17,
-        .is_lifecycle = false,
-        .num_fuses = 1,
-        .fuses = cptra_ss_lock_hek_prod_7_fuses
-    },
-    // LIFE_CYCLE
-    {
-        .index = 23,
-        .address = 0x0E30,
+        .address = 0x2D00,
         .digest_address = 0x0000,
         .zer_address = 0x0000,
-        .variant = 2,
+        .variant = 1,
         .granularity = 32,
         .is_secret = false,
         .hw_digest = false,
         .sw_digest = false,
-        .has_ecc = true,
-        .lc_phase = 0,
-        .is_lifecycle = true,
-        .num_fuses = 2,
-        .fuses = life_cycle_fuses
+        .has_ecc = false,
+        .lc_phase = 19,
+        .is_lifecycle = false,
+        .num_fuses = 1,
+        .fuses = csr_partition_fuses
     },
 };
 
@@ -472,14 +353,9 @@ const uint32_t secret_lc_transition_partition_fuses[] = {
     CPTRA_SS_PROD_TO_PROD_END_TOKEN,
     CPTRA_SS_RMA_TOKEN
 };
-const uint32_t svn_partition_fuses[] = {
-    CPTRA_CORE_FMC_KEY_MANIFEST_SVN,
-    CPTRA_CORE_RUNTIME_SVN,
-    CPTRA_CORE_SOC_MANIFEST_SVN,
-    CPTRA_CORE_SOC_MANIFEST_MAX_SVN
-};
-const uint32_t vendor_test_partition_fuses[] = {
-    VENDOR_TEST
+const uint32_t life_cycle_fuses[] = {
+    LC_TRANSITION_CNT,
+    LC_STATE
 };
 const uint32_t vendor_hashes_manuf_partition_fuses[] = {
     CPTRA_CORE_VENDOR_PK_HASH_0,
@@ -520,6 +396,15 @@ const uint32_t vendor_hashes_prod_partition_fuses[] = {
     CPTRA_CORE_VENDOR_PK_HASH_15,
     CPTRA_CORE_PQC_KEY_TYPE_15,
     CPTRA_CORE_VENDOR_PK_HASH_VALID
+};
+const uint32_t svn_partition_fuses[] = {
+    CPTRA_CORE_FMC_KEY_MANIFEST_SVN,
+    CPTRA_CORE_RUNTIME_SVN,
+    CPTRA_CORE_SOC_MANIFEST_SVN,
+    CPTRA_CORE_SOC_MANIFEST_MAX_SVN
+};
+const uint32_t vendor_test_partition_fuses[] = {
+    VENDOR_TEST
 };
 const uint32_t vendor_revocations_prod_partition_fuses[] = {
     CPTRA_SS_OWNER_ECC_REVOCATION,
@@ -610,31 +495,6 @@ const uint32_t vendor_non_secret_prod_partition_fuses[] = {
     CPTRA_SS_VENDOR_SPECIFIC_NON_SECRET_FUSE_14,
     CPTRA_SS_VENDOR_SPECIFIC_NON_SECRET_FUSE_15
 };
-const uint32_t cptra_ss_lock_hek_prod_0_fuses[] = {
-    CPTRA_SS_LOCK_HEK_PROD_0_RATCHET_SEED
-};
-const uint32_t cptra_ss_lock_hek_prod_1_fuses[] = {
-    CPTRA_SS_LOCK_HEK_PROD_1_RATCHET_SEED
-};
-const uint32_t cptra_ss_lock_hek_prod_2_fuses[] = {
-    CPTRA_SS_LOCK_HEK_PROD_2_RATCHET_SEED
-};
-const uint32_t cptra_ss_lock_hek_prod_3_fuses[] = {
-    CPTRA_SS_LOCK_HEK_PROD_3_RATCHET_SEED
-};
-const uint32_t cptra_ss_lock_hek_prod_4_fuses[] = {
-    CPTRA_SS_LOCK_HEK_PROD_4_RATCHET_SEED
-};
-const uint32_t cptra_ss_lock_hek_prod_5_fuses[] = {
-    CPTRA_SS_LOCK_HEK_PROD_5_RATCHET_SEED
-};
-const uint32_t cptra_ss_lock_hek_prod_6_fuses[] = {
-    CPTRA_SS_LOCK_HEK_PROD_6_RATCHET_SEED
-};
-const uint32_t cptra_ss_lock_hek_prod_7_fuses[] = {
-    CPTRA_SS_LOCK_HEK_PROD_7_RATCHET_SEED
-};
-const uint32_t life_cycle_fuses[] = {
-    LC_TRANSITION_CNT,
-    LC_STATE
+const uint32_t csr_partition_fuses[] = {
+    CSR_REGION
 };

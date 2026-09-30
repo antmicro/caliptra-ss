@@ -19,8 +19,8 @@
     seed: "36021179872380457113239299468132194022238108125576166239904535336103582949069"
 
     otp: {
-        width: "2", // bytes
-        depth: "2048"
+        width: "16", // bytes
+        depth: "1024"
     }
 
     // Definition of scrambling and digest constants and keys.
@@ -273,7 +273,7 @@
                 },
                 {
                     name: "SOC_SPECIFIC_IDEVID_CERTIFICATE",
-                    size: "4",
+                    size: "8192",
                     desc: '''
                     SoC product requirements determine the certificate sizes based on used DSA (ML-DSA and/or ECC).
                     Size is determined by product requirements. SoC integrator re-generates the actual size based on
@@ -486,6 +486,163 @@
             '''
         },
         {
+            name:         "LIFE_CYCLE",
+            variant:      "LifeCycle",
+            absorb:       false,
+            secret:       false,
+            sw_digest:    false,
+            hw_digest:    false,
+            write_lock:   "None",
+            read_lock:    "None",
+            key_sel:      "NoKey",
+            integrity:    true,
+            bkout_type:   false,
+            lc_phase:     "LcStRaw",
+            zeroizable:   false,
+            items: [
+                // The life cycle transition count is specified
+                // first such that any programming attempt of the life cycle
+                // partition through the LCI will always write the transition
+                // counter words first when programming an updated state vector.
+                // This is an additional safeguard, to the sequencing in the
+                // life cycle controller to ensure that the counter is always written
+                // before any state update. I.e., the life cycle controller
+                // already splits the counter and state updates into two
+                // supsequent requests through the LCI, where the first request
+                // only contains the updated transition counter, and the second
+                // request the updated transition counter and state.
+                {
+                    name: "LC_TRANSITION_CNT",
+                    inv_default: "<random>",
+                    size: "48"
+                }
+                {
+                    name: "LC_STATE",
+                    inv_default: "<random>",
+                    size: "40"
+                }
+            ],
+            desc: '''Lifecycle partition.
+            This contains lifecycle transition count and state. This partition
+            cannot be locked since the life cycle state needs to advance to RMA
+            in-field. Note that while this partition is not marked secret, it
+            is not readable nor writeable via the DAI. Only the LC controller
+            can access this partition, and even via the LC controller it is not
+            possible to read the raw manufacturing life cycle state in encoded
+            form, since that encoding is considered a netlist secret. The LC
+            controller only exposes a decoded version of this state.
+            '''
+        },
+#############################################################
+## Start vendor-specific fuses
+#############################################################
+% if num_vendor_pk_fuses > 0:
+        {
+            name:         "VENDOR_HASHES_MANUF_PARTITION",
+            variant:      "Unbuffered",
+            absorb:       false,
+            secret:       false,
+            sw_digest:    true,
+            hw_digest:    false,
+            write_lock:   "Digest",
+            read_lock:    "CSR",
+            key_sel:      "NoKey",
+            integrity:    true, // Do not use integrity (ECC) on this partition.
+            bkout_type:   false, // Do not generate a breakout type for this partition.
+            lc_phase:     "LcStDev",
+            zeroizable:   false,
+            items: [
+                {
+                    name: "CPTRA_CORE_VENDOR_PK_HASH_0",
+                    size: "48",
+                    desc: '''
+                    SHA384 hash of the Vendor ECDSA P384 and LMS or MLDSA Public Key Descriptors.
+                    '''
+                },
+                {
+                    name:   "CPTRA_CORE_PQC_KEY_TYPE_0",
+                    size:   "4",
+                    desc: '''
+                    One-hot encoded selection of PQC key type for firmware validation. Bit 0 -> MLDSA, Bit 1 -> LMS.
+                    '''
+                },                         
+            ],
+            desc: '''Vendor hashes manufacturing partition.
+            '''
+        },
+        {
+            name:         "VENDOR_HASHES_PROD_PARTITION",
+            variant:      "Unbuffered",
+            absorb:       false,
+            secret:       false,
+            sw_digest:    true,
+            hw_digest:    false,
+            write_lock:   "Digest",
+            read_lock:    "CSR",
+            key_sel:      "NoKey",
+            integrity:    true, // Do not use integrity (ECC) on this partition.
+            bkout_type:   false, // Do not generate a breakout type for this partition.
+            lc_phase:     "LcStProd",
+            zeroizable:   false,
+            items: [
+                           
+                {
+                    name: "CPTRA_SS_OWNER_PK_HASH",
+                    size: "48",
+                    desc: '''
+                    SHA384 hash of the Vendor ECDSA P384 and LMS or MLDSA Public Key Descriptors.
+                    SoC product requirements determine the need of this partition.
+                    '''
+                },
+                {
+                    name:   "CPTRA_SS_OWNER_PQC_KEY_TYPE",
+                    size:   "4",
+                    desc: '''
+                    One-hot encoded selection of PQC key type for firmware validation. Bit 0 -> MLDSA, Bit 1 -> LMS.
+                    SoC product requirements determine the need of this partition.
+                    '''
+                },
+                {
+                    name:   "CPTRA_SS_OWNER_PK_HASH_VALID",
+                    size:   "4",
+                    desc: '''
+                    Once a key is marked valid, anything above should not be able to be written (essentially
+                    a volatile lock should be implemented on higher order bits).
+                    SoC product requirements determine the need of this partition.
+                    '''
+                },   
+    % for i in range(1, num_vendor_pk_fuses):               
+                {
+                    name: "CPTRA_CORE_VENDOR_PK_HASH_${i}",
+                    size: "48",
+                    desc: '''
+                    SHA384 hash of the Vendor ECDSA P384 and LMS or MLDSA Public Key Descriptors.
+                    SoC product requirements determine the need of this partition; and the number of public keys required.
+                    '''
+                },
+                {
+                    name:   "CPTRA_CORE_PQC_KEY_TYPE_${i}",
+                    size:   "4",
+                    desc: '''
+                    One-hot encoded selection of PQC key type for firmware validation. Bit 0 -> MLDSA, Bit 1 -> LMS.
+                    SoC product requirements determine the need of this partition; and the number of public keys required.
+                    '''
+                },
+    % endfor
+                {
+                    name:   "CPTRA_CORE_VENDOR_PK_HASH_VALID",
+                    size:   "${4 * (-(-num_vendor_pk_fuses // 4))}",
+                    desc: '''
+                    Once a key is marked valid, anything above should not be able to be written (essentially
+                    a volatile lock should be implemented on higher order bits).
+                    SoC product requirements determine the need of this partition; and the number of public keys required.
+                    '''
+                },                                          
+            ],
+            desc: '''Vendor hashes production partition.
+            '''
+        },
+        {
             name:         "SVN_PARTITION",
             variant:      "Unbuffered",
             absorb:       false,
@@ -560,115 +717,6 @@
                 }
             ],
             desc: '''Vendor test partition.
-            '''
-        },
-#############################################################
-## Start vendor-specific fuses
-#############################################################
-% if num_vendor_pk_fuses > 0:
-        {
-            name:         "VENDOR_HASHES_MANUF_PARTITION",
-            variant:      "Unbuffered",
-            absorb:       false,
-            secret:       false,
-            sw_digest:    true,
-            hw_digest:    false,
-            write_lock:   "Digest",
-            read_lock:    "CSR",
-            key_sel:      "NoKey",
-            integrity:    false, // Do not use integrity (ECC) on this partition.
-            bkout_type:   false, // Do not generate a breakout type for this partition.
-            lc_phase:     "LcStDev",
-            zeroizable:   false,
-            items: [
-                {
-                    name: "CPTRA_CORE_VENDOR_PK_HASH_0",
-                    size: "48",
-                    desc: '''
-                    SHA384 hash of the Vendor ECDSA P384 and LMS or MLDSA Public Key Descriptors.
-                    '''
-                },
-                {
-                    name:   "CPTRA_CORE_PQC_KEY_TYPE_0",
-                    size:   "4",
-                    desc: '''
-                    One-hot encoded selection of PQC key type for firmware validation. Bit 0 -> MLDSA, Bit 1 -> LMS.
-                    '''
-                },                         
-            ],
-            desc: '''Vendor hashes manufacturing partition.
-            '''
-        },
-        {
-            name:         "VENDOR_HASHES_PROD_PARTITION",
-            variant:      "Unbuffered",
-            absorb:       false,
-            secret:       false,
-            sw_digest:    true,
-            hw_digest:    false,
-            write_lock:   "Digest",
-            read_lock:    "CSR",
-            key_sel:      "NoKey",
-            integrity:    false, // Do not use integrity (ECC) on this partition.
-            bkout_type:   false, // Do not generate a breakout type for this partition.
-            lc_phase:     "LcStProd",
-            zeroizable:   false,
-            items: [
-                           
-                {
-                    name: "CPTRA_SS_OWNER_PK_HASH",
-                    size: "48",
-                    desc: '''
-                    SHA384 hash of the Vendor ECDSA P384 and LMS or MLDSA Public Key Descriptors.
-                    SoC product requirements determine the need of this partition.
-                    '''
-                },
-                {
-                    name:   "CPTRA_SS_OWNER_PQC_KEY_TYPE",
-                    size:   "4",
-                    desc: '''
-                    One-hot encoded selection of PQC key type for firmware validation. Bit 0 -> MLDSA, Bit 1 -> LMS.
-                    SoC product requirements determine the need of this partition.
-                    '''
-                },
-                {
-                    name:   "CPTRA_SS_OWNER_PK_HASH_VALID",
-                    size:   "4",
-                    desc: '''
-                    Once a key is marked valid, anything above should not be able to be written (essentially
-                    a volatile lock should be implemented on higher order bits).
-                    SoC product requirements determine the need of this partition.
-                    '''
-                },   
-    % for i in range(1, num_vendor_pk_fuses):               
-                {
-                    name: "CPTRA_CORE_VENDOR_PK_HASH_${i}",
-                    size: "48",
-                    desc: '''
-                    SHA384 hash of the Vendor ECDSA P384 and LMS or MLDSA Public Key Descriptors.
-                    SoC product requirements determine the need of this partition; and the number of public keys required.
-                    '''
-                },
-                {
-                    name:   "CPTRA_CORE_PQC_KEY_TYPE_${i}",
-                    size:   "4",
-                    desc: '''
-                    One-hot encoded selection of PQC key type for firmware validation. Bit 0 -> MLDSA, Bit 1 -> LMS.
-                    SoC product requirements determine the need of this partition; and the number of public keys required.
-                    '''
-                },
-    % endfor
-                {
-                    name:   "CPTRA_CORE_VENDOR_PK_HASH_VALID",
-                    size:   "${4 * (-(-num_vendor_pk_fuses // 4))}",
-                    desc: '''
-                    Once a key is marked valid, anything above should not be able to be written (essentially
-                    a volatile lock should be implemented on higher order bits).
-                    SoC product requirements determine the need of this partition; and the number of public keys required.
-                    '''
-                },                                          
-            ],
-            desc: '''Vendor hashes production partition.
             '''
         },
         {
@@ -752,7 +800,7 @@
             write_lock:   "Digest",
             read_lock:    "Digest",
             key_sel:      "VendorSecretProdKey",
-            integrity:    true,
+            integrity:    false,
             bkout_type:   true,
             lc_phase:     "LcStProd",
             zeroizable:   true,
@@ -782,7 +830,7 @@
             write_lock:   "Digest",
             read_lock:    "CSR",
             key_sel:      "NoKey",
-            integrity:    true,
+            integrity:    false,
             bkout_type:   false,
             lc_phase:     "LcStProd",
             zeroizable:   false,
@@ -800,44 +848,9 @@
             '''
         },
 % endif
-#############################################################
-## End vendor-specific fuses
-#############################################################
-#############################################################
-## Start ratchet seed fuses
-#############################################################
-% for i in range(num_ratchet_seed_partitions):
         {
-            name: "CPTRA_SS_LOCK_HEK_PROD_${i}",
+            name:         "CSR_PARTITION",
             variant:      "Unbuffered",
-            absorb:       false,
-            secret:       false,
-            sw_digest:    true,
-            hw_digest:    false,
-            write_lock:   "Digest",
-            read_lock:    "CSR",
-            key_sel:      "NoKey",
-            integrity:    true,
-            bkout_type:   false,
-            lc_phase:     "LcStProd",
-            zeroizable:   true,
-            items: [
-               {
-                    name: "CPTRA_SS_LOCK_HEK_PROD_${i}_RATCHET_SEED",
-                    size: "32",
-                    desc: "OCP L.O.C.K HEK ratchet seed slot ${i}."
-                },
-            ],
-            desc: '''OCP L.O.C.K Hard Epoch Key (HEK) ratchet seed slot ${i}.
-            '''
-        },
-% endfor
-#############################################################
-## End ratchet seed fuses
-#############################################################   
-        {
-            name:         "LIFE_CYCLE",
-            variant:      "LifeCycle",
             absorb:       false,
             secret:       false,
             sw_digest:    false,
@@ -845,43 +858,103 @@
             write_lock:   "None",
             read_lock:    "None",
             key_sel:      "NoKey",
-            integrity:    true,
+            integrity:    false,
             bkout_type:   false,
-            lc_phase:     "LcStRaw",
+            lc_phase:     "LcStRma",
             zeroizable:   false,
             items: [
-                // The life cycle transition count is specified
-                // first such that any programming attempt of the life cycle
-                // partition through the LCI will always write the transition
-                // counter words first when programming an updated state vector.
-                // This is an additional safeguard, to the sequencing in the
-                // life cycle controller to ensure that the counter is always written
-                // before any state update. I.e., the life cycle controller
-                // already splits the counter and state updates into two
-                // supsequent requests through the LCI, where the first request
-                // only contains the updated transition counter, and the second
-                // request the updated transition counter and state.
                 {
-                    name: "LC_TRANSITION_CNT",
-                    inv_default: "<random>",
-                    size: "48"
-                }
-                {
-                    name: "LC_STATE",
-                    inv_default: "<random>",
-                    size: "40"
-                }
+                    name: "CSR_REGION",
+                    size: "2048",
+                    desc: '''Access to FMC CSR.
+                    '''
+                },
             ],
-            desc: '''Lifecycle partition.
-            This contains lifecycle transition count and state. This partition
-            cannot be locked since the life cycle state needs to advance to RMA
-            in-field. Note that while this partition is not marked secret, it
-            is not readable nor writeable via the DAI. Only the LC controller
-            can access this partition, and even via the LC controller it is not
-            possible to read the raw manufacturing life cycle state in encoded
-            form, since that encoding is considered a netlist secret. The LC
-            controller only exposes a decoded version of this state.
+            desc: '''Addresses mapped to FMC register space.
             '''
         },
+#############################################################
+## End vendor-specific fuses
+#############################################################
+#############################################################
+## Start ratchet seed fuses
+#############################################################
+#% for i in range(num_ratchet_seed_partitions):
+#        {
+#            name: "CPTRA_SS_LOCK_HEK_PROD_${i}",
+#            variant:      "Unbuffered",
+#            absorb:       false,
+#            secret:       false,
+#            sw_digest:    true,
+#            hw_digest:    false,
+#            write_lock:   "Digest",
+#            read_lock:    "CSR",
+#            key_sel:      "NoKey",
+#            integrity:    true,
+#            bkout_type:   false,
+#            lc_phase:     "LcStProd",
+#            zeroizable:   true,
+#            items: [
+#               {
+#                    name: "CPTRA_SS_LOCK_HEK_PROD_${i}_RATCHET_SEED",
+#                    size: "32",
+#                    desc: "OCP L.O.C.K HEK ratchet seed slot ${i}."
+#                },
+#            ],
+#            desc: '''OCP L.O.C.K Hard Epoch Key (HEK) ratchet seed slot ${i}.
+#            '''
+#        },
+#% endfor
+#############################################################
+## End ratchet seed fuses
+#############################################################   
+#        {
+#            name:         "LIFE_CYCLE",
+#            variant:      "LifeCycle",
+#            absorb:       false,
+#            secret:       false,
+#            sw_digest:    false,
+#            hw_digest:    false,
+#            write_lock:   "None",
+#            read_lock:    "None",
+#            key_sel:      "NoKey",
+#            integrity:    true,
+#            bkout_type:   false,
+#            lc_phase:     "LcStRaw",
+#            zeroizable:   false,
+#            items: [
+#                // The life cycle transition count is specified
+#                // first such that any programming attempt of the life cycle
+#                // partition through the LCI will always write the transition
+#                // counter words first when programming an updated state vector.
+#                // This is an additional safeguard, to the sequencing in the
+#                // life cycle controller to ensure that the counter is always written
+#                // before any state update. I.e., the life cycle controller
+#                // already splits the counter and state updates into two
+#                // supsequent requests through the LCI, where the first request
+#                // only contains the updated transition counter, and the second
+#                // request the updated transition counter and state.
+#                {
+#                    name: "LC_TRANSITION_CNT",
+#                    inv_default: "<random>",
+#                    size: "48"
+#                }
+#                {
+#                    name: "LC_STATE",
+#                    inv_default: "<random>",
+#                    size: "40"
+#                }
+#            ],
+#            desc: '''Lifecycle partition.
+#            This contains lifecycle transition count and state. This partition
+#            cannot be locked since the life cycle state needs to advance to RMA
+#            in-field. Note that while this partition is not marked secret, it
+#            is not readable nor writeable via the DAI. Only the LC controller
+#            can access this partition, and even via the LC controller it is not
+#            possible to read the raw manufacturing life cycle state in encoded
+#            form, since that encoding is considered a netlist secret. The LC
+#            controller only exposes a decoded version of this state.
+#            '''
+#        },
     ]
 }
