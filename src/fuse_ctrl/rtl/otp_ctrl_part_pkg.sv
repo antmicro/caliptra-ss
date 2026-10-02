@@ -421,10 +421,27 @@ package otp_ctrl_part_pkg;
       lc_phase:         DecLcStProd,
       zeroizable:       1'b0
     },
-    // CSR_PARTITION
+    // CPTRA_SS_LOCK_HEK_PROD_0
     '{
       variant:          Unbuffered,
       offset:           14'd11520,
+      size:             40,
+      key_sel:          key_sel_e'('0),
+      secret:           1'b0,
+      sw_digest:        1'b1,
+      hw_digest:        1'b0,
+      write_lock:       1'b1,
+      read_lock:        1'b0,
+      integrity:        1'b0,
+      iskeymgr_creator: 1'b0,
+      iskeymgr_owner:   1'b0,
+      lc_phase:         DecLcStRma,
+      zeroizable:       1'b0
+    },
+    // CSR_PARTITION
+    '{
+      variant:          Unbuffered,
+      offset:           14'd11560,
       size:             2048,
       key_sel:          key_sel_e'('0),
       secret:           1'b0,
@@ -457,6 +474,7 @@ package otp_ctrl_part_pkg;
     VendorRevocationsProdPartitionIdx,
     VendorSecretProdPartitionIdx,
     VendorNonSecretProdPartitionIdx,
+    CptraSsLockHekProd0Idx,
     CsrPartitionIdx,
     // These are not "real partitions", but in terms of implementation it is convenient to
     // add these at the end of certain arrays.
@@ -607,9 +625,13 @@ package otp_ctrl_part_pkg;
 
 
   // OTP invalid partition default for buffered partitions.
-  parameter logic [108543:0] PartInvDefault = 108544'({
+  parameter logic [108863:0] PartInvDefault = 108864'({
     16384'({
       16384'h0
+    }),
+    320'({
+      64'h71400F1A2858655B,
+      256'h0
     }),
     4160'({
       64'h8633C897599F66A1,
@@ -847,6 +869,7 @@ package otp_ctrl_part_pkg;
     hw2reg.vendor_revocations_prod_partition_digest = part_digest[VendorRevocationsProdPartitionIdx];
     hw2reg.vendor_secret_prod_partition_digest = part_digest[VendorSecretProdPartitionIdx];
     hw2reg.vendor_non_secret_prod_partition_digest = part_digest[VendorNonSecretProdPartitionIdx];
+    hw2reg.cptra_ss_lock_hek_prod_0_digest = part_digest[CptraSsLockHekProd0Idx];
     return hw2reg;
   endfunction : named_reg_assign
 
@@ -886,6 +909,10 @@ package otp_ctrl_part_pkg;
     // VENDOR_NON_SECRET_PROD_PARTITION
     if (!reg2hw.vendor_non_secret_prod_partition_read_lock) begin
       part_access_pre[VendorNonSecretProdPartitionIdx].read_lock = caliptra_prim_mubi_pkg::MuBi8True;
+    end
+    // CPTRA_SS_LOCK_HEK_PROD_0
+    if (!reg2hw.cptra_ss_lock_hek_prod_0_read_lock) begin
+      part_access_pre[CptraSsLockHekProd0Idx].read_lock = caliptra_prim_mubi_pkg::MuBi8True;
     end
     return part_access_pre;
   endfunction : named_part_access_pre
@@ -945,6 +972,9 @@ package otp_ctrl_part_pkg;
     // VENDOR_NON_SECRET_PROD_PARTITION
     unused ^= ^{part_init_done[VendorNonSecretProdPartitionIdx],
                 part_buf_data[VendorNonSecretProdPartitionOffset +: VendorNonSecretProdPartitionSize]};
+    // CPTRA_SS_LOCK_HEK_PROD_0
+    unused ^= ^{part_init_done[CptraSsLockHekProd0Idx],
+                part_buf_data[CptraSsLockHekProd0Offset +: CptraSsLockHekProd0Size]};
     // CSR_PARTITION
     unused ^= ^{part_init_done[CsrPartitionIdx],
                 part_buf_data[CsrPartitionOffset +: CsrPartitionSize]};
@@ -1011,6 +1041,9 @@ package otp_ctrl_part_pkg;
     // VENDOR_NON_SECRET_PROD_PARTITION
     unused ^= ^{part_digest[VendorNonSecretProdPartitionIdx],
                 part_buf_data[VendorNonSecretProdPartitionOffset +: VendorNonSecretProdPartitionSize]};
+    // CPTRA_SS_LOCK_HEK_PROD_0
+    unused ^= ^{part_digest[CptraSsLockHekProd0Idx],
+                part_buf_data[CptraSsLockHekProd0Offset +: CptraSsLockHekProd0Size]};
     // CSR_PARTITION
     unused ^= ^{part_digest[CsrPartitionIdx],
                 part_buf_data[CsrPartitionOffset +: CsrPartitionSize]};
@@ -1032,7 +1065,7 @@ package otp_ctrl_part_pkg;
     otp_ctrl_reg_pkg::SecretProdPartition3DigestOffset,    // SECRET_PROD_PARTITION_3
     otp_ctrl_reg_pkg::SwManufPartitionDigestOffset,    // SW_MANUF_PARTITION
     otp_ctrl_reg_pkg::SecretLcTransitionPartitionDigestOffset,    // SECRET_LC_TRANSITION_PARTITION
-    0                                                               // LIFE_CYCLE
+    0,                                                              // LIFE_CYCLE
     otp_ctrl_reg_pkg::VendorHashesManufPartitionDigestOffset,    // VENDOR_HASHES_MANUF_PARTITION
     otp_ctrl_reg_pkg::VendorHashesProdPartitionDigestOffset,    // VENDOR_HASHES_PROD_PARTITION
     0,                                                              // SVN_PARTITION
@@ -1040,7 +1073,8 @@ package otp_ctrl_part_pkg;
     otp_ctrl_reg_pkg::VendorRevocationsProdPartitionDigestOffset,    // VENDOR_REVOCATIONS_PROD_PARTITION
     otp_ctrl_reg_pkg::VendorSecretProdPartitionDigestOffset,    // VENDOR_SECRET_PROD_PARTITION
     otp_ctrl_reg_pkg::VendorNonSecretProdPartitionDigestOffset,    // VENDOR_NON_SECRET_PROD_PARTITION
-    0,                                                              // CSR_PARTITION
+    otp_ctrl_reg_pkg::CptraSsLockHekProd0DigestOffset,    // CPTRA_SS_LOCK_HEK_PROD_0
+    0                                                               // CSR_PARTITION
   };
 
   localparam [OtpByteAddrWidth-1:0] zero_addrs [0:NumPart-1] = {
@@ -1052,7 +1086,7 @@ package otp_ctrl_part_pkg;
     otp_ctrl_reg_pkg::SecretProdPartition3ZerOffset,    // SECRET_PROD_PARTITION_3
     0,                                                              // SW_MANUF_PARTITION
     0,                                                              // SECRET_LC_TRANSITION_PARTITION
-    0                                                               // LIFE_CYCLE
+    0,                                                              // LIFE_CYCLE
     0,                                                              // VENDOR_HASHES_MANUF_PARTITION
     0,                                                              // VENDOR_HASHES_PROD_PARTITION
     0,                                                              // SVN_PARTITION
@@ -1060,7 +1094,8 @@ package otp_ctrl_part_pkg;
     0,                                                              // VENDOR_REVOCATIONS_PROD_PARTITION
     otp_ctrl_reg_pkg::VendorSecretProdPartitionZerOffset,    // VENDOR_SECRET_PROD_PARTITION
     0,                                                              // VENDOR_NON_SECRET_PROD_PARTITION
-    0,                                                              // CSR_PARTITION
+    0,                                                              // CPTRA_SS_LOCK_HEK_PROD_0
+    0                                                               // CSR_PARTITION
   };
 
 endpackage : otp_ctrl_part_pkg

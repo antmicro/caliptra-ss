@@ -1608,6 +1608,34 @@
             desc: '''Vendor non-secret production partition.
             '''
         },
+#% for i in range(num_ratchet_seed_partitions):
+        {
+            name: "CPTRA_SS_LOCK_HEK_PROD_0",
+            variant:      "Unbuffered",
+            absorb:       false,
+            secret:       false,
+            sw_digest:    true,
+            hw_digest:    false,
+            write_lock:   "Digest",
+            read_lock:    "CSR",
+            key_sel:      "NoKey",
+#            integrity:    true,
+            integrity:    false,
+            bkout_type:   false,
+#            lc_phase:     "LcStProd",
+            lc_phase:     "LcStRma",
+#            zeroizable:   true,
+            zeroizable:   false,
+            items: [
+               {
+                    name: "CPTRA_SS_LOCK_HEK_PROD_0_RATCHET_SEED",
+                    size: "32",
+                    desc: "OCP L.O.C.K HEK ratchet seed slot 0."
+                },
+            ],
+            desc: '''OCP L.O.C.K Hard Epoch Key (HEK) ratchet seed slot 0.
+            '''
+        },
         {
             name:         "CSR_PARTITION",
             variant:      "Unbuffered",
@@ -1633,32 +1661,6 @@
             desc: '''Addresses mapped to FMC register space.
             '''
         },
-#% for i in range(num_ratchet_seed_partitions):
-#        {
-#            name: "CPTRA_SS_LOCK_HEK_PROD_15",
-#            variant:      "Unbuffered",
-#            absorb:       false,
-#            secret:       false,
-#            sw_digest:    true,
-#            hw_digest:    false,
-#            write_lock:   "Digest",
-#            read_lock:    "CSR",
-#            key_sel:      "NoKey",
-#            integrity:    true,
-#            bkout_type:   false,
-#            lc_phase:     "LcStProd",
-#            zeroizable:   true,
-#            items: [
-#               {
-#                    name: "CPTRA_SS_LOCK_HEK_PROD_15_RATCHET_SEED",
-#                    size: "32",
-#                    desc: "OCP L.O.C.K HEK ratchet seed slot 15."
-#                },
-#            ],
-#            desc: '''OCP L.O.C.K Hard Epoch Key (HEK) ratchet seed slot 15.
-#            '''
-#        },
-#% endfor
 #        {
 #            name:         "LIFE_CYCLE",
 #            variant:      "LifeCycle",

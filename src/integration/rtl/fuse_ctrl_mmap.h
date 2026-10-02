@@ -192,8 +192,10 @@ typedef enum {
     CPTRA_SS_VENDOR_SPECIFIC_NON_SECRET_FUSE_13 = 0x2C98,
     CPTRA_SS_VENDOR_SPECIFIC_NON_SECRET_FUSE_14 = 0x2CB8,
     CPTRA_SS_VENDOR_SPECIFIC_NON_SECRET_FUSE_15 = 0x2CD8,
+    // CPTRA_SS_LOCK_HEK_PROD_0
+    CPTRA_SS_LOCK_HEK_PROD_0_RATCHET_SEED = 0x2D00,
     // CSR_PARTITION
-    CSR_REGION = 0x2D00
+    CSR_REGION = 0x2D28
 } fuse_k;
 
 typedef enum {
@@ -213,6 +215,7 @@ typedef enum {
     VENDOR_REVOCATIONS_PROD_PARTITION,
     VENDOR_SECRET_PROD_PARTITION,
     VENDOR_NON_SECRET_PROD_PARTITION,
+    CPTRA_SS_LOCK_HEK_PROD_0,
     CSR_PARTITION
 } partition_k;
 
@@ -237,7 +240,7 @@ typedef struct {
     const uint32_t *fuses;
 } partition_t;
 
-#define NUM_PARTITIONS 17
+#define NUM_PARTITIONS 18
 
 // A map of the NUM_PARTITIONS fuse partitions.
 extern const partition_t partitions[];
@@ -259,6 +262,7 @@ extern const uint32_t vendor_test_partition_fuses[];
 extern const uint32_t vendor_revocations_prod_partition_fuses[];
 extern const uint32_t vendor_secret_prod_partition_fuses[];
 extern const uint32_t vendor_non_secret_prod_partition_fuses[];
+extern const uint32_t cptra_ss_lock_hek_prod_0_fuses[];
 extern const uint32_t csr_partition_fuses[];
 
 #endif // FUSE_CTRL_MMAP_HEADERS

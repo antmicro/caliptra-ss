@@ -151,7 +151,7 @@
     { name: "NumErrorEntries",
       desc: "Number of error register entries.",
       type: "int",
-      default: "19", // partitions + DAI/LCI
+      default: "20", // partitions + DAI/LCI
       local: "true"
     },
     { name: "NumDaiWords",
@@ -177,13 +177,13 @@
     { name: "NumPart",
       desc: "Number of partitions",
       type: "int",
-      default: "17",
+      default: "18",
       local: "true"
     },
     { name: "NumPartUnbuf",
       desc: "Number of unbuffered partitions",
       type: "int",
-      default: "8",
+      default: "9",
       local: "true"
     },
     { name: "NumPartBuf",
@@ -2496,10 +2496,46 @@
       default: "8",
       local: "true"
     },
+    { name: "CptraSsLockHekProd0Offset",
+      desc: "Offset of the CPTRA_SS_LOCK_HEK_PROD_0 partition",
+      type: "int",
+      default: "11520",
+      local: "true"
+    },
+    { name: "CptraSsLockHekProd0Size",
+      desc: "Size of the CPTRA_SS_LOCK_HEK_PROD_0 partition",
+      type: "int",
+      default: "40",
+      local: "true"
+    },
+    { name: "CptraSsLockHekProd0RatchetSeedOffset",
+      desc: "Offset of CPTRA_SS_LOCK_HEK_PROD_0_RATCHET_SEED",
+      type: "int",
+      default: "11520",
+      local: "true"
+    },
+    { name: "CptraSsLockHekProd0RatchetSeedSize",
+      desc: "Size of CPTRA_SS_LOCK_HEK_PROD_0_RATCHET_SEED",
+      type: "int",
+      default: "32",
+      local: "true"
+    },
+    { name: "CptraSsLockHekProd0DigestOffset",
+      desc: "Offset of CPTRA_SS_LOCK_HEK_PROD_0_DIGEST",
+      type: "int",
+      default: "11552",
+      local: "true"
+    },
+    { name: "CptraSsLockHekProd0DigestSize",
+      desc: "Size of CPTRA_SS_LOCK_HEK_PROD_0_DIGEST",
+      type: "int",
+      default: "8",
+      local: "true"
+    },
     { name: "CsrPartitionOffset",
       desc: "Offset of the CSR_PARTITION partition",
       type: "int",
-      default: "11520",
+      default: "11560",
       local: "true"
     },
     { name: "CsrPartitionSize",
@@ -2511,7 +2547,7 @@
     { name: "CsrRegionOffset",
       desc: "Offset of CSR_REGION",
       type: "int",
-      default: "11520",
+      default: "11560",
       local: "true"
     },
     { name: "CsrRegionSize",
@@ -3128,59 +3164,66 @@
                   '''
           }
           { bits: "16"
-            name: "CSR_PARTITION_ERROR"
+            name: "CPTRA_SS_LOCK_HEK_PROD_0_ERROR"
             desc: '''
                   Set to 1 if an error occurred in this partition.
                   If set to 1, SW should check the !!ERR_CODE register at the corresponding index.
                   '''
           }
           { bits: "17"
+            name: "CSR_PARTITION_ERROR"
+            desc: '''
+                  Set to 1 if an error occurred in this partition.
+                  If set to 1, SW should check the !!ERR_CODE register at the corresponding index.
+                  '''
+          }
+          { bits: "18"
             name: "DAI_ERROR"
             desc: '''
                   Set to 1 if an error occurred in the DAI.
                   If set to 1, SW should check the !!ERR_CODE register at the corresponding index.
                   '''
           }
-          { bits: "18"
+          { bits: "19"
             name: "LCI_ERROR"
             desc: '''
                   Set to 1 if an error occurred in the LCI.
                   If set to 1, SW should check the !!ERR_CODE register at the corresponding index.
                   '''
           }
-          { bits: "19"
+          { bits: "20"
             name: "TIMEOUT_ERROR"
             desc: '''
                   Set to 1 if an integrity or consistency check times out.
                   This raises an fatal_check_error alert and is an unrecoverable error condition.
                   '''
           }
-          { bits: "20"
+          { bits: "21"
             name: "LFSR_FSM_ERROR"
             desc: '''
                   Set to 1 if the LFSR timer FSM has reached an invalid state.
                   This raises an fatal_check_error alert and is an unrecoverable error condition.
                   '''
           }
-          { bits: "21"
+          { bits: "22"
             name: "SCRAMBLING_FSM_ERROR"
             desc: '''
                   Set to 1 if the scrambling datapath FSM has reached an invalid state.
                   This raises an fatal_check_error alert and is an unrecoverable error condition.
                   '''
           }
-          { bits: "22"
+          { bits: "23"
             name: "BUS_INTEG_ERROR"
             desc: '''
                   This bit is set to 1 if a fatal bus integrity fault is detected.
                   This error triggers a fatal_bus_integ_error alert.
                   '''
           }
-          { bits: "23"
+          { bits: "24"
             name: "DAI_IDLE"
             desc: "Set to 1 if the DAI is idle and ready to accept commands."
           }
-          { bits: "24"
+          { bits: "25"
             name: "CHECK_PENDING"
             desc: "Set to 1 if an integrity or consistency check triggered by the LFSR timer or via !!CHECK_TRIGGER is pending."
           }
@@ -3700,6 +3743,27 @@
           },
         ]
       },
+      { name: "CPTRA_SS_LOCK_HEK_PROD_0_READ_LOCK",
+        desc: '''
+              Runtime read lock for the CPTRA_SS_LOCK_HEK_PROD_0 partition.
+              ''',
+        swaccess: "rw0c",
+        hwaccess: "hro",
+        regwen:   "DIRECT_ACCESS_REGWEN",
+        tags:     [ // The value of this register can affect the read access of the this
+                    // partition's memory window. Excluding this register from writing can ensure
+                    // memories have read and write access.
+                    "excl:CsrNonInitTests:CsrExclWrite"],
+        fields: [
+          { bits:   "0",
+            desc: '''
+            When cleared to 0, read access to the CPTRA_SS_LOCK_HEK_PROD_0 partition is locked.
+            Write 0 to clear this bit.
+            '''
+            resval: 1,
+          },
+        ]
+      },
 
       { name: "VENDOR_PK_HASH_VOLATILE_LOCK",
         desc: "Address register for direct accesses.",
@@ -4022,6 +4086,29 @@
                     The integrity digest is 0 by default. Software must write this
                     digest value via the direct access interface in order to lock the partition.
                     After a reset, write access to the VENDOR_NON_SECRET_PROD_PARTITION partition is locked and
+                    the digest becomes visible in this CSR.
+                    ''',
+          count:     "NumDigestWords",
+          swaccess:  "ro",
+          hwaccess:  "hwo",
+          hwext:     "true",
+          cname:     "WORD",
+          resval:    0,
+          tags: [ // OTP internal HW will update status so can not auto-predict its value.
+                  "excl:CsrAllTests:CsrExclCheck"],
+          fields: [
+            { bits: "31:0"
+            }
+          ]
+        }
+      },
+      { multireg: {
+          name:     "CPTRA_SS_LOCK_HEK_PROD_0_DIGEST",
+          desc:     '''
+                    Integrity digest for the CPTRA_SS_LOCK_HEK_PROD_0 partition.
+                    The integrity digest is 0 by default. Software must write this
+                    digest value via the direct access interface in order to lock the partition.
+                    After a reset, write access to the CPTRA_SS_LOCK_HEK_PROD_0 partition is locked and
                     the digest becomes visible in this CSR.
                     ''',
           count:     "NumDigestWords",

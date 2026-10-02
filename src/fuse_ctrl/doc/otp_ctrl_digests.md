@@ -18,3 +18,4 @@ It has been generated with ./tools/scripts/fuse_ctrl_script/gen_fuse_ctrl_partit
 | [VENDOR_REVOCATIONS_PROD_PARTITION_DIGEST](#Reg_vendor_revocations_prod_partition_digest_0) | VENDOR_REVOCATIONS_PROD_PARTITION |         no         |
 |      [VENDOR_SECRET_PROD_PARTITION_DIGEST](#Reg_vendor_secret_prod_partition_digest_0)      |   VENDOR_SECRET_PROD_PARTITION    |        yes         |
 |  [VENDOR_NON_SECRET_PROD_PARTITION_DIGEST](#Reg_vendor_non_secret_prod_partition_digest_0)  | VENDOR_NON_SECRET_PROD_PARTITION  |         no         |
+|          [CPTRA_SS_LOCK_HEK_PROD_0_DIGEST](#Reg_cptra_ss_lock_hek_prod_0_digest_0)          |     CPTRA_SS_LOCK_HEK_PROD_0      |         no         |

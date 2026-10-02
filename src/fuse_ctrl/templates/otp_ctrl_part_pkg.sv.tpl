@@ -403,7 +403,7 @@ package otp_ctrl_part_pkg;
 % for part in otp_mmap.config["partitions"]:
   % if part["sw_digest"] or part["hw_digest"]:
     otp_ctrl_reg_pkg::${Name.from_snake_case(part["name"]).as_camel_case()}DigestOffset,    // ${part["name"]}
-  % elif part["variant"] == "LifeCycle":
+  % elif part["name"] == "CSR_PARTITION":
     0                                                               // ${part["name"]}
   % else:
     0,                                                              // ${part["name"]}
@@ -415,7 +415,7 @@ package otp_ctrl_part_pkg;
 % for part in otp_mmap.config["partitions"]:
   % if part["zeroizable"]:
     otp_ctrl_reg_pkg::${Name.from_snake_case(part["name"]).as_camel_case()}ZerOffset,    // ${part["name"]}
-  % elif part["variant"] == "LifeCycle":
+  % elif part["name"] == "CSR_PARTITION":
     0                                                               // ${part["name"]}
   % else:
     0,                                                              // ${part["name"]}

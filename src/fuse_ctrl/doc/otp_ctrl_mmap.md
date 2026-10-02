@@ -180,4 +180,6 @@ It has been generated with ./tools/scripts/fuse_ctrl_script/gen_fuse_ctrl_partit
 |         |                                   |            |      32bit       |                         CPTRA_SS_VENDOR_SPECIFIC_NON_SECRET_FUSE_14                         |     0x2CB8     |     32     |
 |         |                                   |            |      32bit       |                         CPTRA_SS_VENDOR_SPECIFIC_NON_SECRET_FUSE_15                         |     0x2CD8     |     32     |
 |         |                                   |            |      64bit       |  [VENDOR_NON_SECRET_PROD_PARTITION_DIGEST](#Reg_vendor_non_secret_prod_partition_digest_0)  |     0x2CF8     |     8      |
-|   16    |           CSR_PARTITION           |    2048    |      32bit       |                                         CSR_REGION                                          |     0x2D00     |    2048    |
+|   16    |     CPTRA_SS_LOCK_HEK_PROD_0      |     40     |      32bit       |                            CPTRA_SS_LOCK_HEK_PROD_0_RATCHET_SEED                            |     0x2D00     |     32     |
+|         |                                   |            |      64bit       |          [CPTRA_SS_LOCK_HEK_PROD_0_DIGEST](#Reg_cptra_ss_lock_hek_prod_0_digest_0)          |     0x2D20     |     8      |
+|   17    |           CSR_PARTITION           |    2048    |      32bit       |                                         CSR_REGION                                          |     0x2D28     |    2048    |

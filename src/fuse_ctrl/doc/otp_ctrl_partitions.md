@@ -28,4 +28,5 @@ It has been generated with ./tools/scripts/fuse_ctrl_script/gen_fuse_ctrl_partit
 | VENDOR_REVOCATIONS_PROD_PARTITION |    no    |     no     |     no      | yes (Digest)  |   yes (CSR)   | Vendor revocations production partition.                            |
 |   VENDOR_SECRET_PROD_PARTITION    |   yes    |    yes     |     no      | yes (Digest)  | yes (Digest)  | Vendor secret production partition.                                 |
 | VENDOR_NON_SECRET_PROD_PARTITION  |    no    |     no     |     no      | yes (Digest)  |   yes (CSR)   | Vendor non-secret production partition.                             |
+|     CPTRA_SS_LOCK_HEK_PROD_0      |    no    |     no     |     no      | yes (Digest)  |   yes (CSR)   | OCP L.O.C.K Hard Epoch Key (HEK) ratchet seed slot 0.               |
 |           CSR_PARTITION           |    no    |     no     |     no      |      no       |      no       | Addresses mapped to FMC register space.                             |

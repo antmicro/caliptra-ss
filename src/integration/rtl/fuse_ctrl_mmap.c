@@ -288,10 +288,27 @@ const partition_t partitions[NUM_PARTITIONS] = {
         .num_fuses = 16,
         .fuses = vendor_non_secret_prod_partition_fuses
     },
-    // CSR_PARTITION
+    // CPTRA_SS_LOCK_HEK_PROD_0
     {
         .index = 16,
         .address = 0x2D00,
+        .digest_address = 0x2D20,
+        .zer_address = 0x0000,
+        .variant = 1,
+        .granularity = 32,
+        .is_secret = false,
+        .hw_digest = false,
+        .sw_digest = true,
+        .has_ecc = false,
+        .lc_phase = 19,
+        .is_lifecycle = false,
+        .num_fuses = 1,
+        .fuses = cptra_ss_lock_hek_prod_0_fuses
+    },
+    // CSR_PARTITION
+    {
+        .index = 17,
+        .address = 0x2D28,
         .digest_address = 0x0000,
         .zer_address = 0x0000,
         .variant = 1,
@@ -494,6 +511,9 @@ const uint32_t vendor_non_secret_prod_partition_fuses[] = {
     CPTRA_SS_VENDOR_SPECIFIC_NON_SECRET_FUSE_13,
     CPTRA_SS_VENDOR_SPECIFIC_NON_SECRET_FUSE_14,
     CPTRA_SS_VENDOR_SPECIFIC_NON_SECRET_FUSE_15
+};
+const uint32_t cptra_ss_lock_hek_prod_0_fuses[] = {
+    CPTRA_SS_LOCK_HEK_PROD_0_RATCHET_SEED
 };
 const uint32_t csr_partition_fuses[] = {
     CSR_REGION
